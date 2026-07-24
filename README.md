@@ -35,4 +35,4 @@ pnpm build
 - `apps/tripory/wrangler.jsonc` → `tomokichi-tripory`
 - `apps/api/wrangler.jsonc` → `tomokichi-api`
 
-GitHub ActionsのRepository secretsに `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を設定してください。`main`ブランチに変更をpushすると、変更されたアプリだけがビルド・デプロイされます。各デプロイworkflowはActionsから手動実行もできます。
+GitHub ActionsのRepository secretsに `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を設定し、Repository variable `CLOUDFLARE_DEPLOY_ENABLED=true` を設定してください。`main`ブランチに変更をpushすると、変更されたアプリだけがビルド・デプロイされます。Cloudflareの設定前はデプロイjobが自動的にskipされるため、CIを赤くしません。各デプロイworkflowはActionsから手動実行もできます。

@@ -22,6 +22,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
+    if: vars.CLOUDFLARE_DEPLOY_ENABLED == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
