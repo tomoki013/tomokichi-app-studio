@@ -1,0 +1,53 @@
+---
+interface Props {
+  lang: "ja" | "en";
+}
+
+const { lang } = Astro.props;
+
+const labels =
+  lang === "ja"
+    ? {
+        apps: "アプリ",
+        about: "私たちについて",
+        support: "サポート",
+        languageHref: "/en",
+        languageLabel: "EN",
+      }
+    : {
+        apps: "Apps",
+        about: "About",
+        support: "Support",
+        languageHref: "/",
+        languageLabel: "JA",
+      };
+---
+
+<header class="absolute inset-x-0 top-0 z-20">
+  <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
+    <a href={lang === "ja" ? "/" : "/en"} class="text-xl font-semibold tracking-[-0.04em]">
+      tomokichi
+    </a>
+
+    <nav class="flex items-center gap-5 text-sm sm:gap-8">
+      <a class="hidden transition-opacity hover:opacity-55 sm:inline" href="#apps">
+        {labels.apps}
+      </a>
+
+      <a class="hidden transition-opacity hover:opacity-55 sm:inline" href="#about">
+        {labels.about}
+      </a>
+
+      <a class="hidden transition-opacity hover:opacity-55 sm:inline" href="/support">
+        {labels.support}
+      </a>
+
+      <a
+        class="rounded-full border border-black/10 bg-white/60 px-4 py-2 backdrop-blur-xl transition hover:bg-white"
+        href={labels.languageHref}
+      >
+        {labels.languageLabel}
+      </a>
+    </nav>
+  </div>
+</header>

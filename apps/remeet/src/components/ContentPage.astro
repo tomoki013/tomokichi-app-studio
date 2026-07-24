@@ -1,0 +1,142 @@
+---
+import AppShell from "./AppShell.astro";
+
+type Locale = "ja" | "en";
+type Page = "features" | "how-to" | "screenshots" | "widgets" | "pricing" | "faq" | "privacy" | "terms" | "contact" | "updates";
+const { lang, page } = Astro.props as { lang: Locale; page: Page };
+const ja = lang === "ja";
+
+const titleMap: Record<Page, [string, string]> = {
+  features: ["Remeetの主な機能", "Main features of Remeet"],
+  "how-to": ["使い方はとても簡単", "Simple to get started"],
+  screenshots: ["スクリーンショット", "Screenshots"],
+  widgets: ["ウィジェットでも\nいつでも確認", "Stay close with widgets"],
+  pricing: ["料金・プラン", "Pricing & plans"],
+  faq: ["よくある質問", "Frequently asked questions"],
+  privacy: ["プライバシーポリシー", "Privacy Policy"],
+  terms: ["利用規約", "Terms of Service"],
+  contact: ["お問い合わせ", "Contact us"],
+  updates: ["アップデート情報", "Updates"],
+};
+const subtitleMap: Partial<Record<Page, [string, string]>> = {
+  features: ["再会までの時間を、もっと意味のあるものに。", "Make the time until your reunion more meaningful."],
+  "how-to": ["たった4ステップで、すぐに始められます。", "Start in just four simple steps."],
+  screenshots: ["美しく、シンプルで、使いやすいデザイン。", "Beautiful, simple, and easy to use."],
+  widgets: ["ホーム画面やロック画面から、再会までの時間をすぐにチェック。", "Check your countdown from the Home Screen or Lock Screen."],
+  pricing: ["あなたのペースに合わせて選べるプラン。", "Choose the plan that fits your pace."],
+  faq: ["Remeetについて、よくいただくご質問。", "Answers to common questions about Remeet."],
+  contact: ["ご質問・ご要望など、お気軽にご連絡ください。", "Questions or feedback? We would love to hear from you."],
+  updates: ["新機能や改善内容をお知らせします。", "See new features and improvements."],
+};
+
+const features = ja
+  ? [
+      ["◴", "再会までのカウントダウン", "再会の日までをカウントダウン。進捗とメッセージで、期待が少しずつ高まります。"],
+      ["▧", "待っている間の記録", "写真・日記・思い出を記録して、離れている時間もかけがえのない思い出に。"],
+      ["♡", "あったらやりたいこと", "一緒にしたいことをリスト化。次の再会をもっと楽しみにできます。"],
+      ["▣", "複数の再会予定を管理", "旅行や帰省など、複数の再会予定をまとめて管理できます。"],
+      ["◰", "ウィジェット対応", "ホーム画面やロック画面で、いつでも再会までの時間を確認できます。"],
+      ["◎", "多言語対応", "日本語・英語・フランス語・韓国語・スペイン語・中国語に対応。"],
+    ]
+  : [
+      ["◴", "Reunion countdown", "Count down with progress and thoughtful messages as the moment draws closer."],
+      ["▧", "Memories while apart", "Keep photos, journals and memories so time apart becomes part of your story."],
+      ["♡", "Things to do together", "Build a shared list and make the next reunion even more exciting."],
+      ["▣", "Multiple reunion plans", "Keep trips, visits and multiple upcoming reunions in one place."],
+      ["◰", "Widget support", "See the countdown anytime from your Home Screen or Lock Screen."],
+      ["◎", "Multilingual", "Available in Japanese, English, French, Korean, Spanish and Chinese."],
+    ];
+
+const steps = ja
+  ? [
+      ["再会の予定を作成", "再会の日付と出会いの場所を設定します。", "/assets/world-route.png"],
+      ["日々を記録する", "写真や日記を追加して、思い出を可視化。思い出として残します。", "/assets/memories-board.png"],
+      ["やりたいことを集める", "一緒にしたいことリストを追加。次の目的がもっと楽しみに。", "/assets/ideas-board.png"],
+      ["再会の日を迎える", "カウントダウンがゼロになったら、再会の合図を。", "/assets/heart-balloons.png"],
+    ]
+  : [
+      ["Create a reunion", "Set the date and the places where you will meet again.", "/assets/world-route.png"],
+      ["Record each day", "Add photos and journals to make your memories visible.", "/assets/memories-board.png"],
+      ["Collect things to do", "Build a shared list and look forward to your next adventure.", "/assets/ideas-board.png"],
+      ["Meet again", "When the countdown reaches zero, it is finally time to reunite.", "/assets/heart-balloons.png"],
+    ];
+
+const faqs = ja
+  ? [
+      ["無料でも使えますか？", "はい、基本機能はすべて無料でご利用いただけます。プレミアムでは、より便利にご利用いただける機能を提供しています。"],
+      ["データはどこに保存されますか？", "大切な記録は安全に保存され、端末間でも引き継げます。"],
+      ["機種変更してもデータは残りますか？", "アカウント連携を行うことで、新しい端末へデータを移行できます。"],
+      ["オフラインでも使えますか？", "一部の機能を除き、記録の閲覧や編集はオフラインでもご利用いただけます。"],
+      ["プレミアムの解約はできますか？", "App Storeのサブスクリプション設定からいつでも解約できます。"],
+    ]
+  : [
+      ["Can I use Remeet for free?", "Yes. All essential features are free. Premium adds extra ways to personalise and organise your experience."],
+      ["Where is my data stored?", "Your important memories are stored securely and can be carried across devices."],
+      ["Will my data remain after changing phones?", "Connect your account to transfer your data safely to a new device."],
+      ["Can I use it offline?", "Most records can be viewed and edited offline, with a few exceptions."],
+      ["Can I cancel Premium?", "You can cancel anytime from your App Store subscription settings."],
+    ];
+
+const legal = {
+  privacy: ja
+    ? [
+        ["1. はじめに", "Remeet（以下「本アプリ」）は、ユーザーのプライバシーを尊重し、個人情報の保護に努めます。"],
+        ["2. 収集する情報", "アカウント情報、写真・日記などのコンテンツ、デバイス情報、利用状況、その他ユーザーが提供する情報を取り扱います。"],
+        ["3. 情報の利用目的", "本アプリの提供・運用、サービスの改善、お問い合わせ対応、安全性の確保のために利用します。"],
+        ["4. 情報の管理", "本アプリは、適切なセキュリティ対策を講じ、情報の漏洩・紛失・改ざん・不正アクセスを防止します。"],
+      ]
+    : [
+        ["1. Introduction", "Remeet respects your privacy and is committed to protecting personal information."],
+        ["2. Information we collect", "We may process account details, photos and journals, device information, usage data, and information you choose to provide."],
+        ["3. How we use information", "We use information to operate and improve Remeet, provide support, and keep the service secure."],
+        ["4. Data protection", "We take appropriate safeguards against loss, alteration, unauthorised access and disclosure."],
+      ],
+  terms: ja
+    ? [
+        ["第1条（目的）", "本規約は、Remeet（以下「本アプリ」）の利用条件を定めるものです。"],
+        ["第2条（利用登録）", "本アプリの利用にあたり、登録は任意です。ただし、一部機能は登録が必要となる場合があります。"],
+        ["第3条（禁止事項）", "法令に違反する行為、本アプリの運営を妨害する行為、他の利用者の権利を侵害する行為を禁止します。"],
+        ["第4条（サービスの停止）", "保守、障害その他やむを得ない事情により、本アプリの提供を一時停止する場合があります。"],
+      ]
+    : [
+        ["Article 1 — Purpose", "These terms define the conditions for using the Remeet application."],
+        ["Article 2 — Registration", "Registration is optional, although some features may require an account."],
+        ["Article 3 — Prohibited conduct", "You may not violate laws, interfere with the service, or infringe the rights of others."],
+        ["Article 4 — Service suspension", "The service may be suspended for maintenance, outages, or other unavoidable circumstances."],
+      ],
+};
+const title = titleMap[page][ja ? 0 : 1];
+const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
+---
+
+<AppShell lang={lang} title={title} page={page}>
+  <section class:list={["subpage", `subpage-${page}`]}>
+    <header class="page-intro">
+      <h1>{title.split("\n").map((line) => <>{line}<br /></>)}</h1>
+      {subtitle && <p>{subtitle}</p>}
+      {(page === "privacy" || page === "terms") && <small>{ja ? "最終更新日：2026年7月23日" : "Last updated: July 23, 2026"}</small>}
+    </header>
+
+    {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body]) => <article><span>{icon}</span><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div><a class="orange-cta" href={ja ? "/how-to" : "/en/how-to"}>{ja ? "すべての機能を見る" : "Explore all features"} →</a></>}
+
+    {page === "how-to" && <><div class="how-page-list">{steps.map(([heading, body, image], i) => <article><b>{i + 1}</b><div><h2>{heading}</h2><p>{body}</p></div><img src={image} alt="" /></article>)}</div><a class="orange-cta" href="#download">{ja ? "今すぐ始める" : "Get started"}</a></>}
+
+    {page === "screenshots" && <div class="screens-stage"><div class="ghost-card left"></div><img src="/assets/app-phone.png" alt="Remeet app screen" /><div class="ghost-card right"></div><button aria-label="Previous">‹</button><button aria-label="Next">›</button><div class="carousel-dots">●　○ ○ ○ ○</div></div>}
+
+    {page === "widgets" && <div class="single-showcase"><img src="/assets/widget-showcase.png" alt="Remeet Home Screen and Lock Screen widgets" /></div>}
+
+    {page === "pricing" && <><div class="pricing-grid"><article><h2>{ja ? "フリー" : "Free"}</h2><strong>¥0 <small>/ {ja ? "永久無料" : "forever"}</small></strong><ul>{(ja ? ["再会予定の作成（1件まで）","待っている間の記録","やりたいことリスト","ウィジェット（小）","広告表示あり"] : ["One reunion plan","Memory journal","Shared wish list","Small widget","Includes ads"]).map(x => <li>✓　{x}</li>)}</ul><a href="#download">{ja ? "無料で始める" : "Start free"}</a></article><article class="premium"><h2>{ja ? "プレミアム" : "Premium"}</h2><strong>¥480 <small>/ {ja ? "月" : "month"}</small></strong><ul>{(ja ? ["再会予定の作成（無制限）","写真の自動整理","ウィジェット（大）","広告なし","テーマカラーのカスタマイズ","優先サポート"] : ["Unlimited reunion plans","Automatic photo sorting","Large widgets","No ads","Custom themes","Priority support"]).map(x => <li>✓　{x}</li>)}</ul><a href="#download">{ja ? "プレミアムを始める" : "Start Premium"}</a></article></div><img class="pricing-map" src="/assets/world-route.png" alt="" /></>}
+
+    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>Q. {q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="faq-contact"><span>✉</span><div><h2>{ja ? "その他のご質問はこちら" : "Still have questions?"}</h2><p>{ja ? "お問い合わせページからご連絡ください。" : "Send us a message from the contact page."}</p></div><a href={ja ? "/contact" : "/en/contact"}>{ja ? "お問い合わせへ" : "Contact us"}</a></div></>}
+
+    {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p>{heading.includes("情報") && <ul><li>{ja ? "アカウント情報" : "Account information"}</li><li>{ja ? "写真・日記・利用状況" : "Photos, journals and usage data"}</li></ul>}</section>)}</article>}
+
+    {page === "contact" && <form class="contact-form"><label>{ja ? "お問い合わせの種類" : "Topic"}<select><option>{ja ? "選択してください" : "Please select"}</option><option>{ja ? "ご質問" : "Question"}</option><option>{ja ? "不具合の報告" : "Bug report"}</option></select></label><label>{ja ? "お名前（任意）" : "Name (optional)"}<input placeholder={ja ? "例）山田 太郎" : "Your name"} /></label><label>{ja ? "メールアドレス" : "Email address"}<input type="email" placeholder="example@email.com" /></label><label>{ja ? "お問い合わせ内容" : "Message"}<textarea rows="7" placeholder={ja ? "内容を入力してください" : "How can we help?"}></textarea></label><button type="button">{ja ? "送信する" : "Send message"}</button><p>{ja ? "通常、3営業日以内にご返信いたします。" : "We usually reply within three business days."}</p></form>}
+
+    {page === "updates" && <><div class="updates-list">{[
+      ["1.0.0", ja ? "2026年7月23日" : "July 23, 2026", ja ? "新機能" : "New", ja ? ["Remeetがリリースしました","再会待のカウントダウン機能","記録・思い出のセレクト","ウィジェット対応"] : ["Remeet is now available","Reunion countdown","Memory journal","Widget support"]],
+      ["1.1.0", ja ? "予定" : "Planned", ja ? "予定" : "Planned", ja ? ["テーマカラーのカスタマイズ","写真のフォルダ編集強化","バックアップ機能"] : ["Custom theme colours","Improved photo folders","Cloud backup"]],
+      ["1.2.0", ja ? "予定" : "Planned", ja ? "予定" : "Planned", ja ? ["共有機能（招待制限）","コンタクト同期・リマインド通知","その他改善"] : ["Private sharing","Contact sync and reminders","Other improvements"]],
+    ].map(([version, date, badge, items], i) => <article><div><h2>{version}{i > 0 && <small> ({date})</small>}</h2>{i === 0 && <p>{date}</p>}<ul>{(items as string[]).map(item => <li>{item}</li>)}</ul></div><span>{badge}</span><div class:list={["update-thumb", `thumb-${i + 1}`]}></div></article>)}</div><a class="orange-cta" href="#">{ja ? "すべてのアップデートを見る" : "View all updates"} →</a></>}
+  </section>
+</AppShell>

@@ -1,0 +1,65 @@
+---
+import type { AppItem, Locale } from "../data/apps";
+
+interface Props {
+  app: AppItem;
+  lang: Locale;
+}
+
+const { app, lang } = Astro.props;
+
+const labels = {
+  ja: {
+    available: "公開中",
+    comingSoon: "近日公開",
+    development: "開発中",
+    install: "インストール",
+    detail: "詳しく見る",
+  },
+  en: {
+    available: "Available",
+    comingSoon: "Coming soon",
+    development: "In development",
+    install: "Install",
+    detail: "Learn more",
+  },
+}[lang];
+
+const buttonUrl = app.installUrl ?? app.siteUrl;
+const buttonLabel = app.installUrl ? labels.install : labels.detail;
+---
+
+<article
+  class="group flex min-h-[350px] flex-col rounded-[2rem] border border-black/[0.07] bg-white/70 p-6 shadow-[0_24px_70px_rgba(20,20,20,0.05)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(20,20,20,0.09)]"
+>
+  <div class="flex items-start justify-between gap-5">
+    <div
+      class:list={[
+        "grid size-16 place-items-center rounded-[1.35rem] bg-gradient-to-br shadow-inner",
+        app.iconClass,
+      ]}
+    >
+      <span class="size-5 rounded-full border border-white/80 bg-white/35 backdrop-blur"></span>
+    </div>
+
+    <span class="rounded-full border border-black/[0.07] px-3 py-1.5 text-xs text-black/45">
+      {labels[app.status]}
+    </span>
+  </div>
+
+  <div class="mt-12">
+    <h3 class="text-2xl font-semibold tracking-[-0.04em]">{app.name}</h3>
+    <p class="mt-3 max-w-[280px] leading-7 text-black/50">
+      {app.description[lang]}
+    </p>
+  </div>
+
+  <div class="mt-auto pt-10">
+    <a
+      href={buttonUrl}
+      class="inline-flex items-center justify-center rounded-full bg-black px-5 py-3 text-sm font-medium text-white transition hover:bg-black/75"
+    >
+      {buttonLabel}
+    </a>
+  </div>
+</article>

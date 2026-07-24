@@ -1,0 +1,57 @@
+---
+type Locale = "ja" | "en";
+const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string; page?: string };
+const ja = lang === "ja";
+const base = ja ? "" : "/en";
+const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const nav = ja
+  ? [["features", "機能紹介"], ["principles", "こだわり"], ["screenshots", "スクリーンショット"], ["faq", "よくある質問"]]
+  : [["features", "Features"], ["principles", "Principles"], ["screenshots", "Screenshots"], ["faq", "FAQ"]];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={title} />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title} — Tripory</title>
+  </head>
+  <body>
+    <div class="tripory-page">
+      <header class="tripory-header">
+        <a class="tripory-logo" href={ja ? "/" : "/en"}>TRIPORY</a>
+        <nav>{nav.map(([slug, label]) => <a class:list={{ active: page === slug }} href={href(slug)}>{label}</a>)}</nav>
+        <div class="header-actions">
+          <a class="language" href={ja ? `/en/${page}`.replace(/\/$/, "") || "/en" : `/${page}` || "/"}>{ja ? "EN" : "JA"}</a>
+          <a class="download-pill" href="#download">{ja ? "Appをダウンロード" : "Download the app"}</a>
+          <button aria-label={ja ? "メニュー" : "Menu"}>☰</button>
+        </div>
+      </header>
+      <main><slot /></main>
+      <footer class="tripory-footer">
+        <div>
+          <strong>{lang === "ja" ? "旅で集めた、わたしの世界。" : "The world, collected through travel."}</strong>
+          <p>{lang === "ja" ? "Triporyと一緒に、世界をもっと身近に。" : "Bring the world closer with Tripory."}</p>
+        </div>
+        <nav><a href={href("privacy")}>{ja ? "プライバシー" : "Privacy"}</a><a href={href("terms")}>{ja ? "利用規約" : "Terms"}</a><a href={href("contact")}>{ja ? "お問い合わせ" : "Contact"}</a></nav>
+        <small>© 2026 Tripory. All rights reserved.</small>
+      </footer>
+    </div>
+    <script is:inline>
+      (() => {
+        const header = document.querySelector(".tripory-header");
+        const sync = () => header?.classList.toggle("compact", scrollY > 90);
+        addEventListener("scroll", sync, { passive: true });
+        sync();
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const items = document.querySelectorAll("[data-reveal]");
+        const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+          if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); }
+        }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
+        items.forEach((item, i) => { item.style.setProperty("--delay", `${(i % 5) * 55}ms`); observer.observe(item); });
+      })();
+    </script>
+  </body>
+</html>

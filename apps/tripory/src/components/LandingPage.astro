@@ -1,0 +1,90 @@
+---
+import Shell from "./Shell.astro";
+type Locale = "ja" | "en";
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const base = ja ? "" : "/en";
+const c = ja
+  ? {
+      title: "Tripory",
+      tagline: "旅で集めた、わたしの世界",
+      intro: "訪れた国や旅の思い出を美しく記録し、\nあなただけの世界地図をつくりましょう。",
+      features: "主な機能",
+      featureLink: "すべての機能を見る",
+      screenshots: "美しい旅の記録体験",
+      shotLink: "スクリーンショットを見る",
+      cta: "さあ、あなたの旅を記録しよう。",
+      ctaSub: "Triporyと一緒に、世界をもっと身近に。",
+    }
+  : {
+      title: "Tripory",
+      tagline: "The world you collect through travel",
+      intro: "Beautifully record the countries you visit and the memories you make.\nBuild a world map that is entirely your own.",
+      features: "Main features",
+      featureLink: "View all features",
+      screenshots: "A beautiful travel journal",
+      shotLink: "View screenshots",
+      cta: "Start recording your journey.",
+      ctaSub: "Bring the world closer with Tripory.",
+    };
+const features = ja
+  ? [
+      ["世界地図", "訪れた国が自動で色づく、美しい3Dマップ", "/assets/world-globe.png"],
+      ["旅の記録", "すべての旅をタイムラインで振り返る", "/assets/mountain-lake.png"],
+      ["思い出をコレクション", "写真やメモで、旅の瞬間を美しく残す", "/assets/venice.png"],
+      ["旅の統計", "訪れた国・都市・日数をデータで振り返る", "/assets/iceland.png"],
+    ]
+  : [
+      ["World map", "A beautiful 3D map that colours every country you visit", "/assets/world-globe.png"],
+      ["Travel timeline", "Look back on every journey in chronological order", "/assets/mountain-lake.png"],
+      ["Memory collection", "Keep travel moments with photos and notes", "/assets/venice.png"],
+      ["Travel statistics", "Explore countries, cities and days through data", "/assets/iceland.png"],
+    ];
+const screens = [
+  ["home", ja ? "ホーム" : "Home"],
+  ["timeline", ja ? "旅の記録" : "Timeline"],
+  ["country", ja ? "国の詳細" : "Country"],
+  ["memory", ja ? "旅の思い出" : "Memories"],
+  ["map", ja ? "世界地図" : "World map"],
+  ["stats", ja ? "統計" : "Statistics"],
+];
+---
+
+<Shell lang={lang} title={`${c.title} — ${c.tagline}`}>
+  <section class="tripory-hero">
+    <img class="hero-bg" src="/assets/cappadocia.png" alt="" />
+    <div class="hero-copy">
+      <p class="eyebrow">TRIPORY</p>
+      <h1>{c.title}</h1>
+      <h2>{c.tagline}</h2>
+      <p>{c.intro.split("\n").map((line) => <>{line}<br /></>)}</p>
+      <div class="store-row"><a href="#">●　App Store</a><a href="#">▶　Google Play</a></div>
+    </div>
+    <img class="hero-devices" src="/assets/hero-devices.png" alt="Tripory on iPhone and Apple Watch" />
+    <div class="hero-summary" data-reveal>
+      <div><h3>{ja ? "旅を記録するたび、\nあなたの世界が広がっていく。" : "Every journey makes\nyour world a little wider."}</h3><p>{ja ? "新しい国を訪れるたびに、地図が色づき、コレクションが増えていく。" : "Each country colours your map and grows your collection."}</p></div>
+      <ul><li>◎<span>{ja ? "訪れた国を記録" : "Visited countries"}</span></li><li>▧<span>{ja ? "思い出をコレクション" : "Collect memories"}</span></li><li>◷<span>{ja ? "美しい可視化" : "Beautiful insights"}</span></li><li>☁<span>{ja ? "どこでも同期" : "Sync everywhere"}</span></li></ul>
+    </div>
+  </section>
+
+  <section class="home-section" data-reveal>
+    <div class="section-bar"><h2>{c.features}</h2><a href={`${base}/features`}>{c.featureLink}　→</a></div>
+    <div class="home-features">
+      {features.map(([title, body, image], i) => <article class:list={{ dark: i === 0 || i === 3 }} data-reveal><img src={image} alt="" /><div><h3>{title}</h3><p>{body}</p></div><a href={`${base}/features`}>→</a></article>)}
+    </div>
+  </section>
+
+  <section class="home-section screenshots-section" data-reveal>
+    <div class="section-bar"><h2>{c.screenshots}</h2><a href={`${base}/screenshots`}>{c.shotLink}　→</a></div>
+    <div class="screen-row">
+      {screens.map(([slug, label]) => <figure data-reveal><img src={`/assets/screen-${slug}.png`} alt={`${label} screen`} /><figcaption>{label}</figcaption></figure>)}
+    </div>
+  </section>
+
+  <section class="tripory-cta" id="download" data-reveal>
+    <img src="/assets/mountain-lake.png" alt="" />
+    <div><h2>{c.cta}</h2><p>{c.ctaSub}</p></div>
+    <div class="store-row"><a href="#">●　App Store</a><a href="#">▶　Google Play</a></div>
+    <div class="qr">▦</div>
+  </section>
+</Shell>

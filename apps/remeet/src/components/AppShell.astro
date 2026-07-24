@@ -1,0 +1,102 @@
+---
+type Locale = "ja" | "en";
+const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string; page?: string };
+const ja = lang === "ja";
+const base = ja ? "" : "/en";
+const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const labels = ja
+  ? { features: "機能", how: "使い方", pricing: "料金", faq: "よくある質問", store: "App Storeで見る", menu: "メニュー" }
+  : { features: "Features", how: "How it works", pricing: "Pricing", faq: "FAQ", store: "View on App Store", menu: "Menu" };
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={title} />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title} — Remeet</title>
+  </head>
+  <body>
+    <div class="mock-page">
+      <header class="mock-header">
+        <a class="mock-logo" href={ja ? "/" : "/en"}><img src="/assets/remeet-icon.png" alt="" /> Remeet <b>↗</b></a>
+        <nav aria-label="Main navigation">
+          <a class:list={{ active: page === "features" }} href={href("features")}>{labels.features}</a>
+          <a class:list={{ active: page === "how-to" }} href={href("how-to")}>{labels.how}</a>
+          <a class:list={{ active: page === "pricing" }} href={href("pricing")}>{labels.pricing}</a>
+          <a class:list={{ active: page === "faq" }} href={href("faq")}>{labels.faq}</a>
+          <a class:list={{ active: page === "updates" }} href={href("updates")}>{ja ? "アップデート" : "Updates"}</a>
+        </nav>
+        <div class="mock-actions">
+          <a class="language-pill" href={ja ? `/en/${page}`.replace(/\/$/, "") || "/en" : `/${page}` || "/"}>{ja ? "EN" : "JA"}</a>
+          <a class="appstore-pill" href="#download">{labels.store}</a>
+          <button class="mobile-menu" aria-label={labels.menu}>☰</button>
+        </div>
+      </header>
+      <main><slot /></main>
+      <footer class="mock-footer">
+        <a class="mock-logo" href={ja ? "/" : "/en"}><img src="/assets/remeet-icon.png" alt="" /> Remeet</a>
+        <nav>
+          <a href={href("features")}>{labels.features}</a><a href={href("how-to")}>{labels.how}</a>
+          <a href={href("pricing")}>{labels.pricing}</a><a href={href("faq")}>{labels.faq}</a>
+          <a href={href("privacy")}>{ja ? "プライバシー" : "Privacy"}</a><a href={href("terms")}>{ja ? "利用規約" : "Terms"}</a>
+          <a href={href("contact")}>{ja ? "お問い合わせ" : "Contact"}</a>
+        </nav>
+        <small>© 2026 Remeet</small>
+      </footer>
+    </div>
+    <script is:inline>
+      (() => {
+        const header = document.querySelector(".mock-header");
+        if (header) {
+          let scheduled = false;
+          const syncHeader = () => {
+            header.classList.toggle("is-compact", window.scrollY > 96);
+            scheduled = false;
+          };
+          window.addEventListener(
+            "scroll",
+            () => {
+              if (!scheduled) {
+                scheduled = true;
+                requestAnimationFrame(syncHeader);
+              }
+            },
+            { passive: true },
+          );
+          syncHeader();
+        }
+
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const items = document.querySelectorAll(
+          ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro), .home-notice",
+        );
+
+        if (reduceMotion || !("IntersectionObserver" in window)) {
+          items.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+
+        items.forEach((item, index) => {
+          item.classList.add("reveal-item");
+          item.style.setProperty("--reveal-delay", `${(index % 6) * 45}ms`);
+        });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
+        );
+        items.forEach((item) => observer.observe(item));
+      })();
+    </script>
+  </body>
+</html>

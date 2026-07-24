@@ -1,0 +1,107 @@
+---
+interface Props {
+  lang: "ja" | "en";
+}
+
+const { lang } = Astro.props;
+
+const copy =
+  lang === "ja"
+    ? {
+        heading: "今日は、何を残そう。",
+        body: "旅も、記憶も、会いたい気持ちも。",
+        cardTitle: "small feelings",
+        cardBody: "日常の中にある、小さな感情のために。",
+      }
+    : {
+        heading: "What will you keep today?",
+        body: "Journeys, memories, and the people you miss.",
+        cardTitle: "small feelings",
+        cardBody: "Made for the small feelings found in everyday life.",
+      };
+---
+
+<div class="relative mx-auto w-[284px] sm:w-[310px]">
+  <div
+    class="absolute inset-x-10 -bottom-10 h-24 rounded-full bg-sky-300/35 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="phone-shell relative overflow-hidden rounded-[3.4rem] border-[7px] border-[#171717]">
+    <div class="absolute left-1/2 top-3 z-10 h-7 w-24 -translate-x-1/2 rounded-full bg-black">
+    </div>
+
+    <div
+      class="relative min-h-[625px] overflow-hidden bg-[linear-gradient(160deg,#eff9ff_0%,#fff8f1_48%,#f8f4ff_100%)] px-6 pb-8 pt-5"
+    >
+      <div class="flex items-center justify-between px-1 text-[11px] font-semibold text-black">
+        <span>9:41</span>
+
+        <div class="flex items-center gap-1.5" aria-hidden="true">
+          <span class="block h-2.5 w-3.5 rounded-sm border border-black"></span>
+          <span class="block h-2.5 w-3.5 rounded-sm bg-black"></span>
+          <span class="block h-2.5 w-5 rounded-[3px] border border-black"></span>
+        </div>
+      </div>
+
+      <div class="mt-16">
+        <p class="text-xs font-semibold tracking-[0.18em] text-black/40">TOMOKICHI</p>
+
+        <h2 class="mt-4 max-w-[230px] text-[30px] font-semibold leading-[1.12] tracking-[-0.05em]">
+          {copy.heading}
+        </h2>
+
+        <p class="mt-4 max-w-[220px] text-sm leading-6 text-black/50">
+          {copy.body}
+        </p>
+      </div>
+
+      <div class="relative mt-12 h-48">
+        <div
+          class="absolute left-2 top-8 h-28 w-28 rounded-full bg-sky-200/80 shadow-[inset_-12px_-14px_30px_rgba(255,255,255,0.9)]"
+        >
+        </div>
+
+        <div
+          class="absolute right-1 top-0 h-36 w-36 rounded-full bg-orange-100/90 shadow-[inset_15px_10px_30px_rgba(255,255,255,0.9)]"
+        >
+        </div>
+
+        <div
+          class="absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 rounded-full bg-violet-200/80 shadow-[inset_-10px_-10px_25px_rgba(255,255,255,0.9)]"
+        >
+        </div>
+
+        <svg
+          class="absolute inset-0 h-full w-full"
+          viewBox="0 0 260 190"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M53 89C91 36 150 28 203 63"
+            stroke="rgba(0,0,0,.18)"
+            stroke-width="1.5"
+            stroke-dasharray="3 7"
+          />
+          <path
+            d="M205 65C188 121 154 148 124 157"
+            stroke="rgba(0,0,0,.18)"
+            stroke-width="1.5"
+            stroke-dasharray="3 7"
+          />
+        </svg>
+      </div>
+
+      <div class="mt-7 rounded-[1.6rem] border border-white/80 bg-white/62 p-5 shadow-sm backdrop-blur-xl">
+        <p class="text-xs font-semibold tracking-[0.14em] text-black/35">
+          {copy.cardTitle}
+        </p>
+        <p class="mt-3 text-sm leading-6 text-black/65">
+          {copy.cardBody}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

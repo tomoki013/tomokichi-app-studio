@@ -1,0 +1,12 @@
+---
+import ContentPage from "../components/ContentPage.astro";
+import "../styles/global.css";
+
+const pages = ["features", "how-to", "screenshots", "widgets", "pricing", "faq", "privacy", "terms", "contact", "updates"] as const;
+export function getStaticPaths() {
+  return ["features", "how-to", "screenshots", "widgets", "pricing", "faq", "privacy", "terms", "contact", "updates"].map((page) => ({ params: { page } }));
+}
+const { page } = Astro.params as { page: (typeof pages)[number] };
+---
+
+<ContentPage lang="ja" page={page} />
