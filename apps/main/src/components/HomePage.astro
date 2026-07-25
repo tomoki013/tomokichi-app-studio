@@ -1,0 +1,72 @@
+---
+import type { Locale } from "../data/apps";
+import { featuredApps } from "../data/apps";
+import { home, principles, principlesHeading } from "../lib/copy";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "./SiteHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SectionHeader from "./SectionHeader.astro";
+import ArrowLink from "./ArrowLink.astro";
+import AppCard from "./AppCard.astro";
+import PrincipleItem from "./PrincipleItem.astro";
+
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const p = (path: string) => (ja ? path : `/en${path === "/" ? "" : path}`);
+---
+
+<BaseLayout lang={lang} title={home.metaTitle[lang]} description={home.hero.body[lang].replaceAll("\n", " ")}>
+  <div class="site">
+    <SiteHeader lang={lang} path="/" />
+
+    <main>
+      <section class="hero shell">
+        <div class="hero-copy">
+          <h1>{home.hero.heading[lang]}</h1>
+          <p class="lead">{home.hero.body[lang]}</p>
+          <div class="hero-actions">
+            <ArrowLink href={p("/apps")} label={home.hero.cta[lang]} />
+            <ArrowLink href={p("/about")} label={home.hero.ctaSub[lang]} soft />
+          </div>
+        </div>
+        <figure class="hero-visual">
+          <img src="/assets/hero-phone.png" alt={ja ? "iPhoneで動くRemeet" : "Remeet running on an iPhone"} />
+        </figure>
+        <div class="hero-shapes" aria-hidden="true">
+          <span class="s s1"></span><span class="s s2"></span><span class="arch"></span>
+        </div>
+      </section>
+
+      <section class="home-apps shell">
+        <SectionHeader title={home.appsHeading[lang]} linkHref={p("/apps")} linkLabel={home.appsAll[lang]} />
+        <div class="app-grid">
+          {featuredApps.map((app) => <AppCard app={app} lang={lang} variant="compact" />)}
+        </div>
+      </section>
+
+      <section class="home-approach shell">
+        <SectionHeader title={principlesHeading[lang]} />
+        <div class="approach-grid">
+          {principles.map((item, i) => <PrincipleItem title={item.title[lang]} body={item.body[lang]} index={i} />)}
+        </div>
+      </section>
+
+      <section class="home-about shell">
+        <div>
+          <h2>{home.about.heading[lang]}</h2>
+          <p>{home.about.body[lang]}</p>
+          <ArrowLink href={p("/about")} label={home.about.link[lang]} />
+        </div>
+        <img class="avatar" src="/assets/avatar.png" alt="Tomokichi" />
+      </section>
+
+      <section class="home-prefooter shell">
+        <h2>{home.prefooter.heading[lang]}</h2>
+        <p>{home.prefooter.body[lang]}</p>
+        <ArrowLink href={p("/apps")} label={home.appsAll[lang]} />
+      </section>
+    </main>
+
+    <SiteFooter lang={lang} />
+  </div>
+</BaseLayout>

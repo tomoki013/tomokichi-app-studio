@@ -1,0 +1,12 @@
+---
+import type { AppStatus, Locale } from "../data/apps";
+import { statusLabel } from "../lib/copy";
+
+interface Props {
+  status: AppStatus;
+  lang: Locale;
+}
+const { status, lang } = Astro.props;
+---
+
+<span class="status-badge" data-status={status}>{statusLabel[status][lang]}</span>

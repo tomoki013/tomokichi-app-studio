@@ -1,0 +1,29 @@
+---
+import type { Locale } from "../data/apps";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "./SiteHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+
+interface Props {
+  lang: Locale;
+  path: string;
+  current?: string;
+  metaTitle: string;
+  metaDescription?: string;
+  heading: string;
+}
+const { lang, path, current, metaTitle, metaDescription, heading } = Astro.props;
+---
+
+<BaseLayout lang={lang} title={metaTitle} description={metaDescription ?? metaTitle}>
+  <div class="site">
+    <SiteHeader lang={lang} path={path} current={current} />
+    <main>
+      <article class="doc shell">
+        <h1>{heading}</h1>
+        <slot />
+      </article>
+    </main>
+    <SiteFooter lang={lang} />
+  </div>
+</BaseLayout>

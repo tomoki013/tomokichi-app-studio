@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string;
+  body: string;
+  index: number;
+}
+const { title, body, index } = Astro.props;
+// Thin line-art marks — abstract, not tech/AI motifs.
+const icons = [
+  // Careful engineering — concentric care
+  `<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>`,
+  // No complexity — one clean line
+  `<path d="M4 15c4 0 4-6 8-6s4 6 8 6"/>`,
+  // Right density — measured marks
+  `<path d="M6 8h12"/><path d="M6 12h8"/><path d="M6 16h4"/>`,
+  // A little playfulness — small spark
+  `<path d="M12 4v6"/><path d="M12 14v6"/><path d="M4 12h6"/><path d="M14 12h6"/>`,
+];
+const path = icons[index % icons.length];
+---
+
+<article class="principle">
+  <span class="p-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" set:html={path} />
+  </span>
+  <h3>{title}</h3>
+  <p>{body.split("\n").map((line) => <>{line}<br /></>)}</p>
+</article>

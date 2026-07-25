@@ -1,53 +1,67 @@
 ---
+import type { Locale } from "../data/apps";
+import { nav } from "../lib/copy";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+
 interface Props {
-  lang: "ja" | "en";
+  lang: Locale;
+  /** Canonical path of the current page, e.g. "/", "/apps", "/about". */
+  path: string;
+  /** nav "match" key of the current page, if any. */
+  current?: string;
 }
-
-const { lang } = Astro.props;
-
-const labels =
-  lang === "ja"
-    ? {
-        apps: "アプリ",
-        about: "私たちについて",
-        support: "サポート",
-        languageHref: "/en",
-        languageLabel: "EN",
-      }
-    : {
-        apps: "Apps",
-        about: "About",
-        support: "Support",
-        languageHref: "/",
-        languageLabel: "JA",
-      };
+const { lang, path, current } = Astro.props;
+const base = lang === "ja" ? "" : "/en";
+const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
 ---
 
-<header class="absolute inset-x-0 top-0 z-20">
-  <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
-    <a href={lang === "ja" ? "/" : "/en"} class="text-xl font-semibold tracking-[-0.04em]">
-      tomokichi
-    </a>
+<header class="site-header shell">
+  <a class="brand" href={lang === "ja" ? "/" : "/en"}>tomokichi</a>
 
-    <nav class="flex items-center gap-5 text-sm sm:gap-8">
-      <a class="hidden transition-opacity hover:opacity-55 sm:inline" href="#apps">
-        {labels.apps}
-      </a>
-
-      <a class="hidden transition-opacity hover:opacity-55 sm:inline" href="#about">
-        {labels.about}
-      </a>
-
-      <a class="hidden transition-opacity hover:opacity-55 sm:inline" href="/support">
-        {labels.support}
-      </a>
-
+  <nav aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
+    {nav.map((item) => (
       <a
-        class="rounded-full border border-black/10 bg-white/60 px-4 py-2 backdrop-blur-xl transition hover:bg-white"
-        href={labels.languageHref}
+        href={href(item.href)}
+        class:list={{ current: current === item.match }}
+        aria-current={current === item.match ? "page" : undefined}
       >
-        {labels.languageLabel}
+        {item.label[lang]}
       </a>
-    </nav>
+    ))}
+  </nav>
+
+  <div style="display:flex; align-items:center; gap:14px; justify-self:end;">
+    <LanguageSwitcher lang={lang} path={path} />
+    <button class="header-menu" type="button" aria-label={lang === "ja" ? "メニュー" : "Menu"} data-menu-toggle>☰</button>
   </div>
 </header>
+
+<nav class="mobile-nav" hidden aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"} data-mobile-nav>
+  {nav.map((item) => (
+    <a href={href(item.href)} class:list={{ current: current === item.match }}>{item.label[lang]}</a>
+  ))}
+</nav>
+
+<style>
+  .mobile-nav { display: none; flex-direction: column; padding: 8px clamp(22px, 5.1vw, 62px) 18px; border-bottom: 1px solid var(--line-soft); }
+  .mobile-nav a { padding: 12px 0; font-size: 14px; color: var(--ink-soft); border-bottom: 1px solid var(--line-soft); }
+  .mobile-nav a:last-child { border-bottom: 0; }
+  .mobile-nav a.current { color: var(--ink); }
+  @media (max-width: 760px) {
+    .mobile-nav[data-open] { display: flex; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const btn = document.querySelector("[data-menu-toggle]");
+    const menu = document.querySelector("[data-mobile-nav]");
+    if (!btn || !menu) return;
+    btn.addEventListener("click", () => {
+      const open = menu.hasAttribute("data-open");
+      if (open) { menu.removeAttribute("data-open"); menu.setAttribute("hidden", ""); }
+      else { menu.setAttribute("data-open", ""); menu.removeAttribute("hidden"); }
+      btn.setAttribute("aria-expanded", String(!open));
+    });
+  })();
+</script>

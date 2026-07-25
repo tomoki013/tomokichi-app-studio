@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "main",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tomokichi/main", "dev"],
+      "port": 4321
+    },
+    {
+      "name": "remeet",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tomokichi/remeet", "dev"],
+      "port": 4322
+    },
+    {
+      "name": "tripory",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tomokichi/tripory", "dev"],
+      "port": 4323
+    }
+  ]
+}

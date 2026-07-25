@@ -1,0 +1,9 @@
+---
+import DocPage from "../../components/DocPage.astro";
+import { legal } from "../../lib/copy";
+const lang = "en" as const;
+---
+
+<DocPage lang={lang} path="/privacy" metaTitle={legal.privacy.metaTitle[lang]} heading={legal.privacy.heading[lang]}>
+  <p>{legal.privacy.body[lang]}</p>
+</DocPage>

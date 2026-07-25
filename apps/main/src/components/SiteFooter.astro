@@ -1,0 +1,22 @@
+---
+import type { Locale } from "../data/apps";
+import { footer } from "../lib/copy";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const base = lang === "ja" ? "" : "/en";
+const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
+---
+
+<footer class="site-footer shell">
+  <div>
+    <p class="brand">tomokichi</p>
+    <p class="f-tag">{footer.tagline[lang]}</p>
+  </div>
+  <nav aria-label={lang === "ja" ? "フッターナビゲーション" : "Footer navigation"}>
+    {footer.links.map((link) => <a href={href(link.href)}>{link.label[lang]}</a>)}
+  </nav>
+  <small class="copyright">{footer.copyright}</small>
+</footer>

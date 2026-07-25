@@ -1,0 +1,17 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  soft?: boolean;
+  external?: boolean;
+  ariaLabel?: string;
+}
+const { href, label, soft = false, external = false, ariaLabel } = Astro.props;
+const rel = external ? "noopener noreferrer" : undefined;
+const target = external ? "_blank" : undefined;
+---
+
+<a class:list={["arrow-link", { soft }]} href={href} rel={rel} target={target} aria-label={ariaLabel}>
+  <span>{label}</span>
+  <span class="arrow" aria-hidden="true">→</span>
+</a>

@@ -1,0 +1,19 @@
+---
+import ArrowLink from "./ArrowLink.astro";
+
+interface Props {
+  title: string;
+  linkHref?: string;
+  linkLabel?: string;
+  eyebrow?: string;
+}
+const { title, linkHref, linkLabel, eyebrow } = Astro.props;
+---
+
+<div class="section-head">
+  <div>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h2>{title}</h2>
+  </div>
+  {linkHref && linkLabel && <ArrowLink href={linkHref} label={linkLabel} soft />}
+</div>

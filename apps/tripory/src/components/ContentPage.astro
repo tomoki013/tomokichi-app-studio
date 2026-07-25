@@ -1,21 +1,28 @@
 ---
 import Shell from "./Shell.astro";
 type Locale = "ja" | "en";
-type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "contact";
+type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "updates";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
-const titles: Record<Page, [string, string, string, string]> = {
-  features: ["機能紹介", "旅のすべてを、ひとつのアプリに。", "Features", "Everything about your travels, in one app."],
-  principles: ["こだわり", "デザインも、体験も、美しく。", "Principles", "Beautiful in both design and experience."],
-  screenshots: ["スクリーンショット", "美しい旅の記録体験を。", "Screenshots", "A beautiful way to remember every journey."],
-  faq: ["よくある質問", "よくいただくご質問をまとめました。", "Frequently asked questions", "Everything you may want to know."],
-  privacy: ["プライバシーポリシー", "最終更新日：2026年7月23日", "Privacy Policy", "Last updated: July 23, 2026"],
-  terms: ["利用規約", "最終更新日：2026年7月23日", "Terms of Service", "Last updated: July 23, 2026"],
-  contact: ["お問い合わせ", "ご質問やご要望をお聞かせください。", "Contact", "Questions or feedback? We would love to hear from you."],
+const titleMap: Record<Page, [string, string]> = {
+  features: ["機能紹介", "Features"],
+  principles: ["こだわり", "Principles"],
+  screenshots: ["スクリーンショット", "Screenshots"],
+  faq: ["よくある質問", "Frequently asked questions"],
+  privacy: ["プライバシーポリシー", "Privacy Policy"],
+  terms: ["利用規約", "Terms of Service"],
+  updates: ["お知らせ", "Updates"],
 };
-const info = titles[page];
-const heading = info[ja ? 0 : 2];
-const sub = info[ja ? 1 : 3];
+const subtitleMap: Partial<Record<Page, [string, string]>> = {
+  features: ["旅のすべてを、ひとつのアプリに。", "Everything about your travels, in one app."],
+  principles: ["デザインも、体験も、美しく。", "Beautiful in both design and experience."],
+  screenshots: ["美しい旅の記録体験を。", "A beautiful way to remember every journey."],
+  faq: ["よくいただくご質問をまとめました。", "Everything you may want to know."],
+  updates: ["新機能や改善内容をお知らせします。", "See new features and improvements."],
+};
+const title = titleMap[page][ja ? 0 : 1];
+const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
+
 const features = ja
   ? [
       ["◎", "世界地図", "訪れた国や都市を、美しい3Dマップで可視化。あなただけの世界地図が育ちます。", "/assets/world-globe.png"],
@@ -44,23 +51,106 @@ const principles = ja
     ];
 const screens = [["home","Home"],["timeline",ja?"旅の記録":"Timeline"],["country",ja?"国の詳細":"Country"],["memory",ja?"旅の思い出":"Memories"]];
 const faqs = ja
-  ? [["データはどこに保存されますか？","データは安全に保存され、同期を有効にすると複数端末から利用できます。"],["他のデバイスと同期できますか？","iPhone、iPadなど、お使いの端末間で同期できます。"],["オフラインでも使えますか？","記録の閲覧や編集など、主要な機能はオフラインでも利用できます。"],["写真やメモのバックアップは？","クラウド同期を有効にすることで自動的にバックアップされます。"],["サブスクリプションについて","無料プランに加え、より多くの機能を利用できるプレミアムプランを予定しています。"]]
-  : [["Where is my data stored?","Your data is stored securely and can be synchronised across devices."],["Can I sync with other devices?","Yes, you can keep Tripory in sync across your iPhone and iPad."],["Can I use Tripory offline?","Core features including viewing and editing records work offline."],["How are photos and notes backed up?","Enable cloud sync to back up your memories automatically."],["What about subscriptions?","A free plan is available, with a premium plan for additional features."]];
-const legal = ja
-  ? [["1. はじめに","Triporyは、ユーザーのプライバシーを尊重し、旅の記録や個人情報を適切に保護します。"],["2. 収集する情報","アカウント情報、旅の記録、写真、メモ、利用状況など、サービス提供に必要な情報を取り扱います。"],["3. 利用目的","アプリの提供、同期、改善、お問い合わせ対応、安全性の確保に利用します。"],["4. 禁止事項","法令に違反する行為、サービスの運営を妨害する行為、他者の権利を侵害する行為を禁止します。"]]
-  : [["1. Introduction","Tripory respects your privacy and protects your travel records and personal information."],["2. Information we collect","We process account information, travel records, photos, notes and usage information required to provide the service."],["3. How information is used","Information is used to operate, sync and improve Tripory, provide support and keep it secure."],["4. Prohibited conduct","You may not violate laws, interfere with the service or infringe the rights of others."]];
+  ? [
+      ["データはどこに保存されますか？", "端末内のデータベースにのみ保存されます。運営者を含む第三者がアクセスすることはありません。"],
+      ["写真はどのように扱われますか？", "iOS標準の写真選択画面（PhotosPicker）を使用するため、選んだ写真だけが本アプリに渡され、写真ライブラリ全体へアクセスすることはありません。"],
+      ["オフラインでも使えますか？", "地図タイルの表示を除き、記録の閲覧・編集など主要な機能はオフラインでもご利用いただけます。"],
+      ["他の端末と同期できますか？", "現在、端末間の同期機能はありません。データは各端末に個別に保存されるため、機種変更の際はご注意ください。"],
+      ["データを削除するには？", "設定画面の「すべてのデータを削除」からいつでも削除できます。アプリをアンインストールした場合も、端末内のデータは削除されます。"],
+    ]
+  : [
+      ["Where is my data stored?", "Data is stored only in an on-device database. No one, including the operator, can access it."],
+      ["How are photos handled?", "The app uses iOS's standard photo picker, so only the photos you choose are passed to the app — it never accesses your full photo library."],
+      ["Can I use Tripory offline?", "Aside from loading map tiles, core features such as viewing and editing records work offline."],
+      ["Can I sync across devices?", "There is currently no sync between devices. Each device keeps its own data, so please back up before switching phones."],
+      ["How do I delete my data?", "Use \"Delete all data\" in Settings at any time. Uninstalling the app also removes the data stored on your device."],
+    ];
+
+const legal = {
+  privacy: ja
+    ? [
+        ["1. はじめに", "本ポリシーは、運営者（Tomokichi）が提供するiOSアプリケーション「Tripory」および本ウェブサイト（以下あわせて「本サービス」）における、利用者情報の取扱いについて定めるものです。本ウェブサイトに掲載する内容を正本とし、本アプリ内からは本ウェブサイトを参照します。"],
+        ["2. 運営者情報", "本サービスは、運営者（Tomokichi）が個人で開発・運営しています。お問い合わせ先は本ページ末尾に記載しています。"],
+        ["3. 適用範囲", "本ポリシーは、本アプリの利用および本ウェブサイトの閲覧に関して適用されます。"],
+        ["4. 基本方針", "本アプリはアカウント登録を必要とせず、利用者の旅の記録は端末内のデータベースにのみ保存されます。運営者を含む第三者がこれにアクセスすることはなく、広告配信や行動解析のためのSDKも組み込んでいません。"],
+        ["5. 端末内に保存する情報", "本アプリが扱う情報は、すべて利用者自身が入力したものです。\n\n・国ごとのステータス（訪問済み／行きたい）とそのメモ\n・旅の記録（タイトル・訪問先・日付・メモ）\n・住んでいる国とその設定履歴\n・旅の記録に添付した写真\n\nこれらはすべて端末内のデータベースにのみ保存されます。アカウント登録やログイン、メールアドレスの入力は一切不要です。"],
+        ["6. 写真の取り扱い", "旅の記録に写真を添付する際は、iOSの標準的な写真選択画面（PhotosPicker）を使用します。この仕組みでは、利用者が選んだ写真そのものだけが本アプリに渡され、本アプリが写真ライブラリ全体を閲覧したり、選んでいない写真にアクセスしたりすることはありません。選択された写真は、保存容量を抑えるため端末内でリサイズ・圧縮したうえで保存します。"],
+        ["7. 外部サーバーへ送信される情報", "本アプリの地図機能はAppleのMapKitを利用しています。地図タイル（衛星写真・地形・道路などの背景画像）の表示にはインターネット通信が必要で、Appleのプライバシーポリシーに基づき通信が行われます。国境データにはNatural Earth（パブリックドメイン）を使用しています。これらの通信に、利用者が記録した国や旅の情報が含まれることはありません。"],
+        ["8. 第三者提供", "運営者は、利用者の情報を第三者へ販売、貸与または提供しません。ただし、法令に基づく開示請求があった場合を除きます。"],
+        ["9. 保存期間と削除", "設定画面の「すべてのデータを削除」から、いつでも記録したデータをすべて削除できます（住んでいる国の設定を除く）。本アプリをアンインストールした場合、端末内のデータは削除され、運営者が復旧することはできません。"],
+        ["10. 未成年者の利用", "本アプリは特定の年齢層を対象とした情報の収集を行っていません。データが端末内にのみ保存される仕組みのため、年齢を問わずご利用いただけますが、未成年の方は保護者の同意を得たうえでご利用ください。"],
+        ["11. 本ポリシーの変更", "本アプリの機能追加に伴い、本ポリシーの内容を変更する場合があります。変更後の内容は、本アプリ内または本ウェブサイトに掲載された時点から適用されます。"],
+        ["12. お問い合わせ", "本ポリシーおよび個人情報の取扱いに関するお問い合わせは、support@tmkch.io までご連絡ください。"],
+      ]
+    : [
+        ["1. Introduction", "This policy sets out how the operator (Tomokichi) handles user information across the iOS application \"Tripory\" and this website (together, the \"Service\"). This website is the authoritative version; the App refers back to it."],
+        ["2. About the operator", "The Service is developed and operated by an individual, the operator (Tomokichi). Contact details are listed at the end of this page."],
+        ["3. Scope", "This policy applies to use of the app and browsing of this website."],
+        ["4. Basic policy", "The app does not require account registration. Your travel records are stored only in an on-device database. No one, including the operator, can access them, and no advertising or analytics SDKs are included."],
+        ["5. Information stored on your device", "Everything the app handles is information you entered yourself.\n\n・Status (visited / want to visit) and notes for each country\n・Trip records (title, destination, dates, notes)\n・Your home country and its change history\n・Photos attached to trip records\n\nAll of this is stored only in an on-device database. No account, login or email address is required."],
+        ["6. How photos are handled", "When you attach a photo to a trip, the app uses iOS's standard photo picker (PhotosPicker). Only the photo you choose is passed to the app — it never browses your full photo library or accesses photos you did not select. Selected photos are resized and compressed on-device to save storage."],
+        ["7. Information sent to external servers", "The map feature uses Apple's MapKit. Displaying map tiles (satellite imagery, terrain and roads) requires an internet connection, handled under Apple's own privacy policy. Border data uses the public-domain Natural Earth dataset. None of this communication includes the countries or trips you have recorded."],
+        ["8. Disclosure to third parties", "The operator does not sell, lend or otherwise disclose your information to third parties, except where required by law."],
+        ["9. Retention and deletion", "You can delete all recorded data at any time from \"Delete all data\" in Settings (except your home-country setting). Uninstalling the app deletes the information stored on your device, and the operator cannot recover it."],
+        ["10. Use by minors", "The app does not target or collect information from any specific age group. Because all data stays on-device, it can be used at any age, though minors should use it with a parent or guardian's consent."],
+        ["11. Changes to this policy", "This policy may be revised as the app's functionality changes. Changes take effect once published within the app or on this website."],
+        ["12. Contact", "For questions about this policy or how your information is handled, please contact support@tmkch.io."],
+      ],
+  terms: ja
+    ? [
+        ["第1条（適用）", "本規約は、運営者（Tomokichi）が提供するiOSアプリケーション「Tripory」（以下「本アプリ」）および本ウェブサイト（あわせて「本サービス」）の利用条件を定めるものです。本ウェブサイトに掲載する内容を正本とし、本アプリ内からは本ウェブサイトを参照します。利用者は、本アプリをダウンロードまたは本サービスを利用した時点で、本規約に同意したものとみなされます。"],
+        ["第2条（本サービスの内容）", "本アプリは、利用者自身が訪れた国や旅の記録を個人的に管理するための機能を、利用者の端末上で提供します。無料でご利用いただけます。"],
+        ["第3条（「住んでいる国」の扱い）", "本アプリでは、記録を海外旅行に絞り込むための基準として「住んでいる国」を設定していただきます。設定した国は自動的に「訪問済み」として扱われ、旅の行き先の候補からは除外されます。住んでいる国は設定画面からいつでも変更でき、変更履歴は旅の記録ページから確認・調整できます。"],
+        ["第4条（地図・国境データについて）", "本アプリで表示される国境線や地名は、Natural Earth（パブリックドメインの簡易データ）およびApple MapKitに基づく簡易的な表示であり、いかなる政治的な立場・見解を示すものでもありません。"],
+        ["第5条（利用者の責任）", "利用者は、自己の責任において本サービスを利用するものとし、入力する情報について必要な権利を有していることを保証します。"],
+        ["第6条（禁止事項）", "利用者は、本サービスを法令に違反する目的、または他者の権利を侵害する目的で利用してはなりません。"],
+        ["第7条（知的財産権）", "本サービスおよびこれに含まれるプログラム、デザイン、文章、画像等に関する著作権その他の知的財産権は、運営者または正当な権利者に帰属します。利用者が本アプリ内で作成・保存した記録の権利は、利用者に帰属します。"],
+        ["第8条（データの管理とバックアップ）", "本アプリのデータは利用者の端末内にのみ保存されるため、機種変更やアプリの削除・再インストールによりデータが失われる場合があります。バックアップの取得は利用者自身の責任で行ってください。"],
+        ["第9条（免責事項）", "本サービスは現状有姿で提供され、記録の正確性・完全性・可用性についていかなる保証も行いません。本サービスの利用によって利用者に生じた損害について、運営者の故意または重過失による場合を除き、運営者は責任を負いません。"],
+        ["第10条（本サービスの変更・中断・終了）", "運営者は、事前の通知なく本サービスの内容を変更し、または提供を中断・終了することがあります。"],
+        ["第11条（本規約の変更）", "本規約は、本アプリの機能追加などに応じて変更されることがあります。変更後の規約は、本アプリ内または本ウェブサイトに掲載された時点から効力を生じます。"],
+        ["第12条（準拠法および管轄裁判所）", "本規約の解釈および適用は日本法に準拠します。本サービスに関して運営者と利用者との間で紛争が生じた場合は、東京地方裁判所を第一審の専属的合意管轄裁判所とします。"],
+        ["第13条（お問い合わせ）", "本規約に関するお問い合わせは、support@tmkch.io までご連絡ください。"],
+      ]
+    : [
+        ["Article 1 — Application", "These Terms set out the conditions for using the iOS application \"Tripory\" (the \"App\") and this website (together, the \"Service\"), provided by the operator (Tomokichi). This website is the authoritative version; the App refers back to it. You are deemed to have agreed to these Terms once you download the App or otherwise use the Service."],
+        ["Article 2 — The Service", "The App provides features, on your own device, for personally managing the countries you have visited and your trip records. It is free to use."],
+        ["Article 3 — Your home country", "The App asks you to set a \"home country\" as the baseline for narrowing records to international travel. Your home country is automatically treated as \"visited\" and excluded from destination suggestions. You can change it at any time from Settings, and review the change history from the trip records page."],
+        ["Article 4 — Map and border data", "Borders and place names shown in the App are a simplified representation based on the public-domain Natural Earth dataset and Apple MapKit, and do not represent any political position or view."],
+        ["Article 5 — User responsibility", "You are responsible for your own use of the Service and warrant that you hold any rights necessary for the information you enter."],
+        ["Article 6 — Prohibited conduct", "You must not use the Service for any purpose that violates the law or infringes the rights of others."],
+        ["Article 7 — Intellectual property", "Copyright and other intellectual property rights in the Service and the programs, design, text and images it contains belong to the operator or the relevant rights holders. Rights to records you create and store within the App belong to you."],
+        ["Article 8 — Data management and backup", "Because App data is stored only on your device, it may be lost when you change phones or delete and reinstall the App. You are responsible for creating your own backups."],
+        ["Article 9 — Disclaimer", "The Service is provided \"as is\", without any warranty as to the accuracy, completeness or availability of your records. Except where caused by the operator's willful misconduct or gross negligence, the operator is not liable for damages arising from your use of the Service."],
+        ["Article 10 — Changes, suspension and termination", "The operator may change the content of the Service, or suspend or discontinue it, without prior notice."],
+        ["Article 11 — Changes to these Terms", "These Terms may be revised as the App's functionality changes. Revised Terms take effect once posted within the App or on this website."],
+        ["Article 12 — Governing law and jurisdiction", "These Terms are governed by the laws of Japan. Any dispute relating to the Service shall be subject to the exclusive jurisdiction of the Tokyo District Court as the court of first instance."],
+        ["Article 13 — Contact", "For questions about these Terms, please contact support@tmkch.io."],
+      ],
+};
 ---
 
-<Shell lang={lang} title={heading} page={page}>
-  <section class:list={["content-hero", `content-${page}`]}>
-    <div><p>TRIPORY</p><h1>{heading}</h1><h2>{sub}</h2></div>
-  </section>
-  <section class="content-body">
-    {page === "features" && <><div class="feature-list">{features.map(([icon,title,body,image]) => <article data-reveal><span>{icon}</span><div><h3>{title}</h3><p>{body}</p></div><img src={image} alt="" /></article>)}</div><a class="dark-cta" href="#download">{ja ? "すべての機能を見る" : "Explore all features"} →</a></>}
-    {page === "principles" && <div class="principle-list">{principles.map(([title,body,image],i) => <article data-reveal><div><small>0{i+1}</small><h3>{title}</h3><p>{body}</p></div><img src={image} alt="" /></article>)}</div>}
-    {page === "screenshots" && <><div class="screenshot-gallery">{screens.map(([slug,label]) => <figure data-reveal><img src={`/assets/screen-${slug}.png`} alt="" /><figcaption>{label}</figcaption></figure>)}</div><a class="dark-cta" href="#download">{ja ? "すべてのスクリーンショットを見る" : "View all screenshots"} →</a></>}
-    {page === "faq" && <div class="faq-list">{faqs.map(([q,a]) => <details data-reveal><summary>{q}<span>＋</span></summary><p>{a}</p></details>)}</div>}
-    {(page === "privacy" || page === "terms") && <article class="legal">{legal.map(([title,body]) => <section data-reveal><h3>{title}</h3><p>{body}</p></section>)}</article>}
-    {page === "contact" && <form class="contact-form" data-reveal><label>{ja?"お名前":"Name"}<input /></label><label>{ja?"メールアドレス":"Email"}<input type="email" /></label><label>{ja?"お問い合わせ内容":"Message"}<textarea rows="8"></textarea></label><button type="button">{ja?"送信する":"Send message"}</button></form>}
+<Shell lang={lang} title={title} page={page}>
+  <section class:list={["subpage", `subpage-${page}`]}>
+    <header class="page-intro">
+      <h1>{title}</h1>
+      {subtitle && <p>{subtitle}</p>}
+      {(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月24日／最終更新日：2026年7月24日" : "Effective: July 24, 2026 / Last updated: July 24, 2026"}</small>}
+    </header>
+
+    {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body]) => <article><span>{icon}</span><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div><a class="orange-cta" href={ja ? "/screenshots" : "/en/screenshots"}>{ja ? "スクリーンショットを見る" : "View screenshots"} →</a></>}
+
+    {page === "principles" && <div class="how-page-list">{principles.map(([heading, body, image], i) => <article><b>0{i + 1}</b><div><h2>{heading}</h2><p>{body}</p></div><img src={image} alt="" /></article>)}</div>}
+
+    {page === "screenshots" && <div class="feature-page-grid screenshot-grid">{screens.map(([slug, label]) => <article><img src={`/assets/screen-${slug}.png`} alt={`${label} screen`} /><h2>{label}</h2></article>)}</div>}
+
+    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>Q. {q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="faq-contact"><span>✉</span><div><h2>{ja ? "その他のご質問はこちら" : "Still have questions?"}</h2><p>{ja ? "support@tmkch.io までご連絡ください。" : "Reach us at support@tmkch.io."}</p></div><a href="mailto:support@tmkch.io">{ja ? "お問い合わせへ" : "Contact us"}</a></div></>}
+
+    {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2>{body.split("\n\n").map((para) => <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>)}</section>)}</article>}
+
+    {page === "updates" && <div class="updates-list">{[
+      ["1.0.0", ja ? "2026年7月24日" : "July 24, 2026", ja ? "新機能" : "New", ja ? ["Triporyがリリースしました", "訪れた国を記録する世界地図", "旅の記録とタイムライン", "旅の統計"] : ["Tripory is now available", "A world map of the countries you visit", "Trip records and timeline", "Travel statistics"]],
+    ].map(([version, date, badge, items]) => <article><div><h2>{version}</h2><p>{date}</p><ul>{(items as string[]).map(item => <li>{item}</li>)}</ul></div><span>{badge}</span></article>)}</div>}
+
   </section>
 </Shell>

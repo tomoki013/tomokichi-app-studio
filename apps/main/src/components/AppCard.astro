@@ -1,65 +1,63 @@
 ---
 import type { AppItem, Locale } from "../data/apps";
+import { appsPage } from "../lib/copy";
+import AppIcon from "./AppIcon.astro";
+import StatusBadge from "./StatusBadge.astro";
 
 interface Props {
   app: AppItem;
   lang: Locale;
+  variant?: "compact" | "large";
 }
-
-const { app, lang } = Astro.props;
-
-const labels = {
-  ja: {
-    available: "公開中",
-    comingSoon: "近日公開",
-    development: "開発中",
-    install: "インストール",
-    detail: "詳しく見る",
-  },
-  en: {
-    available: "Available",
-    comingSoon: "Coming soon",
-    development: "In development",
-    install: "Install",
-    detail: "Learn more",
-  },
-}[lang];
-
-const buttonUrl = app.installUrl ?? app.siteUrl;
-const buttonLabel = app.installUrl ? labels.install : labels.detail;
+const { app, lang, variant = "compact" } = Astro.props;
+const appsHref = lang === "ja" ? "/apps" : "/en/apps";
+const compactHref = app.url ?? appsHref;
+const externalCompact = Boolean(app.url);
 ---
 
-<article
-  class="group flex min-h-[350px] flex-col rounded-[2rem] border border-black/[0.07] bg-white/70 p-6 shadow-[0_24px_70px_rgba(20,20,20,0.05)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(20,20,20,0.09)]"
->
-  <div class="flex items-start justify-between gap-5">
-    <div
-      class:list={[
-        "grid size-16 place-items-center rounded-[1.35rem] bg-gradient-to-br shadow-inner",
-        app.iconClass,
-      ]}
-    >
-      <span class="size-5 rounded-full border border-white/80 bg-white/35 backdrop-blur"></span>
+{variant === "compact" ? (
+  <a
+    class="app-card"
+    href={compactHref}
+    rel={externalCompact ? "noopener noreferrer" : undefined}
+    target={externalCompact ? "_blank" : undefined}
+    aria-label={`${app.name} — ${app.tagline[lang]}`}
+  >
+    <div class="card-body">
+      <div class="card-top">
+        <AppIcon iconClass={app.iconClass} size={44} />
+        <StatusBadge status={app.status} lang={lang} />
+      </div>
+      <h3>{app.name}</h3>
+      <p class="tagline">{app.tagline[lang]}</p>
     </div>
-
-    <span class="rounded-full border border-black/[0.07] px-3 py-1.5 text-xs text-black/45">
-      {labels[app.status]}
-    </span>
-  </div>
-
-  <div class="mt-12">
-    <h3 class="text-2xl font-semibold tracking-[-0.04em]">{app.name}</h3>
-    <p class="mt-3 max-w-[280px] leading-7 text-black/50">
-      {app.description[lang]}
-    </p>
-  </div>
-
-  <div class="mt-auto pt-10">
-    <a
-      href={buttonUrl}
-      class="inline-flex items-center justify-center rounded-full bg-black px-5 py-3 text-sm font-medium text-white transition hover:bg-black/75"
-    >
-      {buttonLabel}
-    </a>
-  </div>
-</article>
+    {app.previewImage && <img class="preview" src={app.previewImage} alt="" loading="lazy" />}
+  </a>
+) : (
+  <article class="app-card large" data-status={app.status}>
+    <div class="card-body">
+      {app.accent && <span class="accent-line" style={`background:${app.accent}`} aria-hidden="true"></span>}
+      <div class="card-top">
+        <AppIcon iconClass={app.iconClass} size={54} />
+        <StatusBadge status={app.status} lang={lang} />
+      </div>
+      <h3>{app.name}</h3>
+      <p class="tagline">{app.tagline[lang]}</p>
+      <p class="desc">{app.description[lang]}</p>
+      <div class="meta">
+        <span>{app.platform.join(" / ")}</span>
+      </div>
+      <div class="card-actions">
+        {app.url ? (
+          <a class="arrow-link soft" href={app.url} rel="noopener noreferrer" target="_blank">
+            <span>{appsPage.visit[lang]}</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        ) : (
+          <span class="soon">{appsPage.soon[lang]}</span>
+        )}
+      </div>
+    </div>
+    {app.previewImage && <img class="preview" src={app.previewImage} alt={`${app.name}`} loading="lazy" />}
+  </article>
+)}

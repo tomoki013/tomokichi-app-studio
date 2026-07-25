@@ -11,7 +11,6 @@ const c = ja
       body: "離れている日々を、ふたりの絆がもっと深まる時間に。\n再会までを一緒にカウントダウンして、\n思い出を記録しよう。",
       store: "App Storeからダウンロード",
       notice: "Remeet 1.0.0をリリースしました！",
-      scroll: "スクロール",
       features: "Remeetの特徴",
       featureSub: "距離を、やさしくつなぐ機能たち。",
       howTitle: "使い方はかんたん、3ステップ",
@@ -28,7 +27,6 @@ const c = ja
       body: "Turn days apart into time that brings you closer.\nCount down together and keep every memory\nuntil the day you meet again.",
       store: "Download on the App Store",
       notice: "Remeet 1.0.0 is now available!",
-      scroll: "Scroll",
       features: "Remeet features",
       featureSub: "Thoughtful ways to stay close across the distance.",
       howTitle: "Simple to use, in 3 steps",
@@ -84,8 +82,8 @@ const steps = ja
     </div>
     <img class="home-phone" src="/assets/app-phone.png" alt="Remeet countdown app screen" />
     <div class="home-route" aria-hidden="true"><i></i><b>✈</b><i></i></div>
-    <a class="home-scroll" href="#notice">{c.scroll}<span>⌄</span></a>
-    <aside class="home-notice" id="notice"><strong>{ja ? "お知らせ" : "News"}</strong><time>2026.07.23</time><span>{c.notice}</span><a href={`${base}/updates`}>→</a></aside>
+    <a class="home-scroll" href="#notice"><em>Scroll</em><span class="scroll-track"><i></i></span></a>
+    <aside class="home-notice" id="notice"><strong>{ja ? "お知らせ" : "News"}</strong><time>2026.07.24</time><span>{c.notice}</span><a href={`${base}/updates`}>→</a></aside>
   </section>
 
   <div class="landing-sections">

@@ -4,6 +4,8 @@ const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string;
 const ja = lang === "ja";
 const base = ja ? "" : "/en";
 const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const jaPageHref = `/${page}`.replace(/\/$/, "") || "/";
+const enPageHref = (`/en/${page}`.replace(/\/$/, "")) || "/en";
 const labels = ja
   ? { features: "機能", how: "使い方", pricing: "料金", faq: "よくある質問", store: "App Storeで見る", menu: "メニュー" }
   : { features: "Features", how: "How it works", pricing: "Pricing", faq: "FAQ", store: "View on App Store", menu: "Menu" };
@@ -15,24 +17,30 @@ const labels = ja
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={title} />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/assets/remeet-icon.png" />
     <title>{title} — Remeet</title>
   </head>
   <body>
     <div class="mock-page">
       <header class="mock-header">
-        <a class="mock-logo" href={ja ? "/" : "/en"}><img src="/assets/remeet-icon.png" alt="" /> Remeet <b>↗</b></a>
-        <nav aria-label="Main navigation">
-          <a class:list={{ active: page === "features" }} href={href("features")}>{labels.features}</a>
-          <a class:list={{ active: page === "how-to" }} href={href("how-to")}>{labels.how}</a>
-          <a class:list={{ active: page === "pricing" }} href={href("pricing")}>{labels.pricing}</a>
-          <a class:list={{ active: page === "faq" }} href={href("faq")}>{labels.faq}</a>
-          <a class:list={{ active: page === "updates" }} href={href("updates")}>{ja ? "アップデート" : "Updates"}</a>
-        </nav>
-        <div class="mock-actions">
-          <a class="language-pill" href={ja ? `/en/${page}`.replace(/\/$/, "") || "/en" : `/${page}` || "/"}>{ja ? "EN" : "JA"}</a>
-          <a class="appstore-pill" href="#download">{labels.store}</a>
-          <button class="mobile-menu" aria-label={labels.menu}>☰</button>
+        <div class="mock-header-inner">
+          <a class="mock-logo" href={ja ? "/" : "/en"}><img src="/assets/remeet-icon.png" alt="" /> Remeet</a>
+          <nav aria-label="Main navigation">
+            <a class:list={{ active: page === "features" }} href={href("features")}>{labels.features}</a>
+            <a class:list={{ active: page === "how-to" }} href={href("how-to")}>{labels.how}</a>
+            <a class:list={{ active: page === "pricing" }} href={href("pricing")}>{labels.pricing}</a>
+            <a class:list={{ active: page === "faq" }} href={href("faq")}>{labels.faq}</a>
+            <a class:list={{ active: page === "updates" }} href={href("updates")}>{ja ? "アップデート" : "Updates"}</a>
+          </nav>
+          <div class="mock-actions">
+            <div class="lang-switch">
+              <a class:list={{ active: !ja }} href={enPageHref} aria-label="English">EN</a>
+              <span class="lang-sep">/</span>
+              <a class:list={{ active: ja }} href={jaPageHref} aria-label="日本語">JA</a>
+            </div>
+            <a class="appstore-pill" href="#download">{labels.store}</a>
+            <button class="mobile-menu" aria-label={labels.menu}>☰</button>
+          </div>
         </div>
       </header>
       <main><slot /></main>
@@ -42,9 +50,12 @@ const labels = ja
           <a href={href("features")}>{labels.features}</a><a href={href("how-to")}>{labels.how}</a>
           <a href={href("pricing")}>{labels.pricing}</a><a href={href("faq")}>{labels.faq}</a>
           <a href={href("privacy")}>{ja ? "プライバシー" : "Privacy"}</a><a href={href("terms")}>{ja ? "利用規約" : "Terms"}</a>
-          <a href={href("contact")}>{ja ? "お問い合わせ" : "Contact"}</a>
+          <a href="mailto:support@tmkch.io">{ja ? "お問い合わせ" : "Contact"}</a>
         </nav>
-        <small>© 2026 Remeet</small>
+        <div class="mock-footer-meta">
+          <p class="made-with">Made with ♡ by Tomokichi</p>
+          <small>© 2026 Remeet</small>
+        </div>
       </footer>
     </div>
     <script is:inline>

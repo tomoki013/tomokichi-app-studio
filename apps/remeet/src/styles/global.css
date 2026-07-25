@@ -110,68 +110,71 @@ img { display: block; max-width: 100%; }
 
 /* Multi-page mock */
 body:has(.mock-page) {
-  background: #f7f7f5;
+  background: #fbfaf8;
   color: #242321;
 }
 .mock-page {
-  width: min(calc(100% - 28px), 1480px);
-  min-height: calc(100vh - 28px);
-  margin: 14px auto;
-  overflow: clip;
-  border-radius: 18px;
+  width: 100%;
+  min-height: 100vh;
   background:
     radial-gradient(circle at 92% 5%, rgb(213 232 247 / 80%), transparent 30%),
     radial-gradient(circle at 12% 85%, rgb(253 229 208 / 68%), transparent 29%),
     #fbfaf8;
-  box-shadow: 0 18px 55px rgb(61 49 42 / 8%);
 }
 .mock-header {
-  height: 84px;
-  width: calc(100% - 28px);
+  height: 72px;
+  width: calc(100% - 24px);
   max-width: 1452px;
   margin: 0 auto;
   position: sticky;
   top: 12px;
   z-index: 10;
-  border: 1px solid transparent;
-  border-radius: 22px;
+  border: 1px solid rgb(255 255 255 / 65%);
+  border-radius: 20px;
+  background: linear-gradient(rgb(255 255 255 / 55%), rgb(255 255 255 / 42%));
+  box-shadow:
+    0 8px 30px rgb(54 45 39 / 10%),
+    inset 0 1px 1px rgb(255 255 255 / 70%),
+    inset 0 -1px 1px rgb(255 255 255 / 25%);
+  -webkit-backdrop-filter: blur(22px) saturate(1.8);
+  backdrop-filter: blur(22px) saturate(1.8);
   transition:
-    width .46s cubic-bezier(.2, .75, .2, 1),
-    height .4s cubic-bezier(.2, .75, .2, 1),
-    background-color .35s ease,
-    border-color .35s ease,
-    box-shadow .35s ease,
-    backdrop-filter .35s ease;
+    width .55s cubic-bezier(.22, 1, .36, 1),
+    height .55s cubic-bezier(.22, 1, .36, 1),
+    border-radius .55s cubic-bezier(.22, 1, .36, 1),
+    background-color .45s ease,
+    border-color .45s ease,
+    box-shadow .45s ease,
+    backdrop-filter .45s ease;
+}
+.mock-header-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-inline: 22px;
+  transition: padding .55s cubic-bezier(.22, 1, .36, 1), gap .55s cubic-bezier(.22, 1, .36, 1), justify-content .55s ease;
 }
 .mock-logo {
   display: flex;
   align-items: center;
   gap: 9px;
+  flex-shrink: 0;
   font: 24px Georgia, "Yu Mincho", serif;
   white-space: nowrap;
-  position: absolute;
-  top: 50%;
-  left: 24px;
-  transform: translateY(-50%);
-  transition:
-    left .44s cubic-bezier(.2, .75, .2, 1),
-    transform .44s cubic-bezier(.2, .75, .2, 1),
-    font-size .35s ease,
-    opacity .25s ease;
+  transition: font-size .35s ease;
 }
 .mock-logo img { width: 29px; height: 29px; border-radius: 8px; object-fit: cover; box-shadow: 0 3px 9px rgb(49 43 39 / 10%); transition: transform .3s ease, box-shadow .3s ease; }
 .mock-logo:hover img { transform: rotate(7deg) scale(1.08); box-shadow: 0 7px 16px rgb(49 43 39 / 16%); }
-.mock-logo b { color: #ef9e50; font-size: 13px; }
 .mock-header nav {
+  flex: 1 1 auto;
+  min-width: 0;
   display: flex;
+  justify-content: center;
   gap: clamp(30px, 3.4vw, 58px);
   font-size: 12px;
   font-weight: 600;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: opacity .24s ease .1s, visibility .24s ease .1s;
+  transition: opacity .2s ease, visibility .2s ease, flex-basis .4s ease;
 }
 .mock-header nav a { padding: 12px 0; position: relative; }
 .mock-header nav a::after {
@@ -190,33 +193,22 @@ body:has(.mock-page) {
 .mock-header nav a:focus-visible::after,
 .mock-header nav a.active::after { transform: scaleX(1); transform-origin: left; }
 .mock-header nav a.active { color: #e99647; }
-.mock-actions { display: flex; align-items: center; gap: 8px; position: absolute; top: 50%; right: 20px; transform: translateY(-50%); transition: opacity .24s ease .1s, visibility .24s ease .1s; }
-.language-pill {
-  min-width: 42px;
-  padding: 10px 11px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 999px;
-  text-align: center;
-  background: rgb(255 255 255 / 38%);
-  font-size: 10px;
-  transition: transform .25s ease, color .25s ease, background-color .25s ease, box-shadow .25s ease;
+.mock-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; transition: opacity .2s ease, visibility .2s ease; }
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .05em;
 }
-.language-pill::before {
-  content: "";
-  position: absolute;
-  inset: 50% auto auto -12px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #efac70;
-  transform: translateY(-50%);
-  transition: left .3s cubic-bezier(.2, .8, .2, 1);
-}
-.language-pill:hover,
-.language-pill:focus-visible { color: #9b5d28; background: #fff; box-shadow: 0 7px 17px rgb(88 64 45 / 10%); transform: translateY(-2px); }
-.language-pill:hover::before,
-.language-pill:focus-visible::before { left: 5px; }
+.lang-switch a { color: inherit; opacity: .4; position: relative; padding-bottom: 3px; transition: opacity .2s ease; }
+.lang-switch a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: currentColor; transform: scaleX(0); transition: transform .25s ease; }
+.lang-switch a:hover, .lang-switch a:focus-visible { opacity: .75; }
+.lang-switch a:hover::after, .lang-switch a:focus-visible::after { transform: scaleX(1); }
+.lang-switch a.active { opacity: 1; }
+.lang-switch a.active::after { transform: scaleX(1); }
+.lang-switch .lang-sep { opacity: .3; }
 .appstore-pill {
   padding: 14px 25px;
   border-radius: 999px;
@@ -228,29 +220,40 @@ body:has(.mock-page) {
 .appstore-pill:hover,
 .appstore-pill:focus-visible { transform: translateY(-2px) scale(1.015); background: #fff; box-shadow: 0 13px 28px rgb(57 47 40 / 14%); }
 .mock-header.is-compact {
-  width: 190px;
-  height: 56px;
-  border-color: rgb(255 255 255 / 66%);
-  background: rgb(252 250 247 / 74%);
-  box-shadow: 0 12px 34px rgb(54 45 39 / 13%);
-  -webkit-backdrop-filter: blur(20px) saturate(1.25);
-  backdrop-filter: blur(20px) saturate(1.25);
+  width: 174px;
+  height: 58px;
+  top: 12px;
+  border-top: 1px solid rgb(255 255 255 / 72%);
+  border-color: rgb(255 255 255 / 72%);
+  border-radius: 999px;
+  background: linear-gradient(rgb(255 255 255 / 68%), rgb(255 255 255 / 55%));
+  box-shadow:
+    0 10px 28px rgb(54 45 39 / 12%),
+    inset 0 1px 1px rgb(255 255 255 / 75%),
+    inset 0 -1px 1px rgb(255 255 255 / 30%);
 }
-.mock-header.is-compact .mock-logo { left: 50%; transform: translate(-50%, -50%); font-size: 20px; }
+.mock-header.is-compact .mock-header-inner { justify-content: center; gap: 0; padding-inline: 20px; }
+.mock-header.is-compact .mock-logo { font-size: 20px; }
 .mock-header.is-compact nav,
-.mock-header.is-compact .mock-actions { opacity: 0; visibility: hidden; pointer-events: none; transition-delay: 0s; }
+.mock-header.is-compact .mock-actions { flex: 0 0 0; width: 0; gap: 0; overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none; }
 .mock-header.is-compact:hover,
-.mock-header.is-compact:focus-within { width: calc(100% - 28px); height: 72px; }
+.mock-header.is-compact:focus-within { width: calc(100% - 24px); height: 72px; border-radius: 20px; }
+.mock-header.is-compact:hover .mock-header-inner,
+.mock-header.is-compact:focus-within .mock-header-inner { justify-content: space-between; gap: 24px; padding-inline: 24px; }
 .mock-header.is-compact:hover .mock-logo,
-.mock-header.is-compact:focus-within .mock-logo { left: 24px; transform: translateY(-50%); font-size: 24px; }
+.mock-header.is-compact:focus-within .mock-logo { font-size: 24px; }
 .mock-header.is-compact:hover nav,
 .mock-header.is-compact:hover .mock-actions,
 .mock-header.is-compact:focus-within nav,
-.mock-header.is-compact:focus-within .mock-actions { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: .13s; }
+.mock-header.is-compact:focus-within .mock-actions { flex: 1 1 auto; width: auto; opacity: 1; visibility: visible; pointer-events: auto; overflow: visible; }
+.mock-header.is-compact:hover nav,
+.mock-header.is-compact:focus-within nav { gap: clamp(30px, 3.4vw, 58px); }
+.mock-header.is-compact:hover .mock-actions,
+.mock-header.is-compact:focus-within .mock-actions { flex: 0 0 auto; gap: 8px; }
 .mobile-menu { display: none; border: 0; background: none; font-size: 21px; }
 .mock-footer {
   min-height: 100px;
-  padding: 30px 38px 20px;
+  padding: 30px clamp(24px, 5vw, 64px) 20px;
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 35px;
@@ -260,17 +263,21 @@ body:has(.mock-page) {
 }
 .mock-footer .mock-logo { font-size: 19px; }
 .mock-footer nav { display: flex; justify-content: center; gap: 24px; font-size: 9px; }
-.mock-footer small { color: #8f8a85; font-size: 8px; }
+.mock-footer-meta { display: grid; gap: 4px; justify-items: end; text-align: right; }
+.mock-footer .made-with { margin: 0; color: #8f8a85; font-size: 9px; }
+.mock-footer small { color: #b1aca6; font-size: 8px; }
 .new-home {
   min-height: 780px;
-  padding: 50px 42px 24px;
+  padding: 50px 42px 64px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
-.home-sky { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .58; mix-blend-mode: multiply; }
+/* The hero image bleeds up behind the floating glass header so the strip
+   above and behind the header shows the sky, not the page background. */
+.home-sky { position: absolute; top: -96px; left: 0; right: 0; height: calc(100% + 96px); width: 100%; object-fit: cover; opacity: .58; mix-blend-mode: multiply; z-index: 0; }
 .home-copy { max-width: 470px; align-self: start; padding-top: 75px; position: relative; z-index: 2; }
 .home-copy h1 { margin: 0; white-space: pre-line; font: 400 clamp(36px, 4.3vw, 55px)/1.45 Georgia, "Yu Mincho", serif; letter-spacing: .05em; }
 .home-copy p { margin: 28px 0 0; font-size: 12px; line-height: 2; }
@@ -283,9 +290,18 @@ body:has(.mock-page) {
 .home-route i:first-child { left: -5px; top: -10px; }
 .home-route i:last-child { right: -5px; top: -10px; }
 .home-route b { position: absolute; left: 60%; top: -22px; font-size: 25px; transform: rotate(9deg); }
-.home-scroll { position: absolute; left: 50%; bottom: 95px; display: grid; gap: 4px; justify-items: center; color: #777; font-size: 8px; text-transform: uppercase; }
-.home-scroll span { font-size: 17px; }
-.home-notice { position: absolute; left: 30px; right: 30px; bottom: 20px; min-height: 58px; padding: 0 22px; display: grid; grid-template-columns: auto auto 1fr auto; gap: 38px; align-items: center; border: 1px solid transparent; border-radius: 15px; background: rgb(255 255 255 / 65%); font-size: 9px; transition: transform .3s ease, background-color .3s ease, border-color .3s ease, box-shadow .3s ease; }
+.home-scroll { position: absolute; left: 50%; bottom: 120px; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 9px; color: #9a938c; transition: color .3s ease; }
+.home-scroll:hover, .home-scroll:focus-visible { color: #e99647; }
+.home-scroll em { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 7.5px; font-style: normal; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+.scroll-track { width: 1px; height: 34px; position: relative; background: linear-gradient(currentColor, transparent 90%); opacity: .5; }
+.scroll-track i { position: absolute; left: 50%; top: 0; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: currentColor; animation: scroll-travel 2.2s cubic-bezier(.65, 0, .35, 1) infinite; }
+@keyframes scroll-travel {
+  0% { transform: translateY(-3px); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(34px); opacity: 0; }
+}
+.home-notice { position: absolute; left: clamp(20px, 8vw, 120px); right: clamp(20px, 8vw, 120px); bottom: 28px; min-height: 58px; padding: 0 22px; display: grid; grid-template-columns: auto auto 1fr auto; gap: 38px; align-items: center; border: 1px solid transparent; border-radius: 15px; background: rgb(255 255 255 / 65%); font-size: 9px; transition: transform .3s ease, background-color .3s ease, border-color .3s ease, box-shadow .3s ease; }
 .home-notice strong { font-weight: 600; }
 .home-notice time { color: #777; }
 .home-notice a { font-size: 17px; transition: transform .3s ease; }
@@ -344,11 +360,6 @@ body:has(.mock-page) {
 .legal-copy section { margin-bottom: 29px; }
 .legal-copy h2 { margin: 0 0 13px; font-size: 14px; }
 .legal-copy p, .legal-copy li { font-size: 10px; line-height: 2; }
-.contact-form { max-width: 610px; margin: 0 auto; display: grid; gap: 19px; }
-.contact-form label { display: grid; gap: 9px; font-size: 10px; }
-.contact-form input, .contact-form select, .contact-form textarea { width: 100%; padding: 16px; border: 0; border-radius: 10px; background: rgb(255 255 255 / 73%); box-shadow: inset 0 0 0 1px rgb(65 55 48 / 5%); font: inherit; resize: vertical; }
-.contact-form button { min-height: 51px; margin-top: 8px; border: 0; border-radius: 11px; color: white; background: linear-gradient(135deg, #efa14b, #efb16f); font-weight: 700; }
-.contact-form > p { margin: 0; text-align: center; color: #777; font-size: 8px; }
 .updates-list { display: grid; gap: 26px; }
 .updates-list article { min-height: 225px; padding: 30px 35px; display: grid; grid-template-columns: 1fr auto 190px; gap: 25px; align-items: center; border-radius: 19px; background: rgb(255 255 255 / 70%); box-shadow: 0 10px 25px rgb(70 55 45 / 6%); }
 .updates-list h2 { margin: 0; font-size: 21px; }
@@ -400,8 +411,9 @@ body:has(.mock-page) {
 .widgets:hover img { transform: translateY(-4px) scale(1.015); }
 .story:hover img { transform: scale(1.02); }
 .mock-footer nav a { position: relative; }
-.mock-footer nav a::after { content: ""; position: absolute; right: 0; bottom: -5px; left: 0; height: 1px; background: currentColor; transform: scaleX(0); transition: transform .25s ease; }
-.mock-footer nav a:hover::after { transform: scaleX(1); }
+.mock-footer nav a::after { content: ""; position: absolute; right: 0; bottom: -5px; left: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .25s ease; }
+.mock-footer nav a:hover::after,
+.mock-footer nav a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 
 @media (min-width: 1200px) {
   .new-home { min-height: 900px; padding-inline: 58px; }
@@ -419,19 +431,21 @@ body:has(.mock-page) {
 }
 
 @media (max-width: 760px) {
-  .mock-page { width: 100%; min-height: 100vh; margin: 0; border-radius: 0; }
-  .mock-header { width: calc(100% - 16px); height: 64px; top: 8px; border-radius: 18px; background: rgb(252 250 247 / 72%); box-shadow: 0 8px 24px rgb(54 45 39 / 8%); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
-  .mock-header .mock-logo,
-  .mock-header.is-compact .mock-logo { left: 12px; transform: translateY(-50%); font-size: 22px; }
+  .mock-header { width: calc(100% - 16px); height: 64px; top: 8px; border-radius: 18px; }
+  .mock-header-inner,
+  .mock-header.is-compact .mock-header-inner { padding-inline: 14px; justify-content: space-between; }
+  .mock-logo,
+  .mock-header.is-compact .mock-logo { font-size: 22px; }
   .mock-header nav, .appstore-pill { display: none; }
-  .mock-header .mock-actions,
-  .mock-header.is-compact .mock-actions { right: 8px; opacity: 1; visibility: visible; pointer-events: auto; }
+  .mock-actions,
+  .mock-header.is-compact .mock-actions { flex: 0 0 auto; width: auto; opacity: 1; visibility: visible; pointer-events: auto; overflow: visible; }
   .mock-header.is-compact,
   .mock-header.is-compact:hover,
-  .mock-header.is-compact:focus-within { width: calc(100% - 16px); height: 58px; }
+  .mock-header.is-compact:focus-within { width: calc(100% - 16px); height: 58px; top: 8px; border-radius: 18px; }
   .mobile-menu { display: block; }
   .mock-footer { grid-template-columns: 1fr auto; padding-inline: 22px; }
   .mock-footer nav { display: none; }
+  .mock-footer-meta { justify-items: end; }
   .new-home { min-height: 890px; padding: 48px 22px 20px; display: block; }
   .home-copy { padding-top: 25px; }
   .home-copy h1 { font-size: 38px; }
@@ -470,5 +484,6 @@ body:has(.mock-page) {
   .secondary,
   .download-badge,
   .orange-cta { transition: none !important; }
+  .scroll-track i { animation: none !important; }
   .reveal-item { opacity: 1; transform: none; filter: none; }
 }

@@ -1,0 +1,95 @@
+---
+import type { Locale } from "../data/apps";
+import { orderedApps } from "../data/apps";
+import { about, principles, principlesHeading } from "../lib/copy";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "./SiteHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+import ArrowLink from "./ArrowLink.astro";
+import AppIcon from "./AppIcon.astro";
+import PrincipleItem from "./PrincipleItem.astro";
+
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const p = (path: string) => (ja ? path : `/en${path === "/" ? "" : path}`);
+
+const links = {
+  website: "https://tomokichi.dev",
+  github: "https://github.com/tomoki013",
+  contact: "https://tomokichi.dev/contact",
+};
+---
+
+<BaseLayout lang={lang} title={about.metaTitle[lang]} description={about.metaDescription[lang]}>
+  <div class="site">
+    <SiteHeader lang={lang} path="/about" current="about" />
+
+    <main>
+      <section class="about-hero shell">
+        <div>
+          <h1>{about.hero.heading[lang]}</h1>
+          <p class="lead">{about.hero.body[lang]}</p>
+        </div>
+        <div class="about-shapes" aria-hidden="true">
+          <span class="s beige"></span>
+          <span class="s green"></span>
+          <span class="square"></span>
+          <span class="arch"></span>
+        </div>
+      </section>
+
+      <section class="about-maker shell">
+        <div>
+          <h2>{about.maker.heading[lang]}</h2>
+          <p>{about.maker.body[lang]}</p>
+        </div>
+        <ul class="meta">
+          <li class="loc">{about.maker.location}</li>
+          <li><a href={links.website} target="_blank" rel="noopener noreferrer">{about.maker.linksLabel.website[lang]} ↗</a></li>
+          <li><a href={links.github} target="_blank" rel="noopener noreferrer">{about.maker.linksLabel.github[lang]} ↗</a></li>
+          <li><a href={links.contact} target="_blank" rel="noopener noreferrer">{about.maker.linksLabel.contact[lang]} ↗</a></li>
+        </ul>
+      </section>
+
+      <section class="about-approach shell" id="approach">
+        <h2 style="margin:0 0 6px;font:500 22px/1.3 var(--serif)">{principlesHeading[lang]}</h2>
+        <div class="approach-grid">
+          {principles.map((item, i) => <PrincipleItem title={item.title[lang]} body={item.body[lang]} index={i} />)}
+        </div>
+      </section>
+
+      <section class="about-now shell">
+        <div>
+          <h2>{about.now.heading[lang]}</h2>
+          <p>{about.now.body[lang]}</p>
+        </div>
+        <img src="/assets/workspace.png" alt={ja ? "窓辺のノートとマグカップ" : "A notebook and mug by a window"} />
+      </section>
+
+      <section class="about-making shell">
+        <h2 style="margin:0;font:500 22px/1.3 var(--serif)">{about.making.heading[lang]}</h2>
+        <div class="making-row">
+          {orderedApps.map((app) => (
+            <div class="item"><AppIcon iconClass={app.iconClass} size={40} /><span>{app.name}</span></div>
+          ))}
+        </div>
+        <div class="all"><ArrowLink href={p("/apps")} label={about.making.all[lang]} /></div>
+      </section>
+
+      <section class="about-cta shell">
+        <a class="cta-card" href={p("/apps")}>
+          <h3>{about.bottom.apps.heading[lang]}</h3>
+          <p>{about.bottom.apps.body[lang]}</p>
+          <span class="arrow-link soft"><span>{about.bottom.apps.heading[lang]}</span><span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+        <a class="cta-card" href={p("/support")}>
+          <h3>{about.bottom.support.heading[lang]}</h3>
+          <p>{about.bottom.support.body[lang]}</p>
+          <span class="arrow-link soft"><span>{about.bottom.support.heading[lang]}</span><span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </section>
+    </main>
+
+    <SiteFooter lang={lang} />
+  </div>
+</BaseLayout>

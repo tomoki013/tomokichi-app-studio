@@ -51,20 +51,22 @@ const screens = [
 ---
 
 <Shell lang={lang} title={`${c.title} — ${c.tagline}`}>
-  <section class="tripory-hero">
-    <img class="hero-bg" src="/assets/cappadocia.png" alt="" />
-    <div class="hero-copy">
+  <section class="new-home">
+    <img class="home-sky" src="/assets/cappadocia.png" alt="" />
+    <div class="home-copy">
       <p class="eyebrow">TRIPORY</p>
-      <h1>{c.title}</h1>
-      <h2>{c.tagline}</h2>
+      <h1>{c.tagline}</h1>
       <p>{c.intro.split("\n").map((line) => <>{line}<br /></>)}</p>
-      <div class="store-row"><a href="#">●　App Store</a><a href="#">▶　Google Play</a></div>
+      <a class="download-badge" href="#download">●<span>{ja ? "App Storeからダウンロード" : "Download on the App Store"}</span></a>
     </div>
-    <img class="hero-devices" src="/assets/hero-devices.png" alt="Tripory on iPhone and Apple Watch" />
-    <div class="hero-summary" data-reveal>
-      <div><h3>{ja ? "旅を記録するたび、\nあなたの世界が広がっていく。" : "Every journey makes\nyour world a little wider."}</h3><p>{ja ? "新しい国を訪れるたびに、地図が色づき、コレクションが増えていく。" : "Each country colours your map and grows your collection."}</p></div>
-      <ul><li>◎<span>{ja ? "訪れた国を記録" : "Visited countries"}</span></li><li>▧<span>{ja ? "思い出をコレクション" : "Collect memories"}</span></li><li>◷<span>{ja ? "美しい可視化" : "Beautiful insights"}</span></li><li>☁<span>{ja ? "どこでも同期" : "Sync everywhere"}</span></li></ul>
-    </div>
+    <img class="home-phone" src="/assets/hero-devices.png" alt="Tripory on iPhone and Apple Watch" />
+    <a class="home-scroll" href="#notice"><em>Scroll</em><span class="scroll-track"><i></i></span></a>
+    <aside class="home-notice" id="notice"><strong>{ja ? "お知らせ" : "News"}</strong><time>2026.07.24</time><span>{ja ? "Tripory 1.0.0を公開しました！" : "Tripory 1.0.0 is now available!"}</span><a href={`${base}/updates`}>→</a></aside>
+  </section>
+
+  <section class="home-section" data-reveal>
+    <div class="section-bar"><h2>{ja ? "旅を記録するたび、あなたの世界が広がっていく。" : "Every journey makes your world a little wider."}</h2></div>
+    <p class="home-summary-text">{ja ? "新しい国を訪れるたびに、地図が色づき、コレクションが増えていく。" : "Each country colours your map and grows your collection."}</p>
   </section>
 
   <section class="home-section" data-reveal>
@@ -84,7 +86,7 @@ const screens = [
   <section class="tripory-cta" id="download" data-reveal>
     <img src="/assets/mountain-lake.png" alt="" />
     <div><h2>{c.cta}</h2><p>{c.ctaSub}</p></div>
-    <div class="store-row"><a href="#">●　App Store</a><a href="#">▶　Google Play</a></div>
+    <div class="store-row"><a href="#">●　App Store</a></div>
     <div class="qr">▦</div>
   </section>
 </Shell>

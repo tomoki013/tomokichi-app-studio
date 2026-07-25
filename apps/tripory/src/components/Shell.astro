@@ -4,9 +4,11 @@ const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string;
 const ja = lang === "ja";
 const base = ja ? "" : "/en";
 const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const jaPageHref = `/${page}`.replace(/\/$/, "") || "/";
+const enPageHref = (`/en/${page}`.replace(/\/$/, "")) || "/en";
 const nav = ja
-  ? [["features", "機能紹介"], ["principles", "こだわり"], ["screenshots", "スクリーンショット"], ["faq", "よくある質問"]]
-  : [["features", "Features"], ["principles", "Principles"], ["screenshots", "Screenshots"], ["faq", "FAQ"]];
+  ? [["features", "機能紹介"], ["principles", "こだわり"], ["screenshots", "スクリーンショット"], ["faq", "よくある質問"], ["updates", "お知らせ"]]
+  : [["features", "Features"], ["principles", "Principles"], ["screenshots", "Screenshots"], ["faq", "FAQ"], ["updates", "Updates"]];
 ---
 
 <!doctype html>
@@ -15,18 +17,24 @@ const nav = ja
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={title} />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/assets/tripory-icon.png" />
     <title>{title} — Tripory</title>
   </head>
   <body>
     <div class="tripory-page">
       <header class="tripory-header">
-        <a class="tripory-logo" href={ja ? "/" : "/en"}>TRIPORY</a>
-        <nav>{nav.map(([slug, label]) => <a class:list={{ active: page === slug }} href={href(slug)}>{label}</a>)}</nav>
-        <div class="header-actions">
-          <a class="language" href={ja ? `/en/${page}`.replace(/\/$/, "") || "/en" : `/${page}` || "/"}>{ja ? "EN" : "JA"}</a>
-          <a class="download-pill" href="#download">{ja ? "Appをダウンロード" : "Download the app"}</a>
-          <button aria-label={ja ? "メニュー" : "Menu"}>☰</button>
+        <div class="tripory-header-inner">
+          <a class="tripory-logo" href={ja ? "/" : "/en"}>TRIPORY</a>
+          <nav>{nav.map(([slug, label]) => <a class:list={{ active: page === slug }} href={href(slug)}>{label}</a>)}</nav>
+          <div class="header-actions">
+            <div class="lang-switch">
+              <a class:list={{ active: !ja }} href={enPageHref} aria-label="English">EN</a>
+              <span class="lang-sep">/</span>
+              <a class:list={{ active: ja }} href={jaPageHref} aria-label="日本語">JA</a>
+            </div>
+            <a class="download-pill" href="#download">{ja ? "Appをダウンロード" : "Download the app"}</a>
+            <button aria-label={ja ? "メニュー" : "Menu"}>☰</button>
+          </div>
         </div>
       </header>
       <main><slot /></main>
@@ -35,8 +43,17 @@ const nav = ja
           <strong>{lang === "ja" ? "旅で集めた、わたしの世界。" : "The world, collected through travel."}</strong>
           <p>{lang === "ja" ? "Triporyと一緒に、世界をもっと身近に。" : "Bring the world closer with Tripory."}</p>
         </div>
-        <nav><a href={href("privacy")}>{ja ? "プライバシー" : "Privacy"}</a><a href={href("terms")}>{ja ? "利用規約" : "Terms"}</a><a href={href("contact")}>{ja ? "お問い合わせ" : "Contact"}</a></nav>
-        <small>© 2026 Tripory. All rights reserved.</small>
+        <nav>
+          <a href={href("features")}>{ja ? "機能紹介" : "Features"}</a><a href={href("principles")}>{ja ? "こだわり" : "Principles"}</a>
+          <a href={href("screenshots")}>{ja ? "スクリーンショット" : "Screenshots"}</a><a href={href("faq")}>{ja ? "よくある質問" : "FAQ"}</a>
+          <a href={href("updates")}>{ja ? "お知らせ" : "Updates"}</a>
+          <a href={href("privacy")}>{ja ? "プライバシー" : "Privacy"}</a><a href={href("terms")}>{ja ? "利用規約" : "Terms"}</a>
+          <a href="mailto:support@tmkch.io">{ja ? "お問い合わせ" : "Contact"}</a>
+        </nav>
+        <div class="tripory-footer-meta">
+          <p class="made-with">Made with ♡ by Tomokichi</p>
+          <small>© 2026 Tripory</small>
+        </div>
       </footer>
     </div>
     <script is:inline>
