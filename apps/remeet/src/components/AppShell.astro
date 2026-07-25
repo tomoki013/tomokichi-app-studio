@@ -2,13 +2,29 @@
 type Locale = "ja" | "en";
 const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string; page?: string };
 const ja = lang === "ja";
-const base = ja ? "" : "/en";
+/* English is the default locale at the site root; Japanese lives under /ja. */
+const base = ja ? "/ja" : "";
 const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
-const jaPageHref = `/${page}`.replace(/\/$/, "") || "/";
-const enPageHref = (`/en/${page}`.replace(/\/$/, "")) || "/en";
+const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
+const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const labels = ja
-  ? { features: "機能", how: "使い方", pricing: "料金", faq: "よくある質問", store: "App Storeで見る", menu: "メニュー" }
-  : { features: "Features", how: "How it works", pricing: "Pricing", faq: "FAQ", store: "View on App Store", menu: "Menu" };
+  ? { features: "機能", how: "使い方", pricing: "料金", faq: "よくある質問", news: "お知らせ", store: "App Storeで見る", menu: "メニュー" }
+  : { features: "Features", how: "How it works", pricing: "Pricing", faq: "FAQ", news: "News", store: "View on App Store", menu: "Menu" };
+
+/* Footer link columns. [label, url, isExternal?] */
+const footerCols: { title: string; links: [string, string, boolean?][] }[] = ja
+  ? [
+      { title: "プロダクト", links: [["機能", href("features")], ["使い方", href("how-to")], ["スクリーンショット", href("screenshots")], ["ウィジェット", href("widgets")], ["料金", href("pricing")]] },
+      { title: "サポート", links: [["よくある質問", href("faq")], ["お知らせ", href("updates")], ["お問い合わせ", "mailto:support@tmkch.io"]] },
+      { title: "規約", links: [["プライバシーポリシー", href("privacy")], ["利用規約", href("terms")]] },
+      { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io/ja", true], ["ほかのアプリ", "https://tmkch.io/ja/apps", true]] },
+    ]
+  : [
+      { title: "Product", links: [["Features", href("features")], ["How it works", href("how-to")], ["Screenshots", href("screenshots")], ["Widgets", href("widgets")], ["Pricing", href("pricing")]] },
+      { title: "Support", links: [["FAQ", href("faq")], ["News", href("updates")], ["Contact", "mailto:support@tmkch.io"]] },
+      { title: "Legal", links: [["Privacy Policy", href("privacy")], ["Terms of Service", href("terms")]] },
+      { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io", true], ["Other apps", "https://tmkch.io/apps", true]] },
+    ];
 ---
 
 <!doctype html>
@@ -24,13 +40,13 @@ const labels = ja
     <div class="mock-page">
       <header class="mock-header">
         <div class="mock-header-inner">
-          <a class="mock-logo" href={ja ? "/" : "/en"}><img src="/assets/remeet-icon.png" alt="" /> Remeet</a>
+          <a class="mock-logo" href={ja ? "/ja" : "/"}><img src="/assets/remeet-icon.png" alt="" /> Remeet</a>
           <nav aria-label="Main navigation">
             <a class:list={{ active: page === "features" }} href={href("features")}>{labels.features}</a>
             <a class:list={{ active: page === "how-to" }} href={href("how-to")}>{labels.how}</a>
             <a class:list={{ active: page === "pricing" }} href={href("pricing")}>{labels.pricing}</a>
             <a class:list={{ active: page === "faq" }} href={href("faq")}>{labels.faq}</a>
-            <a class:list={{ active: page === "updates" }} href={href("updates")}>{ja ? "アップデート" : "Updates"}</a>
+            <a class:list={{ active: page === "updates" }} href={href("updates")}>{labels.news}</a>
           </nav>
           <div class="mock-actions">
             <div class="lang-switch">
@@ -39,22 +55,29 @@ const labels = ja
               <a class:list={{ active: ja }} href={jaPageHref} aria-label="日本語">JA</a>
             </div>
             <a class="appstore-pill" href="#download">{labels.store}</a>
-            <button class="mobile-menu" aria-label={labels.menu}>☰</button>
+            <button class="mobile-menu" type="button" aria-label={labels.menu}>☰</button>
           </div>
         </div>
       </header>
       <main><slot /></main>
       <footer class="mock-footer">
-        <a class="mock-logo" href={ja ? "/" : "/en"}><img src="/assets/remeet-icon.png" alt="" /> Remeet</a>
-        <nav>
-          <a href={href("features")}>{labels.features}</a><a href={href("how-to")}>{labels.how}</a>
-          <a href={href("pricing")}>{labels.pricing}</a><a href={href("faq")}>{labels.faq}</a>
-          <a href={href("privacy")}>{ja ? "プライバシー" : "Privacy"}</a><a href={href("terms")}>{ja ? "利用規約" : "Terms"}</a>
-          <a href="mailto:support@tmkch.io">{ja ? "お問い合わせ" : "Contact"}</a>
-        </nav>
-        <div class="mock-footer-meta">
-          <p class="made-with">Made with ♡ by Tomokichi</p>
+        <div class="footer-brand">
+          <a class="mock-logo" href={ja ? "/ja" : "/"}><img src="/assets/remeet-icon.png" alt="" /> Remeet</a>
+          <p>{ja ? "再会までの時間を、特別な思い出に。" : "Make the wait part of your story."}</p>
+        </div>
+        <div class="footer-cols">
+          {footerCols.map((col) => (
+            <nav aria-label={col.title}>
+              <h2>{col.title}</h2>
+              {col.links.map(([label, url, external]) => (
+                <a href={url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>{label}</a>
+              ))}
+            </nav>
+          ))}
+        </div>
+        <div class="footer-base">
           <small>© 2026 Remeet</small>
+          <p class="made-with">Made with ♡ by Tomokichi</p>
         </div>
       </footer>
     </div>
@@ -82,11 +105,13 @@ const labels = ja
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const items = document.querySelectorAll(
-          ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro), .home-notice",
+          ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro):not(.page-hero), .home-notice",
         );
 
         if (reduceMotion || !("IntersectionObserver" in window)) {
-          items.forEach((item) => item.classList.add("is-visible"));
+          items.forEach((item) => {
+            item.classList.add("is-visible");
+          });
           return;
         }
 
@@ -106,7 +131,9 @@ const labels = ja
           },
           { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
         );
-        items.forEach((item) => observer.observe(item));
+        items.forEach((item) => {
+          observer.observe(item);
+        });
       })();
     </script>
   </body>

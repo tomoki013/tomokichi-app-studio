@@ -1,7 +1,8 @@
 ---
 import DocPage from "../components/DocPage.astro";
 import { legal } from "../lib/copy";
-const lang = "ja" as const;
+
+const lang = "en" as const;
 ---
 
 <DocPage lang={lang} path="/terms" metaTitle={legal.terms.metaTitle[lang]} heading={legal.terms.heading[lang]}>

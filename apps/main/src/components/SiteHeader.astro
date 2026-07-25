@@ -11,12 +11,12 @@ interface Props {
   current?: string;
 }
 const { lang, path, current } = Astro.props;
-const base = lang === "ja" ? "" : "/en";
+const base = lang === "ja" ? "/ja" : "";
 const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
 ---
 
 <header class="site-header shell">
-  <a class="brand" href={lang === "ja" ? "/" : "/en"}>tomokichi</a>
+  <a class="brand" href={lang === "ja" ? "/ja" : "/"}>Tomokichi</a>
 
   <nav aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
     {nav.map((item) => (

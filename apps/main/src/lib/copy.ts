@@ -10,14 +10,68 @@ export const nav: { label: L; href: string; match: string }[] = [
   { label: { ja: "サポート", en: "Support" }, href: "/support", match: "support" },
 ];
 
-export const footer = {
-  tagline: { ja: "心地よいプロダクトを、ひとつずつ。", en: "Comfortable products, made one at a time." } as L,
-  links: [
-    { label: { ja: "アプリ", en: "Apps" } as L, href: "/apps" },
-    { label: { ja: "私について", en: "About" } as L, href: "/about" },
-    { label: { ja: "サポート", en: "Support" } as L, href: "/support" },
-    { label: { ja: "プライバシー", en: "Privacy" } as L, href: "/privacy" },
-    { label: { ja: "利用規約", en: "Terms" } as L, href: "/terms" },
+export interface FooterLink {
+  label: L;
+  href: string;
+  /** External links open in a new tab and skip the locale prefix. */
+  external?: boolean;
+}
+
+export const footer: {
+  tagline: L;
+  columns: { title: L; links: FooterLink[] }[];
+  copyright: string;
+} = {
+  tagline: {
+    ja: "心地よいプロダクトを、ひとつずつ。",
+    en: "Comfortable products, made one at a time.",
+  } as L,
+  columns: [
+    {
+      title: { ja: "サイト", en: "Site" } as L,
+      links: [
+        { label: { ja: "アプリ", en: "Apps" } as L, href: "/apps" },
+        { label: { ja: "私について", en: "About" } as L, href: "/about" },
+        { label: { ja: "サポート", en: "Support" } as L, href: "/support" },
+      ],
+    },
+    {
+      title: { ja: "アプリ", en: "Apps" } as L,
+      links: [
+        {
+          label: { ja: "Remeet", en: "Remeet" } as L,
+          href: "https://remeet.tmkch.io",
+          external: true,
+        },
+        {
+          label: { ja: "Tripory", en: "Tripory" } as L,
+          href: "https://tripory.tmkch.io",
+          external: true,
+        },
+      ],
+    },
+    {
+      title: { ja: "規約", en: "Legal" } as L,
+      links: [
+        { label: { ja: "プライバシー", en: "Privacy" } as L, href: "/privacy" },
+        { label: { ja: "利用規約", en: "Terms" } as L, href: "/terms" },
+      ],
+    },
+    {
+      title: { ja: "連絡先", en: "Contact" } as L,
+      links: [
+        {
+          label: { ja: "お問い合わせ", en: "Email us" } as L,
+          href: "mailto:support@tmkch.io",
+          external: true,
+        },
+        {
+          label: { ja: "tomokichi.dev", en: "tomokichi.dev" } as L,
+          href: "https://tomokichi.dev",
+          external: true,
+        },
+      ],
+    },
   ],
   copyright: "© 2026 Tomokichi. All rights reserved.",
 };
@@ -67,11 +121,14 @@ export const principlesHeading: L = { ja: "つくるときに考えているこ�
 
 export const home = {
   metaTitle: {
-    ja: "tomokichi — 気づかないところまで、丁寧につくる。",
-    en: "tomokichi — Crafted carefully, down to the details.",
+    ja: "Tomokichi — 気づかないところまで、丁寧につくる。",
+    en: "Tomokichi — Crafted carefully, down to the details.",
   } as L,
   hero: {
-    heading: { ja: "気づかないところまで、\n丁寧につくる。", en: "Crafted carefully,\ndown to the details." } as L,
+    heading: {
+      ja: "気づかないところまで、\n丁寧につくる。",
+      en: "Crafted carefully,\ndown to the details.",
+    } as L,
     body: {
       ja: "Tomokichiは、Webサイトやアプリを通して、\n使う人に余計な負荷をかけず、\n自然に便利を受け取れる体験をつくっています。\n\n必要な機能を、必要な密度で。\n細かな気配りと、少しの遊び心を添えて、\nひとつずつ形にしています。",
       en: "Through websites and apps, Tomokichi builds\nexperiences that let people receive usefulness naturally,\nwithout extra effort.\n\nThe features you need, at the density they need.\nWith quiet attention and a little playfulness,\neach one is shaped one at a time.",
@@ -101,13 +158,16 @@ export const home = {
 /** About page --------------------------------------------------------------- */
 
 export const about = {
-  metaTitle: { ja: "私について — tomokichi", en: "About — tomokichi" } as L,
+  metaTitle: { ja: "私について — Tomokichi", en: "About — Tomokichi" } as L,
   metaDescription: {
     ja: "Tomokichiは、使う人に余計な負荷をかけない体験を、ひとつずつ形にしています。",
     en: "Tomokichi shapes experiences that don’t put extra load on the people who use them, one at a time.",
   } as L,
   hero: {
-    heading: { ja: "気づかないところまで、\n丁寧につくる。", en: "Crafted carefully,\ndown to the details." } as L,
+    heading: {
+      ja: "気づかないところまで、\n丁寧につくる。",
+      en: "Crafted carefully,\ndown to the details.",
+    } as L,
     body: {
       ja: "Tomokichiは、Webサイトやアプリを通して、\n使う人に余計な負荷をかけない体験をつくっています。\n\n便利さの先に、静かな心地よさが残ること。\nそれを、ひとつずつ形にしています。",
       en: "Through websites and apps, Tomokichi builds\nexperiences that don’t put extra load on people.\n\nA quiet comfort left beyond convenience —\nthat is what I shape, one at a time.",
@@ -133,15 +193,24 @@ export const about = {
       en: "How things are expressed changes\nwith the mood and technology of the time.\n\nSome periods lean into warmth and quiet;\nother times a more functional, denser form\nsuits better.\n\nWhat doesn’t change is careful engineering,\nquiet attention, and never handing extra\ncomplexity to the people who use it.\n\nPlayfulness, too — never the lead — is\nkept somewhere along the way.",
     } as L,
   },
-  making: { heading: { ja: "つくっているもの", en: "What I’m making" } as L, all: { ja: "すべてのアプリを見る", en: "See all apps" } as L },
+  making: {
+    heading: { ja: "つくっているもの", en: "What I’m making" } as L,
+    all: { ja: "すべてのアプリを見る", en: "See all apps" } as L,
+  },
   bottom: {
     apps: {
       heading: { ja: "アプリを見る", en: "See the apps" } as L,
-      body: { ja: "公開中のものから、\nまだ構想の途中にあるものまで。", en: "From what’s already out\nto what’s still taking shape." } as L,
+      body: {
+        ja: "公開中のものから、\nまだ構想の途中にあるものまで。",
+        en: "From what’s already out\nto what’s still taking shape.",
+      } as L,
     },
     support: {
       heading: { ja: "サポートを見る", en: "Get support" } as L,
-      body: { ja: "アプリについてのよくある質問や、\nお問い合わせはこちら。", en: "Common questions about the apps\nand how to get in touch." } as L,
+      body: {
+        ja: "アプリについてのよくある質問や、\nお問い合わせはこちら。",
+        en: "Common questions about the apps\nand how to get in touch.",
+      } as L,
     },
   },
 };
@@ -149,7 +218,7 @@ export const about = {
 /** Apps page ---------------------------------------------------------------- */
 
 export const appsPage = {
-  metaTitle: { ja: "つくっているもの。 — tomokichi", en: "What I’m making — tomokichi" } as L,
+  metaTitle: { ja: "つくっているもの。 — Tomokichi", en: "What I’m making — Tomokichi" } as L,
   metaDescription: {
     ja: "旅、記録、日常の道具。使う人が自然に便利を受け取れることを大切にしています。",
     en: "Travel, records, everyday tools — made so people receive usefulness naturally.",
@@ -182,7 +251,7 @@ export const appsPage = {
 /** Support / legal ---------------------------------------------------------- */
 
 export const support = {
-  metaTitle: { ja: "サポート — tomokichi", en: "Support — tomokichi" } as L,
+  metaTitle: { ja: "サポート — Tomokichi", en: "Support — Tomokichi" } as L,
   heading: { ja: "サポート", en: "Support" } as L,
   body: {
     ja: "各アプリの使い方や不具合のご報告は、\nそれぞれのアプリサイトのお問い合わせ、\nまたは support@tmkch.io までご連絡ください。",
@@ -197,7 +266,7 @@ export const support = {
 
 export const legal = {
   privacy: {
-    metaTitle: { ja: "プライバシー — tomokichi", en: "Privacy — tomokichi" } as L,
+    metaTitle: { ja: "プライバシー — Tomokichi", en: "Privacy — Tomokichi" } as L,
     heading: { ja: "プライバシーについて", en: "Privacy" } as L,
     body: {
       ja: "各アプリのプライバシーポリシーは、それぞれのアプリサイトに掲載しています。\n本サイト（tmkch.io）は、閲覧のための一般的な情報のみを扱います。",
@@ -205,7 +274,7 @@ export const legal = {
     } as L,
   },
   terms: {
-    metaTitle: { ja: "利用規約 — tomokichi", en: "Terms — tomokichi" } as L,
+    metaTitle: { ja: "利用規約 — Tomokichi", en: "Terms — Tomokichi" } as L,
     heading: { ja: "利用規約について", en: "Terms" } as L,
     body: {
       ja: "各アプリの利用規約は、それぞれのアプリサイトに掲載しています。\n本サイト（tmkch.io）は、つくっているものを紹介するためのものです。",

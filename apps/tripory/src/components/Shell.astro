@@ -2,13 +2,28 @@
 type Locale = "ja" | "en";
 const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string; page?: string };
 const ja = lang === "ja";
-const base = ja ? "" : "/en";
+const base = ja ? "/ja" : "";
 const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
-const jaPageHref = `/${page}`.replace(/\/$/, "") || "/";
-const enPageHref = (`/en/${page}`.replace(/\/$/, "")) || "/en";
+const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
+const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const nav = ja
   ? [["features", "機能紹介"], ["principles", "こだわり"], ["screenshots", "スクリーンショット"], ["faq", "よくある質問"], ["updates", "お知らせ"]]
-  : [["features", "Features"], ["principles", "Principles"], ["screenshots", "Screenshots"], ["faq", "FAQ"], ["updates", "Updates"]];
+  : [["features", "Features"], ["principles", "Principles"], ["screenshots", "Screenshots"], ["faq", "FAQ"], ["updates", "News"]];
+
+/* Footer link columns. [label, url, isExternal?] */
+const footerCols: { title: string; links: [string, string, boolean?][] }[] = ja
+  ? [
+      { title: "プロダクト", links: [["機能紹介", href("features")], ["こだわり", href("principles")], ["スクリーンショット", href("screenshots")]] },
+      { title: "サポート", links: [["よくある質問", href("faq")], ["お知らせ", href("updates")], ["お問い合わせ", "mailto:support@tmkch.io"]] },
+      { title: "規約", links: [["プライバシーポリシー", href("privacy")], ["利用規約", href("terms")]] },
+      { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io/ja", true], ["ほかのアプリ", "https://tmkch.io/ja/apps", true]] },
+    ]
+  : [
+      { title: "Product", links: [["Features", href("features")], ["Principles", href("principles")], ["Screenshots", href("screenshots")]] },
+      { title: "Support", links: [["FAQ", href("faq")], ["News", href("updates")], ["Contact", "mailto:support@tmkch.io"]] },
+      { title: "Legal", links: [["Privacy Policy", href("privacy")], ["Terms of Service", href("terms")]] },
+      { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io", true], ["Other apps", "https://tmkch.io/apps", true]] },
+    ];
 ---
 
 <!doctype html>
@@ -24,7 +39,7 @@ const nav = ja
     <div class="tripory-page">
       <header class="tripory-header">
         <div class="tripory-header-inner">
-          <a class="tripory-logo" href={ja ? "/" : "/en"}>TRIPORY</a>
+          <a class="tripory-logo" href={ja ? "/ja" : "/"}>TRIPORY</a>
           <nav>{nav.map(([slug, label]) => <a class:list={{ active: page === slug }} href={href(slug)}>{label}</a>)}</nav>
           <div class="header-actions">
             <div class="lang-switch">
@@ -33,26 +48,29 @@ const nav = ja
               <a class:list={{ active: ja }} href={jaPageHref} aria-label="日本語">JA</a>
             </div>
             <a class="download-pill" href="#download">{ja ? "Appをダウンロード" : "Download the app"}</a>
-            <button aria-label={ja ? "メニュー" : "Menu"}>☰</button>
+          <button type="button" aria-label={ja ? "メニュー" : "Menu"}>☰</button>
           </div>
         </div>
       </header>
       <main><slot /></main>
       <footer class="tripory-footer">
-        <div>
-          <strong>{lang === "ja" ? "旅で集めた、わたしの世界。" : "The world, collected through travel."}</strong>
-          <p>{lang === "ja" ? "Triporyと一緒に、世界をもっと身近に。" : "Bring the world closer with Tripory."}</p>
+        <div class="footer-brand">
+          <a class="tripory-logo" href={ja ? "/ja" : "/"}><img src="/assets/tripory-icon.png" alt="" /> TRIPORY</a>
+          <p>{ja ? "旅で集めた、わたしの世界。" : "The world, collected through travel."}</p>
         </div>
-        <nav>
-          <a href={href("features")}>{ja ? "機能紹介" : "Features"}</a><a href={href("principles")}>{ja ? "こだわり" : "Principles"}</a>
-          <a href={href("screenshots")}>{ja ? "スクリーンショット" : "Screenshots"}</a><a href={href("faq")}>{ja ? "よくある質問" : "FAQ"}</a>
-          <a href={href("updates")}>{ja ? "お知らせ" : "Updates"}</a>
-          <a href={href("privacy")}>{ja ? "プライバシー" : "Privacy"}</a><a href={href("terms")}>{ja ? "利用規約" : "Terms"}</a>
-          <a href="mailto:support@tmkch.io">{ja ? "お問い合わせ" : "Contact"}</a>
-        </nav>
-        <div class="tripory-footer-meta">
-          <p class="made-with">Made with ♡ by Tomokichi</p>
+        <div class="footer-cols">
+          {footerCols.map((col) => (
+            <nav aria-label={col.title}>
+              <h2>{col.title}</h2>
+              {col.links.map(([label, url, external]) => (
+                <a href={url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>{label}</a>
+              ))}
+            </nav>
+          ))}
+        </div>
+        <div class="footer-base">
           <small>© 2026 Tripory</small>
+          <p class="made-with">Made with ♡ by Tomokichi</p>
         </div>
       </footer>
     </div>

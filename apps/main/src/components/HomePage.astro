@@ -1,18 +1,18 @@
 ---
 import type { Locale } from "../data/apps";
 import { featuredApps } from "../data/apps";
-import { home, principles, principlesHeading } from "../lib/copy";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "./SiteHeader.astro";
-import SiteFooter from "./SiteFooter.astro";
-import SectionHeader from "./SectionHeader.astro";
-import ArrowLink from "./ArrowLink.astro";
+import { home, principles, principlesHeading } from "../lib/copy";
 import AppCard from "./AppCard.astro";
+import ArrowLink from "./ArrowLink.astro";
 import PrincipleItem from "./PrincipleItem.astro";
+import SectionHeader from "./SectionHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
 
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
-const p = (path: string) => (ja ? path : `/en${path === "/" ? "" : path}`);
+const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
 ---
 
 <BaseLayout lang={lang} title={home.metaTitle[lang]} description={home.hero.body[lang].replaceAll("\n", " ")}>

@@ -1,9 +1,10 @@
 ---
 import Shell from "./Shell.astro";
+
 type Locale = "ja" | "en";
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
-const base = ja ? "" : "/en";
+const base = ja ? "/ja" : "";
 const c = ja
   ? {
       title: "Tripory",
@@ -86,7 +87,7 @@ const screens = [
   <section class="tripory-cta" id="download" data-reveal>
     <img src="/assets/mountain-lake.png" alt="" />
     <div><h2>{c.cta}</h2><p>{c.ctaSub}</p></div>
-    <div class="store-row"><a href="#">●　App Store</a></div>
+      <div class="store-row"><a href="#download">●　App Store</a></div>
     <div class="qr">▦</div>
   </section>
 </Shell>

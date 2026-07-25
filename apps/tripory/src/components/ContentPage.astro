@@ -1,5 +1,6 @@
 ---
 import Shell from "./Shell.astro";
+
 type Locale = "ja" | "en";
 type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "updates";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
@@ -11,7 +12,7 @@ const titleMap: Record<Page, [string, string]> = {
   faq: ["よくある質問", "Frequently asked questions"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "Updates"],
+  updates: ["お知らせ", "News"],
 };
 const subtitleMap: Partial<Record<Page, [string, string]>> = {
   features: ["旅のすべてを、ひとつのアプリに。", "Everything about your travels, in one app."],
@@ -138,7 +139,7 @@ const legal = {
       {(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月24日／最終更新日：2026年7月24日" : "Effective: July 24, 2026 / Last updated: July 24, 2026"}</small>}
     </header>
 
-    {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body]) => <article><span>{icon}</span><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div><a class="orange-cta" href={ja ? "/screenshots" : "/en/screenshots"}>{ja ? "スクリーンショットを見る" : "View screenshots"} →</a></>}
+    {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body]) => <article><span>{icon}</span><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div><a class="orange-cta" href={ja ? "/ja/screenshots" : "/screenshots"}>{ja ? "スクリーンショットを見る" : "View screenshots"} →</a></>}
 
     {page === "principles" && <div class="how-page-list">{principles.map(([heading, body, image], i) => <article><b>0{i + 1}</b><div><h2>{heading}</h2><p>{body}</p></div><img src={image} alt="" /></article>)}</div>}
 

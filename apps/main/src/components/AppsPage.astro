@@ -1,16 +1,16 @@
 ---
 import type { Locale } from "../data/apps";
 import { orderedApps } from "../data/apps";
-import { appsPage } from "../lib/copy";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "./SiteHeader.astro";
-import SiteFooter from "./SiteFooter.astro";
-import ArrowLink from "./ArrowLink.astro";
+import { appsPage } from "../lib/copy";
 import AppCard from "./AppCard.astro";
+import ArrowLink from "./ArrowLink.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
 
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
-const p = (path: string) => (ja ? path : `/en${path === "/" ? "" : path}`);
+const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
 const visualIcons = ["remeet", "tripory", "soonish", "tana"];
 ---
 
@@ -67,9 +67,9 @@ const visualIcons = ["remeet", "tripory", "soonish", "tana"];
         if (match) shown++;
       });
       if (empty) empty.hidden = shown !== 0;
-      bar.querySelectorAll("button").forEach((b) =>
-        b.setAttribute("aria-current", String(b.getAttribute("data-filter") === key)),
-      );
+      bar.querySelectorAll("button").forEach((b) => {
+        b.setAttribute("aria-current", String(b.getAttribute("data-filter") === key));
+      });
       const url = new URL(location.href);
       if (key === "all") url.searchParams.delete("status");
       else url.searchParams.set("status", key);

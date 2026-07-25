@@ -4,7 +4,7 @@ import AppShell from "./AppShell.astro";
 type Locale = "ja" | "en";
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
-const base = ja ? "" : "/en";
+const base = ja ? "/ja" : "";
 const c = ja
   ? {
       title: "再会までの時間を、特別な思い出に。",
@@ -78,9 +78,16 @@ const steps = ja
     <div class="home-copy">
       <h1>{c.title}</h1>
       <p>{c.body.split("\n").map((line) => <>{line}<br /></>)}</p>
-      <a class="download-badge" href="#">● <span>{c.store}</span></a>
+      <a class="download-badge" href="#download">● <span>{c.store}</span></a>
     </div>
-    <img class="home-phone" src="/assets/app-phone.png" alt="Remeet countdown app screen" />
+    <img
+      class="home-phone"
+      src="/assets/app-phone.png"
+      alt="Remeetのホーム画面"
+      width="941"
+      height="1672"
+      fetchpriority="high"
+    />
     <div class="home-route" aria-hidden="true"><i></i><b>✈</b><i></i></div>
     <a class="home-scroll" href="#notice"><em>Scroll</em><span class="scroll-track"><i></i></span></a>
     <aside class="home-notice" id="notice"><strong>{ja ? "お知らせ" : "News"}</strong><time>2026.07.24</time><span>{c.notice}</span><a href={`${base}/updates`}>→</a></aside>
@@ -90,7 +97,23 @@ const steps = ja
     <section class="features landing-pad" id="features">
       <div class="ornate-title"><span></span><div><h2>{c.features}</h2><p>{c.featureSub}</p></div><span></span></div>
       <div class="feature-grid">
-        {features.map(([title, body], i) => <article><h3>{title}</h3><p>{body}</p><img src={`/assets/feature-${featureImages[i]}.png`} alt="" /></article>)}
+        {features.map(([title, body], i) => (
+          <article>
+            <div class="feature-copy">
+              <small>{String(i + 1).padStart(2, "0")}</small>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </div>
+            <figure class:list={["feature-shot", featureImages[i] === "widget" && "is-wide"]}>
+              <img
+                src={`/assets/feature-${featureImages[i]}.png`}
+                alt={title}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </article>
+        ))}
       </div>
     </section>
 
@@ -101,8 +124,33 @@ const steps = ja
       </div>
     </section>
 
-    <section class="widgets landing-pad" id="widgets"><div><h2>{c.widgetTitle}</h2><p>{c.widgetBody}</p></div><img src="/assets/widgets.png" alt="Remeet widgets" /></section>
-    <section class="story landing-pad"><div><h2>{c.storyTitle.split("\n").map(line => <>{line}<br /></>)}</h2><p>{c.storyBody.split("\n").map(line => <>{line}<br /></>)}</p></div><img src="/assets/couple.png" alt="" /><div class="flight" aria-hidden="true">········· ♡ ········· ✈</div></section>
-    <section class="download landing-pad" id="download"><div><h2>{c.cta}</h2><p>{c.ctaSub}</p></div><div class="buttons"><a class="store" href="#">●　App Store</a><a class="secondary" href={`${base}/how-to`}>▷　{c.howLink}</a></div></section>
+    <section class="widgets landing-pad" id="widgets">
+      <div><h2>{c.widgetTitle}</h2><p>{c.widgetBody}</p></div>
+      <div class="widget-art">
+        <img
+          src="/assets/widgets.png"
+          alt="Remeetのホーム画面とウィジェット"
+          width="1448"
+          height="1086"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </section>
+    <section class="story landing-pad">
+      <div><h2>{c.storyTitle.split("\n").map(line => <>{line}<br /></>)}</h2><p>{c.storyBody.split("\n").map(line => <>{line}<br /></>)}</p></div>
+      <div class="story-art">
+        <img
+          src="/assets/couple.png"
+          alt="夕暮れの海を眺めるふたりを描いたRemeetの開始画面"
+          width="941"
+          height="1672"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="flight" aria-hidden="true">········· ♡ ········· ✈</div>
+    </section>
+    <section class="download landing-pad" id="download"><div><h2>{c.cta}</h2><p>{c.ctaSub}</p></div><div class="buttons"><a class="store" href="#download">●　App Store</a><a class="secondary" href={`${base}/how-to`}>▷　{c.howLink}</a></div></section>
   </div>
 </AppShell>

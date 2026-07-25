@@ -1,17 +1,17 @@
 ---
 import type { Locale } from "../data/apps";
 import { orderedApps } from "../data/apps";
-import { about, principles, principlesHeading } from "../lib/copy";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "./SiteHeader.astro";
-import SiteFooter from "./SiteFooter.astro";
-import ArrowLink from "./ArrowLink.astro";
+import { about, principles, principlesHeading } from "../lib/copy";
 import AppIcon from "./AppIcon.astro";
+import ArrowLink from "./ArrowLink.astro";
 import PrincipleItem from "./PrincipleItem.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
 
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
-const p = (path: string) => (ja ? path : `/en${path === "/" ? "" : path}`);
+const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
 
 const links = {
   website: "https://tomokichi.dev",

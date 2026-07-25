@@ -10,7 +10,7 @@ interface Props {
   variant?: "compact" | "large";
 }
 const { app, lang, variant = "compact" } = Astro.props;
-const appsHref = lang === "ja" ? "/apps" : "/en/apps";
+const appsHref = lang === "ja" ? "/ja/apps" : "/apps";
 const compactHref = app.url ?? appsHref;
 const externalCompact = Boolean(app.url);
 ---
