@@ -6,11 +6,11 @@
   "scripts": {
     "dev": "wrangler dev --port 8787",
     "build": "wrangler deploy --dry-run",
-    "check": "tsc --noEmit",
+    "check": "wrangler types --env-interface CloudflareBindings --strict-vars=false && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "deploy": "wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings --strict-vars=false"
   },
   "dependencies": {
     "hono": "^4.12.31"
