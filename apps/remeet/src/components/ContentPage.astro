@@ -1,4 +1,5 @@
 ---
+import { supportHref } from "../lib/links";
 import AppShell from "./AppShell.astro";
 
 type Locale = "ja" | "en";
@@ -183,15 +184,15 @@ const legal = {
         ["3. 適用範囲", "本ポリシーは、本アプリの利用および本ウェブサイトの閲覧に関して適用されます。"],
         ["4. 基本方針", "本アプリはアカウント登録を必要とせず、利用者が入力・撮影した情報は、原則として利用者の端末内にのみ保存されます。運営者は、利用者の記録内容を収集・閲覧できるサーバーを保有しておらず、広告配信や行動解析のためのSDKは組み込んでいません。"],
         ["5. 端末内に保存する情報", "本アプリは、利用者が入力または選択した次の情報を、端末内のデータベースおよびApp Group領域に保存します。\n\n・再会予定の名称、離れ始めた日時、再会日時、メモ\n・自分・相手・待ち合わせ場所の地名、緯度経度、タイムゾーン\n・「会ったらやりたいこと」の項目と完了状態\n・待っている間の記録および再会記録の写真、日付、メモ、感想、5段階評価\n・通知のオン／オフなどのアプリ設定\n\nこれらはウィジェット表示のため同一開発者のApp Group内で共有されますが、端末外へは送信されません。"],
-        ["6. 外部サーバーへ送信される情報", "本アプリが外部と通信を行うのは、次の場合に限られます。いずれも再会予定の名称や写真、メモなど利用者の記録内容は含みません。\n\n(1) 天気の取得：登録された場所の緯度経度を、天気情報の取得のためOpen-Meteo（open-meteo.com）へ送信します。氏名や端末識別子は送信しません。\n\n(2) 地名の検索・現在地の地名変換：入力された検索語または取得した座標を、Appleのジオコーディング機能へ送信します。取扱いはAppleのプライバシーポリシーに従います。\n\n(3) 法的文書の表示：プライバシーポリシー・利用規約の最新版を表示するため、本ウェブサイトへ通信します。"],
+        ["6. 外部サーバーへ送信される情報", "本アプリが外部と通信を行うのは、次の場合に限られます。通常のアプリ利用では、再会予定、写真、アルバム、メモ、現在地、やりたいことリストなどの記録内容は原則として端末内に保存されます。\n\n(1) 天気の取得：登録された場所の緯度経度を、天気情報の取得のためOpen-Meteo（open-meteo.com）へ送信します。氏名や端末識別子は送信しません。\n\n(2) 地名の検索・現在地の地名変換：入力された検索語または取得した座標を、Appleのジオコーディング機能へ送信します。取扱いはAppleのプライバシーポリシーに従います。\n\n(3) 法的文書の表示：プライバシーポリシー・利用規約の最新版を表示するため、本ウェブサイトへ通信します。\n\n(4) お問い合わせ：利用者が共通お問い合わせフォームを明示的に送信した場合に限り、名前（入力した場合）、メールアドレス、問い合わせ内容、アプリバージョン、OSバージョン、表示言語、問い合わせ識別子、送信日時等を、回答、不具合調査、サービス改善、不正利用防止のため送信します。写真、再会予定の内容、現在地、アルバム、メモ、やりたいことリストは問い合わせ時にも送信しません。"],
         ["7. 端末の機能へのアクセス", "本アプリは次の機能を、利用者の許可を得たうえで、以下の目的にのみ使用します。許可はiOSの「設定」からいつでも変更・取消できます。\n\n・カメラ：再会の瞬間を写真として残すために使用します。\n・写真ライブラリ：再会までの思い出と再会の写真を残すために使用します。\n・位置情報：現在地を再会予定の場所として簡単に入力するために使用します。「現在地を使う」を押したときにのみ一度だけ取得し、継続的な追跡は行いません。\n・カレンダー：再会予定をカレンダーへ追加するために使用します。利用者が明示的に操作した場合にのみ書き込み、既存の予定を読み取ることはありません。"],
-        ["8. 第三者提供", "運営者は、利用者の情報を第三者へ販売、貸与または提供しません。ただし、法令に基づく開示請求があった場合を除きます。"],
-        ["9. 保存期間と削除", "端末内の情報は、利用者が削除するまで保存されます。個々の記録は各画面から、すべてのデータはアプリ内の設定画面から削除できます。本アプリをアンインストールした場合、端末内に保存された情報は削除され、運営者が復旧することはできません。"],
+        ["8. 外部サービスと第三者提供", "運営者は、利用者の情報を販売または貸与しません。問い合わせ受付APIの実行基盤としてCloudflare Workersを、メール配送のためResendを利用し、問い合わせに必要な情報は各社の方針に従って処理されます。法令に基づく開示請求があった場合を除き、その他の第三者へ提供しません。"],
+        ["9. 保存期間と削除", "端末内の情報は、利用者が削除するまで保存されます。個々の記録は各画面から、すべてのデータはアプリ内の設定画面から削除できます。本アプリをアンインストールした場合、端末内に保存された情報は削除され、運営者が復旧することはできません。お問い合わせは専用データベースへ保存せず、メールとして受信します。"],
         ["10. データの持ち出し", "アプリ内の設定画面から、保存されている情報をJSON形式で書き出すことができます。書き出したファイルの管理は利用者の責任において行ってください。"],
         ["11. 安全管理措置", "本アプリはアカウント登録を必要としないため、パスワードなどの認証情報を取り扱いません。端末内の情報は、iOSの標準的なセキュリティ機構のもとで保護されます。"],
         ["12. 未成年者の利用", "未成年の方が本アプリを利用する場合は、保護者の同意を得たうえでご利用ください。"],
         ["13. 本ポリシーの変更", "法令の改正または本アプリの機能変更に伴い、本ポリシーを変更する場合があります。重要な変更を行う場合は、本アプリ内または本ウェブサイトにて周知します。変更後の内容は、掲載された時点から適用されます。"],
-        ["14. お問い合わせ", "本ポリシーおよび個人情報の取扱いに関するお問い合わせは、support@tmkch.io までご連絡ください。"],
+        ["14. お問い合わせ", "本ポリシーおよび個人情報の取扱いに関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。フォームを送信しない限り、問い合わせ情報は送信されません。"],
       ]
     : [
         ["1. Introduction", "This policy sets out how the operator (Tomokichi) handles user information across the iOS application \"Remeet\" and this website (together, the \"Service\"). This website is the authoritative version; the App refers back to it."],
@@ -199,15 +200,15 @@ const legal = {
         ["3. Scope", "This policy applies to use of the app and browsing of this website."],
         ["4. Basic policy", "The app does not require account registration. Information you enter or capture is stored only on your device, in principle. The operator does not operate any server that can collect or view your records, and no advertising or analytics SDKs are included."],
         ["5. Information stored on your device", "The app stores the following information you enter or choose, in an on-device database and an App Group container.\n\n・Reunion plan names, the date you started being apart, the reunion date, and notes\n・Place names, coordinates and time zones for you, your partner, and the meeting place\n・Items on your shared wish list and their completed status\n・Photos, dates, notes, impressions and a 5-star rating for waiting-period and reunion records\n・App settings such as notification on/off\n\nThis data is shared within the developer's App Group so it can appear in widgets, but it is never sent off your device."],
-        ["6. Information sent to external servers", "The app communicates externally only in the following cases. None of these include your recorded content such as plan names, photos or notes.\n\n(1) Weather: the coordinates of a saved place are sent to Open-Meteo (open-meteo.com) to fetch current weather. No name or device identifier is sent.\n\n(2) Place search and reverse geocoding: a search term you enter, or coordinates obtained from the device, are sent to Apple's geocoding service. Handling follows Apple's own privacy policy.\n\n(3) Legal documents: the app connects to this website to display the latest Privacy Policy and Terms of Service."],
+        ["6. Information sent to external servers", "During normal app use, reunion plans, photos, albums, notes, your current location, and wish-list items remain stored on your device in principle. The app communicates externally only in these cases:\n\n(1) Weather: the coordinates of a saved place are sent to Open-Meteo (open-meteo.com) to fetch current weather. No name or device identifier is sent.\n\n(2) Place search and reverse geocoding: a search term you enter, or coordinates obtained from the device, are sent to Apple's geocoding service. Handling follows Apple's own privacy policy.\n\n(3) Legal documents: the app connects to this website to display the latest Privacy Policy and Terms of Service.\n\n(4) Support: only when you explicitly submit the shared support form, your name (if provided), email address, message, app version, OS version, display language, enquiry identifier, submission time, and related details are sent so we can respond, investigate issues, improve the service, and prevent abuse. Photos, reunion plan details, your current location, albums, notes, and wish-list items are not sent with a support enquiry."],
         ["7. Access to device features", "With your permission, the app uses the following features only for the stated purpose. You can change or revoke permission at any time from iOS Settings.\n\n・Camera: to capture photos of the reunion moment.\n・Photo library: to save memories and reunion photos.\n・Location: to make it easy to enter your current place as a reunion location. It is read once, only when you tap \"Use current location\", and is never tracked continuously.\n・Calendar: to add a reunion plan to your calendar. It only writes an entry when you explicitly choose to, and never reads existing events."],
-        ["8. Disclosure to third parties", "The operator does not sell, lend or otherwise disclose your information to third parties, except where required by law."],
-        ["9. Retention and deletion", "Information stored on your device is kept until you delete it. Individual records can be deleted from their respective screens, and all data can be deleted from the app's settings screen. Uninstalling the app deletes the information stored on your device, and the operator cannot recover it."],
+        ["8. Service providers and disclosure", "The operator does not sell or lend your information. Cloudflare Workers provides the support API infrastructure, and Resend delivers support email; information needed for an enquiry is processed under each provider's policies. It is not otherwise disclosed to third parties except where required by law."],
+        ["9. Retention and deletion", "Information stored on your device is kept until you delete it. Individual records can be deleted from their respective screens, and all data can be deleted from the app's settings screen. Uninstalling the app deletes the information stored on your device, and the operator cannot recover it. Support enquiries are received by email and are not stored in a dedicated support database."],
         ["10. Exporting your data", "From the app's settings screen, you can export your stored information as a JSON file. You are responsible for managing any file you export."],
         ["11. Security measures", "Because the app does not require an account, it does not handle authentication credentials such as passwords. Information on your device is protected by iOS's standard security mechanisms."],
         ["12. Use by minors", "If a minor uses the app, please do so with the consent of a parent or guardian."],
         ["13. Changes to this policy", "This policy may be revised in response to changes in law or to the app's functionality. Material changes will be announced within the app or on this website, and take effect once published."],
-        ["14. Contact", "For questions about this policy or how your information is handled, please contact support@tmkch.io."],
+        ["14. Contact", "For questions about this policy or how your information is handled, use the shared Tomokichi support form. Support information is not sent unless you submit the form."],
       ],
   terms: ja
     ? [
@@ -222,7 +223,7 @@ const legal = {
         ["第9条（本サービスの変更・中断・終了）", "運営者は、事前の通知なく本サービスの内容を変更し、または提供を中断・終了することがあります。重要な変更については、本アプリ内または本ウェブサイトにて周知するよう努めます。"],
         ["第10条（本規約の変更）", "運営者は、必要と判断した場合、本規約を変更することがあります。変更後の規約は、本アプリ内または本ウェブサイトに掲載された時点から効力を生じます。変更後に本サービスを継続して利用した場合、変更に同意したものとみなされます。"],
         ["第11条（準拠法および管轄裁判所）", "本規約の解釈および適用は日本法に準拠します。本サービスに関して運営者と利用者との間で紛争が生じた場合は、東京地方裁判所を第一審の専属的合意管轄裁判所とします。"],
-        ["第12条（お問い合わせ）", "本規約に関するお問い合わせは、support@tmkch.io までご連絡ください。"],
+        ["第12条（お問い合わせ）", "本規約に関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。"],
       ]
     : [
         ["Article 1 — Application", "These Terms set out the conditions for using the iOS application \"Remeet\" (the \"App\") and this website (together, the \"Service\"), provided by the operator (Tomokichi). This website is the authoritative version; the App refers back to it. You are deemed to have agreed to these Terms once you download the App or otherwise use the Service."],
@@ -236,7 +237,7 @@ const legal = {
         ["Article 9 — Changes, suspension and termination", "The operator may change the content of the Service, or suspend or discontinue it, without prior notice. The operator will endeavor to announce material changes within the App or on this website."],
         ["Article 10 — Changes to these Terms", "The operator may revise these Terms when considered necessary. Revised Terms take effect once posted within the App or on this website. Continued use of the Service after a revision constitutes acceptance of it."],
         ["Article 11 — Governing law and jurisdiction", "These Terms are governed by the laws of Japan. Any dispute relating to the Service shall be subject to the exclusive jurisdiction of the Tokyo District Court as the court of first instance."],
-        ["Article 12 — Contact", "For questions about these Terms, please contact support@tmkch.io."],
+        ["Article 12 — Contact", "For questions about these Terms, use the shared Tomokichi support form."],
       ],
 };
 const title = titleMap[page][ja ? 0 : 1];
@@ -265,7 +266,7 @@ const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
       <header class="page-intro">
         <h1>{title.split("\n").map((line) => <>{line}<br /></>)}</h1>
         {subtitle && <p>{subtitle}</p>}
-        {(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月24日／最終更新日：2026年7月24日" : "Effective: July 24, 2026 / Last updated: July 24, 2026"}</small>}
+        {(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月24日／最終更新日：2026年7月26日" : "Effective: July 24, 2026 / Last updated: July 26, 2026"}</small>}
       </header>
     )}
 
@@ -350,7 +351,7 @@ const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
           <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.mail} /></span>
           <h2>{ja ? "解決しない場合は" : "Still stuck?"}</h2>
           <p>{ja ? "お困りのことがあれば、お気軽にご連絡ください。通常3営業日以内にご返信いたします。" : "If something is still unclear, just get in touch. We usually reply within three business days."}</p>
-          <a href="mailto:support@tmkch.io">{ja ? "お問い合わせ" : "Contact us"} →</a>
+          <a href={supportHref(lang)} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact us"} →</a>
         </aside>
       </div>
     </>}

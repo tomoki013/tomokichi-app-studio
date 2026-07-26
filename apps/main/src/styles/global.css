@@ -892,6 +892,219 @@ a.app-card:hover,
   margin-top: 34px;
 }
 
+/* Support form ------------------------------------------------------------ */
+.support-page {
+  max-width: 760px;
+  padding-block: 68px 90px;
+}
+.support-intro {
+  max-width: 660px;
+}
+.support-intro h1 {
+  margin: 0;
+  font: 500 clamp(30px, 4vw, 42px) / 1.3 var(--serif);
+  letter-spacing: -0.02em;
+}
+.support-intro .lead {
+  margin: 24px 0 0;
+  white-space: pre-line;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 2;
+}
+.support-disclosure {
+  margin: 22px 0 0;
+  padding: 14px 16px;
+  border-left: 2px solid #b6c5d8;
+  color: var(--ink-mute);
+  background: rgb(232 238 244 / 45%);
+  font-size: 11.5px;
+  line-height: 1.8;
+}
+.support-panel {
+  margin-top: 38px;
+  padding: clamp(24px, 5vw, 42px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 62%);
+}
+[data-support-form] {
+  display: grid;
+  gap: 24px;
+}
+.support-field {
+  display: grid;
+  gap: 9px;
+}
+.support-field label,
+.support-label-row label {
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 550;
+}
+.support-field .optional {
+  margin-left: 8px;
+  color: var(--ink-mute);
+  font-size: 10px;
+  font-weight: 400;
+}
+.support-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.support-label-row output {
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+.support-field input,
+.support-field select,
+.support-field textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #fff;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.support-field select {
+  cursor: pointer;
+}
+.support-field textarea {
+  min-height: 178px;
+  resize: vertical;
+}
+.support-field input:focus,
+.support-field select:focus,
+.support-field textarea:focus {
+  border-color: #7890ad;
+  box-shadow: 0 0 0 3px rgb(74 110 168 / 11%);
+  outline: 0;
+}
+.support-field [aria-invalid="true"] {
+  border-color: #a65353;
+}
+.field-error {
+  margin: -2px 0 0;
+  color: #954545;
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+.support-status {
+  padding: 13px 15px;
+  border: 1px solid #e2caca;
+  border-radius: 8px;
+  color: #7f3c3c;
+  background: #fff8f7;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.support-privacy {
+  margin: 0;
+  color: var(--ink-mute);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.support-privacy a,
+.support-personal a {
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+}
+.support-submit,
+.support-secondary {
+  min-height: 48px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+.support-submit {
+  width: 100%;
+  color: var(--surface);
+  background: var(--ink);
+}
+.support-submit:hover:not(:disabled) {
+  background: #302c27;
+}
+.support-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+.support-secondary {
+  margin-top: 8px;
+  padding-inline: 24px;
+  color: var(--ink);
+  background: transparent;
+}
+.support-secondary:hover {
+  color: var(--surface);
+  background: var(--ink);
+}
+.support-success {
+  padding-block: 24px;
+  text-align: center;
+}
+.support-success .success-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #376c4a;
+  background: #e6f0e7;
+  font-size: 20px;
+}
+.support-success h2 {
+  margin: 20px 0 12px;
+  font: 500 24px / 1.4 var(--serif);
+}
+.support-success > p {
+  margin: 0 auto 18px;
+  max-width: 430px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.9;
+}
+.support-success .receipt {
+  padding: 13px;
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.support-success .receipt strong {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.support-personal {
+  margin: 28px 0 0;
+  color: var(--ink-mute);
+  text-align: center;
+  font-size: 10.5px;
+  line-height: 1.8;
+}
+.support-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* Footer ------------------------------------------------------------------ */
 /* Footer: brand row, then link columns, then the legal base line. */
 .site-footer {
@@ -1102,6 +1315,18 @@ a.app-card:hover,
   }
   .app-card.large .card-body {
     padding: 26px 24px;
+  }
+
+  .support-page {
+    padding-block: 44px 64px;
+  }
+  .support-panel {
+    margin-top: 30px;
+    padding: 24px 18px;
+    border-radius: 12px;
+  }
+  .support-field textarea {
+    min-height: 164px;
   }
 
   .footer-cols {

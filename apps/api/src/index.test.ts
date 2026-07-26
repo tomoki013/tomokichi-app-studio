@@ -1,9 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { app } from "./index";
+import { createApp } from "./index";
+import { sendSupportEmail } from "./support/email";
+import type { SupportBindings, SupportEmail } from "./support/types";
 
 describe("GET /api/health", () => {
   it("returns the API status", async () => {
+    const app = createApp();
     const response = await app.request("https://tmkch.io/api/health");
 
     expect(response.status).toBe(200);
@@ -11,5 +14,212 @@ describe("GET /api/health", () => {
       ok: true,
       service: "tomokichi-api",
     });
+  });
+});
+
+const validRequest = {
+  requestId: "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+  clientId: "6ba7b810-9dad-41d1-80b4-00c04fd430c8",
+  source: "remeet-ios",
+  app: "remeet",
+  category: "bug",
+  name: " テスト <script> ",
+  email: " User@Example.COM ",
+  message: " これは十分な長さの問い合わせ内容です。 ",
+  appVersion: "1.0.0",
+  buildNumber: "1",
+  osVersion: "iOS 26.0",
+  locale: "ja-JP",
+  submittedAt: "2026-07-26T12:00:00.000Z",
+  website: "",
+};
+
+const env: SupportBindings = {
+  RESEND_API_KEY: "test-key",
+  SUPPORT_TO_EMAIL: "support@example.com",
+  SUPPORT_FROM_EMAIL: "Support <from@example.com>",
+  MAIN_SITE_ORIGIN: "https://tomokichi-main.tomoki-ttttt.workers.dev",
+  SUPPORT_RATE_LIMITER: {
+    limit: async () => ({ success: true }),
+  },
+};
+
+function post(
+  body: unknown,
+  options: {
+    origin?: string;
+    deliver?: (email: SupportEmail) => Promise<{ id: string }>;
+    rate?: boolean;
+  } = {},
+) {
+  const app = createApp({
+    deliver: options.deliver
+      ? (email) => options.deliver?.(email) as Promise<{ id: string }>
+      : async () => ({ id: "email-id" }),
+    rateLimit: async () => options.rate ?? true,
+  });
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (options.origin) headers.Origin = options.origin;
+  return app.request(
+    "https://api.example.com/api/support",
+    { method: "POST", headers, body: JSON.stringify(body) },
+    env,
+  );
+}
+
+describe("POST /api/support", () => {
+  it("accepts a valid request", async () => {
+    const response = await post(validRequest);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true, requestId: validRequest.requestId });
+  });
+
+  it("reports missing required fields", async () => {
+    const response = await post({});
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({
+      code: "VALIDATION_ERROR",
+      fields: { requestId: "REQUIRED", email: "REQUIRED", message: "REQUIRED" },
+    });
+  });
+
+  it.each([
+    ["invalid email", { email: "invalid" }, { email: "INVALID_EMAIL" }],
+    ["short message", { message: "short" }, { message: "TOO_SHORT" }],
+    ["long message", { message: "x".repeat(5001) }, { message: "TOO_LONG" }],
+    ["invalid UUID", { requestId: "not-a-uuid" }, { requestId: "INVALID_UUID" }],
+  ])("rejects %s", async (_label, change, fields) => {
+    const response = await post({ ...validRequest, ...change });
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({ code: "VALIDATION_ERROR", fields });
+  });
+
+  it("rejects malformed JSON", async () => {
+    const app = createApp();
+    const response = await app.request(
+      "https://api.example.com/api/support",
+      { method: "POST", headers: { "Content-Type": "application/json" }, body: "{" },
+      env,
+    );
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({ code: "INVALID_JSON" });
+  });
+
+  it("rejects a body over 20 KB", async () => {
+    const response = await post({ ...validRequest, ignored: "x".repeat(21 * 1024) });
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({
+      code: "VALIDATION_ERROR",
+      fields: { request: "TOO_LARGE" },
+    });
+  });
+
+  it("does not deliver honeypot submissions", async () => {
+    const deliver = vi.fn<(email: SupportEmail) => Promise<{ id: string }>>(async () => ({
+      id: "email-id",
+    }));
+    const response = await post({ ...validRequest, website: "spam.example" }, { deliver });
+    expect(response.status).toBe(200);
+    expect(deliver).not.toHaveBeenCalled();
+  });
+
+  it("returns 429 when rate limited", async () => {
+    const response = await post(validRequest, { rate: false });
+    expect(response.status).toBe(429);
+    expect(await response.json()).toMatchObject({ code: "RATE_LIMITED" });
+  });
+
+  it("returns 502 without exposing delivery details", async () => {
+    const response = await post(validRequest, {
+      deliver: async () => {
+        throw new Error("secret upstream response");
+      },
+    });
+    expect(response.status).toBe(502);
+    expect(JSON.stringify(await response.json())).not.toContain("secret upstream");
+  });
+
+  it("normalizes reply-to and sets an idempotency key", async () => {
+    const deliver = vi.fn<(email: SupportEmail) => Promise<{ id: string }>>(async () => ({
+      id: "email-id",
+    }));
+    await post(validRequest, { deliver });
+    const email = deliver.mock.calls[0]?.[0];
+    expect(email?.replyTo).toBe("user@example.com");
+    expect(email?.idempotencyKey).toBe(`support-${validRequest.requestId}`);
+    expect(email?.html).toContain("&lt;script&gt;");
+    expect(email?.html).not.toContain("<script>");
+    expect(email?.text).toContain("問い合わせ内容");
+  });
+
+  it("rejects an unknown Origin", async () => {
+    const response = await post(validRequest, { origin: "https://evil.example" });
+    expect(response.status).toBe(403);
+    expect(await response.json()).toMatchObject({ code: "ORIGIN_NOT_ALLOWED" });
+  });
+
+  it("accepts an allowed Origin and returns CORS headers", async () => {
+    const response = await post(validRequest, {
+      origin: "https://tomokichi-main.tomoki-ttttt.workers.dev",
+    });
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
+      "https://tomokichi-main.tomoki-ttttt.workers.dev",
+    );
+  });
+
+  it("accepts an Origin-less iOS request", async () => {
+    expect((await post(validRequest)).status).toBe(200);
+  });
+
+  it("handles preflight for allowed origins", async () => {
+    const app = createApp();
+    const response = await app.request(
+      "https://api.example.com/api/support",
+      { method: "OPTIONS", headers: { Origin: "http://localhost:4321" } },
+      env,
+    );
+    expect(response.status).toBe(204);
+    expect(response.headers.get("Access-Control-Allow-Methods")).toContain("POST");
+  });
+});
+
+describe("Resend delivery", () => {
+  it("sends reply_to and Idempotency-Key through fetch", async () => {
+    const fetcher = vi.fn<typeof fetch>(async () => Response.json({ id: "resend-id" }));
+    const email: SupportEmail = {
+      from: "Support <from@example.com>",
+      to: "to@example.com",
+      replyTo: "reply@example.com",
+      subject: "subject",
+      text: "text",
+      html: "<p>html</p>",
+      idempotencyKey: "support-request-id",
+    };
+    expect(await sendSupportEmail(email, "api-key", fetcher as typeof fetch)).toEqual({
+      id: "resend-id",
+    });
+    const init = fetcher.mock.calls[0]?.[1] as RequestInit;
+    expect(new Headers(init.headers).get("Idempotency-Key")).toBe("support-request-id");
+    expect(JSON.parse(init.body as string)).toMatchObject({ reply_to: "reply@example.com" });
+  });
+
+  it("throws when Resend fails", async () => {
+    const fetcher = vi.fn<typeof fetch>(async () => new Response("no", { status: 500 }));
+    await expect(
+      sendSupportEmail(
+        {
+          from: "from@example.com",
+          to: "to@example.com",
+          replyTo: "reply@example.com",
+          subject: "subject",
+          text: "text",
+          html: "html",
+          idempotencyKey: "key",
+        },
+        "api-key",
+        fetcher as typeof fetch,
+      ),
+    ).rejects.toThrow("status 500");
   });
 });

@@ -15,7 +15,6 @@ export default defineConfig({
     "/en/philosophy": "/about#approach",
     "/en/apps": "/apps",
     "/en/about": "/about",
-    "/en/support": "/support",
     "/en/privacy": "/privacy",
     "/en/terms": "/terms",
   },

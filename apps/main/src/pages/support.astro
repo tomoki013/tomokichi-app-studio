@@ -1,13 +1,5 @@
 ---
-import ArrowLink from "../components/ArrowLink.astro";
-import DocPage from "../components/DocPage.astro";
-import { support } from "../lib/copy";
-
-const lang = "en" as const;
+import SupportPage from "../components/SupportPage.astro";
 ---
 
-<DocPage lang={lang} path="/support" current="support" metaTitle={support.metaTitle[lang]} heading={support.heading[lang]}>
-  <p>{support.body[lang]}</p>
-  <p class="muted">{support.personal[lang]}</p>
-  <div class="actions"><ArrowLink href="/apps" label={support.appsCta[lang]} /></div>
-</DocPage>
+<SupportPage lang="ja" />

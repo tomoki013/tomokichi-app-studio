@@ -1,0 +1,185 @@
+import type { Locale } from "../data/apps";
+import { supportAppOptions, supportCategoryOptions } from "./support-copy";
+
+const configuredApiUrl = "https://tomokichi-api.tomoki-ttttt.workers.dev/api/support";
+const parsedApiUrl = new URL(configuredApiUrl);
+if (parsedApiUrl.protocol !== "https:" || parsedApiUrl.pathname !== "/api/support") {
+  throw new Error("Support API URL is invalid");
+}
+export const SUPPORT_API_URL = parsedApiUrl.toString();
+export const SUPPORT_CLIENT_ID_KEY = "tomokichi-support-client-id";
+export const SUPPORT_TIMEOUT_MS = 15_000;
+
+export type SupportApp = (typeof supportAppOptions)[number]["value"];
+export type SupportCategory = (typeof supportCategoryOptions)[number]["value"];
+
+export interface SupportFormValues {
+  app: string;
+  category: string;
+  name: string;
+  email: string;
+  message: string;
+  website: string;
+}
+
+export interface SupportFieldErrors {
+  name?: "TOO_LONG";
+  email?: "REQUIRED" | "INVALID_EMAIL" | "TOO_LONG";
+  message?: "REQUIRED" | "TOO_SHORT" | "TOO_LONG";
+}
+
+export interface SupportRequestBody {
+  requestId: string;
+  clientId: string;
+  source: "main-web";
+  app: SupportApp;
+  category: SupportCategory;
+  name?: string;
+  email: string;
+  message: string;
+  locale: "ja-JP" | "en";
+  submittedAt: string;
+  website: string;
+}
+
+export type FormStatus =
+  | "idle"
+  | "editing"
+  | "submitting"
+  | "success"
+  | "validation_error"
+  | "rate_limited"
+  | "delivery_failed"
+  | "server_error"
+  | "network_error"
+  | "timeout";
+
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const apps = new Set<string>(supportAppOptions.map(({ value }) => value));
+const categories = new Set<string>(supportCategoryOptions.map(({ value }) => value));
+
+export function isUuid(value: string | null | undefined): value is string {
+  return Boolean(value && UUID_PATTERN.test(value));
+}
+
+export function isValidEmail(value: string): boolean {
+  const normalized = value.trim();
+  return normalized.length <= 254 && EMAIL_PATTERN.test(normalized);
+}
+
+export function validateSupportForm(values: SupportFormValues): SupportFieldErrors {
+  const errors: SupportFieldErrors = {};
+  const name = values.name.trim();
+  const email = values.email.trim();
+  const message = values.message.trim();
+
+  if (name.length > 100) errors.name = "TOO_LONG";
+  if (!email) errors.email = "REQUIRED";
+  else if (email.length > 254) errors.email = "TOO_LONG";
+  else if (!EMAIL_PATTERN.test(email)) errors.email = "INVALID_EMAIL";
+  if (!message) errors.message = "REQUIRED";
+  else if (message.length < 10) errors.message = "TOO_SHORT";
+  else if (message.length > 5000) errors.message = "TOO_LONG";
+
+  return errors;
+}
+
+export function initialSelections(search: URLSearchParams): {
+  app: SupportApp;
+  category: SupportCategory;
+} {
+  const app = search.get("app");
+  const category = search.get("category");
+  return {
+    app: apps.has(app ?? "") ? (app as SupportApp) : "remeet",
+    category: categories.has(category ?? "") ? (category as SupportCategory) : "question",
+  };
+}
+
+export function buildSupportRequest(
+  values: SupportFormValues,
+  options: {
+    requestId: string;
+    clientId: string;
+    locale: Locale;
+    now?: Date;
+  },
+): SupportRequestBody {
+  const app = apps.has(values.app) ? (values.app as SupportApp) : "remeet";
+  const category = categories.has(values.category)
+    ? (values.category as SupportCategory)
+    : "question";
+  const name = values.name.trim();
+
+  return {
+    requestId: options.requestId,
+    clientId: options.clientId,
+    source: "main-web",
+    app,
+    category,
+    ...(name ? { name } : {}),
+    email: values.email.trim().toLowerCase(),
+    message: values.message.trim(),
+    locale: options.locale === "ja" ? "ja-JP" : "en",
+    submittedAt: (options.now ?? new Date()).toISOString(),
+    website: values.website,
+  };
+}
+
+export function getOrCreateClientId(
+  storage: Pick<Storage, "getItem" | "setItem"> | undefined,
+  createUuid: () => string = () => crypto.randomUUID(),
+): string {
+  try {
+    const existing = storage?.getItem(SUPPORT_CLIENT_ID_KEY);
+    if (isUuid(existing)) return existing;
+    const generated = createUuid();
+    storage?.setItem(SUPPORT_CLIENT_ID_KEY, generated);
+    return generated;
+  } catch {
+    return createUuid();
+  }
+}
+
+export function statusForApiResponse(
+  status: number,
+  responseRequestId: unknown,
+  expectedRequestId: string,
+): FormStatus {
+  if (status === 200) {
+    return responseRequestId === expectedRequestId ? "success" : "server_error";
+  }
+  if (status === 400) return "validation_error";
+  if (status === 429) return "rate_limited";
+  if (status === 502) return "delivery_failed";
+  return status >= 500 ? "server_error" : "server_error";
+}
+
+export class SupportRequestCycle {
+  status: FormStatus = "idle";
+  requestId: string;
+
+  constructor(private readonly createUuid: () => string = () => crypto.randomUUID()) {
+    this.requestId = createUuid();
+  }
+
+  begin(): boolean {
+    if (this.status === "submitting" || this.status === "success") return false;
+    this.status = "submitting";
+    return true;
+  }
+
+  complete(status: FormStatus): void {
+    this.status = status;
+  }
+
+  markEditing(): void {
+    if (this.status !== "submitting" && this.status !== "success") this.status = "editing";
+  }
+
+  startNew(): void {
+    this.requestId = this.createUuid();
+    this.status = "idle";
+  }
+}
