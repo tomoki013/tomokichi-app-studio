@@ -61,13 +61,12 @@ export const footer: {
       title: { ja: "連絡先", en: "Contact" } as L,
       links: [
         {
-          label: { ja: "お問い合わせ", en: "Email us" } as L,
-          href: "mailto:support@tmkch.io",
-          external: true,
+          label: { ja: "アプリのサポート", en: "App support" } as L,
+          href: "/support",
         },
         {
-          label: { ja: "tomokichi.dev", en: "tomokichi.dev" } as L,
-          href: "https://tomokichi.dev",
+          label: { ja: "仕事のご相談", en: "Work enquiries" } as L,
+          href: "https://tomokichi.dev/contact",
           external: true,
         },
       ],
@@ -251,11 +250,11 @@ export const appsPage = {
 /** Support / legal ---------------------------------------------------------- */
 
 export const support = {
-  metaTitle: { ja: "サポート — Tomokichi", en: "Support — Tomokichi" } as L,
-  heading: { ja: "サポート", en: "Support" } as L,
+  metaTitle: { ja: "お問い合わせ — Tomokichi", en: "Support — Tomokichi" } as L,
+  heading: { ja: "お問い合わせ", en: "Support" } as L,
   body: {
-    ja: "各アプリの使い方や不具合のご報告は、\nそれぞれのアプリサイトのお問い合わせ、\nまたは support@tmkch.io までご連絡ください。",
-    en: "For how-to questions or bug reports about an app,\nplease use the contact on that app’s site,\nor email support@tmkch.io.",
+    ja: "Tomokichiのアプリに関する不具合、ご質問、ご意見は、共通のお問い合わせフォームからお送りください。",
+    en: "Send questions, bug reports, or feedback about Tomokichi apps through the shared support form.",
   } as L,
   personal: {
     ja: "お仕事のご相談や個人へのお問い合わせは、tomokichi.dev/contact からお願いします。",
@@ -269,8 +268,8 @@ export const legal = {
     metaTitle: { ja: "プライバシー — Tomokichi", en: "Privacy — Tomokichi" } as L,
     heading: { ja: "プライバシーについて", en: "Privacy" } as L,
     body: {
-      ja: "各アプリのプライバシーポリシーは、それぞれのアプリサイトに掲載しています。\n本サイト（tmkch.io）は、閲覧のための一般的な情報のみを扱います。",
-      en: "Each app’s privacy policy is published on that app’s own site.\nThis site (tmkch.io) handles only general information for browsing.",
+      ja: "各アプリ固有のプライバシーポリシーは、それぞれのアプリサイトに掲載しています。\n\nお問い合わせフォームを送信した場合に限り、名前（入力した場合）、メールアドレス、お問い合わせ内容、対象アプリ、問い合わせカテゴリ、表示言語、ランダムに生成された問い合わせ識別子、送信日時、スパム対策とレート制限に必要な技術情報を取得します。フォームを送信しない限り、これらの問い合わせ情報は送信されません。\n\n取得した情報は、お問い合わせへの回答、不具合の調査、サービス改善、不正利用や大量送信の防止に利用します。問い合わせは専用データベースへ保存せず、メールとして受信します。\n\n問い合わせ受付APIの実行基盤としてCloudflare Workersを、メール配送のためResendを利用します。これらのサービスでは、各社の方針に従って情報が処理されます。",
+      en: "Privacy policies specific to each app are published on the respective app website.\n\nOnly when you submit the support form do we collect your name (if provided), email address, message, selected app, enquiry category, display language, a randomly generated enquiry identifier, submission time, and technical information needed for spam prevention and rate limiting. This support information is not sent unless you submit the form.\n\nWe use this information to respond, investigate issues, improve our services, and prevent abuse or excessive submissions. Enquiries are received by email and are not stored in a dedicated support database.\n\nCloudflare Workers provides the support API infrastructure, and Resend delivers the email. Information is processed under each provider’s policies.",
     } as L,
   },
   terms: {

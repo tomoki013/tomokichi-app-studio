@@ -1,4 +1,6 @@
 ---
+import { supportHref } from "../lib/links";
+
 type Locale = "ja" | "en";
 const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string; page?: string };
 const ja = lang === "ja";
@@ -15,13 +17,13 @@ const labels = ja
 const footerCols: { title: string; links: [string, string, boolean?][] }[] = ja
   ? [
       { title: "プロダクト", links: [["機能", href("features")], ["使い方", href("how-to")], ["スクリーンショット", href("screenshots")], ["ウィジェット", href("widgets")], ["料金", href("pricing")]] },
-      { title: "サポート", links: [["よくある質問", href("faq")], ["お知らせ", href("updates")], ["お問い合わせ", "mailto:support@tmkch.io"]] },
+      { title: "サポート", links: [["よくある質問", href("faq")], ["お知らせ", href("updates")], ["お問い合わせ", supportHref("ja"), true]] },
       { title: "規約", links: [["プライバシーポリシー", href("privacy")], ["利用規約", href("terms")]] },
       { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io/ja", true], ["ほかのアプリ", "https://tmkch.io/ja/apps", true]] },
     ]
   : [
       { title: "Product", links: [["Features", href("features")], ["How it works", href("how-to")], ["Screenshots", href("screenshots")], ["Widgets", href("widgets")], ["Pricing", href("pricing")]] },
-      { title: "Support", links: [["FAQ", href("faq")], ["News", href("updates")], ["Contact", "mailto:support@tmkch.io"]] },
+      { title: "Support", links: [["FAQ", href("faq")], ["News", href("updates")], ["Contact", supportHref("en"), true]] },
       { title: "Legal", links: [["Privacy Policy", href("privacy")], ["Terms of Service", href("terms")]] },
       { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io", true], ["Other apps", "https://tmkch.io/apps", true]] },
     ];

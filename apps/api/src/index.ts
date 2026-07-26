@@ -1,12 +1,22 @@
 import { Hono } from "hono";
 
-export const app = new Hono();
+import { registerSupportRoute, type SupportDependencies } from "./routes/support";
+import type { SupportBindings } from "./support/types";
 
-app.get("/api/health", (c) => {
-  return c.json({
-    ok: true,
-    service: "tomokichi-api",
+export function createApp(dependencies: SupportDependencies = {}) {
+  const app = new Hono<{ Bindings: SupportBindings }>();
+
+  app.get("/api/health", (c) => {
+    return c.json({
+      ok: true,
+      service: "tomokichi-api",
+    });
   });
-});
+
+  registerSupportRoute(app, dependencies);
+  return app;
+}
+
+export const app = createApp();
 
 export default app;

@@ -8,8 +8,8 @@ interface Props {
 }
 const { lang, path } = Astro.props;
 const clean = path === "/" ? "" : path;
-const jaHref = `/ja${clean}` || "/ja";
-const enHref = clean || "/";
+const jaHref = path === "/support" ? "/support" : `/ja${clean}` || "/ja";
+const enHref = path === "/support" ? "/en/support" : clean || "/";
 ---
 
 <div class="lang">

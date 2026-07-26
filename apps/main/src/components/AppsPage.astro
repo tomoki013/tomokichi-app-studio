@@ -10,7 +10,10 @@ import SiteHeader from "./SiteHeader.astro";
 
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
-const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
+const p = (path: string) => {
+  if (path === "/support") return ja ? "/support" : "/en/support";
+  return ja ? `/ja${path === "/" ? "" : path}` : path;
+};
 const visualIcons = ["remeet", "tripory", "soonish", "tana"];
 ---
 

@@ -5,5 +5,20 @@
   "compatibility_date": "2026-07-23",
   "observability": {
     "enabled": true
-  }
+  },
+  "vars": {
+    "SUPPORT_TO_EMAIL": "gaomuyouxi81@gmail.com",
+    "SUPPORT_FROM_EMAIL": "Remeet Support <onboarding@resend.dev>",
+    "MAIN_SITE_ORIGIN": "https://tomokichi-main.tomoki-ttttt.workers.dev"
+  },
+  "ratelimits": [
+    {
+      "name": "SUPPORT_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    }
+  ]
 }

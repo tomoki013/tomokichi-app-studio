@@ -1,0 +1,147 @@
+---
+import type { Locale } from "../data/apps";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { supportAppOptions, supportCategoryOptions, supportCopy } from "../lib/support-copy";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+
+const { lang } = Astro.props as { lang: Locale };
+const copy = supportCopy[lang];
+const isJapanese = lang === "ja";
+const canonical = isJapanese
+  ? "https://tomokichi-main.tomoki-ttttt.workers.dev/support"
+  : "https://tomokichi-main.tomoki-ttttt.workers.dev/en/support";
+const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
+---
+
+<BaseLayout
+  lang={lang}
+  title={copy.metaTitle}
+  description={copy.description}
+  canonical={canonical}
+  alternateJa="https://tomokichi-main.tomoki-ttttt.workers.dev/support"
+  alternateEn="https://tomokichi-main.tomoki-ttttt.workers.dev/en/support"
+>
+  <div class="site">
+    <SiteHeader lang={lang} path="/support" current="support" />
+
+    <main>
+      <article class="support-page shell" data-support-root data-locale={lang} data-state="idle">
+        <header class="support-intro">
+          <p class="eyebrow">APP SUPPORT</p>
+          <h1>{copy.title}</h1>
+          <p class="lead">{copy.lead}</p>
+          <p class="support-disclosure">{copy.disclosure}</p>
+        </header>
+
+        <div class="support-panel">
+          <form data-support-form novalidate>
+            <div class="support-status" data-support-status role="alert" aria-live="assertive" hidden></div>
+
+            <div class="support-field">
+              <label for={`support-app-${lang}`}>{copy.app}</label>
+              <select id={`support-app-${lang}`} name="app">
+                {supportAppOptions.map((option) => <option value={option.value}>{option.label[lang]}</option>)}
+              </select>
+            </div>
+
+            <div class="support-field">
+              <label for={`support-category-${lang}`}>{copy.category}</label>
+              <select id={`support-category-${lang}`} name="category">
+                {supportCategoryOptions.map((option) => <option value={option.value}>{option.label[lang]}</option>)}
+              </select>
+            </div>
+
+            <div class="support-field">
+              <label for={`support-name-${lang}`}>
+                {copy.name}
+                <span class="optional">{copy.optional}</span>
+              </label>
+              <input
+                id={`support-name-${lang}`}
+                name="name"
+                type="text"
+                autocomplete="name"
+                maxlength="100"
+                aria-describedby={`support-name-error-${lang}`}
+              />
+              <p id={`support-name-error-${lang}`} class="field-error" data-error-for="name" role="alert" hidden></p>
+            </div>
+
+            <div class="support-field">
+              <label for={`support-email-${lang}`}>{copy.email}</label>
+              <input
+                id={`support-email-${lang}`}
+                name="email"
+                type="email"
+                autocomplete="email"
+                inputmode="email"
+                maxlength="254"
+                required
+                aria-describedby={`support-email-error-${lang}`}
+              />
+              <p id={`support-email-error-${lang}`} class="field-error" data-error-for="email" role="alert" hidden></p>
+            </div>
+
+            <div class="support-field">
+              <div class="support-label-row">
+                <label for={`support-message-${lang}`}>{copy.message}</label>
+                <output data-message-count for={`support-message-${lang}`}>0 / 5000</output>
+              </div>
+              <textarea
+                id={`support-message-${lang}`}
+                name="message"
+                rows="8"
+                minlength="10"
+                maxlength="5000"
+                required
+                aria-describedby={`support-message-error-${lang}`}
+              ></textarea>
+              <p
+                id={`support-message-error-${lang}`}
+                class="field-error"
+                data-error-for="message"
+                role="alert"
+                hidden
+              ></p>
+            </div>
+
+            <div class="support-honeypot" aria-hidden="true">
+              <label for={`support-website-${lang}`}>Website</label>
+              <input
+                id={`support-website-${lang}`}
+                name="website"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
+            <p class="support-privacy">
+              {copy.privacyPrefix} <a href={privacyHref}>{copy.privacyLink}</a>{copy.privacySuffix}
+            </p>
+            <button class="support-submit" type="submit" data-support-submit disabled>{copy.submit}</button>
+          </form>
+
+          <section class="support-success" data-support-success tabindex="-1" hidden>
+            <span class="success-mark" aria-hidden="true">✓</span>
+            <h2>{copy.successTitle}</h2>
+            <p>{copy.successBody}</p>
+            <p class="receipt">{copy.receipt}: <strong data-support-receipt></strong></p>
+            <button type="button" class="support-secondary" data-support-new>{copy.newRequest}</button>
+          </section>
+        </div>
+
+        <p class="support-personal">
+          {copy.personalPrefix} <a href="https://tomokichi.dev/contact">{copy.personalLink}</a>{copy.personalSuffix}
+        </p>
+      </article>
+    </main>
+
+    <SiteFooter lang={lang} />
+  </div>
+</BaseLayout>
+
+<script>
+  import "../scripts/support-form";
+</script>
