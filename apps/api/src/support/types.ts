@@ -1,5 +1,5 @@
 export const supportSources = ["remeet-ios", "main-web"] as const;
-export const supportApps = ["remeet", "other"] as const;
+export const supportApps = ["remeet", "colorvia", "other"] as const;
 export const supportCategories = ["question", "bug", "feature", "other"] as const;
 
 export type SupportSource = (typeof supportSources)[number];

@@ -1,0 +1,97 @@
+---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import AppShell from "./AppShell.astro";
+
+type Locale = "ja" | "en";
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const c = ja
+  ? {
+      kicker: "世界を、シンプルに彩ろう。",
+      title: "訪れた国を塗って、\n自分だけの世界地図をつくろう。",
+      body: "Colorviaは、行ったことのある国を選ぶだけで\n世界地図が少しずつ色づいていく、シンプルな記録アプリです。",
+      store: "App Storeでダウンロード",
+      features: "Colorviaの主な魅力",
+      featureSub: "余計な機能を削ぎ落とし、地図を塗る体験に集中しました。",
+      how: "使い方は、とても簡単",
+      shots: "スクリーンショット",
+      shotsSub: "シンプルで、心地よく、眺めたくなるUI。",
+      faq: "よくある質問",
+      cta: "さあ、世界を彩ろう。",
+      ctaBody: "Colorviaをダウンロードして、あなたの旅の軌跡を地図に残しましょう。",
+      notice: "Colorvia 1.0.0を公開しました！",
+    }
+  : {
+      kicker: "Colour the world, simply.",
+      title: "Paint the countries you visit.\nCreate a world map of your own.",
+      body: "Choose the countries you have visited and watch the world slowly fill with colour. Colorvia keeps travel tracking simple.",
+      store: "Download on the App Store",
+      features: "What makes Colorvia special",
+      featureSub: "Everything unnecessary removed, so you can focus on colouring your map.",
+      how: "It only takes three steps",
+      shots: "Screenshots",
+      shotsSub: "Simple, calm and made to be revisited.",
+      faq: "Frequently asked questions",
+      cta: "Colour your world.",
+      ctaBody: "Download Colorvia and leave the path of your travels on the map.",
+      notice: "Colorvia 1.0.0 is now available!",
+    };
+const features = ja
+  ? [["☝", "ワンタップで記録", "国を選ぶだけで、あなたの地図に記録されます。"], ["◎", "美しい世界地図", "静かで洗練されたデザインで、眺めたくなる地図に。"], ["◔", "世界の進捗が見える", "訪問国数や地域ごとの割合を、シンプルに確認できます。"], ["✈", "オフラインでも使える", "いつでも気軽に、自分の旅の軌跡を残せます。"]]
+  : [["☝", "One-tap tracking", "Choose a country and it is added to your map."], ["◎", "A beautiful world map", "A quiet, refined design made to be looked at."], ["◔", "See your progress", "Check countries and regional progress at a glance."], ["✈", "Works offline", "Keep your travel footprint close, wherever you are."]];
+const steps = ja
+  ? [["1", "国を選ぶ", "地図上で国をタップして選択します。", "◎"], ["2", "地図が色づく", "訪れた国が、あなたの色で塗られます。", "◜"], ["3", "自分の世界が残る", "あなただけの世界地図が完成します。", "♡"]]
+  : [["1", "Choose a country", "Tap a country on the world map.", "◎"], ["2", "Watch it fill", "Every visit colours another place.", "◜"], ["3", "Keep your world", "Your own world map takes shape.", "♡"]];
+const faqs = ja
+  ? [["無料で使えますか？", "はい。Colorviaは無料でご利用いただけます。"], ["オフラインでも使えますか？", "地図タイルの読み込みを除く主要な記録機能は、オフラインでも利用できます。"], ["データのバックアップはできますか？", "現時点では端末間同期やクラウドバックアップには対応していません。"]]
+  : [["Is Colorvia free?", "Yes. Colorvia is free to use."], ["Can I use it offline?", "Core tracking works offline, aside from loading map tiles."], ["Can I back up my data?", "Cloud backup and cross-device sync are not currently supported."]];
+---
+
+<AppShell lang={lang} title={ja ? "自分だけの世界地図をつくろう" : "Create a world map of your own"}>
+  <section class="hero">
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow">{c.kicker}</p>
+      <h1>{c.title.split("\n").map((line) => <>{line}<br /></>)}</h1>
+      <p>{c.body.split("\n").map((line) => <>{line}<br /></>)}</p>
+      <a class="store-button" href="#download">● <span>{c.store}</span></a>
+      <small>{ja ? "iPhone対応" : "Made for iPhone"}</small>
+    </div>
+    <div class="hero-phone" data-reveal><img src="/assets/lp-reference.png" alt={ja ? "ColorviaのiPhone画面" : "Colorvia on iPhone"} /></div>
+    <div class="world-wash" aria-hidden="true">WORLD</div>
+    <div class="flight-line" aria-hidden="true">················ ✈</div>
+    <AppHeroChrome lang={lang} date="2026-07-28" news={c.notice} newsHref={`${base}/updates`} />
+  </section>
+
+  <div class="landing-sections">
+    <section class="landing-pad features" id="features">
+      <header class="section-title" data-reveal><h2>{c.features}</h2><p>{c.featureSub}</p></header>
+      <div class="feature-grid">{features.map(([icon, title, body]) => <article data-reveal><i>{icon}</i><h3>{title}</h3><p>{body}</p></article>)}</div>
+      <a class="section-link" href={`${base}/features`}>{ja ? "すべての機能を見る" : "View all features"} →</a>
+    </section>
+
+    <section class="landing-pad how" id="how">
+      <header class="section-title" data-reveal><h2>{c.how}</h2></header>
+      <div class="step-grid">{steps.map(([n, title, body, icon]) => <article data-reveal><b>{n}</b><i>{icon}</i><h3>{title}</h3><p>{body}</p></article>)}</div>
+    </section>
+
+    <section class="landing-pad screenshots" id="screenshots">
+      <header class="section-title" data-reveal><h2>{c.shots}</h2><p>{c.shotsSub}</p></header>
+      <div class="screen-grid">
+        <figure data-reveal><div class="screen-crop map-shot"><img src="/assets/lp-reference.png" alt={ja ? "世界地図画面" : "World map screen"} /></div><figcaption>{ja ? "訪れた国を塗る地図" : "Colour the places you visit"}</figcaption></figure>
+        <figure data-reveal><div class="screen-crop stats-shot"><img src="/assets/lp-reference.png" alt={ja ? "統計画面" : "Statistics screen"} /></div><figcaption>{ja ? "世界の進捗をひと目で" : "See your world at a glance"}</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="landing-pad faq" id="faq">
+      <header class="section-title" data-reveal><h2>{c.faq}</h2></header>
+      <div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0} data-reveal><summary>{q}<span>⌄</span></summary><p>{a}</p></details>)}</div>
+      <a class="section-link" href={`${base}/faq`}>{ja ? "すべての質問を見る" : "View all questions"} →</a>
+    </section>
+
+    <section class="download-cta" id="download" data-reveal>
+      <div><h2>{c.cta}</h2><p>{c.ctaBody}</p><a class="store-button light" href="#download">● <span>{c.store}</span></a></div>
+      <div class="cta-phone"><img src="/assets/lp-reference.png" alt="" /></div>
+    </section>
+  </div>
+</AppShell>

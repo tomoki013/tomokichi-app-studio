@@ -85,6 +85,7 @@ export const supportCopy = {
 
 export const supportAppOptions = [
   { value: "remeet", label: { ja: "Remeet", en: "Remeet" } },
+  { value: "colorvia", label: { ja: "Colorvia", en: "Colorvia" } },
   { value: "other", label: { ja: "その他", en: "Other" } },
 ] as const;
 

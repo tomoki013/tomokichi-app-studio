@@ -1,0 +1,90 @@
+---
+import AppShell from "./AppShell.astro";
+
+type Locale = "ja" | "en";
+type Page = "features" | "how-to" | "screenshots" | "faq" | "privacy" | "terms" | "updates";
+const { lang, page } = Astro.props as { lang: Locale; page: Page };
+const ja = lang === "ja";
+const titleMap: Record<Page, [string, string]> = {
+  features: ["機能", "Features"],
+  "how-to": ["使い方", "How it works"],
+  screenshots: ["スクリーンショット", "Screenshots"],
+  faq: ["よくある質問", "Frequently asked questions"],
+  privacy: ["プライバシーポリシー", "Privacy Policy"],
+  terms: ["利用規約", "Terms of Service"],
+  updates: ["お知らせ", "News"],
+};
+const title = titleMap[page][ja ? 0 : 1];
+const features = ja
+  ? [["◎", "世界地図", "訪れた国を選ぶと、あなただけの色で世界地図が塗られます。"], ["＋", "かんたん記録", "地図またはリストから国を選ぶだけ。複雑な入力はありません。"], ["◔", "統計", "訪れた国の数や世界に占める割合、地域ごとの進捗を確認できます。"], ["☰", "国リスト", "訪問済み・未訪問の国を一覧からすばやく探せます。"], ["⌁", "オフライン", "地図タイルの読み込みを除く主要機能はオフラインで利用できます。"], ["♢", "端末内保存", "旅の記録は端末内に保存され、アカウント登録も必要ありません。"]]
+  : [["◎", "World map", "Choose a visited country and see your world map fill with colour."], ["＋", "Simple tracking", "Pick from the map or list. There are no complicated forms."], ["◔", "Statistics", "See visited countries, global coverage and progress by region."], ["☰", "Country list", "Quickly browse visited and unvisited countries."], ["⌁", "Offline", "Core features work offline, aside from loading map tiles."], ["♢", "On-device data", "Records stay on your device and no account is required."]];
+const steps = ja
+  ? [["01", "国を探す", "世界地図を動かすか、国リストから訪れた国を探します。"], ["02", "訪問済みにする", "国を選んで訪問済みにすると、地図があなたの色で塗られます。"], ["03", "世界を振り返る", "地図と統計を眺めながら、これまでの旅を振り返ります。"]]
+  : [["01", "Find a country", "Explore the map or use the country list to find a place you visited."], ["02", "Mark it visited", "Choose visited and the country is coloured on your map."], ["03", "Look back", "Revisit your journeys through the completed map and statistics."]];
+const faqs = ja
+  ? [["無料で使えますか？", "はい。Colorviaは無料でご利用いただけます。"], ["アカウント登録は必要ですか？", "必要ありません。ダウンロード後すぐに使い始められます。"], ["データはどこに保存されますか？", "訪問国などの記録はお使いの端末内に保存されます。"], ["オフラインでも使えますか？", "地図タイルの読み込みを除く主要な記録・閲覧機能はオフラインでも利用できます。"], ["端末間で同期できますか？", "現在、端末間同期には対応していません。"], ["データを削除できますか？", "アプリ内の設定から削除できます。アプリをアンインストールした場合も端末内データは削除されます。"]]
+  : [["Is Colorvia free?", "Yes. Colorvia is free to use."], ["Do I need an account?", "No. You can start immediately after downloading."], ["Where is my data stored?", "Visited-country records are stored on your device."], ["Can I use it offline?", "Core tracking and viewing work offline, aside from loading map tiles."], ["Can I sync devices?", "Cross-device sync is not currently supported."], ["Can I delete my data?", "You can delete it from Settings. Uninstalling the app also removes its on-device data."]];
+const privacy = ja
+  ? [
+      ["1. はじめに", "本ポリシーは、運営者（Tomokichi）が提供するiOSアプリケーション「Colorvia」および本ウェブサイト（以下あわせて「本サービス」）における利用者情報の取扱いを定めるものです。"],
+      ["2. 基本方針", "本アプリはアカウント登録を必要とせず、広告配信または行動解析を目的とするSDKを組み込みません。訪問国などの記録は利用者の端末内に保存され、運営者がその内容を閲覧することはできません。"],
+      ["3. 端末内に保存する情報", "訪問済みの国、表示設定その他利用者がアプリ内で設定した情報を端末内に保存します。これらはアプリの機能提供にのみ利用します。"],
+      ["4. 地図機能", "地図の表示にはApple MapKit等の地図サービスを利用する場合があります。地図タイル等の取得に必要な通信は各提供者の方針に従って処理されますが、利用者が記録した訪問国の一覧を運営者のサーバーへ送信することはありません。"],
+      ["5. お問い合わせ", "Tomokichi共通お問い合わせフォームを送信した場合に限り、名前（入力した場合）、メールアドレス、お問い合わせ内容、対象アプリ、問い合わせカテゴリ、表示言語、問い合わせ識別子および送信日時を取得します。これらは回答、不具合調査、サービス改善および不正利用防止に利用します。"],
+      ["6. 外部サービス", "お問い合わせ受付APIの実行基盤としてCloudflare Workersを、メール配送のためResendを利用します。各サービスでは、それぞれのプライバシーポリシーに従って情報が処理されます。"],
+      ["7. 第三者提供", "運営者は利用者情報を販売または貸与しません。ただし、利用目的に必要な委託先による処理、法令に基づく開示、または生命・身体・財産の保護に必要な場合を除きます。"],
+      ["8. 保存期間と削除", "端末内データは利用者が削除するまで保存されます。お問い合わせは専用データベースへ保存せずメールとして受信し、対応に必要な期間保存した後に削除します。"],
+      ["9. 未成年者", "未成年の方は、必要に応じて保護者の同意を得たうえで本サービスをご利用ください。"],
+      ["10. 変更とお問い合わせ", "本ポリシーを変更する場合は、本ウェブサイト等でお知らせします。個人情報の取扱いに関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。"],
+    ]
+  : [
+      ["1. Introduction", "This policy explains how the operator (Tomokichi) handles user information in the Colorvia iOS application and this website (together, the Service)."],
+      ["2. Basic policy", "The App requires no account and includes no SDK for advertising or behavioural analytics. Visited-country records stay on your device and cannot be viewed by the operator."],
+      ["3. Information stored on your device", "The App stores visited countries, display settings and other choices you make on your device. This information is used only to provide App features."],
+      ["4. Map features", "The App may use map services such as Apple MapKit. Network requests needed to load map tiles are handled under each provider’s policy, but your list of visited countries is not sent to the operator’s server."],
+      ["5. Contact", "Only when you submit the shared Tomokichi support form, we collect your name (if provided), email address, message, selected app, category, display language, enquiry identifier and submission time. We use this to reply, investigate issues, improve the Service and prevent abuse."],
+      ["6. Service providers", "We use Cloudflare Workers to operate the support API and Resend to deliver email. Information is processed under each provider’s privacy policy."],
+      ["7. Third-party disclosure", "The operator does not sell or rent user information. Information may be processed by necessary service providers, disclosed where required by law, or disclosed where needed to protect life, safety or property."],
+      ["8. Retention and deletion", "On-device data remains until you delete it. Enquiries are received as email rather than stored in a dedicated database and are deleted after they are no longer reasonably needed."],
+      ["9. Minors", "Minors should obtain a parent or guardian’s consent where appropriate."],
+      ["10. Changes and contact", "Changes to this policy will be announced on this website or through the Service. Use the shared Tomokichi support form for privacy questions."],
+    ];
+const terms = ja
+  ? [
+      ["第1条（適用）", "本規約は、運営者（Tomokichi）が提供するiOSアプリケーション「Colorvia」および本ウェブサイト（以下あわせて「本サービス」）の利用条件を定めます。"],
+      ["第2条（サービス内容）", "本アプリは、利用者が訪れた国を端末上で記録し、世界地図および統計として表示する機能を提供します。"],
+      ["第3条（利用条件）", "利用者は、自己の責任において本サービスを利用し、法令または第三者の権利を侵害する目的で利用してはなりません。"],
+      ["第4条（地図表示）", "本サービスの国境線、地名および地域区分は簡易的な表示であり、いかなる政治的立場または見解を示すものでもありません。"],
+      ["第5条（知的財産権）", "本サービスに含まれるプログラム、デザイン、文章、画像等の権利は、運営者または正当な権利者に帰属します。利用者が記録した情報の権利は利用者に帰属します。"],
+      ["第6条（データ管理）", "データは端末内に保存されるため、端末の変更、故障、アプリの削除または再インストールにより失われる場合があります。データ管理は利用者の責任で行ってください。"],
+      ["第7条（免責）", "本サービスは現状有姿で提供されます。運営者の故意または重過失による場合を除き、本サービスの利用により生じた損害について責任を負いません。"],
+      ["第8条（変更・終了）", "運営者は本サービスの内容を変更し、または提供を中断・終了する場合があります。重要な変更は合理的な方法でお知らせします。"],
+      ["第9条（準拠法・管轄）", "本規約は日本法に準拠し、本サービスに関する紛争は東京地方裁判所を第一審の専属的合意管轄裁判所とします。"],
+      ["第10条（お問い合わせ）", "本規約に関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。"],
+    ]
+  : [
+      ["Article 1 — Application", "These Terms govern use of the Colorvia iOS application and this website (together, the Service), provided by the operator (Tomokichi)."],
+      ["Article 2 — Service", "The App lets you record countries you have visited on your device and view them as a world map and statistics."],
+      ["Article 3 — Conditions of use", "You use the Service at your own responsibility and must not use it unlawfully or to infringe another party’s rights."],
+      ["Article 4 — Map display", "Borders, place names and regional groupings are simplified displays and do not represent any political position or view."],
+      ["Article 5 — Intellectual property", "Rights in the Service, including its program, design, text and images, belong to the operator or relevant rights holders. Rights in information you record remain yours."],
+      ["Article 6 — Data management", "Because data is stored on your device, it may be lost when changing or damaging the device, or deleting or reinstalling the App. You are responsible for managing your data."],
+      ["Article 7 — Disclaimer", "The Service is provided as is. Except for wilful misconduct or gross negligence by the operator, the operator is not liable for damage arising from use of the Service."],
+      ["Article 8 — Changes and termination", "The operator may change, suspend or discontinue the Service. Material changes will be announced by reasonable means."],
+      ["Article 9 — Governing law", "These Terms are governed by Japanese law. The Tokyo District Court has exclusive jurisdiction in the first instance over disputes relating to the Service."],
+      ["Article 10 — Contact", "Use the shared Tomokichi support form for questions about these Terms."],
+    ];
+const legal = page === "privacy" ? privacy : terms;
+---
+
+<AppShell lang={lang} title={title} page={page}>
+  <section class:list={["subpage", `subpage-${page}`]}>
+    <header class="page-intro"><p class="eyebrow">{page.toUpperCase()}</p><h1>{title}</h1>{(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月28日／最終更新日：2026年7月28日" : "Effective: July 28, 2026 / Last updated: July 28, 2026"}</small>}</header>
+    {page === "features" && <div class="content-grid">{features.map(([icon, heading, body]) => <article><i>{icon}</i><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div>}
+    {page === "how-to" && <div class="how-list">{steps.map(([n, heading, body]) => <article><b>{n}</b><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div>}
+    {page === "screenshots" && <div class="screen-grid content-screens"><figure><div class="screen-crop map-shot"><img src="/assets/lp-reference.png" alt="" /></div><figcaption>{ja ? "地図" : "Map"}</figcaption></figure><figure><div class="screen-crop stats-shot"><img src="/assets/lp-reference.png" alt="" /></div><figcaption>{ja ? "統計" : "Statistics"}</figcaption></figure></div>}
+    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>{q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="contact-card"><div><h2>{ja ? "解決しない場合" : "Still need help?"}</h2><p>{ja ? "Colorviaについてお気軽にお問い合わせください。" : "Send us a message about Colorvia."}</p></div><a href={`https://tmkch.io/${ja ? "ja/" : ""}support?app=colorvia`}>{ja ? "お問い合わせ" : "Contact"} →</a></div></>}
+    {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal.map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p></section>)}</article>}
+    {page === "updates" && <div class="updates-list"><article><div><h2>1.0.0</h2><p>{ja ? "2026年7月28日" : "July 28, 2026"}</p><ul><li>{ja ? "Colorviaを公開しました" : "Colorvia is now available"}</li><li>{ja ? "訪れた国を記録する世界地図" : "World map for visited countries"}</li><li>{ja ? "地域別の統計" : "Statistics by region"}</li></ul></div><span>{ja ? "新機能" : "New"}</span></article></div>}
+  </section>
+</AppShell>

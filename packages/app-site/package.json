@@ -1,0 +1,13 @@
+{
+  "name": "@tomokichi/app-site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./AppSiteShell.astro": "./src/AppSiteShell.astro",
+    "./AppHeroChrome.astro": "./src/AppHeroChrome.astro"
+  },
+  "peerDependencies": {
+    "astro": "^7.1.3"
+  }
+}

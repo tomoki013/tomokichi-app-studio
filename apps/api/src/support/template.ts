@@ -7,6 +7,12 @@ const categoryLabels: Record<SupportCategory, string> = {
   other: "その他",
 };
 
+const appLabels = {
+  remeet: "Remeet",
+  colorvia: "Colorvia",
+  other: "Other",
+} as const;
+
 function escapeHtml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
@@ -47,7 +53,7 @@ export function createSupportEmail(
     from: config.from,
     to: config.to,
     replyTo: request.email,
-    subject: `[Remeet][${category}] お問い合わせ`,
+    subject: `[${appLabels[request.app]}][${category}] お問い合わせ`,
     text,
     html,
     idempotencyKey: `support-${request.requestId}`,

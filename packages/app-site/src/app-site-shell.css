@@ -1,0 +1,158 @@
+.app-header {
+  position: sticky;
+  top: 12px;
+  transition:
+    width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.app-header-inner,
+.app-header .app-logo,
+.app-header nav,
+.app-header .app-actions {
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    gap 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    font-size 0.3s ease;
+}
+
+.app-logo-image {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 3px 9px rgb(21 104 107 / 12%);
+}
+
+.app-header.is-compact {
+  width: 174px;
+  height: 58px;
+  top: 12px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 88%);
+  box-shadow: 0 12px 30px rgb(35 84 85 / 15%);
+}
+
+.app-header.is-compact .app-header-inner {
+  justify-content: center;
+  gap: 0;
+  padding-inline: 18px;
+}
+
+.app-header.is-compact .app-logo {
+  font-size: 15px;
+}
+
+.app-header.is-compact .app-logo-image {
+  width: 24px;
+  height: 24px;
+}
+
+.app-header.is-compact .globe-mark {
+  width: 24px;
+  height: 24px;
+}
+
+.app-header.is-compact .app-header-inner > nav,
+.app-header.is-compact .app-actions {
+  flex: 0 0 0;
+  width: 0;
+  gap: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.app-header.is-compact:hover,
+.app-header.is-compact:focus-within {
+  width: calc(100% - 24px);
+  height: 72px;
+  border-radius: 20px;
+}
+
+.app-header.is-compact:hover .app-header-inner,
+.app-header.is-compact:focus-within .app-header-inner {
+  justify-content: flex-start;
+  gap: 25px;
+  padding-inline: 22px;
+}
+
+.app-header.is-compact:hover .app-logo,
+.app-header.is-compact:focus-within .app-logo {
+  font-size: 19px;
+}
+
+.app-header.is-compact:hover .app-header-inner > nav,
+.app-header.is-compact:focus-within .app-header-inner > nav {
+  flex: 1 1 auto;
+  width: auto;
+  gap: clamp(25px, 3.5vw, 52px);
+  overflow: visible;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.app-header.is-compact:hover .app-actions,
+.app-header.is-compact:focus-within .app-actions {
+  flex: 0 0 auto;
+  width: auto;
+  gap: 12px;
+  overflow: visible;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (max-width: 850px) {
+  .app-header,
+  .app-header.is-compact,
+  .app-header.is-compact:hover,
+  .app-header.is-compact:focus-within {
+    width: calc(100% - 16px);
+    height: 62px;
+    top: 8px;
+    border-radius: 16px;
+  }
+
+  .app-header.is-compact .app-header-inner,
+  .app-header.is-compact:hover .app-header-inner,
+  .app-header.is-compact:focus-within .app-header-inner {
+    justify-content: space-between;
+    gap: 20px;
+    padding-inline: 14px;
+  }
+
+  .app-header.is-compact .app-logo,
+  .app-header.is-compact:hover .app-logo,
+  .app-header.is-compact:focus-within .app-logo {
+    font-size: 17px;
+  }
+
+  .app-header.is-compact .app-logo-image,
+  .app-header.is-compact:hover .app-logo-image,
+  .app-header.is-compact:focus-within .app-logo-image {
+    width: 27px;
+    height: 27px;
+  }
+
+  .app-header.is-compact .app-actions,
+  .app-header.is-compact:hover .app-actions,
+  .app-header.is-compact:focus-within .app-actions {
+    flex: 0 0 auto;
+    width: auto;
+    gap: 12px;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}

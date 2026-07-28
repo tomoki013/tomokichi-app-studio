@@ -1,0 +1,17 @@
+---
+const { lang, date, news, newsHref } = Astro.props as {
+  lang: "ja" | "en";
+  date: string;
+  news: string;
+  newsHref: string;
+};
+const displayDate = date.replaceAll("-", ".");
+---
+
+<a class="home-scroll" href="#notice"><em>Scroll</em><span class="scroll-track"><i></i></span></a>
+<aside class="home-notice" id="notice">
+  <strong>{lang === "ja" ? "お知らせ" : "News"}</strong>
+  <time datetime={date}>{displayDate}</time>
+  <span>{news}</span>
+  <a href={newsHref} aria-label={lang === "ja" ? "お知らせを見る" : "View news"}>→</a>
+</aside>

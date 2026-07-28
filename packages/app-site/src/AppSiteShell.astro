@@ -1,0 +1,165 @@
+---
+import "./app-site-shell.css";
+
+type Locale = "ja" | "en";
+type NavItem = { slug: string; label: string; href: string };
+type FooterColumn = { title: string; links: { label: string; href: string; external?: boolean }[] };
+
+const {
+  lang,
+  title,
+  description,
+  page = "",
+  brand,
+  tagline,
+  siteUrl,
+  homeHref,
+  jaPageHref,
+  enPageHref,
+  nav,
+  footerColumns,
+  appStoreLabel,
+  appStoreHref = "#download",
+  menuLabel,
+  logoMark = "◎",
+  logoImage = "",
+  themeColor = "#f8fbfa",
+  ogImage = "/og.png",
+} = Astro.props as {
+  lang: Locale;
+  title: string;
+  description: string;
+  page?: string;
+  brand: string;
+  tagline: string;
+  siteUrl: string;
+  homeHref: string;
+  jaPageHref: string;
+  enPageHref: string;
+  nav: NavItem[];
+  footerColumns: FooterColumn[];
+  appStoreLabel: string;
+  appStoreHref?: string;
+  menuLabel: string;
+  logoMark?: string;
+  logoImage?: string;
+  themeColor?: string;
+  ogImage?: string;
+};
+const absolutePageUrl = `${siteUrl}${lang === "ja" ? jaPageHref : enPageHref}`;
+const absoluteOgImage = new URL(ogImage, siteUrl).toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={themeColor} />
+    <link rel="canonical" href={absolutePageUrl} />
+    <link rel="alternate" hreflang="ja" href={`${siteUrl}${jaPageHref}`} />
+    <link rel="alternate" hreflang="en" href={`${siteUrl}${enPageHref}`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={brand} />
+    <meta property="og:title" content={`${title} — ${brand}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {logoImage && <link rel="icon" type="image/png" href={logoImage} />}
+    <title>{title} — {brand}</title>
+  </head>
+  <body>
+    <div class="app-page">
+      <header class="app-header" data-app-header>
+        <div class="app-header-inner">
+          <a class="app-logo" href={homeHref}>
+            {logoImage ? <img class="app-logo-image" src={logoImage} alt="" /> : <span class="globe-mark">{logoMark}</span>}
+            {brand}
+          </a>
+          <nav aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
+            {nav.map((item) => <a class:list={{ active: page === item.slug }} href={item.href}>{item.label}</a>)}
+          </nav>
+          <div class="app-actions">
+            <div class="lang-switch">
+              <a class:list={{ active: lang === "en" }} href={enPageHref}>EN</a>
+              <span>/</span>
+              <a class:list={{ active: lang === "ja" }} href={jaPageHref}>JA</a>
+            </div>
+            <a class="appstore-pill" href={appStoreHref}>{appStoreLabel}</a>
+            <button class="mobile-menu" type="button" aria-label={menuLabel} aria-expanded="false">☰</button>
+          </div>
+        </div>
+        <nav class="mobile-nav" hidden>
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+      </header>
+      <main><slot /></main>
+      <footer class="app-footer">
+        <div class="footer-brand">
+          <a class="app-logo" href={homeHref}>
+            {logoImage ? <img class="app-logo-image" src={logoImage} alt="" /> : <span class="globe-mark">{logoMark}</span>}
+            {brand}
+          </a>
+          <p>{tagline}</p>
+        </div>
+        <div class="footer-cols">
+          {footerColumns.map((column) => (
+            <nav aria-label={column.title}>
+              <h2>{column.title}</h2>
+              {column.links.map((link) => (
+                <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.label}</a>
+              ))}
+            </nav>
+          ))}
+        </div>
+        <div class="footer-base"><small>© 2026 {brand}</small><p>Made with ♡ by Tomokichi</p></div>
+      </footer>
+    </div>
+    <script is:inline>
+      (() => {
+        const header = document.querySelector("[data-app-header]");
+        if (header) {
+          let scheduled = false;
+          const syncHeader = () => {
+            header.classList.toggle("is-compact", window.scrollY > 96);
+            scheduled = false;
+          };
+          window.addEventListener("scroll", () => {
+            if (!scheduled) {
+              scheduled = true;
+              requestAnimationFrame(syncHeader);
+            }
+          }, { passive: true });
+          syncHeader();
+        }
+
+        const button = document.querySelector(".mobile-menu");
+        const menu = document.querySelector(".mobile-nav");
+        button?.addEventListener("click", () => {
+          const open = button.getAttribute("aria-expanded") !== "true";
+          button.setAttribute("aria-expanded", String(open));
+          button.textContent = open ? "×" : "☰";
+          if (menu) menu.hidden = !open;
+        });
+
+        const items = document.querySelectorAll("[data-reveal]");
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+          items.forEach((item) => {
+            item.classList.add("visible");
+          });
+          return;
+        }
+        const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
+        items.forEach((item) => {
+          observer.observe(item);
+        });
+      })();
+    </script>
+  </body>
+</html>
