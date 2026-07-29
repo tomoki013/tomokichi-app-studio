@@ -16,15 +16,43 @@ const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const supportHref = supportUrl("yohaku", lang);
 const nav = [
-  { slug: "how-to", label: ja ? "コンセプト" : "Concept", href: href("how-to") },
+  { slug: "screenshots", label: ja ? "コンセプト" : "Concept", href: href("screenshots") },
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
-  { slug: "screenshots", label: ja ? "かたち" : "Pattern", href: href("screenshots") },
+  { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
+  { slug: "faq", label: "FAQ", href: href("faq") },
+  { slug: "updates", label: ja ? "ニュース" : "News", href: href("updates") },
 ];
 const footerColumns = [
-  { title: ja ? "プロダクト" : "Product", links: [{ label: ja ? "機能" : "Features", href: href("features") }, { label: ja ? "使い方" : "How it works", href: href("how-to") }, { label: ja ? "スクリーンショット" : "Screenshots", href: href("screenshots") }] },
-  { title: ja ? "サポート" : "Support", links: [{ label: "FAQ", href: href("faq") }, { label: ja ? "お知らせ" : "News", href: href("updates") }, { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true }] },
-  { title: ja ? "規約" : "Legal", links: [{ label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") }, { label: ja ? "利用規約" : "Terms of Service", href: href("terms") }] },
-  { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl(lang), external: true }, { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true }] },
+  {
+    title: ja ? "プロダクト" : "Product",
+    links: [
+      { label: ja ? "コンセプト" : "Concept", href: href("screenshots") },
+      { label: ja ? "機能" : "Features", href: href("features") },
+      { label: ja ? "使い方" : "How to", href: href("how-to") },
+    ],
+  },
+  {
+    title: ja ? "サポート" : "Support",
+    links: [
+      { label: "FAQ", href: href("faq") },
+      { label: ja ? "ニュース" : "News", href: href("updates") },
+      { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
+    ],
+  },
+  {
+    title: ja ? "規約" : "Legal",
+    links: [
+      { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
+      { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
+    ],
+  },
+  {
+    title: "Tomokichi",
+    links: [
+      { label: "Tomokichi", href: mainSiteUrl(lang), external: true },
+      { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+    ],
+  },
 ];
 ---
 
@@ -34,9 +62,9 @@ const footerColumns = [
   description={description ?? (ja ? "Yohakuは、何もしない時間をそっと置くためのiPhoneアプリです。" : "Yohaku is an iPhone app for placing quiet, unplanned space in your day.")}
   page={page}
   brand="Yohaku"
-  logoMark="□"
+  logoImage="/assets/yohaku-icon.png"
   ogImage="/og.png"
-  tagline={ja ? "予定ではなく、余白だけを。" : "Not another plan. Just space."}
+  tagline={ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}
   siteUrl={appSiteUrl("yohaku")}
   homeHref={ja ? "/ja" : "/"}
   jaPageHref={jaPageHref}
@@ -44,8 +72,9 @@ const footerColumns = [
   nav={nav}
   footerColumns={footerColumns}
   appStoreHref={`${ja ? "/ja" : ""}/#download`.replaceAll("//", "/")}
-  appStoreLabel={ja ? "App Storeで見る" : "View on App Store"}
+  appStoreLabel={ja ? "ダウンロード" : "Download"}
   menuLabel={ja ? "メニュー" : "Menu"}
+  themeColor="#ffffff"
   pageClass="yohaku-page"
 >
   <slot />
