@@ -1,70 +1,97 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
 import AppShell from "./AppShell.astro";
+import PhoneMock from "./PhoneMock.astro";
 
 const { lang } = Astro.props as { lang: "ja" | "en" };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
-const week = [1, 0, 2, 0, 1, 0, 1];
-const pattern = [0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0];
+
 const features = ja
   ? [
-      ["□", "余白だけを置く", "タスクも予定も追加できません。何もしない時間だけを置けます。"],
-      ["□□■□□", "静かな週表示", "一週間の余白を、言葉を使わず静かに見渡せます。"],
-      ["▦", "今月のかたち", "置いた余白が、白と黒のパターンとして積み重なります。"],
-      ["◌", "言葉に頼りすぎない", "迷わないための、アイコン中心の小さく簡潔な設計です。"],
+      {
+        mark: "□",
+        title: "余白を記録する",
+        body: "予定ではなく、余白を置いた時間をそっと記録します。",
+      },
+      {
+        mark: "□□■□□",
+        title: "静かに見渡す",
+        body: "日・週・月のリズムで、静かに余白を見渡せます。",
+      },
+      {
+        mark: "▦",
+        title: "かたちになる",
+        body: "積み重ねた余白が、美しいパターンになります。",
+      },
+      {
+        mark: "◌",
+        title: "言葉にならない心地よさ",
+        body: "アイコン中心の、シンプルでやさしいデザインです。",
+      },
     ]
   : [
-      ["□", "Place only space", "No tasks and no events. Add only a quiet block with nothing planned."],
-      ["□□■□□", "A quiet week", "See the breathing room in your week without adding more words."],
-      ["▦", "Your month’s shape", "Every space you leave becomes part of a simple black-and-white pattern."],
-      ["◌", "Less language", "A small, icon-led interface designed to stay out of your way."],
+      {
+        mark: "□",
+        title: "Record the space",
+        body: "Not another plan—just a quiet mark where you left room.",
+      },
+      {
+        mark: "□□■□□",
+        title: "See it calmly",
+        body: "Glance across day, week and month without noise.",
+      },
+      {
+        mark: "▦",
+        title: "It takes shape",
+        body: "Stacked spaces become a quiet pattern of their own.",
+      },
+      {
+        mark: "◌",
+        title: "Comfort without words",
+        body: "An icon-led interface designed to stay out of the way.",
+      },
     ];
 ---
 
 <AppShell
   lang={lang}
-  title={ja ? "余白を置く。" : "Leave some room."}
+  title={ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}
   description={ja ? "予定ではなく、余白だけを置くiPhoneアプリYohaku。" : "Yohaku is an iPhone app for leaving room in your day, without turning it into another plan."}
 >
   <section class="yohaku-hero">
-    <div class="hero-copy">
-      <p class="eyebrow">{ja ? "何もしない時間のためのアプリ" : "An app for unplanned time"}</p>
-      <h1>{ja ? <>余白を<br />置く。</> : <>Leave<br />some room.</>}</h1>
-      <p class="hero-lead">{ja ? "予定ではなく、余白だけを。" : "Not another plan. Just space."}</p>
-      <p class="hero-body">
-        {ja
-          ? <>Yohakuは、日々の中に何も入れない時間を<br />そっと置くためのアプリです。</>
-          : <>Yohaku lets you place a little time with nothing in it —<br />quietly, without making it another task.</>}
-      </p>
-      <div class="hero-actions">
-        <a class="store-button" href="#download">● {ja ? "App Store" : "App Store"}</a>
-        <a class="secondary-button" href={`${base}/features`}>{ja ? "詳しく見る" : "Learn more"}</a>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>{ja ? <>余白を置く、<br />小さな習慣を。</> : <>Leave room.<br />Keep it small.</>}</h1>
+        <p class="hero-lead">{ja ? "予定ではなく、余白だけを。" : "Not another plan. Just space."}</p>
+        <span class="hero-rule" aria-hidden="true"></span>
+        <p class="hero-body">
+          {ja
+            ? "Yohakuは、日々の中に何も入れない時間をそっと置くためのアプリです。"
+            : "Yohaku is an app for gently placing time with nothing in it into your day."}
+        </p>
+        <div class="hero-actions">
+          <a class="store-button" href="#download">
+            <svg class="store-apple" viewBox="0 0 16 20" aria-hidden="true"><path fill="currentColor" d="M13.2 10.6c0-2 1.6-3 1.7-3.1-0.9-1.3-2.4-1.5-2.9-1.5-1.2-0.1-2.4 0.7-3 0.7-0.6 0-1.6-0.7-2.6-0.7-1.3 0-2.6 0.8-3.3 2-1.4 2.5-0.4 6.1 1 8.1 0.7 1 1.5 2 2.6 2 1 0 1.4-0.7 2.7-0.7s1.6 0.7 2.7 0.7c1.1 0 1.8-1 2.5-1.9 0.8-1.1 1.1-2.2 1.1-2.3-0.0-0.0-2.1-0.8-2.1-3.2zM11.1 4.4c0.6-0.7 1-1.7 0.9-2.7-0.9 0-1.9 0.6-2.5 1.3-0.5 0.6-1 1.6-0.9 2.6 1 0.1 1.9-0.5 2.5-1.2z"/></svg>
+            App Store
+          </a>
+          <a class="secondary-button" href={`${base}/features`}>{ja ? "詳しく見る" : "Learn more"}</a>
+        </div>
       </div>
-    </div>
 
-    <div class="hero-devices" role="img" aria-label={ja ? "YohakuのToday、Week、Pattern画面" : "Yohaku Today, Week and Pattern screens"}>
-      <div class="phone phone-today">
-        <div class="phone-bar"><span>9:41</span><i></i></div>
-        <h2>Today</h2>
-        <div class="today-space"><b>■</b><span>{ja ? "余白の時間" : "Quiet space"}</span><small>10:00 – 12:00</small></div>
-        <span class="add-button">＋</span>
-      </div>
-      <div class="phone phone-week">
-        <div class="phone-bar"><span>9:41</span><i></i></div>
-        <h2>Week</h2>
-        <p class="phone-period">‹　5.13 – 5.19　›</p>
-        <ol>
-          {week.map((blocks, index) => <li><span>{ja ? ["月", "火", "水", "木", "金", "土", "日"][index] : ["M", "T", "W", "T", "F", "S", "S"][index]}</span><i class:list={{ filled: blocks > 0 }}></i>{blocks > 1 && <i class="filled"></i>}</li>)}
-        </ol>
-        <span class="add-button">＋</span>
-      </div>
-      <div class="phone phone-pattern">
-        <div class="phone-bar"><span>9:41</span><i></i></div>
-        <h2>Pattern</h2>
-        <p class="phone-period">‹　2026.7　›</p>
-        <div class="month-grid">{pattern.map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}</div>
-        <div class="phone-tabs"><b>▦</b><span>□</span></div>
+      <div class="hero-devices" role="group" aria-label={ja ? "YohakuのToday、Week、Month画面" : "Yohaku Today, Week and Month screens"}>
+        <figure class="hero-device">
+          <figcaption>Today</figcaption>
+          <PhoneMock kind="today" size="md" />
+        </figure>
+        <figure class="hero-device">
+          <figcaption>Week</figcaption>
+          <PhoneMock kind="week" size="md" />
+        </figure>
+        <figure class="hero-device">
+          <figcaption>Month</figcaption>
+          <PhoneMock kind="month" size="md" />
+        </figure>
       </div>
     </div>
 
@@ -78,13 +105,13 @@ const features = ja
 
   <section class="feature-section section-pad" id="features">
     <header class="section-heading" data-reveal>
-      <p>{ja ? "できること" : "What it does"}</p>
-      <h2>{ja ? "増やさず、空けておく。" : "Keep it open, not busy."}</h2>
+      <h2>{ja ? "Yohakuでできること" : "What Yohaku does"}</h2>
+      <span class="section-rule" aria-hidden="true"></span>
     </header>
     <div class="feature-grid">
-      {features.map(([mark, title, body]) => (
+      {features.map(({ mark, title, body }) => (
         <article data-reveal>
-          <span class="feature-mark">{mark}</span>
+          <span class="feature-mark" aria-hidden="true">{mark}</span>
           <h3>{title}</h3>
           <p>{body}</p>
         </article>
@@ -92,39 +119,49 @@ const features = ja
     </div>
   </section>
 
-  <section class="shape-section section-pad" id="concept">
-    <div class="shape-copy" data-reveal>
-      <p class="eyebrow">Pattern</p>
-      <h2>{ja ? <>余白が、<br />かたちになる。</> : <>Space takes<br />a shape.</>}</h2>
-      <span class="shape-divider"></span>
-      <p>{ja ? "置いた余白は、シンプルなパターンとして見えてきます。" : "The room you leave slowly becomes a simple pattern of its own."}</p>
+  <section class="story-section story-quiet section-pad" id="concept">
+    <div class="story-visual" data-reveal>
+      <PhoneMock kind="today" size="lg" />
     </div>
-    <div class="shape-visual" data-reveal>
-      <div class="phone phone-pattern large-phone">
-        <div class="phone-bar"><span>9:41</span><i></i></div>
-        <h2>Pattern</h2>
-        <p class="phone-period">‹　2026.7　›</p>
-        <div class="month-grid">{pattern.map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}</div>
-        <div class="phone-tabs"><b>▦</b><span>□</span></div>
-      </div>
-      <div class="pattern-wash" aria-hidden="true">{pattern.concat(pattern).map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}</div>
+    <div class="story-copy" data-reveal>
+      <h2>{ja ? "静かに整える。" : "Settle, quietly."}</h2>
+      <span class="story-rule" aria-hidden="true"></span>
+      <p>
+        {ja
+          ? "気づいたときに、余白をそっと置く。それだけで、心は少しずつ整っていきます。"
+          : "When you notice the need, leave a little space. That alone can gently settle the mind."}
+      </p>
     </div>
   </section>
 
-  <section class="belief-section section-pad">
-    <h2 data-reveal>{ja ? <>増やすためではなく、<br />空けておくために。</> : <>Not to add more,<br />but to leave something open.</>}</h2>
-    <div data-reveal>
-      <p>{ja ? "Yohakuは、静かな道具です。" : "Yohaku is a quiet tool."}</p>
-      <p>{ja ? "生産性を追い求めたり、通知で急かしたり、誰かと比べたりすることはありません。" : "It does not chase productivity, hurry you with notifications, or compare you with anyone else."}</p>
-      <p>{ja ? "ただ、自分の時間に、余白をそっと置く。その小さな習慣を支えます。" : "It simply supports the small habit of leaving a little room in your own time."}</p>
+  <section class="story-section story-shape section-pad">
+    <div class="story-copy" data-reveal>
+      <h2>{ja ? <>余白が、<br />かたちになる。</> : <>Space takes<br />a shape.</>}</h2>
+      <span class="story-rule" aria-hidden="true"></span>
+      <p>
+        {ja
+          ? "積み重ねた余白は、やがて美しいパターンに。自分だけのリズムが、静かに見えてきます。"
+          : "The spaces you stack become a quiet pattern—your own rhythm, made visible without noise."}
+      </p>
+    </div>
+    <div class="story-visual story-visual-shape" data-reveal>
+      <PhoneMock kind="month" size="lg" />
+      <div class="shape-scatter" aria-hidden="true">
+        <i class="s1"></i>
+        <i class="s2"></i>
+        <i class="s3"></i>
+        <i class="s4"></i>
+        <i class="s5"></i>
+        <i class="s6"></i>
+      </div>
     </div>
   </section>
 
   <section class="download-section" id="download" data-reveal>
-    <p class="eyebrow">Yohaku for iPhone</p>
-    <h2>{ja ? "余白を置く、小さな習慣を。" : "Make a small habit of leaving room."}</h2>
-    <p>{ja ? "まずは、今日のどこかに余白を置いてみませんか。" : "Start by leaving one quiet space somewhere in today."}</p>
-    <a class="store-button" href="#download">● App Store</a>
-    <small>iPhone app</small>
+    <h2>{ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}</h2>
+    <a class="store-button" href="#download">
+      <svg class="store-apple" viewBox="0 0 16 20" aria-hidden="true"><path fill="currentColor" d="M13.2 10.6c0-2 1.6-3 1.7-3.1-0.9-1.3-2.4-1.5-2.9-1.5-1.2-0.1-2.4 0.7-3 0.7-0.6 0-1.6-0.7-2.6-0.7-1.3 0-2.6 0.8-3.3 2-1.4 2.5-0.4 6.1 1 8.1 0.7 1 1.5 2 2.6 2 1 0 1.4-0.7 2.7-0.7s1.6 0.7 2.7 0.7c1.1 0 1.8-1 2.5-1.9 0.8-1.1 1.1-2.2 1.1-2.3-0.0-0.0-2.1-0.8-2.1-3.2zM11.1 4.4c0.6-0.7 1-1.7 0.9-2.7-0.9 0-1.9 0.6-2.5 1.3-0.5 0.6-1 1.6-0.9 2.6 1 0.1 1.9-0.5 2.5-1.2z"/></svg>
+      App Store
+    </a>
   </section>
 </AppShell>

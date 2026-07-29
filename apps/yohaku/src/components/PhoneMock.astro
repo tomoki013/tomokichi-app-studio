@@ -1,0 +1,126 @@
+---
+/**
+ * Lightweight CSS phone mockups matching the Yohaku product UI.
+ * kind: "today" | "week" | "month"
+ */
+const { kind = "today", size = "md", dateLabel, showTabs = true } = Astro.props as {
+  kind?: "today" | "week" | "month";
+  size?: "sm" | "md" | "lg";
+  dateLabel?: string;
+  showTabs?: boolean;
+};
+
+const weekDays = [
+  { label: "月", day: "13", blocks: 1 },
+  { label: "火", day: "14", blocks: 0 },
+  { label: "水", day: "15", blocks: 1 },
+  { label: "木", day: "16", blocks: 2 },
+  { label: "金", day: "17", blocks: 0 },
+  { label: "土", day: "18", blocks: 1 },
+  { label: "日", day: "19", blocks: 0 },
+];
+
+const todaySlots = [
+  { filled: true, time: "09:00 - 10:00" },
+  { filled: false, time: "13:30 - 14:00" },
+  { filled: false, time: "21:00 - 21:30" },
+];
+
+// Distinctive month pattern (≈ mid-month cluster)
+const monthCells = [
+  0, 0, 0, 0, 1, 0, 0,
+  0, 0, 1, 1, 0, 1, 0,
+  0, 1, 0, 1, 1, 0, 0,
+  0, 0, 1, 1, 0, 1, 0,
+  0, 1, 0, 0, 1, 0, 0,
+  0, 0, 1, 0, 0, 0, 0,
+];
+
+const titles = { today: "Today", week: "Week", month: "Month" } as const;
+const defaultDates = {
+  today: "2024年5月13日（月）",
+  week: "5.13 - 5.19",
+  month: "2024年5月",
+} as const;
+const resolvedDate = dateLabel ?? defaultDates[kind];
+---
+
+<div class:list={["yh-phone", `yh-phone--${size}`, `yh-phone--${kind}`]} role="img" aria-label={`Yohaku ${titles[kind]}`}>
+  <div class="yh-phone-frame">
+    <div class="yh-phone-notch" aria-hidden="true"></div>
+    <div class="yh-phone-status">
+      <span>9:41</span>
+      <span class="yh-phone-status-icons" aria-hidden="true"></span>
+    </div>
+
+    {kind === "today" && (
+      <div class="yh-phone-body">
+        <h3 class="yh-phone-title">Today</h3>
+        <p class="yh-phone-date">{resolvedDate}</p>
+        <ul class="yh-today-list">
+          {todaySlots.map((slot) => (
+            <li class:list={{ "is-filled": slot.filled }}>
+              <i class:list={{ filled: slot.filled }} aria-hidden="true"></i>
+              <div>
+                <strong>余白の時間</strong>
+                <span>{slot.time}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <button class="yh-phone-fab" type="button" tabindex="-1" aria-hidden="true">+</button>
+      </div>
+    )}
+
+    {kind === "week" && (
+      <div class="yh-phone-body">
+        <div class="yh-phone-header-row">
+          <h3 class="yh-phone-title">Week</h3>
+        </div>
+        <p class="yh-phone-period">
+          <span aria-hidden="true">‹</span>
+          <span>{resolvedDate}</span>
+          <span aria-hidden="true">›</span>
+        </p>
+        <ol class="yh-week-list">
+          {weekDays.map((d) => (
+            <li>
+              <span class="yh-week-label">{d.label} {d.day}</span>
+              <span class="yh-week-blocks">
+                {d.blocks === 0 && <i aria-hidden="true"></i>}
+                {d.blocks >= 1 && <i class="filled" aria-hidden="true"></i>}
+                {d.blocks >= 2 && <i class="filled" aria-hidden="true"></i>}
+              </span>
+            </li>
+          ))}
+        </ol>
+        <button class="yh-phone-fab" type="button" tabindex="-1" aria-hidden="true">+</button>
+      </div>
+    )}
+
+    {kind === "month" && (
+      <div class="yh-phone-body">
+        <div class="yh-phone-header-row">
+          <h3 class="yh-phone-title">Month</h3>
+        </div>
+        <p class="yh-phone-period">
+          <span aria-hidden="true">‹</span>
+          <span>{resolvedDate}</span>
+          <span aria-hidden="true">›</span>
+        </p>
+        <div class="yh-month-grid" aria-hidden="true">
+          {monthCells.map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}
+        </div>
+        <button class="yh-phone-fab" type="button" tabindex="-1" aria-hidden="true">+</button>
+      </div>
+    )}
+
+    {showTabs && (
+      <nav class="yh-phone-tabs" aria-hidden="true">
+        <span class:list={{ active: kind === "today" }}>□</span>
+        <span class:list={{ active: kind === "week" }}>▦</span>
+        <span class:list={{ active: kind === "month" }}>▩</span>
+      </nav>
+    )}
+  </div>
+</div>
