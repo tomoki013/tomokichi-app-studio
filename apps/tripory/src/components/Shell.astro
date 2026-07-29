@@ -1,92 +1,76 @@
 ---
+import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
+import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
+
 type Locale = "ja" | "en";
-const { lang, title, page = "" } = Astro.props as { lang: Locale; title: string; page?: string };
+const { lang, title, page = "", description } = Astro.props as {
+  lang: Locale;
+  title: string;
+  page?: string;
+  description?: string;
+};
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
 const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
 const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const nav = ja
-  ? [["features", "機能紹介"], ["principles", "こだわり"], ["screenshots", "スクリーンショット"], ["faq", "よくある質問"], ["updates", "お知らせ"]]
-  : [["features", "Features"], ["principles", "Principles"], ["screenshots", "Screenshots"], ["faq", "FAQ"], ["updates", "News"]];
-
-/* Footer link columns. [label, url, isExternal?] */
-const footerCols: { title: string; links: [string, string, boolean?][] }[] = ja
   ? [
-      { title: "プロダクト", links: [["機能紹介", href("features")], ["こだわり", href("principles")], ["スクリーンショット", href("screenshots")]] },
-      { title: "サポート", links: [["よくある質問", href("faq")], ["お知らせ", href("updates")], ["お問い合わせ", "mailto:support@tmkch.io"]] },
-      { title: "規約", links: [["プライバシーポリシー", href("privacy")], ["利用規約", href("terms")]] },
-      { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io/ja", true], ["ほかのアプリ", "https://tmkch.io/ja/apps", true]] },
+      { slug: "features", label: "機能紹介", href: href("features") },
+      { slug: "principles", label: "こだわり", href: href("principles") },
+      { slug: "screenshots", label: "スクリーンショット", href: href("screenshots") },
+      { slug: "faq", label: "よくある質問", href: href("faq") },
+      { slug: "updates", label: "お知らせ", href: href("updates") },
     ]
   : [
-      { title: "Product", links: [["Features", href("features")], ["Principles", href("principles")], ["Screenshots", href("screenshots")]] },
-      { title: "Support", links: [["FAQ", href("faq")], ["News", href("updates")], ["Contact", "mailto:support@tmkch.io"]] },
-      { title: "Legal", links: [["Privacy Policy", href("privacy")], ["Terms of Service", href("terms")]] },
-      { title: "Tomokichi", links: [["Tomokichi", "https://tmkch.io", true], ["Other apps", "https://tmkch.io/apps", true]] },
+      { slug: "features", label: "Features", href: href("features") },
+      { slug: "principles", label: "Principles", href: href("principles") },
+      { slug: "screenshots", label: "Screenshots", href: href("screenshots") },
+      { slug: "faq", label: "FAQ", href: href("faq") },
+      { slug: "updates", label: "News", href: href("updates") },
     ];
+const supportHref = supportUrl("tripory", lang);
+const footerColumns = ja
+  ? [
+      { title: "プロダクト", links: [{ label: "機能紹介", href: href("features") }, { label: "こだわり", href: href("principles") }, { label: "スクリーンショット", href: href("screenshots") }] },
+      { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("updates") }, { label: "お問い合わせ", href: supportHref, external: true }] },
+      { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }] },
+      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
+    ]
+  : [
+      { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "Principles", href: href("principles") }, { label: "Screenshots", href: href("screenshots") }] },
+      { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("updates") }, { label: "Contact", href: supportHref, external: true }] },
+      { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }] },
+      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
+    ];
+const metaDescription = description ?? (ja
+  ? "Triporyは、旅で訪れた場所と思い出を、自分だけの世界として残すアプリです。"
+  : "Tripory keeps the places and memories from your travels in a world of your own.");
 ---
 
-<!doctype html>
-<html lang={lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={title} />
-    <link rel="icon" type="image/png" href="/assets/tripory-icon.png" />
-    <title>{title} — Tripory</title>
-  </head>
-  <body>
-    <div class="tripory-page">
-      <header class="tripory-header">
-        <div class="tripory-header-inner">
-          <a class="tripory-logo" href={ja ? "/ja" : "/"}>TRIPORY</a>
-          <nav>{nav.map(([slug, label]) => <a class:list={{ active: page === slug }} href={href(slug)}>{label}</a>)}</nav>
-          <div class="header-actions">
-            <div class="lang-switch">
-              <a class:list={{ active: !ja }} href={enPageHref} aria-label="English">EN</a>
-              <span class="lang-sep">/</span>
-              <a class:list={{ active: ja }} href={jaPageHref} aria-label="日本語">JA</a>
-            </div>
-            <a class="download-pill" href="#download">{ja ? "Appをダウンロード" : "Download the app"}</a>
-          <button type="button" aria-label={ja ? "メニュー" : "Menu"}>☰</button>
-          </div>
-        </div>
-      </header>
-      <main><slot /></main>
-      <footer class="tripory-footer">
-        <div class="footer-brand">
-          <a class="tripory-logo" href={ja ? "/ja" : "/"}><img src="/assets/tripory-icon.png" alt="" /> TRIPORY</a>
-          <p>{ja ? "旅で集めた、わたしの世界。" : "The world, collected through travel."}</p>
-        </div>
-        <div class="footer-cols">
-          {footerCols.map((col) => (
-            <nav aria-label={col.title}>
-              <h2>{col.title}</h2>
-              {col.links.map(([label, url, external]) => (
-                <a href={url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>{label}</a>
-              ))}
-            </nav>
-          ))}
-        </div>
-        <div class="footer-base">
-          <small>© 2026 Tripory</small>
-          <p class="made-with">Made with ♡ by Tomokichi</p>
-        </div>
-      </footer>
-    </div>
-    <script is:inline>
-      (() => {
-        const header = document.querySelector(".tripory-header");
-        const sync = () => header?.classList.toggle("compact", scrollY > 90);
-        addEventListener("scroll", sync, { passive: true });
-        sync();
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        const items = document.querySelectorAll("[data-reveal]");
-        const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-          if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); }
-        }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
-        items.forEach((item, i) => { item.style.setProperty("--delay", `${(i % 5) * 55}ms`); observer.observe(item); });
-      })();
-    </script>
-  </body>
-</html>
+<AppSiteShell
+  lang={lang}
+  title={title}
+  description={metaDescription}
+  page={page}
+  brand="TRIPORY"
+  logoImage="/assets/tripory-icon.png"
+  ogImage="/assets/cappadocia.png"
+  tagline={ja ? "旅で集めた、わたしの世界。" : "The world, collected through travel."}
+  siteUrl={appSiteUrl("tripory")}
+  homeHref={ja ? "/ja" : "/"}
+  jaPageHref={jaPageHref}
+  enPageHref={enPageHref}
+  nav={nav}
+  footerColumns={footerColumns}
+  appStoreLabel={ja ? "Appをダウンロード" : "Download the app"}
+  menuLabel={ja ? "メニュー" : "Menu"}
+  pageClass="tripory-page"
+>
+  <slot />
+  <script is:inline>
+    document.querySelectorAll("[data-reveal]").forEach((item, index) => {
+      item.style.setProperty("--delay", `${(index % 5) * 55}ms`);
+    });
+  </script>
+</AppSiteShell>

@@ -14,6 +14,38 @@ This document defines the shared structure for Tomokichi app landing pages.
 - Use the standard four footer columns: Product, Support, Legal, and Tomokichi.
 - Contact links open the shared Tomokichi support form with the app query parameter.
 
+### App-specific theming
+
+The shared components own structure and behaviour, but app styles may override
+their presentation. Prefer the public custom properties so overrides remain
+stable when the shared markup changes:
+
+```css
+:root {
+  --app-site-ink: #18343a;
+  --app-site-accent: #55a7a7;
+  --app-site-page-background: #fbfdfc;
+  --app-site-header-foreground: #18343a;
+  --app-site-header-background: rgb(255 255 255 / 82%);
+  --app-site-header-compact-background: rgb(255 255 255 / 90%);
+  --app-site-store-background: #fff;
+  --app-site-footer-background: #17383d;
+  --app-site-footer-foreground: #fff;
+  --app-site-footer-link: #c5d4d5;
+  --app-site-hero-muted: #667b7e;
+  --app-site-notice-background: rgb(255 255 255 / 72%);
+}
+```
+
+Header borders and shadows, logo shadows, mobile menu colours, footer text
+colours, and news-bar hover colours also have matching
+`--app-site-*` properties in `app-site-shell.css`. Direct selectors such as
+`.app-site-header` and `.app-site-footer` may be overridden when an app needs a
+layout variation that cannot be expressed by the theme properties. Scope those
+rules through the app's `pageClass` (for example,
+`.my-app-page .app-site-header`) so the app override wins regardless of CSS
+import order.
+
 ## Landing-page hero
 
 - The first viewport must communicate the app, not generic website chrome.
@@ -37,3 +69,21 @@ This document defines the shared structure for Tomokichi app landing pages.
 - Support English and Japanese on every route.
 - Preserve keyboard navigation, reduced-motion behaviour, and mobile layouts.
 - Run the app check and production build before handoff.
+
+## Creating a new app site
+
+Run the scaffold command from the workspace root:
+
+```sh
+pnpm create:app-site <slug> "<Brand name>"
+```
+
+The command chooses the next free local port, creates the bilingual Astro site,
+installs the shared shell and hero chrome, adds the standard navigation and
+footer structure, creates the required routes, registers the app in the shared
+support/footer registry, and updates the lockfile. Registered sites use
+`https://<slug>.tmkch.io` as their public URL and keep the corresponding
+`workers.dev` deployment URL alongside it. Pass `--port <port>` to choose a port
+or `--no-install` to skip the lockfile update.
+
+The same generator is available as `mise run create-app-site -- <slug> "<Brand name>"`.

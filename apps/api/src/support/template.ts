@@ -1,3 +1,4 @@
+import { APP_BRANDS } from "@tomokichi/app-site/apps";
 import type { SupportCategory, SupportEmail, SupportRequest } from "./types";
 
 const categoryLabels: Record<SupportCategory, string> = {
@@ -7,11 +8,10 @@ const categoryLabels: Record<SupportCategory, string> = {
   other: "その他",
 };
 
-const appLabels = {
-  remeet: "Remeet",
-  colorvia: "Colorvia",
-  other: "Other",
-} as const;
+const appLabels = new Map<string, string>([
+  ...APP_BRANDS.map((app) => [app.slug, app.name] as const),
+  ["other", "Other"],
+]);
 
 function escapeHtml(value: string): string {
   return value
@@ -53,7 +53,7 @@ export function createSupportEmail(
     from: config.from,
     to: config.to,
     replyTo: request.email,
-    subject: `[${appLabels[request.app]}][${category}] お問い合わせ`,
+    subject: `[${appLabels.get(request.app) ?? request.app}][${category}] お問い合わせ`,
     text,
     html,
     idempotencyKey: `support-${request.requestId}`,

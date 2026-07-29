@@ -1,0 +1,130 @@
+---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import AppShell from "./AppShell.astro";
+
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const week = [1, 0, 2, 0, 1, 0, 1];
+const pattern = [0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0];
+const features = ja
+  ? [
+      ["□", "余白だけを置く", "タスクも予定も追加できません。何もしない時間だけを置けます。"],
+      ["□□■□□", "静かな週表示", "一週間の余白を、言葉を使わず静かに見渡せます。"],
+      ["▦", "今月のかたち", "置いた余白が、白と黒のパターンとして積み重なります。"],
+      ["◌", "言葉に頼りすぎない", "迷わないための、アイコン中心の小さく簡潔な設計です。"],
+    ]
+  : [
+      ["□", "Place only space", "No tasks and no events. Add only a quiet block with nothing planned."],
+      ["□□■□□", "A quiet week", "See the breathing room in your week without adding more words."],
+      ["▦", "Your month’s shape", "Every space you leave becomes part of a simple black-and-white pattern."],
+      ["◌", "Less language", "A small, icon-led interface designed to stay out of your way."],
+    ];
+---
+
+<AppShell
+  lang={lang}
+  title={ja ? "余白を置く。" : "Leave some room."}
+  description={ja ? "予定ではなく、余白だけを置くiPhoneアプリYohaku。" : "Yohaku is an iPhone app for leaving room in your day, without turning it into another plan."}
+>
+  <section class="yohaku-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">{ja ? "何もしない時間のためのアプリ" : "An app for unplanned time"}</p>
+      <h1>{ja ? <>余白を<br />置く。</> : <>Leave<br />some room.</>}</h1>
+      <p class="hero-lead">{ja ? "予定ではなく、余白だけを。" : "Not another plan. Just space."}</p>
+      <p class="hero-body">
+        {ja
+          ? <>Yohakuは、日々の中に何も入れない時間を<br />そっと置くためのアプリです。</>
+          : <>Yohaku lets you place a little time with nothing in it —<br />quietly, without making it another task.</>}
+      </p>
+      <div class="hero-actions">
+        <a class="store-button" href="#download">● {ja ? "App Store" : "App Store"}</a>
+        <a class="secondary-button" href={`${base}/features`}>{ja ? "詳しく見る" : "Learn more"}</a>
+      </div>
+    </div>
+
+    <div class="hero-devices" role="img" aria-label={ja ? "YohakuのToday、Week、Pattern画面" : "Yohaku Today, Week and Pattern screens"}>
+      <div class="phone phone-today">
+        <div class="phone-bar"><span>9:41</span><i></i></div>
+        <h2>Today</h2>
+        <div class="today-space"><b>■</b><span>{ja ? "余白の時間" : "Quiet space"}</span><small>10:00 – 12:00</small></div>
+        <span class="add-button">＋</span>
+      </div>
+      <div class="phone phone-week">
+        <div class="phone-bar"><span>9:41</span><i></i></div>
+        <h2>Week</h2>
+        <p class="phone-period">‹　5.13 – 5.19　›</p>
+        <ol>
+          {week.map((blocks, index) => <li><span>{ja ? ["月", "火", "水", "木", "金", "土", "日"][index] : ["M", "T", "W", "T", "F", "S", "S"][index]}</span><i class:list={{ filled: blocks > 0 }}></i>{blocks > 1 && <i class="filled"></i>}</li>)}
+        </ol>
+        <span class="add-button">＋</span>
+      </div>
+      <div class="phone phone-pattern">
+        <div class="phone-bar"><span>9:41</span><i></i></div>
+        <h2>Pattern</h2>
+        <p class="phone-period">‹　2026.7　›</p>
+        <div class="month-grid">{pattern.map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}</div>
+        <div class="phone-tabs"><b>▦</b><span>□</span></div>
+      </div>
+    </div>
+
+    <AppHeroChrome
+      lang={lang}
+      date="2026-07-29"
+      news={ja ? "Yohakuブランドサイトを公開しました。" : "The Yohaku brand site is now available."}
+      newsHref={`${base}/updates`}
+    />
+  </section>
+
+  <section class="feature-section section-pad" id="features">
+    <header class="section-heading" data-reveal>
+      <p>{ja ? "できること" : "What it does"}</p>
+      <h2>{ja ? "増やさず、空けておく。" : "Keep it open, not busy."}</h2>
+    </header>
+    <div class="feature-grid">
+      {features.map(([mark, title, body]) => (
+        <article data-reveal>
+          <span class="feature-mark">{mark}</span>
+          <h3>{title}</h3>
+          <p>{body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="shape-section section-pad" id="concept">
+    <div class="shape-copy" data-reveal>
+      <p class="eyebrow">Pattern</p>
+      <h2>{ja ? <>余白が、<br />かたちになる。</> : <>Space takes<br />a shape.</>}</h2>
+      <span class="shape-divider"></span>
+      <p>{ja ? "置いた余白は、シンプルなパターンとして見えてきます。" : "The room you leave slowly becomes a simple pattern of its own."}</p>
+    </div>
+    <div class="shape-visual" data-reveal>
+      <div class="phone phone-pattern large-phone">
+        <div class="phone-bar"><span>9:41</span><i></i></div>
+        <h2>Pattern</h2>
+        <p class="phone-period">‹　2026.7　›</p>
+        <div class="month-grid">{pattern.map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}</div>
+        <div class="phone-tabs"><b>▦</b><span>□</span></div>
+      </div>
+      <div class="pattern-wash" aria-hidden="true">{pattern.concat(pattern).map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}</div>
+    </div>
+  </section>
+
+  <section class="belief-section section-pad">
+    <h2 data-reveal>{ja ? <>増やすためではなく、<br />空けておくために。</> : <>Not to add more,<br />but to leave something open.</>}</h2>
+    <div data-reveal>
+      <p>{ja ? "Yohakuは、静かな道具です。" : "Yohaku is a quiet tool."}</p>
+      <p>{ja ? "生産性を追い求めたり、通知で急かしたり、誰かと比べたりすることはありません。" : "It does not chase productivity, hurry you with notifications, or compare you with anyone else."}</p>
+      <p>{ja ? "ただ、自分の時間に、余白をそっと置く。その小さな習慣を支えます。" : "It simply supports the small habit of leaving a little room in your own time."}</p>
+    </div>
+  </section>
+
+  <section class="download-section" id="download" data-reveal>
+    <p class="eyebrow">Yohaku for iPhone</p>
+    <h2>{ja ? "余白を置く、小さな習慣を。" : "Make a small habit of leaving room."}</h2>
+    <p>{ja ? "まずは、今日のどこかに余白を置いてみませんか。" : "Start by leaving one quiet space somewhere in today."}</p>
+    <a class="store-button" href="#download">● App Store</a>
+    <small>iPhone app</small>
+  </section>
+</AppShell>

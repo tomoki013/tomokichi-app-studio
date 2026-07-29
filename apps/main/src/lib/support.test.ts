@@ -5,6 +5,7 @@ import {
   getOrCreateClientId,
   initialSelections,
   isValidEmail,
+  SUPPORT_API_PUBLIC_URL,
   SUPPORT_API_URL,
   SUPPORT_CLIENT_ID_KEY,
   type SupportFormValues,
@@ -103,6 +104,7 @@ describe("support request construction", () => {
 
   it("uses one validated production API URL", () => {
     expect(SUPPORT_API_URL).toBe("https://tomokichi-api.tomoki-ttttt.workers.dev/api/support");
+    expect(SUPPORT_API_PUBLIC_URL).toBe("https://api.tmkch.io/api/support");
   });
 });
 
@@ -111,6 +113,17 @@ describe("support query parameters", () => {
     expect(initialSelections(new URLSearchParams("app=remeet&category=feature"))).toEqual({
       app: "remeet",
       category: "feature",
+    });
+  });
+
+  it("reflects brand registry apps in support selections", () => {
+    expect(initialSelections(new URLSearchParams("app=yohaku"))).toEqual({
+      app: "yohaku",
+      category: "question",
+    });
+    expect(initialSelections(new URLSearchParams("app=tripory"))).toEqual({
+      app: "tripory",
+      category: "question",
     });
   });
 

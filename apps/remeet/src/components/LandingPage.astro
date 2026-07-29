@@ -1,4 +1,5 @@
 ---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
 import AppShell from "./AppShell.astro";
 
 type Locale = "ja" | "en";
@@ -89,8 +90,7 @@ const steps = ja
       fetchpriority="high"
     />
     <div class="home-route" aria-hidden="true"><i></i><b>✈</b><i></i></div>
-    <a class="home-scroll" href="#notice"><em>Scroll</em><span class="scroll-track"><i></i></span></a>
-    <aside class="home-notice" id="notice"><strong>{ja ? "お知らせ" : "News"}</strong><time>2026.07.24</time><span>{c.notice}</span><a href={`${base}/updates`}>→</a></aside>
+    <AppHeroChrome lang={lang} date="2026-07-24" news={c.notice} newsHref={`${base}/updates`} />
   </section>
 
   <div class="landing-sections">

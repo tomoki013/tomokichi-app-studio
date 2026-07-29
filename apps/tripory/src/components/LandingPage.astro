@@ -1,4 +1,5 @@
 ---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
 import Shell from "./Shell.astro";
 
 type Locale = "ja" | "en";
@@ -61,8 +62,12 @@ const screens = [
       <a class="download-badge" href="#download">●<span>{ja ? "App Storeからダウンロード" : "Download on the App Store"}</span></a>
     </div>
     <img class="home-phone" src="/assets/hero-devices.png" alt="Tripory on iPhone and Apple Watch" />
-    <a class="home-scroll" href="#notice"><em>Scroll</em><span class="scroll-track"><i></i></span></a>
-    <aside class="home-notice" id="notice"><strong>{ja ? "お知らせ" : "News"}</strong><time>2026.07.24</time><span>{ja ? "Tripory 1.0.0を公開しました！" : "Tripory 1.0.0 is now available!"}</span><a href={`${base}/updates`}>→</a></aside>
+    <AppHeroChrome
+      lang={lang}
+      date="2026-07-24"
+      news={ja ? "Tripory 1.0.0を公開しました！" : "Tripory 1.0.0 is now available!"}
+      newsHref={`${base}/updates`}
+    />
   </section>
 
   <section class="home-section" data-reveal>

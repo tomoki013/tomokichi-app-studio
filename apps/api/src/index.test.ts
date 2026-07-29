@@ -38,7 +38,8 @@ const env: SupportBindings = {
   RESEND_API_KEY: "test-key",
   SUPPORT_TO_EMAIL: "support@example.com",
   SUPPORT_FROM_EMAIL: "Support <from@example.com>",
-  MAIN_SITE_ORIGIN: "https://tomokichi-main.tomoki-ttttt.workers.dev",
+  MAIN_SITE_ORIGIN: "https://tmkch.io",
+  MAIN_SITE_WORKERS_ORIGIN: "https://tomokichi-main.tomoki-ttttt.workers.dev",
   SUPPORT_RATE_LIMITER: {
     limit: async () => ({ success: true }),
   },
@@ -72,6 +73,15 @@ describe("POST /api/support", () => {
     const response = await post(validRequest);
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ ok: true, requestId: validRequest.requestId });
+  });
+
+  it("accepts and labels apps from the shared brand registry", async () => {
+    const deliver = vi.fn<(email: SupportEmail) => Promise<{ id: string }>>(async () => ({
+      id: "email-id",
+    }));
+    const response = await post({ ...validRequest, app: "yohaku" }, { deliver });
+    expect(response.status).toBe(200);
+    expect(deliver.mock.calls[0]?.[0].subject).toContain("[Yohaku]");
   });
 
   it("reports missing required fields", async () => {
@@ -160,12 +170,17 @@ describe("POST /api/support", () => {
 
   it("accepts an allowed Origin and returns CORS headers", async () => {
     const response = await post(validRequest, {
-      origin: "https://tomokichi-main.tomoki-ttttt.workers.dev",
+      origin: "https://tmkch.io",
     });
     expect(response.status).toBe(200);
-    expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
-      "https://tomokichi-main.tomoki-ttttt.workers.dev",
-    );
+    expect(response.headers.get("Access-Control-Allow-Origin")).toBe("https://tmkch.io");
+  });
+
+  it("also accepts the active Workers main-site origin", async () => {
+    const origin = "https://tomokichi-main.tomoki-ttttt.workers.dev";
+    const response = await post(validRequest, { origin });
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Access-Control-Allow-Origin")).toBe(origin);
   });
 
   it("accepts an Origin-less iOS request", async () => {

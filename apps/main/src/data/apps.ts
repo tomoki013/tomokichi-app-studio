@@ -1,3 +1,5 @@
+import { appSiteUrl } from "@tomokichi/app-site/urls";
+
 export type Locale = "ja" | "en";
 
 export type AppStatus = "released" | "developing" | "concept";
@@ -39,7 +41,7 @@ export const apps: AppItem[] = [
     platform: ["iPhone"],
     iconClass: "remeet",
     previewImage: "/assets/app-remeet.png",
-    url: "https://remeet.tmkch.io",
+    url: appSiteUrl("remeet"),
     accent: "#8EB5D4",
     featured: true,
     order: 1,
@@ -59,10 +61,29 @@ export const apps: AppItem[] = [
     platform: ["iPhone"],
     iconClass: "tripory",
     previewImage: "/assets/app-tripory.png",
-    url: "https://tripory.tmkch.io",
+    url: appSiteUrl("tripory"),
     accent: "#5F9E7F",
     featured: true,
     order: 2,
+  },
+  {
+    slug: "colorvia",
+    name: "Colorvia",
+    tagline: {
+      ja: "訪れた国で、自分だけの世界地図を彩る。",
+      en: "Colour a world map with the places you visit.",
+    },
+    description: {
+      ja: "訪れた国を選ぶだけで、旅の広がりを静かに記録できるアプリです。",
+      en: "A quiet way to record how your travels grow, one visited country at a time.",
+    },
+    status: "developing",
+    platform: ["iPhone"],
+    iconClass: "colorvia",
+    url: appSiteUrl("colorvia"),
+    accent: "#55A7A7",
+    featured: true,
+    order: 3,
   },
   {
     slug: "soonish",
@@ -81,7 +102,7 @@ export const apps: AppItem[] = [
     previewImage: "/assets/app-soonish.png",
     accent: "#E2A0C4",
     featured: true,
-    order: 3,
+    order: 4,
   },
   {
     slug: "yohaku",
@@ -98,9 +119,10 @@ export const apps: AppItem[] = [
     platform: ["iPhone"],
     iconClass: "yohaku",
     previewImage: "/assets/app-yohaku.png",
+    url: appSiteUrl("yohaku"),
     accent: "#6B7280",
     featured: true,
-    order: 4,
+    order: 5,
   },
   {
     slug: "tana",
@@ -119,7 +141,7 @@ export const apps: AppItem[] = [
     previewImage: "/assets/app-tana.png",
     accent: "#C48E67",
     featured: true,
-    order: 5,
+    order: 6,
   },
 ];
 

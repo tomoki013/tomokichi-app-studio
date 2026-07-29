@@ -8,8 +8,9 @@
   },
   "vars": {
     "SUPPORT_TO_EMAIL": "gaomuyouxi81@gmail.com",
-    "SUPPORT_FROM_EMAIL": "Remeet Support <onboarding@resend.dev>",
-    "MAIN_SITE_ORIGIN": "https://tomokichi-main.tomoki-ttttt.workers.dev"
+    "SUPPORT_FROM_EMAIL": "Tomokichi Support <onboarding@resend.dev>",
+    "MAIN_SITE_ORIGIN": "https://tmkch.io",
+    "MAIN_SITE_WORKERS_ORIGIN": "https://tomokichi-main.tomoki-ttttt.workers.dev"
   },
   "ratelimits": [
     {

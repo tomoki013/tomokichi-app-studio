@@ -1,12 +1,16 @@
+import {
+  SUPPORT_API_URL as configuredApiUrl,
+  SUPPORT_API_PUBLIC_URL as configuredPublicApiUrl,
+} from "@tomokichi/app-site/urls";
 import type { Locale } from "../data/apps";
 import { supportAppOptions, supportCategoryOptions } from "./support-copy";
 
-const configuredApiUrl = "https://tomokichi-api.tomoki-ttttt.workers.dev/api/support";
 const parsedApiUrl = new URL(configuredApiUrl);
 if (parsedApiUrl.protocol !== "https:" || parsedApiUrl.pathname !== "/api/support") {
   throw new Error("Support API URL is invalid");
 }
 export const SUPPORT_API_URL = parsedApiUrl.toString();
+export const SUPPORT_API_PUBLIC_URL = new URL(configuredPublicApiUrl).toString();
 export const SUPPORT_CLIENT_ID_KEY = "tomokichi-support-client-id";
 export const SUPPORT_TIMEOUT_MS = 15_000;
 

@@ -1,3 +1,5 @@
+import { footerAppBrands } from "@tomokichi/app-site/apps";
+import { SITE_ORIGINS } from "@tomokichi/app-site/urls";
 import type { AppStatus, Locale } from "../data/apps";
 
 type L<T = string> = Record<Locale, T>;
@@ -37,18 +39,11 @@ export const footer: {
     },
     {
       title: { ja: "アプリ", en: "Apps" } as L,
-      links: [
-        {
-          label: { ja: "Remeet", en: "Remeet" } as L,
-          href: "https://remeet.tmkch.io",
-          external: true,
-        },
-        {
-          label: { ja: "Tripory", en: "Tripory" } as L,
-          href: "https://tripory.tmkch.io",
-          external: true,
-        },
-      ],
+      links: footerAppBrands.map((app) => ({
+        label: { ja: app.name, en: app.name } as L,
+        href: app.publicUrl,
+        external: true,
+      })),
     },
     {
       title: { ja: "規約", en: "Legal" } as L,
@@ -66,7 +61,7 @@ export const footer: {
         },
         {
           label: { ja: "仕事のご相談", en: "Work enquiries" } as L,
-          href: "https://tomokichi.dev/contact",
+          href: `${SITE_ORIGINS.personal}/contact`,
           external: true,
         },
       ],

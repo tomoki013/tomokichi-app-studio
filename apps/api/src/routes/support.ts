@@ -23,7 +23,7 @@ const errorMessages = {
 } as const;
 
 function allowedOrigins(env: SupportBindings): Set<string> {
-  return new Set([env.MAIN_SITE_ORIGIN, LOCAL_ORIGIN]);
+  return new Set([env.MAIN_SITE_ORIGIN, env.MAIN_SITE_WORKERS_ORIGIN, LOCAL_ORIGIN]);
 }
 
 function corsHeaders(c: SupportContext): Record<string, string> {

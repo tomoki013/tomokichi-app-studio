@@ -1,6 +1,6 @@
 ---
 import type { Locale } from "../data/apps";
-import { orderedApps } from "../data/apps";
+import { featuredApps, orderedApps } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { appsPage } from "../lib/copy";
 import AppCard from "./AppCard.astro";
@@ -10,11 +10,8 @@ import SiteHeader from "./SiteHeader.astro";
 
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
-const p = (path: string) => {
-  if (path === "/support") return ja ? "/support" : "/en/support";
-  return ja ? `/ja${path === "/" ? "" : path}` : path;
-};
-const visualIcons = ["remeet", "tripory", "soonish", "tana"];
+const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
+const visualIcons = featuredApps.slice(0, 4).map((app) => app.iconClass);
 ---
 
 <BaseLayout lang={lang} title={appsPage.metaTitle[lang]} description={appsPage.metaDescription[lang]}>

@@ -10,7 +10,6 @@ const base = lang === "ja" ? "/ja" : "";
 /* Internal paths get the locale prefix; external ones are used as-is. */
 const href = (p: string, external?: boolean) => {
   if (external) return p;
-  if (p === "/support") return lang === "ja" ? "/support" : "/en/support";
   return `${base}${p === "/" ? "" : p}` || "/";
 };
 ---

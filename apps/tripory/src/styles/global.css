@@ -1,6 +1,35 @@
 @import "tailwindcss";
 
 :root {
+  --app-site-ink: #07131c;
+  --app-site-accent: #fff;
+  --app-site-page-background: #f5f2ee;
+  --app-site-header-foreground: #fff;
+  --app-site-header-border: rgb(255 255 255 / 18%);
+  --app-site-header-background: linear-gradient(rgb(255 255 255 / 12%), rgb(255 255 255 / 6%));
+  --app-site-header-shadow:
+    0 8px 30px rgb(0 0 0 / 22%), inset 0 1px 1px rgb(255 255 255 / 18%),
+    inset 0 -1px 1px rgb(255 255 255 / 6%);
+  --app-site-header-compact-border: rgb(255 255 255 / 18%);
+  --app-site-header-compact-background:
+    linear-gradient(rgb(255 255 255 / 15%), rgb(255 255 255 / 8%)), rgb(5 17 27 / 55%);
+  --app-site-header-compact-shadow:
+    0 10px 26px rgb(0 0 0 / 24%), inset 0 1px 1px rgb(255 255 255 / 20%),
+    inset 0 -1px 1px rgb(255 255 255 / 7%);
+  --app-site-store-foreground: #fff;
+  --app-site-store-background: #05090c;
+  --app-site-notice-foreground: #071725;
+  --app-site-notice-date: #526370;
+  --app-site-notice-background: rgb(255 255 255 / 78%);
+  --app-site-notice-hover-background: rgb(255 255 255 / 92%);
+  --app-site-footer-background: #071725;
+  --app-site-footer-foreground: #fff;
+  --app-site-footer-tagline: #9fb0bd;
+  --app-site-footer-heading: #7f8f9c;
+  --app-site-footer-link: #c3ced6;
+  --app-site-footer-link-hover: #fff;
+  --app-site-footer-border: rgb(255 255 255 / 10%);
+  --app-site-footer-meta: #7c8894;
   color: #07131c;
   background: #e9e6e2;
   font-family: Inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;

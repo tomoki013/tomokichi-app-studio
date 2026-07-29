@@ -1,0 +1,109 @@
+:root {
+  --app-site-accent: #e99647;
+  --app-site-page-background: #fbfaf8;
+  --app-site-header-foreground: #242321;
+  --app-site-footer-background: rgb(255 255 255 / 55%);
+
+  color: #242321;
+  background: #fbfaf8;
+  font-family: Inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+}
+
+.app-landing-hero {
+  min-height: 780px;
+  padding: 120px max(30px, calc((100vw - 1120px) / 2)) 130px;
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  gap: 64px;
+  align-items: center;
+  position: relative;
+  background:
+    radial-gradient(circle at 80% 25%, rgb(213 232 247 / 80%), transparent 30%),
+    radial-gradient(circle at 12% 85%, rgb(253 229 208 / 68%), transparent 29%), #fbfaf8;
+}
+
+.app-landing-hero h1 {
+  max-width: 720px;
+  margin: 12px 0 20px;
+  font:
+    400 clamp(40px, 6vw, 76px) / 1.08 Georgia,
+    "Yu Mincho",
+    serif;
+}
+
+.eyebrow {
+  color: #e99647;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.store-button {
+  margin-top: 24px;
+  padding: 14px 24px;
+  display: inline-flex;
+  border-radius: 999px;
+  color: #fff;
+  background: #242321;
+  text-decoration: none;
+}
+
+.product-visual {
+  width: min(100%, 320px);
+  aspect-ratio: 0.52;
+  justify-self: center;
+  border: 10px solid #242321;
+  border-radius: 48px;
+  background: linear-gradient(150deg, #fff, #d5e8f7);
+  box-shadow: 0 30px 70px rgb(54 45 39 / 18%);
+}
+
+.app-landing-content,
+.content-page {
+  width: min(100% - 48px, 960px);
+  min-height: 560px;
+  margin: 0 auto;
+  padding: 90px 0;
+}
+
+.content-page h1,
+.app-landing-content h2 {
+  font:
+    400 clamp(34px, 5vw, 56px) / 1.15 Georgia,
+    "Yu Mincho",
+    serif;
+}
+
+@media (max-width: 760px) {
+  .app-landing-hero {
+    min-height: 900px;
+    padding: 110px 22px 110px;
+    display: block;
+  }
+
+  .product-visual {
+    width: 210px;
+    margin: 42px auto 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

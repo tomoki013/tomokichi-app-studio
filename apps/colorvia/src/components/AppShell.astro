@@ -1,5 +1,6 @@
 ---
 import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
+import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
 
 type Locale = "ja" | "en";
 const { lang, title, page = "", description } = Astro.props as {
@@ -13,7 +14,7 @@ const base = ja ? "/ja" : "";
 const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
 const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
-const supportHref = `https://tmkch.io/${ja ? "ja/" : ""}support?app=colorvia`;
+const supportHref = supportUrl("colorvia", lang);
 const nav = [
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
   { slug: "how-to", label: ja ? "使い方" : "How it works", href: href("how-to") },
@@ -25,13 +26,13 @@ const footerColumns = ja
       { title: "プロダクト", links: [{ label: "機能", href: href("features") }, { label: "使い方", href: href("how-to") }, { label: "スクリーンショット", href: href("screenshots") }] },
       { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("updates") }, { label: "お問い合わせ", href: supportHref, external: true }] },
       { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: "https://tmkch.io/ja", external: true }, { label: "ほかのアプリ", href: "https://tmkch.io/ja/apps", external: true }] },
+      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
     ]
   : [
       { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "How it works", href: href("how-to") }, { label: "Screenshots", href: href("screenshots") }] },
       { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("updates") }, { label: "Contact", href: supportHref, external: true }] },
       { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: "https://tmkch.io", external: true }, { label: "Other apps", href: "https://tmkch.io/apps", external: true }] },
+      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
     ];
 const metaDescription = description ?? (ja
   ? "訪れた国を選ぶだけで、自分だけの世界地図をつくれるシンプルな記録アプリColorvia。"
@@ -45,8 +46,9 @@ const metaDescription = description ?? (ja
   page={page}
   brand="Colorvia"
   logoImage="/assets/colorvia-icon.png"
+  ogImage="/og.png"
   tagline={ja ? "世界を、シンプルに彩ろう。" : "Colour the world, simply."}
-  siteUrl="https://colorvia.tmkch.io"
+  siteUrl={appSiteUrl("colorvia")}
   homeHref={ja ? "/ja" : "/"}
   jaPageHref={jaPageHref}
   enPageHref={enPageHref}
@@ -54,6 +56,7 @@ const metaDescription = description ?? (ja
   footerColumns={footerColumns}
   appStoreLabel={ja ? "App Storeで見る" : "View on App Store"}
   menuLabel={ja ? "メニュー" : "Menu"}
+  pageClass="colorvia-page"
 >
   <slot />
 </AppSiteShell>

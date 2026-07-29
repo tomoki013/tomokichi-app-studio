@@ -5,7 +5,9 @@
   "type": "module",
   "exports": {
     "./AppSiteShell.astro": "./src/AppSiteShell.astro",
-    "./AppHeroChrome.astro": "./src/AppHeroChrome.astro"
+    "./AppHeroChrome.astro": "./src/AppHeroChrome.astro",
+    "./apps": "./src/apps.ts",
+    "./urls": "./src/urls.ts"
   },
   "peerDependencies": {
     "astro": "^7.1.3"

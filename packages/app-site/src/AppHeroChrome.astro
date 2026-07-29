@@ -1,4 +1,6 @@
 ---
+import "./app-site-shell.css";
+
 const { lang, date, news, newsHref } = Astro.props as {
   lang: "ja" | "en";
   date: string;
@@ -8,8 +10,8 @@ const { lang, date, news, newsHref } = Astro.props as {
 const displayDate = date.replaceAll("-", ".");
 ---
 
-<a class="home-scroll" href="#notice"><em>Scroll</em><span class="scroll-track"><i></i></span></a>
-<aside class="home-notice" id="notice">
+<a class="app-hero-scroll" href="#notice"><em>Scroll</em><span class="app-hero-scroll-track"><i></i></span></a>
+<aside class="app-hero-notice" id="notice">
   <strong>{lang === "ja" ? "お知らせ" : "News"}</strong>
   <time datetime={date}>{displayDate}</time>
   <span>{news}</span>

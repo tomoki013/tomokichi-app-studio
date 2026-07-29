@@ -1,4 +1,5 @@
 ---
+import { mainSiteUrl, SITE_ORIGINS } from "@tomokichi/app-site/urls";
 import type { Locale } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { supportAppOptions, supportCategoryOptions, supportCopy } from "../lib/support-copy";
@@ -8,9 +9,7 @@ import SiteHeader from "./SiteHeader.astro";
 const { lang } = Astro.props as { lang: Locale };
 const copy = supportCopy[lang];
 const isJapanese = lang === "ja";
-const canonical = isJapanese
-  ? "https://tomokichi-main.tomoki-ttttt.workers.dev/support"
-  : "https://tomokichi-main.tomoki-ttttt.workers.dev/en/support";
+const canonical = mainSiteUrl(lang, "/support");
 const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
 ---
 
@@ -19,8 +18,8 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
   title={copy.metaTitle}
   description={copy.description}
   canonical={canonical}
-  alternateJa="https://tomokichi-main.tomoki-ttttt.workers.dev/support"
-  alternateEn="https://tomokichi-main.tomoki-ttttt.workers.dev/en/support"
+  alternateJa={mainSiteUrl("ja", "/support")}
+  alternateEn={mainSiteUrl("en", "/support")}
 >
   <div class="site">
     <SiteHeader lang={lang} path="/support" current="support" />
@@ -133,7 +132,7 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
         </div>
 
         <p class="support-personal">
-          {copy.personalPrefix} <a href="https://tomokichi.dev/contact">{copy.personalLink}</a>{copy.personalSuffix}
+          {copy.personalPrefix} <a href={`${SITE_ORIGINS.personal}/contact`}>{copy.personalLink}</a>{copy.personalSuffix}
         </p>
       </article>
     </main>

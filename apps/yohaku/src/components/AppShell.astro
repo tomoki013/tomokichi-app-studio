@@ -1,0 +1,52 @@
+---
+import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
+import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
+
+type Locale = "ja" | "en";
+const { lang, title, page = "", description } = Astro.props as {
+  lang: Locale;
+  title: string;
+  page?: string;
+  description?: string;
+};
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
+const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
+const supportHref = supportUrl("yohaku", lang);
+const nav = [
+  { slug: "how-to", label: ja ? "コンセプト" : "Concept", href: href("how-to") },
+  { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
+  { slug: "screenshots", label: ja ? "かたち" : "Pattern", href: href("screenshots") },
+];
+const footerColumns = [
+  { title: ja ? "プロダクト" : "Product", links: [{ label: ja ? "機能" : "Features", href: href("features") }, { label: ja ? "使い方" : "How it works", href: href("how-to") }, { label: ja ? "スクリーンショット" : "Screenshots", href: href("screenshots") }] },
+  { title: ja ? "サポート" : "Support", links: [{ label: "FAQ", href: href("faq") }, { label: ja ? "お知らせ" : "News", href: href("updates") }, { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true }] },
+  { title: ja ? "規約" : "Legal", links: [{ label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") }, { label: ja ? "利用規約" : "Terms of Service", href: href("terms") }] },
+  { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl(lang), external: true }, { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true }] },
+];
+---
+
+<AppSiteShell
+  lang={lang}
+  title={title}
+  description={description ?? (ja ? "Yohakuは、何もしない時間をそっと置くためのiPhoneアプリです。" : "Yohaku is an iPhone app for placing quiet, unplanned space in your day.")}
+  page={page}
+  brand="Yohaku"
+  logoMark="□"
+  ogImage="/og.png"
+  tagline={ja ? "予定ではなく、余白だけを。" : "Not another plan. Just space."}
+  siteUrl={appSiteUrl("yohaku")}
+  homeHref={ja ? "/ja" : "/"}
+  jaPageHref={jaPageHref}
+  enPageHref={enPageHref}
+  nav={nav}
+  footerColumns={footerColumns}
+  appStoreHref={`${ja ? "/ja" : ""}/#download`.replaceAll("//", "/")}
+  appStoreLabel={ja ? "App Storeで見る" : "View on App Store"}
+  menuLabel={ja ? "メニュー" : "Menu"}
+  pageClass="yohaku-page"
+>
+  <slot />
+</AppSiteShell>

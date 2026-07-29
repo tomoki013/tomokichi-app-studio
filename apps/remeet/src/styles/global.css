@@ -515,11 +515,11 @@ img {
 }
 
 /* Multi-page mock */
-body:has(.mock-page) {
+body:has(.remeet-page) {
   background: #fbfaf8;
   color: #242321;
 }
-.mock-page {
+.remeet-page {
   width: 100%;
   min-height: 100vh;
   background:

@@ -1,3 +1,4 @@
+import { supportAppBrands } from "@tomokichi/app-site/apps";
 import type { Locale } from "../data/apps";
 
 export const supportCopy = {
@@ -84,8 +85,10 @@ export const supportCopy = {
 } as const satisfies Record<Locale, object>;
 
 export const supportAppOptions = [
-  { value: "remeet", label: { ja: "Remeet", en: "Remeet" } },
-  { value: "colorvia", label: { ja: "Colorvia", en: "Colorvia" } },
+  ...supportAppBrands.map((app) => ({
+    value: app.slug,
+    label: { ja: app.name, en: app.name },
+  })),
   { value: "other", label: { ja: "その他", en: "Other" } },
 ] as const;
 

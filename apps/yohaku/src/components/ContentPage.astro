@@ -1,0 +1,107 @@
+---
+import { supportUrl } from "@tomokichi/app-site/urls";
+import AppShell from "./AppShell.astro";
+
+const { lang, page } = Astro.props as { lang: "ja" | "en"; page: string };
+const ja = lang === "ja";
+const labels: Record<string, [string, string]> = {
+  features: ["機能", "Features"],
+  "how-to": ["コンセプト", "Concept"],
+  screenshots: ["かたち", "Pattern"],
+  faq: ["よくある質問", "FAQ"],
+  updates: ["お知らせ", "News"],
+  privacy: ["プライバシーポリシー", "Privacy Policy"],
+  terms: ["利用規約", "Terms of Service"],
+};
+const title = labels[page]?.[ja ? 0 : 1] ?? page;
+const featureItems = ja
+  ? [
+      ["01", "余白だけを置く", "開始と終了を選び、何もしない時間を置きます。タイトルやメモ、達成状態はありません。"],
+      ["02", "週を静かに見渡す", "一週間に置いた余白を、小さな黒い印で確認できます。予定表を置き換えるものではありません。"],
+      ["03", "月のかたちを残す", "日々の余白が白と黒のパターンになります。数値やスコアで評価することはありません。"],
+      ["04", "通知に追われない", "余白の開始を知らせる通知は任意です。連続記録や利用を促す通知は送りません。"],
+    ]
+  : [
+      ["01", "Place only space", "Choose a start and end, then leave that time empty. There are no titles, notes or completion states."],
+      ["02", "See a quiet week", "Small black marks show the spaces in your week. Yohaku is not intended to replace your calendar."],
+      ["03", "Keep the month’s shape", "Daily spaces become a black-and-white pattern, without scores, streaks or judgement."],
+      ["04", "Stay free of pressure", "A reminder when space begins is optional. Yohaku never sends streak or engagement prompts."],
+    ];
+const faqs = ja
+  ? [
+      ["カレンダーやタスク管理アプリですか？", "いいえ。予定やタスクを管理する機能はありません。Yohakuは、何も入れない時間だけを置くためのアプリです。"],
+      ["カレンダーの予定は読み取りますか？", "現在は読み取りません。端末のカレンダーとは独立して使えます。"],
+      ["アカウント登録は必要ですか？", "必要ありません。記録は端末内に保存されます。"],
+      ["通知をオフにできますか？", "はい。通知は任意で、端末の設定からいつでも変更できます。"],
+    ]
+  : [
+      ["Is Yohaku a calendar or task manager?", "No. Yohaku does not manage events or tasks. It exists only to place time with nothing planned."],
+      ["Does it read my calendar?", "Not currently. Yohaku works independently from the calendars on your device."],
+      ["Do I need an account?", "No. Your records are stored on your device."],
+      ["Can I turn notifications off?", "Yes. Notifications are optional and can be changed in your device settings."],
+    ];
+const legal = {
+  privacy: ja
+    ? [
+        ["1. 基本方針", "Yohakuはアカウント登録を必要とせず、広告配信や行動分析のためのSDKを使用しません。"],
+        ["2. 端末内に保存する情報", "余白の日時、表示設定、通知設定は端末内に保存されます。運営者がこれらの内容を閲覧することはできません。"],
+        ["3. 通知", "利用者が通知を有効にした場合、端末上でローカル通知を設定します。通知のために記録内容を外部サーバーへ送信しません。"],
+        ["4. お問い合わせ", "サポートフォームを利用した場合に限り、入力内容と返信先メールアドレスを問い合わせ対応のために取り扱います。"],
+        ["5. 改定", "本ポリシーを変更する場合は、本サイト上で更新日とともにお知らせします。"],
+      ]
+    : [
+        ["1. Basic policy", "Yohaku requires no account and uses no advertising or behavioural analytics SDK."],
+        ["2. Information on your device", "Space periods, display preferences and notification settings are stored on your device. The operator cannot view these records."],
+        ["3. Notifications", "If enabled, local notifications are scheduled on your device. Your records are not sent to an external server for notifications."],
+        ["4. Support", "Only when you use the support form do we process the information you enter and your reply-to email address to answer your enquiry."],
+        ["5. Changes", "Changes to this policy will be published on this site with an updated revision date."],
+      ],
+  terms: ja
+    ? [
+        ["1. 適用", "本規約は、Yohakuアプリおよび本サイトの利用に適用されます。"],
+        ["2. 利用条件", "利用者は、法令および本規約に従って本サービスを利用するものとします。"],
+        ["3. 禁止事項", "サービスの運営を妨げる行為、不正アクセス、リバースエンジニアリングその他法令に違反する行為を禁止します。"],
+        ["4. 免責", "本サービスは、健康上または医療上の効果を保証するものではありません。重要な予定の管理には適切なカレンダー等を併用してください。"],
+        ["5. 変更・終了", "機能や提供条件を変更し、または提供を終了する場合があります。重要な変更は本サイトでお知らせします。"],
+      ]
+    : [
+        ["1. Scope", "These terms apply to the Yohaku app and this website."],
+        ["2. Conditions of use", "You must use the service in accordance with applicable law and these terms."],
+        ["3. Prohibited conduct", "You may not interfere with the service, gain unauthorised access, reverse engineer it, or otherwise violate applicable law."],
+        ["4. Disclaimer", "Yohaku does not guarantee medical or health outcomes. Use an appropriate calendar for important appointments and commitments."],
+        ["5. Changes and discontinuation", "Features or availability may change or end. Material changes will be announced on this website."],
+      ],
+};
+---
+
+<AppShell
+  lang={lang}
+  title={title}
+  page={page}
+  description={ja ? `Yohakuの${title}ページです。` : `${title} for the Yohaku iPhone app.`}
+>
+  <article class:list={["content-page", `content-${page}`]}>
+    <header class="content-intro">
+      <p class="eyebrow">Yohaku</p>
+      <h1>{title}</h1>
+      {(page === "privacy" || page === "terms") && <small>{ja ? "制定日・最終更新日：2026年7月29日" : "Effective and last updated: July 29, 2026"}</small>}
+    </header>
+
+    {page === "features" && <div class="content-list">{featureItems.map(([number, heading, body]) => <section><b>{number}</b><div><h2>{heading}</h2><p>{body}</p></div></section>)}</div>}
+
+    {page === "how-to" && <div class="concept-copy">
+      <section><p class="eyebrow">Why Yohaku</p><h2>{ja ? "何もしない時間は、予定にしにくい。" : "Time for nothing is hard to schedule."}</h2><p>{ja ? "休むことまでタスクにすると、できなかった日が失敗になります。Yohakuは達成を求めず、空けておきたい時間に小さな印を置くだけです。" : "When rest becomes another task, missing it can feel like failure. Yohaku asks for no achievement; it simply places a small mark where you want to leave room."}</p></section>
+      <section><p class="eyebrow">How it feels</p><h2>{ja ? "評価せず、静かに残す。" : "Keep it quietly, without judgement."}</h2><p>{ja ? "余白の数や長さを競いません。日々の印が月のパターンになり、自分の時間の使い方をそっと振り返れます。" : "There is no competition over how much space you leave. Daily marks become a monthly pattern—a quiet way to notice how your time has felt."}</p></section>
+    </div>}
+
+    {page === "screenshots" && <div class="pattern-gallery">
+      {["Today", "Week", "Pattern"].map((screen, index) => <figure><div class:list={["screen-card", `screen-${index}`]}><small>9:41</small><h2>{screen}</h2>{index === 0 ? <div class="screen-space">■<span class="screen-time">10:00 – 12:00</span></div> : <div class="mini-pattern">{Array.from({ length: 28 }, (_, i) => <i class:list={{ filled: (i + index) % 3 === 0 || (i + index) % 7 === 0 }}></i>)}</div>}</div><figcaption>{screen}</figcaption></figure>)}
+    </div>}
+
+    {page === "faq" && <><div class="faq-list">{faqs.map(([question, answer], index) => <details open={index === 0}><summary>{question}<span>＋</span></summary><p>{answer}</p></details>)}</div><a class="support-link" href={supportUrl("yohaku", lang)}>{ja ? "解決しない場合はお問い合わせください" : "Still need help? Contact support"} →</a></>}
+
+    {page === "updates" && <div class="updates-list"><article><time datetime="2026-07-29">2026.07.29</time><div><p class="eyebrow">Website</p><h2>{ja ? "Yohakuブランドサイトを公開しました" : "The Yohaku brand site is now available"}</h2><p>{ja ? "コンセプト、機能、プライバシーポリシーを公開しました。" : "Concept, features and privacy information are now available."}</p></div></article></div>}
+
+    {(page === "privacy" || page === "terms") && <div class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p></section>)}</div>}
+  </article>
+</AppShell>

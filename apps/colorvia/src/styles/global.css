@@ -7,6 +7,23 @@
   --teal-dark: #367f82;
   --pale: #eff8f7;
   --line: #deebe9;
+  --app-site-ink: var(--ink);
+  --app-site-accent: var(--teal);
+  --app-site-page-background: #fbfdfc;
+  --app-site-header-foreground: var(--ink);
+  --app-site-header-background: rgb(255 255 255 / 82%);
+  --app-site-header-compact-background: rgb(255 255 255 / 90%);
+  --app-site-store-foreground: #fff;
+  --app-site-store-background: linear-gradient(135deg, #5bb0ad, #438f92);
+  --app-site-footer-background: #17383d;
+  --app-site-footer-foreground: #fff;
+  --app-site-footer-tagline: #a9c0c1;
+  --app-site-footer-heading: #88a4a6;
+  --app-site-footer-link: #c5d4d5;
+  --app-site-footer-link-hover: #fff;
+  --app-site-footer-border: rgb(255 255 255 / 10%);
+  --app-site-footer-meta: #85a0a2;
+  --app-site-hero-muted: var(--muted);
   color: var(--ink);
   background: #fafdfc;
   font-family: Inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
@@ -901,7 +918,7 @@ button {
     margin-top: 26px;
   }
   .hero-phone img {
-    transform: translate(-530px, -64px) scale(0.82);
+    transform: translate(-434px, -52px) scale(0.82);
     transform-origin: top left;
   }
   .landing-pad {

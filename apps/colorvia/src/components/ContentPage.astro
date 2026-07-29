@@ -1,4 +1,5 @@
 ---
+import { supportUrl } from "@tomokichi/app-site/urls";
 import AppShell from "./AppShell.astro";
 
 type Locale = "ja" | "en";
@@ -83,7 +84,7 @@ const legal = page === "privacy" ? privacy : terms;
     {page === "features" && <div class="content-grid">{features.map(([icon, heading, body]) => <article><i>{icon}</i><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div>}
     {page === "how-to" && <div class="how-list">{steps.map(([n, heading, body]) => <article><b>{n}</b><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div>}
     {page === "screenshots" && <div class="screen-grid content-screens"><figure><div class="screen-crop map-shot"><img src="/assets/lp-reference.png" alt="" /></div><figcaption>{ja ? "地図" : "Map"}</figcaption></figure><figure><div class="screen-crop stats-shot"><img src="/assets/lp-reference.png" alt="" /></div><figcaption>{ja ? "統計" : "Statistics"}</figcaption></figure></div>}
-    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>{q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="contact-card"><div><h2>{ja ? "解決しない場合" : "Still need help?"}</h2><p>{ja ? "Colorviaについてお気軽にお問い合わせください。" : "Send us a message about Colorvia."}</p></div><a href={`https://tmkch.io/${ja ? "ja/" : ""}support?app=colorvia`}>{ja ? "お問い合わせ" : "Contact"} →</a></div></>}
+    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>{q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="contact-card"><div><h2>{ja ? "解決しない場合" : "Still need help?"}</h2><p>{ja ? "Colorviaについてお気軽にお問い合わせください。" : "Send us a message about Colorvia."}</p></div><a href={supportUrl("colorvia", lang)}>{ja ? "お問い合わせ" : "Contact"} →</a></div></>}
     {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal.map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p></section>)}</article>}
     {page === "updates" && <div class="updates-list"><article><div><h2>1.0.0</h2><p>{ja ? "2026年7月28日" : "July 28, 2026"}</p><ul><li>{ja ? "Colorviaを公開しました" : "Colorvia is now available"}</li><li>{ja ? "訪れた国を記録する世界地図" : "World map for visited countries"}</li><li>{ja ? "地域別の統計" : "Statistics by region"}</li></ul></div><span>{ja ? "新機能" : "New"}</span></article></div>}
   </section>

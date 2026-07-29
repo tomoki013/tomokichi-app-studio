@@ -229,6 +229,16 @@ img {
 .app-icon.tripory span {
   background: rgb(43 115 92 / 55%);
 }
+.app-icon.colorvia {
+  background:
+    radial-gradient(circle at 34% 34%, #fff 0 18%, transparent 19%),
+    linear-gradient(145deg, #75c5c2, #d8f0ed);
+}
+.app-icon.colorvia span {
+  inset: 27%;
+  border-radius: 45% 55% 52% 48%;
+  background: rgb(48 126 128 / 55%);
+}
 .app-icon.soonish {
   background: linear-gradient(145deg, #c747df, #ff9a9f 62%, #ffd05c);
 }

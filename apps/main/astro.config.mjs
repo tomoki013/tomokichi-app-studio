@@ -1,8 +1,9 @@
 import tailwindcss from "@tailwindcss/vite";
+import { SITE_ORIGINS } from "@tomokichi/app-site/urls";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://tmkch.io",
+  site: SITE_ORIGINS.main,
   // English is served from the root; Japanese lives under /ja.
   // The old /en/* URLs, and the retired Principles page, redirect accordingly.
   redirects: {
@@ -17,6 +18,7 @@ export default defineConfig({
     "/en/about": "/about",
     "/en/privacy": "/privacy",
     "/en/terms": "/terms",
+    "/en/support": "/support",
   },
   vite: {
     plugins: [tailwindcss()],

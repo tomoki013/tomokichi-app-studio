@@ -12,10 +12,7 @@ interface Props {
 }
 const { lang, path, current } = Astro.props;
 const base = lang === "ja" ? "/ja" : "";
-const href = (p: string) => {
-  if (p === "/support") return lang === "ja" ? "/support" : "/en/support";
-  return `${base}${p === "/" ? "" : p}` || "/";
-};
+const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
 ---
 
 <header class="site-header shell">

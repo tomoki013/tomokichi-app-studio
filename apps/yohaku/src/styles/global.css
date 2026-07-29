@@ -1,0 +1,871 @@
+:root {
+  --yohaku-ink: #111;
+  --yohaku-muted: #6d6d6d;
+  --yohaku-line: #dedede;
+  --app-site-ink: var(--yohaku-ink);
+  --app-site-accent: #111;
+  --app-site-page-background: #fff;
+  --app-site-header-foreground: #111;
+  --app-site-header-border: rgb(0 0 0 / 8%);
+  --app-site-header-background: rgb(255 255 255 / 88%);
+  --app-site-header-compact-border: rgb(0 0 0 / 10%);
+  --app-site-header-compact-background: rgb(255 255 255 / 94%);
+  --app-site-store-foreground: #fff;
+  --app-site-store-background: #0b0b0b;
+  --app-site-footer-background: #fff;
+  --app-site-footer-foreground: #111;
+  --app-site-footer-tagline: #777;
+  --app-site-footer-heading: #888;
+  --app-site-footer-link: #333;
+  --app-site-footer-link-hover: #000;
+  --app-site-footer-border: rgb(0 0 0 / 10%);
+  --app-site-footer-meta: #777;
+  --app-site-hero-muted: #777;
+  --app-site-notice-foreground: #111;
+  --app-site-notice-date: #777;
+  --app-site-notice-background: rgb(255 255 255 / 88%);
+
+  color: var(--yohaku-ink);
+  background: #fff;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, Georgia, serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: #fff;
+}
+
+a {
+  color: inherit;
+}
+
+.yohaku-page .app-site-header {
+  box-shadow: 0 8px 30px rgb(0 0 0 / 4%);
+}
+
+.yohaku-page .app-site-logo {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.yohaku-page .app-site-logo-mark {
+  display: grid;
+  place-items: center;
+  border: 1px solid #111;
+  border-radius: 7px;
+  background: #fff;
+  font-size: 0;
+}
+
+.yohaku-page .app-site-logo-mark::after {
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: #111;
+  content: "";
+}
+
+.yohaku-page .app-site-primary-nav,
+.yohaku-page .app-site-actions,
+.yohaku-page .app-site-footer {
+  font-family: Inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+
+.yohaku-page .app-site-store-link {
+  border-radius: 9px;
+}
+
+.yohaku-hero {
+  min-height: 940px;
+  padding: 130px max(44px, calc((100vw - 1340px) / 2)) 150px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(330px, 0.8fr) minmax(620px, 1.2fr);
+  gap: clamp(40px, 5vw, 90px);
+  align-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 51% 50%, rgb(0 0 0 / 2%), transparent 32%), #fff;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #777;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-copy h1 {
+  margin: 22px 0 20px;
+  font-size: clamp(70px, 7vw, 112px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.18;
+}
+
+.hero-lead {
+  margin: 0;
+  font-size: clamp(22px, 2.2vw, 33px);
+  letter-spacing: 0.12em;
+}
+
+.hero-body {
+  margin: 30px 0 0;
+  color: #333;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.hero-actions {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.store-button,
+.secondary-button {
+  min-width: 150px;
+  padding: 14px 23px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #111;
+  border-radius: 8px;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.store-button {
+  color: #fff;
+  background: #090909;
+}
+
+.secondary-button {
+  background: #fff;
+}
+
+.store-button:hover,
+.secondary-button:hover {
+  transform: translateY(-2px);
+}
+
+.secondary-button:hover {
+  color: #fff;
+  background: #111;
+}
+
+.hero-devices {
+  height: 590px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 28px 24px rgb(0 0 0 / 10%));
+}
+
+.phone {
+  width: 220px;
+  height: 465px;
+  padding: 25px 22px 18px;
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 7px solid #141414;
+  border-radius: 38px;
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 1px #bbb,
+    0 10px 20px rgb(0 0 0 / 8%);
+}
+
+.phone::before {
+  width: 78px;
+  height: 19px;
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  border-radius: 0 0 13px 13px;
+  background: #111;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.phone-bar {
+  display: flex;
+  justify-content: space-between;
+  font-family: Inter, sans-serif;
+  font-size: 7px;
+}
+
+.phone-bar i {
+  width: 20px;
+  height: 5px;
+  margin-top: 2px;
+  border-radius: 3px;
+  background: #111;
+}
+
+.phone h2 {
+  margin: 29px 0 22px;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.phone-period {
+  margin: -6px 0 32px;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 9px;
+}
+
+.phone-today {
+  z-index: 1;
+  transform: translateX(24px) rotate(-1deg);
+}
+
+.phone-week {
+  z-index: 3;
+  height: 500px;
+}
+
+.phone-pattern {
+  z-index: 2;
+  transform: translateX(-24px) rotate(1deg);
+}
+
+.today-space {
+  width: 138px;
+  min-height: 128px;
+  margin: 72px auto 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 11px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 9px;
+}
+
+.today-space b {
+  font-size: 15px;
+}
+
+.today-space small {
+  font-size: 8px;
+}
+
+.add-button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  position: absolute;
+  right: 17px;
+  bottom: 18px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: #111;
+  font-family: Inter, sans-serif;
+  font-size: 19px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.phone ol {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 17px;
+  list-style: none;
+}
+
+.phone li {
+  min-height: 15px;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 9px;
+}
+
+.phone li span {
+  width: 16px;
+}
+
+.phone li i {
+  width: 11px;
+  height: 11px;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+}
+
+.yohaku-page .filled {
+  border-color: #111;
+  background: #111;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.month-grid i {
+  aspect-ratio: 1;
+  border: 1px solid #e5e5e5;
+  background: #f6f6f6;
+}
+
+.phone-tabs {
+  position: absolute;
+  right: 25px;
+  bottom: 22px;
+  left: 25px;
+  display: flex;
+  justify-content: space-around;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+}
+
+.section-pad {
+  width: min(100% - 56px, 1320px);
+  margin: 0 auto;
+  padding: 120px 0;
+}
+
+.section-heading {
+  text-align: center;
+}
+
+.section-heading > p {
+  margin: 0;
+  font-size: 27px;
+  letter-spacing: 0.16em;
+}
+
+.section-heading > p::after {
+  width: 34px;
+  height: 1px;
+  margin: 17px auto 24px;
+  display: block;
+  background: #111;
+  content: "";
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #777;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+
+.feature-grid {
+  margin-top: 58px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.feature-grid article {
+  min-height: 260px;
+  padding: 40px 28px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  border: 1px solid var(--yohaku-line);
+  text-align: center;
+}
+
+.feature-mark {
+  height: 50px;
+  display: grid;
+  place-items: center;
+  font-family: Inter, sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+}
+
+.feature-grid h3 {
+  margin: 24px 0 13px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.feature-grid p {
+  margin: 0;
+  color: #555;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 10px;
+  line-height: 1.9;
+}
+
+.shape-section {
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: 0.55fr 1.45fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.shape-copy h2,
+.belief-section h2 {
+  margin: 18px 0;
+  font-size: clamp(38px, 4vw, 62px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+}
+
+.shape-divider {
+  width: 37px;
+  height: 1px;
+  margin: 24px 0;
+  display: block;
+  background: #111;
+}
+
+.shape-copy > p:last-child,
+.belief-section p {
+  color: #444;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.shape-visual {
+  min-height: 560px;
+  position: relative;
+}
+
+.large-phone {
+  width: 245px;
+  height: 520px;
+  position: absolute;
+  top: 0;
+  left: 10%;
+  z-index: 2;
+  transform: rotate(-1deg);
+}
+
+.pattern-wash {
+  width: 66%;
+  position: absolute;
+  top: 70px;
+  right: -3%;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 7px;
+  opacity: 0.85;
+}
+
+.pattern-wash i {
+  aspect-ratio: 1;
+  background: #f4f4f4;
+}
+
+.belief-section {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 100px;
+  align-items: start;
+  border-top: 1px solid #eee;
+}
+
+.belief-section h2 {
+  margin-top: 0;
+}
+
+.belief-section p {
+  max-width: 520px;
+  margin: 0 0 18px;
+}
+
+.download-section {
+  width: min(100% - 48px, 880px);
+  margin: 0 auto;
+  padding: 100px 0 120px;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.download-section h2 {
+  margin: 20px 0 12px;
+  font-size: clamp(30px, 3.6vw, 48px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.download-section > p:not(.eyebrow) {
+  color: #555;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 12px;
+}
+
+.download-section .store-button {
+  margin-top: 26px;
+}
+
+.download-section small {
+  margin-top: 13px;
+  color: #777;
+  font-family: Inter, sans-serif;
+}
+
+.content-page {
+  width: min(100% - 48px, 1040px);
+  min-height: 740px;
+  margin: 0 auto;
+  padding: 150px 0 120px;
+}
+
+.content-intro {
+  margin-bottom: 72px;
+  text-align: center;
+}
+
+.content-intro h1 {
+  margin: 16px 0;
+  font-size: clamp(44px, 6vw, 72px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.content-intro small {
+  color: #777;
+  font-family: Inter, sans-serif;
+  font-size: 10px;
+}
+
+.content-list {
+  border-top: 1px solid #ddd;
+}
+
+.content-list section {
+  padding: 34px 0;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 30px;
+  border-bottom: 1px solid #ddd;
+}
+
+.content-list b,
+.updates-list time {
+  color: #777;
+  font-family: Inter, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.content-list h2,
+.concept-copy h2,
+.updates-list h2,
+.legal-copy h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.content-list p,
+.concept-copy p,
+.updates-list p,
+.legal-copy p,
+.faq-list p {
+  margin: 0;
+  color: #444;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.concept-copy {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 90px;
+}
+
+.concept-copy section {
+  padding-top: 28px;
+  border-top: 1px solid #111;
+}
+
+.concept-copy h2 {
+  margin-top: 20px;
+  font-size: 32px;
+  line-height: 1.5;
+}
+
+.pattern-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.pattern-gallery figure {
+  margin: 0;
+}
+
+.screen-card {
+  min-height: 480px;
+  padding: 32px 28px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background: #fff;
+  box-shadow: 0 20px 45px rgb(0 0 0 / 7%);
+}
+
+.screen-card small {
+  font-family: Inter, sans-serif;
+  font-size: 8px;
+}
+
+.screen-card h2 {
+  margin: 30px 0 60px;
+  font-size: 25px;
+  font-weight: 400;
+}
+
+.screen-space {
+  width: 150px;
+  height: 145px;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  border: 1px solid #ddd;
+  font-family: Inter, sans-serif;
+}
+
+.screen-time {
+  font-size: 9px;
+}
+
+.mini-pattern {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.mini-pattern i {
+  aspect-ratio: 1;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+}
+
+.pattern-gallery figcaption {
+  margin-top: 18px;
+  font-family: Inter, sans-serif;
+  font-size: 11px;
+  text-align: center;
+}
+
+.faq-list {
+  border-top: 1px solid #ddd;
+}
+
+.faq-list details {
+  border-bottom: 1px solid #ddd;
+}
+
+.faq-list summary {
+  padding: 27px 0;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 17px;
+  list-style: none;
+}
+
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-list details[open] summary span {
+  transform: rotate(45deg);
+}
+
+.faq-list summary span {
+  transition: transform 0.2s ease;
+}
+
+.faq-list p {
+  max-width: 760px;
+  padding: 0 0 28px;
+}
+
+.support-link {
+  margin-top: 38px;
+  display: inline-block;
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  font-size: 12px;
+}
+
+.updates-list article {
+  padding: 32px 0;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 30px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.legal-copy {
+  display: grid;
+  gap: 42px;
+}
+
+.legal-copy section {
+  padding-top: 26px;
+  border-top: 1px solid #ddd;
+}
+
+@media (max-width: 1050px) {
+  .yohaku-hero {
+    min-height: 1120px;
+    padding-top: 120px;
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .hero-copy {
+    max-width: 600px;
+  }
+
+  .hero-devices {
+    transform: scale(0.9);
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .yohaku-page .app-site-locale {
+    display: flex;
+  }
+
+  .yohaku-hero {
+    min-height: 1050px;
+    padding: 110px 20px 125px;
+    display: block;
+  }
+
+  .hero-copy h1 {
+    font-size: 62px;
+  }
+
+  .hero-lead {
+    font-size: 21px;
+  }
+
+  .hero-body br {
+    display: none;
+  }
+
+  .hero-devices {
+    width: 630px;
+    height: 500px;
+    margin: 28px 0 0 50%;
+    transform: translateX(-50%) scale(0.58);
+    transform-origin: top center;
+  }
+
+  .section-pad {
+    width: min(100% - 36px, 1320px);
+    padding: 85px 0;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid article {
+    min-height: 220px;
+  }
+
+  .shape-section,
+  .belief-section,
+  .concept-copy {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .shape-visual {
+    min-height: 500px;
+    transform: scale(0.78);
+    transform-origin: top left;
+  }
+
+  .large-phone {
+    left: 0;
+  }
+
+  .pattern-wash {
+    width: 92%;
+    right: -25%;
+  }
+
+  .belief-section {
+    gap: 24px;
+  }
+
+  .content-page {
+    width: min(100% - 36px, 1040px);
+    padding-top: 125px;
+  }
+
+  .content-intro {
+    margin-bottom: 50px;
+  }
+
+  .content-list section {
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+  }
+
+  .pattern-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .updates-list article {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

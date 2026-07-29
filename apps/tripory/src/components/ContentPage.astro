@@ -1,4 +1,5 @@
 ---
+import { supportUrl } from "@tomokichi/app-site/urls";
 import Shell from "./Shell.astro";
 
 type Locale = "ja" | "en";
@@ -145,7 +146,7 @@ const legal = {
 
     {page === "screenshots" && <div class="feature-page-grid screenshot-grid">{screens.map(([slug, label]) => <article><img src={`/assets/screen-${slug}.png`} alt={`${label} screen`} /><h2>{label}</h2></article>)}</div>}
 
-    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>Q. {q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="faq-contact"><span>✉</span><div><h2>{ja ? "その他のご質問はこちら" : "Still have questions?"}</h2><p>{ja ? "support@tmkch.io までご連絡ください。" : "Reach us at support@tmkch.io."}</p></div><a href="mailto:support@tmkch.io">{ja ? "お問い合わせへ" : "Contact us"}</a></div></>}
+    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>Q. {q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="faq-contact"><span>✉</span><div><h2>{ja ? "その他のご質問はこちら" : "Still have questions?"}</h2><p>{ja ? "共通サポートフォームからお問い合わせください。" : "Send us a message through the shared support form."}</p></div><a href={supportUrl("tripory", lang)}>{ja ? "お問い合わせへ" : "Contact us"}</a></div></>}
 
     {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2>{body.split("\n\n").map((para) => <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>)}</section>)}</article>}
 

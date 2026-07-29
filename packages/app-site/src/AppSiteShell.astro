@@ -24,7 +24,8 @@ const {
   logoMark = "◎",
   logoImage = "",
   themeColor = "#f8fbfa",
-  ogImage = "/og.png",
+  ogImage = "",
+  pageClass = "",
 } = Astro.props as {
   lang: Locale;
   title: string;
@@ -45,9 +46,11 @@ const {
   logoImage?: string;
   themeColor?: string;
   ogImage?: string;
+  pageClass?: string;
 };
 const absolutePageUrl = `${siteUrl}${lang === "ja" ? jaPageHref : enPageHref}`;
-const absoluteOgImage = new URL(ogImage, siteUrl).toString();
+const absoluteOgImage = ogImage ? new URL(ogImage, siteUrl).toString() : "";
+const mobileNavId = `app-site-mobile-nav-${lang}`;
 ---
 
 <!doctype html>
@@ -64,46 +67,46 @@ const absoluteOgImage = new URL(ogImage, siteUrl).toString();
     <meta property="og:site_name" content={brand} />
     <meta property="og:title" content={`${title} — ${brand}`} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={absoluteOgImage} />
-    <meta name="twitter:card" content="summary_large_image" />
+    {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
+    <meta name="twitter:card" content={absoluteOgImage ? "summary_large_image" : "summary"} />
     {logoImage && <link rel="icon" type="image/png" href={logoImage} />}
     <title>{title} — {brand}</title>
   </head>
   <body>
-    <div class="app-page">
-      <header class="app-header" data-app-header>
-        <div class="app-header-inner">
-          <a class="app-logo" href={homeHref}>
-            {logoImage ? <img class="app-logo-image" src={logoImage} alt="" /> : <span class="globe-mark">{logoMark}</span>}
+    <div class:list={["app-site-page", pageClass]}>
+      <header class="app-site-header" data-app-header>
+        <div class="app-site-header-inner">
+          <a class="app-site-logo" href={homeHref}>
+            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" /> : <span class="app-site-logo-mark">{logoMark}</span>}
             {brand}
           </a>
-          <nav aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
-            {nav.map((item) => <a class:list={{ active: page === item.slug }} href={item.href}>{item.label}</a>)}
+          <nav class="app-site-primary-nav" aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
+            {nav.map((item) => <a class:list={{ active: page === item.slug }} href={item.href} aria-current={page === item.slug ? "page" : undefined}>{item.label}</a>)}
           </nav>
-          <div class="app-actions">
-            <div class="lang-switch">
+          <div class="app-site-actions">
+            <div class="app-site-locale">
               <a class:list={{ active: lang === "en" }} href={enPageHref}>EN</a>
               <span>/</span>
               <a class:list={{ active: lang === "ja" }} href={jaPageHref}>JA</a>
             </div>
-            <a class="appstore-pill" href={appStoreHref}>{appStoreLabel}</a>
-            <button class="mobile-menu" type="button" aria-label={menuLabel} aria-expanded="false">☰</button>
+            <a class="app-site-store-link" href={appStoreHref}>{appStoreLabel}</a>
+            <button class="app-site-mobile-menu" type="button" aria-label={menuLabel} aria-expanded="false" aria-controls={mobileNavId}>☰</button>
           </div>
         </div>
-        <nav class="mobile-nav" hidden>
-          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        <nav class="app-site-mobile-nav" id={mobileNavId} aria-label={menuLabel} hidden>
+          {nav.map((item) => <a href={item.href} aria-current={page === item.slug ? "page" : undefined}>{item.label}</a>)}
         </nav>
       </header>
       <main><slot /></main>
-      <footer class="app-footer">
-        <div class="footer-brand">
-          <a class="app-logo" href={homeHref}>
-            {logoImage ? <img class="app-logo-image" src={logoImage} alt="" /> : <span class="globe-mark">{logoMark}</span>}
+      <footer class="app-site-footer">
+        <div class="app-site-footer-brand">
+          <a class="app-site-logo" href={homeHref}>
+            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" /> : <span class="app-site-logo-mark">{logoMark}</span>}
             {brand}
           </a>
           <p>{tagline}</p>
         </div>
-        <div class="footer-cols">
+        <div class="app-site-footer-columns">
           {footerColumns.map((column) => (
             <nav aria-label={column.title}>
               <h2>{column.title}</h2>
@@ -113,7 +116,7 @@ const absoluteOgImage = new URL(ogImage, siteUrl).toString();
             </nav>
           ))}
         </div>
-        <div class="footer-base"><small>© 2026 {brand}</small><p>Made with ♡ by Tomokichi</p></div>
+        <div class="app-site-footer-base"><small>© 2026 {brand}</small><p>Made with ♡ by Tomokichi</p></div>
       </footer>
     </div>
     <script is:inline>
@@ -122,7 +125,8 @@ const absoluteOgImage = new URL(ogImage, siteUrl).toString();
         if (header) {
           let scheduled = false;
           const syncHeader = () => {
-            header.classList.toggle("is-compact", window.scrollY > 96);
+            const compact = window.scrollY > 96;
+            header.classList.toggle("is-compact", compact);
             scheduled = false;
           };
           window.addEventListener("scroll", () => {
@@ -134,13 +138,31 @@ const absoluteOgImage = new URL(ogImage, siteUrl).toString();
           syncHeader();
         }
 
-        const button = document.querySelector(".mobile-menu");
-        const menu = document.querySelector(".mobile-nav");
+        const button = document.querySelector(".app-site-mobile-menu");
+        const menu = document.querySelector(".app-site-mobile-nav");
+        const closeMenu = (restoreFocus = false) => {
+          if (!button || !menu) return;
+          button.setAttribute("aria-expanded", "false");
+          button.textContent = "☰";
+          menu.hidden = true;
+          if (restoreFocus) button.focus();
+        };
         button?.addEventListener("click", () => {
           const open = button.getAttribute("aria-expanded") !== "true";
           button.setAttribute("aria-expanded", String(open));
           button.textContent = open ? "×" : "☰";
           if (menu) menu.hidden = !open;
+        });
+        menu?.addEventListener("click", (event) => {
+          if (event.target.closest("a")) closeMenu();
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && button?.getAttribute("aria-expanded") === "true") {
+            closeMenu(true);
+          }
+        });
+        matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
+          if (event.matches) closeMenu();
         });
 
         const items = document.querySelectorAll("[data-reveal]");

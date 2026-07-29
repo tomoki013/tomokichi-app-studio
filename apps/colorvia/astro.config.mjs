@@ -1,13 +1,14 @@
 import tailwindcss from "@tailwindcss/vite";
+import { appSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://colorvia.tmkch.io",
+  site: appSiteUrl("colorvia"),
   redirects: {
     "/en": "/",
     "/en/[page]": "/[page]",
-    "/contact": "https://tmkch.io/support?app=colorvia",
-    "/ja/contact": "https://tmkch.io/ja/support?app=colorvia",
+    "/contact": supportUrl("colorvia", "en"),
+    "/ja/contact": supportUrl("colorvia", "ja"),
   },
   vite: { plugins: [tailwindcss()] },
 });

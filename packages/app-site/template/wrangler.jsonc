@@ -1,0 +1,7 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tomokichi-__APP_SLUG__",
+  "compatibility_date": "__APP_DATE__",
+  "assets": { "directory": "./dist" },
+  "observability": { "enabled": true }
+}

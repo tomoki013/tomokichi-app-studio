@@ -1,5 +1,7 @@
+import { supportAppBrands } from "@tomokichi/app-site/apps";
+
 export const supportSources = ["remeet-ios", "main-web"] as const;
-export const supportApps = ["remeet", "colorvia", "other"] as const;
+export const supportApps = [...supportAppBrands.map((app) => app.slug), "other"] as const;
 export const supportCategories = ["question", "bug", "feature", "other"] as const;
 
 export type SupportSource = (typeof supportSources)[number];
@@ -40,6 +42,7 @@ export interface SupportBindings {
   SUPPORT_TO_EMAIL: string;
   SUPPORT_FROM_EMAIL: string;
   MAIN_SITE_ORIGIN: string;
+  MAIN_SITE_WORKERS_ORIGIN: string;
   SUPPORT_MOCK_DELIVERY?: string;
   SUPPORT_RATE_LIMITER: {
     limit(options: { key: string }): Promise<{ success: boolean }>;
