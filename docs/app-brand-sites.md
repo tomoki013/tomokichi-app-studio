@@ -58,9 +58,11 @@ import order.
 
 ## Required pages
 
-- Privacy Policy and Terms of Service must contain product-specific, internally
+- Privacy Policy, Terms of Service, and the Commercial Transactions disclosure
+  (`/commercial-transactions`) must contain product-specific, internally
   consistent content and effective dates.
 - Contact must lead to the working shared support form with the correct app selected.
+- Customer-support email is `support@tmkch.io`; the form remains the primary route.
 - Features, usage, screenshots, FAQ, and updates may be mock content until product
   details are final, but links and responsive layouts must work.
 

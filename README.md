@@ -2,6 +2,19 @@
 
 Tomokichiの小さなアプリをまとめたpnpm + Turborepo monorepoです。
 
+## Public URLs
+
+- Main: `https://tmkch.io`
+- Remeet: `https://remeet.tmkch.io`
+- Tripory: `https://tripory.tmkch.io`
+- Colorvia: `https://colorvia.tmkch.io`
+- Yohaku: `https://yohaku.tmkch.io`
+- Support API: `https://api.tmkch.io/api/support`
+
+各ブランドのプライバシーポリシー、利用規約、特定商取引法に基づく表記は、
+それぞれ `/privacy`、`/terms`、`/commercial-transactions` で公開します。
+サポート窓口は `support@tmkch.io` と共通お問い合わせフォームです。
+
 ## Local development
 
 ```bash

@@ -65,5 +65,5 @@ export function appSiteWorkersUrl(app: string): string {
 /** Public URL to register in product metadata and future DNS configuration. */
 export const SUPPORT_API_PUBLIC_URL = `${SITE_ORIGINS.services.supportApi.public}/api/support`;
 
-/** Active endpoint until api.tmkch.io is routed to the Worker. */
-export const SUPPORT_API_URL = `${SITE_ORIGINS.services.supportApi.workers}/api/support`;
+/** Canonical support endpoint served through the API custom domain. */
+export const SUPPORT_API_URL = SUPPORT_API_PUBLIC_URL;

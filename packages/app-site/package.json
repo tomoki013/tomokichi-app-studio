@@ -6,6 +6,7 @@
   "exports": {
     "./AppSiteShell.astro": "./src/AppSiteShell.astro",
     "./AppHeroChrome.astro": "./src/AppHeroChrome.astro",
+    "./CommercialTransactionsPage.astro": "./src/CommercialTransactionsPage.astro",
     "./apps": "./src/apps.ts",
     "./urls": "./src/urls.ts"
   },

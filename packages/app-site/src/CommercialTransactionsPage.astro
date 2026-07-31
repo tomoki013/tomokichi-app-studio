@@ -1,0 +1,77 @@
+---
+import { supportUrl } from "./urls";
+
+const { lang, appName, appSlug } = Astro.props as {
+  lang: "ja" | "en";
+  appName: string;
+  appSlug: string;
+};
+const ja = lang === "ja";
+const contactHref = supportUrl(appSlug, lang);
+const rows = ja
+  ? [
+      ["販売事業者", "Tomokichi"],
+      ["運営責任者", "請求があった場合、遅滞なく開示します。"],
+      ["所在地・電話番号", "請求があった場合、遅滞なく開示します。"],
+      ["お問い合わせ", "support@tmkch.io"],
+      ["販売価格", `現在、${appName}は無料で提供しています。将来、有料商品を提供する場合は、購入画面またはApp Storeの商品ページに税込価格を表示します。`],
+      ["商品代金以外の必要料金", "インターネット接続に必要な通信料等は、利用者の負担となります。"],
+      ["支払方法・支払時期", "有料商品を提供する場合は、Apple IDに登録された支払方法により、購入確定時に決済されます。"],
+      ["サービスの提供時期", "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。有料機能を提供する場合は、購入手続き完了後に利用できます。"],
+      ["返品・キャンセル", "デジタルコンテンツの性質上、提供開始後の返品・キャンセルには応じられません。法令またはAppleの規定に基づく場合を除きます。"],
+      ["動作環境", "対応するOS・端末はApp Storeの商品ページに表示します。"],
+    ]
+  : [
+      ["Seller", "Tomokichi"],
+      ["Responsible operator", "Disclosed without delay upon request."],
+      ["Address and telephone number", "Disclosed without delay upon request."],
+      ["Contact", "support@tmkch.io"],
+      ["Price", `${appName} is currently provided free of charge. If paid products are introduced, tax-inclusive prices will be shown on the purchase screen or App Store product page.`],
+      ["Additional charges", "You are responsible for internet access and data charges."],
+      ["Payment method and timing", "If paid products are introduced, payment will be charged at confirmation using the payment method registered to your Apple ID."],
+      ["Delivery", "The app is available immediately after its App Store download completes. Any future paid feature will become available after purchase is completed."],
+      ["Returns and cancellations", "Because the product is digital content, returns and cancellations are not accepted after delivery begins, except where required by law or Apple's rules."],
+      ["System requirements", "Supported operating systems and devices are listed on the App Store product page."],
+    ];
+---
+
+<section class="commercial-page">
+  <header class="commercial-intro">
+    <p class="commercial-eyebrow">LEGAL</p>
+    <h1>{ja ? "特定商取引法に基づく表記" : "Commercial Transactions Disclosure"}</h1>
+    <p>{ja ? `${appName}に関する販売条件と事業者情報を掲載しています。` : `Seller and transaction information for ${appName}.`}</p>
+  </header>
+
+  <dl class="commercial-list">
+    {rows.map(([term, description]) => (
+      <div>
+        <dt>{term}</dt>
+        <dd>
+          {term === (ja ? "お問い合わせ" : "Contact") ? (
+            <><a href="mailto:support@tmkch.io">{description}</a><span> · </span><a href={contactHref}>{ja ? "お問い合わせフォーム" : "Support form"}</a></>
+          ) : description}
+        </dd>
+      </div>
+    ))}
+  </dl>
+  <p class="commercial-updated">{ja ? "最終更新日：2026年8月1日" : "Last updated: August 1, 2026"}</p>
+</section>
+
+<style>
+  .commercial-page { width: min(760px, calc(100% - 40px)); margin: 0 auto; padding: clamp(84px, 10vw, 128px) 0 clamp(80px, 10vw, 120px); }
+  .commercial-intro { margin-bottom: clamp(36px, 6vw, 58px); }
+  .commercial-eyebrow { margin: 0 0 14px; font-size: 10px; font-weight: 700; letter-spacing: .22em; opacity: .52; }
+  .commercial-intro h1 { margin: 0; font-size: clamp(30px, 5vw, 48px); font-weight: 500; line-height: 1.32; letter-spacing: -.035em; }
+  .commercial-intro > p:last-child { margin: 20px 0 0; line-height: 1.9; opacity: .68; }
+  .commercial-list { margin: 0; border-top: 1px solid currentColor; }
+  .commercial-list > div { display: grid; grid-template-columns: minmax(150px, 28%) 1fr; gap: 24px; padding: 23px 4px; border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
+  .commercial-list dt { font-size: 13px; font-weight: 650; line-height: 1.8; }
+  .commercial-list dd { margin: 0; font-size: 13px; line-height: 1.9; opacity: .78; }
+  .commercial-list a { color: inherit; text-underline-offset: 4px; }
+  .commercial-updated { margin: 24px 0 0; font-size: 11px; opacity: .52; }
+  @media (max-width: 600px) {
+    .commercial-page { width: min(100% - 32px, 760px); padding-top: 72px; }
+    .commercial-list > div { grid-template-columns: 1fr; gap: 7px; padding: 19px 2px; }
+    .commercial-list dt, .commercial-list dd { font-size: 12.5px; }
+  }
+</style>
