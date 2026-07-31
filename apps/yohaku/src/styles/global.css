@@ -5,7 +5,8 @@
   --yohaku-line: #ececec;
   --yohaku-panel: #f7f7f7;
   --yohaku-card: #fafafa;
-  --sans: Inter, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+  --sans:
+    Inter, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
   --serif: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "Songti SC", Georgia, serif;
 
   --app-site-ink: var(--yohaku-ink);
@@ -377,8 +378,7 @@ a {
 /* ——— Landing hero ——— */
 
 .yohaku-hero {
-  min-height: calc(100vh - 72px);
-  min-height: 880px;
+  min-height: max(calc(100vh - 72px), 880px);
   padding: 88px max(28px, calc((100vw - 1180px) / 2)) 140px;
   position: relative;
   display: flex;
@@ -586,12 +586,48 @@ a {
   background: #111;
 }
 
-.shape-scatter .s1 { top: 8%; left: 18%; width: 34px; height: 34px; background: #ececec; }
-.shape-scatter .s2 { top: 22%; left: 58%; width: 22px; height: 22px; background: #d8d8d8; }
-.shape-scatter .s3 { top: 40%; left: 28%; width: 26px; height: 26px; background: #111; }
-.shape-scatter .s4 { top: 48%; left: 68%; width: 32px; height: 32px; background: #111; }
-.shape-scatter .s5 { top: 68%; left: 12%; width: 24px; height: 24px; background: #111; }
-.shape-scatter .s6 { top: 78%; left: 48%; width: 20px; height: 20px; background: #cfcfcf; }
+.shape-scatter .s1 {
+  top: 8%;
+  left: 18%;
+  width: 34px;
+  height: 34px;
+  background: #ececec;
+}
+.shape-scatter .s2 {
+  top: 22%;
+  left: 58%;
+  width: 22px;
+  height: 22px;
+  background: #d8d8d8;
+}
+.shape-scatter .s3 {
+  top: 40%;
+  left: 28%;
+  width: 26px;
+  height: 26px;
+  background: #111;
+}
+.shape-scatter .s4 {
+  top: 48%;
+  left: 68%;
+  width: 32px;
+  height: 32px;
+  background: #111;
+}
+.shape-scatter .s5 {
+  top: 68%;
+  left: 12%;
+  width: 24px;
+  height: 24px;
+  background: #111;
+}
+.shape-scatter .s6 {
+  top: 78%;
+  left: 48%;
+  width: 20px;
+  height: 20px;
+  background: #cfcfcf;
+}
 
 .download-section {
   width: min(100% - 48px, 720px);
@@ -1088,7 +1124,9 @@ a {
   border: 1px solid var(--yohaku-line);
   border-radius: 16px;
   text-decoration: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .faq-card:hover {

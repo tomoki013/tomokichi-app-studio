@@ -365,7 +365,7 @@ const legal = {
   page={page}
   description={ja ? `Yohakuの${title}ページです。` : `${title} for the Yohaku iPhone app.`}
 >
-  {/* —— Features —— */}
+  <!-- —— Features —— -->
   {page === "features" && (
     <article class="content-page content-features">
       <header class="features-hero">
@@ -428,7 +428,7 @@ const legal = {
     </article>
   )}
 
-  {/* —— How to —— */}
+  <!-- —— How to —— -->
   {page === "how-to" && (
     <article class="content-page content-howto">
       <header class="howto-hero">
@@ -514,7 +514,7 @@ const legal = {
     </article>
   )}
 
-  {/* —— Concept (screenshots route) —— */}
+  <!-- —— Concept (screenshots route) —— -->
   {page === "screenshots" && (
     <article class="content-page content-concept">
       <header class="content-intro">
@@ -536,15 +536,15 @@ const legal = {
           </section>
         ))}
       </div>
-      <div class="concept-devices" role="group" aria-label={ja ? "Yohakuの画面" : "Yohaku screens"}>
+      <section class="concept-devices" aria-label={ja ? "Yohakuの画面" : "Yohaku screens"}>
         <PhoneMock kind="today" size="sm" />
         <PhoneMock kind="week" size="sm" />
         <PhoneMock kind="month" size="sm" />
-      </div>
+      </section>
     </article>
   )}
 
-  {/* —— FAQ —— */}
+  <!-- —— FAQ —— -->
   {page === "faq" && (
     <article class="content-page content-faq">
       <header class="content-intro">
@@ -595,7 +595,7 @@ const legal = {
     </article>
   )}
 
-  {/* —— News —— */}
+  <!-- —— News —— -->
   {page === "updates" && (
     <article class="content-page content-news">
       <header class="content-intro content-intro--left">
@@ -660,7 +660,7 @@ const legal = {
     </article>
   )}
 
-  {/* —— Legal —— */}
+  <!-- —— Legal —— -->
   {(page === "privacy" || page === "terms") && (
     <article class="content-page content-legal">
       <header class="content-intro">

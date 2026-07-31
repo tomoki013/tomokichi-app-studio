@@ -68,7 +68,7 @@ const resolvedDate = dateLabel ?? defaultDates[kind];
             </li>
           ))}
         </ul>
-        <button class="yh-phone-fab" type="button" tabindex="-1" aria-hidden="true">+</button>
+        <span class="yh-phone-fab" aria-hidden="true">+</span>
       </div>
     )}
 
@@ -94,7 +94,7 @@ const resolvedDate = dateLabel ?? defaultDates[kind];
             </li>
           ))}
         </ol>
-        <button class="yh-phone-fab" type="button" tabindex="-1" aria-hidden="true">+</button>
+        <span class="yh-phone-fab" aria-hidden="true">+</span>
       </div>
     )}
 
@@ -111,7 +111,7 @@ const resolvedDate = dateLabel ?? defaultDates[kind];
         <div class="yh-month-grid" aria-hidden="true">
           {monthCells.map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}
         </div>
-        <button class="yh-phone-fab" type="button" tabindex="-1" aria-hidden="true">+</button>
+        <span class="yh-phone-fab" aria-hidden="true">+</span>
       </div>
     )}
 
