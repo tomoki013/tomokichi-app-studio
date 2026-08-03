@@ -1,5 +1,6 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
 import { languagesEn, languagesJa, regions } from "../lib/content";
 import AppShell from "./AppShell.astro";
@@ -115,17 +116,19 @@ const jsonLd = JSON.stringify({
       <small>{ja ? "iPhone・iOS 18以降向け。iPad専用レイアウトは未対応です。" : "Designed for iPhone on iOS 18+. No iPad-optimized layout yet."}</small>
     </div>
     <div class="hero-phone" data-reveal>
-      <picture>
-        <source srcset={homeImg} type="image/webp" />
-        <img
-          src={homeImgPng}
-          alt={ja ? "Colorviaのホーム画面。世界地図と訪問統計" : "Colorvia home screen with world map and visit stats"}
-          width="1170"
-          height="2532"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </picture>
+      <PhoneFrame size="lg">
+        <picture>
+          <source srcset={homeImg} type="image/webp" />
+          <img
+            src={homeImgPng}
+            alt={ja ? "Colorviaのホーム画面。世界地図と訪問統計" : "Colorvia home screen with world map and visit stats"}
+            width="1170"
+            height="2532"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+      </PhoneFrame>
     </div>
     <div class="world-wash" aria-hidden="true">WORLD</div>
     <AppHeroChrome
@@ -203,34 +206,38 @@ const jsonLd = JSON.stringify({
         <p>{ja ? "実際のアプリ画面です。" : "Real screens from the app."}</p>
       </header>
       <div class="screen-grid real-shots">
-        <figure data-reveal>
-          <picture>
-            <source srcset="/assets/colorvia-home.webp" type="image/webp" />
-            <img src="/assets/colorvia-home.png" alt={ja ? "世界地図ホーム画面" : "World map home screen"} width="1170" height="2532" loading="lazy" decoding="async" />
-          </picture>
-          <figcaption>{ja ? "世界地図と訪問統計" : "World map and visit stats"}</figcaption>
-        </figure>
-        <figure data-reveal>
-          <picture>
-            <source srcset="/assets/colorvia-home-bottom-sheet.webp" type="image/webp" />
-            <img src="/assets/colorvia-home-bottom-sheet.png" alt={ja ? "統計ボトムシート" : "Statistics bottom sheet"} width="1170" height="2532" loading="lazy" decoding="async" />
-          </picture>
-          <figcaption>{ja ? "訪問数と地域別の内訳" : "Counts and regional breakdown"}</figcaption>
-        </figure>
-        <figure data-reveal>
-          <picture>
-            <source srcset="/assets/colorvia-map-coral.webp" type="image/webp" />
-            <img src="/assets/colorvia-map-coral.png" alt={ja ? "地図色を変えた画面" : "Map with custom colour"} width="1170" height="2532" loading="lazy" decoding="async" />
-          </picture>
-          <figcaption>{ja ? "地図色の変更" : "Custom map colours"}</figcaption>
-        </figure>
-        <figure data-reveal>
-          <picture>
-            <source srcset="/assets/colorvia-home-dark.webp" type="image/webp" />
-            <img src="/assets/colorvia-home-dark.png" alt={ja ? "ダークテーマのホーム" : "Home in dark theme"} width="1170" height="2532" loading="lazy" decoding="async" />
-          </picture>
-          <figcaption>{ja ? "ダークテーマ" : "Dark theme"}</figcaption>
-        </figure>
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "世界地図と訪問統計" : "World map and visit stats"}>
+            <picture>
+              <source srcset="/assets/colorvia-home.webp" type="image/webp" />
+              <img src="/assets/colorvia-home.png" alt={ja ? "世界地図ホーム画面" : "World map home screen"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "訪問数と地域別の内訳" : "Counts and regional breakdown"}>
+            <picture>
+              <source srcset="/assets/colorvia-home-bottom-sheet.webp" type="image/webp" />
+              <img src="/assets/colorvia-home-bottom-sheet.png" alt={ja ? "統計ボトムシート" : "Statistics bottom sheet"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "地図色の変更" : "Custom map colours"}>
+            <picture>
+              <source srcset="/assets/colorvia-map-coral.webp" type="image/webp" />
+              <img src="/assets/colorvia-map-coral.png" alt={ja ? "地図色を変えた画面" : "Map with custom colour"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "ダークテーマ" : "Dark theme"}>
+            <picture>
+              <source srcset="/assets/colorvia-home-dark.webp" type="image/webp" />
+              <img src="/assets/colorvia-home-dark.png" alt={ja ? "ダークテーマのホーム" : "Home in dark theme"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
       </div>
     </section>
 

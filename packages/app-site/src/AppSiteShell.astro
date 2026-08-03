@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import "./app-site-shell.css";
 
 type Locale = "ja" | "en";
@@ -26,6 +27,7 @@ const {
   menuCloseLabel,
   logoMark = "◎",
   logoImage = "",
+  favicon = "",
   themeColor = "#f8fbfa",
   ogImage = "",
   pageClass = "",
@@ -52,6 +54,8 @@ const {
   menuCloseLabel?: string;
   logoMark?: string;
   logoImage?: string;
+  /** Optional smaller favicon; falls back to logoImage. */
+  favicon?: string;
   themeColor?: string;
   ogImage?: string;
   pageClass?: string;
@@ -68,6 +72,12 @@ const resolvedMobileFooter =
   mobileFooterLinks.length > 0
     ? mobileFooterLinks
     : footerColumns.flatMap((column) => column.links).slice(0, 6);
+const iconHref = favicon || logoImage;
+const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jpeg")
+  ? "image/jpeg"
+  : absoluteOgImage.endsWith(".webp")
+    ? "image/webp"
+    : "image/png";
 ---
 
 <!doctype html>
@@ -88,13 +98,15 @@ const resolvedMobileFooter =
     <meta property="og:url" content={absolutePageUrl} />
     <meta property="og:locale" content={lang === "ja" ? "ja_JP" : "en_US"} />
     {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
+    {absoluteOgImage && <meta property="og:image:type" content={ogType} />}
     <meta name="twitter:card" content={absoluteOgImage ? "summary_large_image" : "summary"} />
     <meta name="twitter:title" content={`${title} — ${brand}`} />
     <meta name="twitter:description" content={description} />
     {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
-    {logoImage && <link rel="icon" type="image/png" href={logoImage} />}
+    {iconHref && <link rel="icon" type="image/png" href={iconHref} />}
     <title>{title} — {brand}</title>
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+    <ClientRouter />
   </head>
   <body>
     <div class:list={["app-site-page", pageClass]}>
@@ -102,21 +114,35 @@ const resolvedMobileFooter =
       <header class="app-site-header" data-app-header>
         <div class="app-site-header-inner">
           <a class="app-site-logo" href={homeHref}>
-            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" /> : <span class="app-site-logo-mark">{logoMark}</span>}
+            {
+              logoImage ? (
+                <img
+                  class="app-site-logo-image"
+                  src={logoImage}
+                  alt=""
+                  width="58"
+                  height="58"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              ) : (
+                <span class="app-site-logo-mark">{logoMark}</span>
+              )
+            }
             {brand}
           </a>
           <nav class="app-site-primary-nav" aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
             {nav.map((item) => (
-              <a class:list={{ active: page === item.slug }} href={item.href} aria-current={page === item.slug ? "page" : undefined}>
+              <a class:list={{ active: page === item.slug }} href={item.href} aria-current={page === item.slug ? "page" : undefined} data-astro-prefetch>
                 {item.label}
               </a>
             ))}
           </nav>
           <div class="app-site-actions">
             <div class="app-site-locale app-site-desktop-only">
-              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en">EN</a>
+              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en" data-astro-prefetch>EN</a>
               <span aria-hidden="true">/</span>
-              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja">JA</a>
+              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja" data-astro-prefetch>JA</a>
             </div>
             {storeIsLink ? (
               <a class="app-site-store-link app-site-desktop-only" href={appStoreHref}>{appStoreLabel}</a>
@@ -155,6 +181,7 @@ const resolvedMobileFooter =
                 href={item.href}
                 aria-current={page === item.slug ? "page" : undefined}
                 style={`--item-i:${index}`}
+                data-astro-prefetch
               >
                 {item.label}
               </a>
@@ -162,8 +189,8 @@ const resolvedMobileFooter =
           </div>
           <div class="app-site-mobile-nav-meta">
             <nav class="app-site-mobile-locale" aria-label={lang === "ja" ? "言語" : "Language"}>
-              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en">EN</a>
-              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja">JA</a>
+              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en" data-astro-prefetch>EN</a>
+              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja" data-astro-prefetch>JA</a>
             </nav>
             {storeIsLink ? (
               <a class="app-site-mobile-store" href={appStoreHref}>{appStoreLabel}</a>
@@ -185,11 +212,17 @@ const resolvedMobileFooter =
         </div>
       </nav>
 
-      <main id="main"><slot /></main>
+      <main id="main" transition:animate="fade"><slot /></main>
       <footer class="app-site-footer">
         <div class="app-site-footer-brand">
           <a class="app-site-logo" href={homeHref}>
-            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" /> : <span class="app-site-logo-mark">{logoMark}</span>}
+            {
+              logoImage ? (
+                <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" loading="lazy" />
+              ) : (
+                <span class="app-site-logo-mark">{logoMark}</span>
+              )
+            }
             {brand}
           </a>
           <p>{tagline}</p>
@@ -199,7 +232,14 @@ const resolvedMobileFooter =
             <nav aria-label={column.title}>
               <h2>{column.title}</h2>
               {column.links.map((link) => (
-                <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.label}</a>
+                <a
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  data-astro-prefetch={!link.external ? true : undefined}
+                >
+                  {link.label}
+                </a>
               ))}
             </nav>
           ))}
@@ -209,106 +249,172 @@ const resolvedMobileFooter =
     </div>
     <script is:inline>
       (() => {
-        const header = document.querySelector("[data-app-header]");
-        const mobileQuery = matchMedia("(max-width: 900px)");
-        if (header) {
-          let scheduled = false;
-          const syncHeader = () => {
-            // Compact pill is desktop-only; mobile keeps a stable full-width bar.
-            const compact = !mobileQuery.matches && window.scrollY > 96;
-            header.classList.toggle("is-compact", compact);
-            scheduled = false;
-          };
-          window.addEventListener("scroll", () => {
-            if (!scheduled) {
-              scheduled = true;
-              requestAnimationFrame(syncHeader);
-            }
-          }, { passive: true });
-          mobileQuery.addEventListener("change", syncHeader);
-          syncHeader();
-        }
-
-        const button = document.querySelector(".app-site-mobile-menu");
-        const menu = document.querySelector("[data-mobile-nav]");
-        const scrim = document.querySelector("[data-mobile-scrim]");
-        const closeBtn = document.querySelector("[data-mobile-close]");
-        const openLabel = button?.getAttribute("data-menu-open-label") || "Menu";
-        const closeLabelText = button?.getAttribute("data-menu-close-label") || "Close menu";
-        let lastFocus = null;
+        let scrollBound = false;
+        let keyBound = false;
+        let menuMediaBound = false;
 
         const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-        const setOpen = (open, restoreFocus = false) => {
-          if (!button || !menu) return;
-          button.setAttribute("aria-expanded", String(open));
-          button.setAttribute("aria-label", open ? closeLabelText : openLabel);
-          button.classList.toggle("is-open", open);
-          menu.hidden = !open;
-          if (scrim) scrim.hidden = !open;
-          document.documentElement.classList.toggle("app-site-menu-open", open);
-          menu.setAttribute("aria-hidden", String(!open));
-          if (open) {
-            lastFocus = document.activeElement;
-            const first = menu.querySelector(focusableSelector);
-            first?.focus({ preventScroll: true });
-          } else if (restoreFocus) {
-            (lastFocus || button).focus({ preventScroll: true });
+        const initShell = () => {
+          const header = document.querySelector("[data-app-header]");
+          const mobileQuery = matchMedia("(max-width: 900px)");
+          if (header) {
+            const syncHeader = () => {
+              const compact = !mobileQuery.matches && window.scrollY > 96;
+              header.classList.toggle("is-compact", compact);
+            };
+            if (!scrollBound) {
+              let scheduled = false;
+              window.addEventListener(
+                "scroll",
+                () => {
+                  if (!scheduled) {
+                    scheduled = true;
+                    requestAnimationFrame(() => {
+                      scheduled = false;
+                      const h = document.querySelector("[data-app-header]");
+                      if (!h) return;
+                      const mq = matchMedia("(max-width: 900px)");
+                      h.classList.toggle("is-compact", !mq.matches && window.scrollY > 96);
+                    });
+                  }
+                },
+                { passive: true },
+              );
+              mobileQuery.addEventListener("change", () => {
+                const h = document.querySelector("[data-app-header]");
+                if (!h) return;
+                h.classList.toggle("is-compact", !matchMedia("(max-width: 900px)").matches && window.scrollY > 96);
+              });
+              scrollBound = true;
+            }
+            syncHeader();
           }
-        };
 
-        const closeMenu = (restoreFocus = false) => setOpen(false, restoreFocus);
+          const button = document.querySelector(".app-site-mobile-menu");
+          const menu = document.querySelector("[data-mobile-nav]");
+          const scrim = document.querySelector("[data-mobile-scrim]");
+          const closeBtn = document.querySelector("[data-mobile-close]");
+          if (!button || !menu) return;
 
-        button?.addEventListener("click", () => {
-          const open = button.getAttribute("aria-expanded") !== "true";
-          setOpen(open, true);
-        });
-        closeBtn?.addEventListener("click", () => closeMenu(true));
-        scrim?.addEventListener("click", () => closeMenu(true));
-        menu?.addEventListener("click", (event) => {
-          if (event.target.closest("a")) closeMenu();
-        });
-        document.addEventListener("keydown", (event) => {
-          if (button?.getAttribute("aria-expanded") !== "true") return;
-          if (event.key === "Escape") {
-            closeMenu(true);
+          const openLabel = button.getAttribute("data-menu-open-label") || "Menu";
+          const closeLabelText = button.getAttribute("data-menu-close-label") || "Close menu";
+          let lastFocus = null;
+
+          const setOpen = (open, restoreFocus = false) => {
+            button.setAttribute("aria-expanded", String(open));
+            button.setAttribute("aria-label", open ? closeLabelText : openLabel);
+            button.classList.toggle("is-open", open);
+            menu.hidden = !open;
+            if (scrim) scrim.hidden = !open;
+            document.documentElement.classList.toggle("app-site-menu-open", open);
+            menu.setAttribute("aria-hidden", String(!open));
+            if (open) {
+              lastFocus = document.activeElement;
+              const first = menu.querySelector(focusableSelector);
+              first?.focus({ preventScroll: true });
+            } else if (restoreFocus) {
+              (lastFocus || button).focus({ preventScroll: true });
+            }
+          };
+
+          const closeMenu = (restoreFocus = false) => setOpen(false, restoreFocus);
+
+          // Re-bind by replacing handlers via data flag on elements
+          if (button.dataset.bound !== "1") {
+            button.addEventListener("click", () => {
+              const open = button.getAttribute("aria-expanded") !== "true";
+              setOpen(open, true);
+            });
+            button.dataset.bound = "1";
+          }
+          if (closeBtn && closeBtn.dataset.bound !== "1") {
+            closeBtn.addEventListener("click", () => closeMenu(true));
+            closeBtn.dataset.bound = "1";
+          }
+          if (scrim && scrim.dataset.bound !== "1") {
+            scrim.addEventListener("click", () => closeMenu(true));
+            scrim.dataset.bound = "1";
+          }
+          if (menu.dataset.bound !== "1") {
+            menu.addEventListener("click", (event) => {
+              if (event.target.closest("a")) closeMenu();
+            });
+            menu.dataset.bound = "1";
+          }
+          if (!keyBound) {
+            document.addEventListener("keydown", (event) => {
+              const btn = document.querySelector(".app-site-mobile-menu");
+              const m = document.querySelector("[data-mobile-nav]");
+              if (!btn || !m || btn.getAttribute("aria-expanded") !== "true") return;
+              if (event.key === "Escape") {
+                btn.setAttribute("aria-expanded", "false");
+                btn.classList.remove("is-open");
+                m.hidden = true;
+                const s = document.querySelector("[data-mobile-scrim]");
+                if (s) s.hidden = true;
+                document.documentElement.classList.remove("app-site-menu-open");
+                btn.focus({ preventScroll: true });
+                return;
+              }
+              if (event.key !== "Tab") return;
+              const focusables = Array.from(m.querySelectorAll(focusableSelector)).filter(
+                (el) => !el.hasAttribute("disabled") && el.offsetParent !== null,
+              );
+              if (!focusables.length) return;
+              const first = focusables[0];
+              const last = focusables[focusables.length - 1];
+              if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+              } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+              }
+            });
+            keyBound = true;
+          }
+          if (!menuMediaBound) {
+            matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
+              if (!event.matches) return;
+              const btn = document.querySelector(".app-site-mobile-menu");
+              const m = document.querySelector("[data-mobile-nav]");
+              const s = document.querySelector("[data-mobile-scrim]");
+              if (!btn || !m) return;
+              btn.setAttribute("aria-expanded", "false");
+              btn.classList.remove("is-open");
+              m.hidden = true;
+              if (s) s.hidden = true;
+              document.documentElement.classList.remove("app-site-menu-open");
+            });
+            menuMediaBound = true;
+          }
+
+          // Always close menu after navigation
+          setOpen(false);
+
+          const items = document.querySelectorAll("[data-reveal]");
+          if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+            items.forEach((item) => item.classList.add("visible"));
             return;
           }
-          if (event.key !== "Tab" || !menu) return;
-          const focusables = Array.from(menu.querySelectorAll(focusableSelector)).filter(
-            (el) => !el.hasAttribute("disabled") && el.offsetParent !== null,
+          const observer = new IntersectionObserver(
+            (entries) =>
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("visible");
+                  observer.unobserve(entry.target);
+                }
+              }),
+            { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
           );
-          if (!focusables.length) return;
-          const first = focusables[0];
-          const last = focusables[focusables.length - 1];
-          if (event.shiftKey && document.activeElement === first) {
-            event.preventDefault();
-            last.focus();
-          } else if (!event.shiftKey && document.activeElement === last) {
-            event.preventDefault();
-            first.focus();
-          }
-        });
-        matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
-          if (event.matches) closeMenu();
-        });
-
-        const items = document.querySelectorAll("[data-reveal]");
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
           items.forEach((item) => {
-            item.classList.add("visible");
+            if (!item.classList.contains("visible")) observer.observe(item);
           });
-          return;
-        }
-        const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
-        items.forEach((item) => {
-          observer.observe(item);
-        });
+        };
+
+        document.addEventListener("astro:page-load", initShell);
+        initShell();
       })();
     </script>
   </body>

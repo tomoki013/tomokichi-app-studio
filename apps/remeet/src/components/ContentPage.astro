@@ -14,6 +14,8 @@ import {
   termsSections,
   titleMap,
 } from "../lib/content";
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { supportHref } from "../lib/links";
 import AppShell from "./AppShell.astro";
 
@@ -92,6 +94,88 @@ const envLine = ja ? "iPhone・iOS 26以降に対応" : "Requires an iPhone runn
 const envNote = ja
   ? "現在のバージョンはiPhone向けです。iPadに最適化されたレイアウトは今後対応予定です。"
   : "The current version is designed for iPhone. An iPad-optimized layout is planned for a future update.";
+
+const newsPosts = ja
+  ? [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "お知らせ",
+        title: "Remeet公式ブランドサイトを公開しました",
+        summary: "機能、使い方、ウィジェット、料金、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+        body: [
+          "Remeetの公式ブランドサイトを公開しました。大切な人との次の再会までのカウントダウンと、待っている間の記録というアプリの位置づけを、公開準備中の段階からそのままお伝えしています。",
+          "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
+          "v1.0.0はアカウント不要で、データは端末内に保存されます。相手との共有機能は含みません。詳細はプライバシーポリシーと利用規約をご確認ください。",
+        ],
+      },
+      {
+        id: "column-wait",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "待つ時間を、物語の一部にする",
+        summary: "Remeetは再会の日までの日数を見える化し、そのあいだのメモや思い出を端末に残せます。",
+        body: [
+          "次に会う日が決まっていると、日常の中でその日までの距離を測りたくなることがあります。Remeetはそのカウントダウンを中心に、待っている間に残したい記録を手元に置いておくためのアプリです。",
+          "ホーム画面やロック画面のウィジェットも、その待ち時間をそっと思い出させるためのものです。共有やサブスクリプションは v1 の範囲外です。",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "準備中",
+        badgeTone: "note" as const,
+        title: "App Store公開に向けて",
+        summary: "基本機能は無料。一部画面に広告があります。iPhone向けに準備中です。",
+        body: [
+          "Remeetは現在App Store公開準備中です。基本機能は無料で利用でき、一部画面に広告が表示されます。価格や対応環境の最終表示はApp Store上の記載が正しいものとします。",
+        ],
+      },
+    ]
+  : [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "News",
+        title: "The official Remeet brand site is now live",
+        summary: "Features, how-to, widgets, pricing, FAQ, Privacy Policy, and Terms—in one place.",
+        body: [
+          "The official Remeet brand site is live. It explains the countdown to a reunion and the on-device records you keep while waiting—while the app is still preparing for release.",
+          "There is no App Store link yet. When distribution is ready, we will share it here as well.",
+          "v1.0.0 needs no account; data stays on your device. Partner sharing is not included. See the Privacy Policy and Terms for details.",
+        ],
+      },
+      {
+        id: "column-wait",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "Make the wait part of your story",
+        summary: "Remeet surfaces the days until you meet again and keeps notes and memories on your iPhone.",
+        body: [
+          "When the next meeting is set, the distance to that day becomes something you notice. Remeet centers that countdown and keeps the records you want nearby while you wait.",
+          "Home and Lock Screen widgets are there as gentle reminders. Sharing and subscriptions are outside v1.",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Coming soon",
+        badgeTone: "note" as const,
+        title: "Preparing for the App Store",
+        summary: "Core features free, with ads on some screens. Designed for iPhone.",
+        body: [
+          "Remeet is being prepared for the App Store. Core features are free; some screens may show ads. The App Store listing will be the source of truth for pricing and requirements.",
+        ],
+      },
+    ];
 ---
 
 <AppShell lang={lang} title={title} page={page} description={description}>
@@ -188,10 +272,9 @@ const envNote = ja
     {page === "screenshots" && (
       <div class="shot-gallery">
         {screenshots.map((shot) => (
-          <figure>
+          <PhoneFrame size="md" label={shot.label}>
             <img src={shot.src} alt={shot.alt} width="941" height="1672" loading="lazy" decoding="async" />
-            <figcaption>{shot.label}</figcaption>
-          </figure>
+          </PhoneFrame>
         ))}
       </div>
     )}
@@ -284,57 +367,37 @@ const envNote = ja
       </article>
     )}
 
-    {page === "updates" && (
-      <ul class="news-list">
-        <li class="news-row" id="site-launch">
-          <time datetime="2026-08-01">2026.08.01</time>
-          <span class="news-badge release">{ja ? "お知らせ" : "News"}</span>
-          <div>
-            <p>{ja ? "Remeet公式ブランドサイトを公開しました" : "The official Remeet brand site is now live"}</p>
-            <div class="news-body">
-              {ja ? (
-                <>
-                  <p>Remeetの公式ブランドサイトを公開しました。</p>
-                  <p>アプリの機能や使い方、よくある質問、プライバシーポリシー、利用規約などをご確認いただけます。</p>
-                  <p>Remeetは現在、App Storeでの公開に向けて準備を進めています。</p>
-                </>
-              ) : (
-                <>
-                  <p>The official Remeet brand site is now live.</p>
-                  <p>You can now explore the app’s features, learn how it works, read frequently asked questions, and review the Privacy Policy and Terms of Service.</p>
-                  <p>Remeet is currently being prepared for release on the App Store.</p>
-                </>
-              )}
-            </div>
-          </div>
-        </li>
-      </ul>
-    )}
+    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
   </section>
 </AppShell>
 
 <script is:inline>
   (() => {
-    const tabs = document.querySelector("[data-faq-tabs]");
-    const list = document.querySelector("[data-faq-list]");
-    if (!tabs || !list) return;
-    const items = Array.from(list.querySelectorAll("details"));
-    const empty = list.querySelector("[data-faq-empty]");
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      const empty = list.querySelector("[data-faq-empty]");
 
-    tabs.addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-cat]");
-      if (!btn) return;
-      const cat = btn.getAttribute("data-cat");
-      let shown = 0;
-      items.forEach((item) => {
-        const match = cat === "all" || item.getAttribute("data-cat") === cat;
-        item.hidden = !match;
-        if (match) shown++;
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        let shown = 0;
+        items.forEach((item) => {
+          const match = cat === "all" || item.getAttribute("data-cat") === cat;
+          item.hidden = !match;
+          if (match) shown++;
+        });
+        if (empty) empty.hidden = shown !== 0;
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
       });
-      if (empty) empty.hidden = shown !== 0;
-      tabs.querySelectorAll("button").forEach((b) => {
-        b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
-      });
-    });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
   })();
 </script>

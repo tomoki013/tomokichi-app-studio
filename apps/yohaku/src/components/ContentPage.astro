@@ -9,6 +9,7 @@ import {
   termsSections,
   titles,
 } from "../lib/content";
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import AppShell from "./AppShell.astro";
 import PhoneMock from "./PhoneMock.astro";
 
@@ -28,7 +29,7 @@ const featureBlocks = ja
       },
       {
         heading: "その日の余白を、カードで見る。",
-        body: "Today画面では、選択した日の余白をカードで確認できます。左右の操作やスワイプで日付を移動し、進行中の余白も静かに見分けられます。",
+        body: "Today画面では、選択した日の余白をカードで確認できます。左右の操作やスワイプで日付を移動できます。余白の最中にタイマーや専用モードへ切り替わることはありません。",
         kind: "today" as const,
       },
       {
@@ -43,7 +44,12 @@ const featureBlocks = ja
       },
       {
         heading: "余白の始まりを、そっと知らせる。",
-        body: "通知を有効にすると、登録した開始時刻にお知らせします。余白を編集・削除すると、通知も自動的に更新されます。初期状態ではオフで、最初の余白作成時に許可を確認します。",
+        body: "通知を有効にすると、通常は登録した開始時刻の3〜7分前にお知らせします。余白を編集・削除すると、通知も自動的に更新されます。初期状態ではオフで、最初の余白作成時に許可を確認します。",
+        kind: "today" as const,
+      },
+      {
+        heading: "終わったあとに、ひとことだけ。",
+        body: "次にアプリを開いたとき、直近の余白について小さな確認カードが一度だけ表示されます。回答は任意で、閉じるか横に払っても再表示されません。回答は端末内にだけ保存されます。",
         kind: "today" as const,
       },
       {
@@ -70,7 +76,7 @@ const featureBlocks = ja
       },
       {
         heading: "See that day’s spaces as cards.",
-        body: "On Today, review the spaces for the selected day. Move between dates with the controls or a swipe, and spot an in-progress space at a glance.",
+        body: "On Today, review the spaces for the selected day and move between dates with the controls or a swipe. Yohaku does not switch to a timer or dedicated mode while a space is in progress.",
         kind: "today" as const,
       },
       {
@@ -84,8 +90,13 @@ const featureBlocks = ja
         kind: "month" as const,
       },
       {
-        heading: "A gentle notice when a space begins.",
-        body: "When enabled, Yohaku reminds you at each space’s start time. Edit or delete a space and its notification updates. Off by default; permission is requested when you create your first space.",
+        heading: "A gentle notice before a space begins.",
+        body: "When enabled, Yohaku normally reminds you three to seven minutes before a space. Edit or delete a space and its notification updates. Off by default; permission is requested when you create your first space.",
+        kind: "today" as const,
+      },
+      {
+        heading: "One small question afterward.",
+        body: "The next time you open the app, one small card may ask about your latest space. Answer, close, or swipe it away; it will not ask again. Responses stay on your device.",
         kind: "today" as const,
       },
       {
@@ -111,14 +122,16 @@ const howSteps = ja
       { n: "2", title: "名前と時間を決める", body: "余白の名前、日付、開始時刻、終了時刻を入力します。名前の候補から選ぶこともできます。1日に複数の余白を置けます。" },
       { n: "3", title: "今日・週・月で見渡す", body: "Todayでは詳しい時間、Weekでは一週間の数、Monthでは余白のある日と月間件数を確認できます。" },
       { n: "4", title: "必要に応じて編集する", body: "余白のカードをタップすると、名前や時間を変更できます。必要がなくなった余白は削除できます。" },
-      { n: "5", title: "通知を使う", body: "通知を許可すると、余白の開始時刻にお知らせします。通知は設定画面からいつでも変更できます。" },
+      { n: "5", title: "通知を使う", body: "通知を許可すると、余白が始まる少し前にお知らせします。通知は設定画面からいつでも変更できます。" },
+      { n: "6", title: "必要なら振り返る", body: "余白が終わったあとに小さな確認が一度だけ表示されます。答えず閉じてもかまいません。" },
     ]
   : [
       { n: "1", title: "Tap + on Today", body: "Create a new space from the + button at the bottom-right of Today." },
       { n: "2", title: "Choose a name and times", body: "Enter a name, date, start time and end time—or pick a suggested name. You can add more than one space in a day." },
       { n: "3", title: "Review day, week and month", body: "Today shows times in detail; Week shows counts; Month shows marked days and a monthly total." },
       { n: "4", title: "Edit when needed", body: "Tap a card to change the name or times. Remove a space when you no longer need it." },
-      { n: "5", title: "Use notifications", body: "With permission, you’ll be notified at each start time. Change this anytime in Settings." },
+      { n: "5", title: "Use notifications", body: "With permission, you’ll be notified shortly before each space. Change this anytime in Settings." },
+      { n: "6", title: "Reflect only if you want", body: "After a space, one small check-in may appear once. You can answer it or simply dismiss it." },
     ];
 
 const conceptIdeas = ja
@@ -152,7 +165,9 @@ const faqs = ja
       ["space", "Weekの四角は何を表していますか？", "その日に作成した余白の数を表しています。余白がない日は輪郭だけの四角、余白がある日は黒い四角で表示されます。"],
       ["space", "Monthの黒いマスは何を表していますか？", "その日に1件以上の余白があることを表しています。余白の長さや正確な件数をマスの濃さで表しているものではありません。"],
       ["space", "Monthはパターンを生成しますか？", "Month画面は、余白のある日を月間カレンダー上の印として表示する画面です。画像やアートを自動生成する機能ではありません。"],
-      ["notice", "通知はいつ届きますか？", "通知を有効にすると、登録した余白の開始時刻に届きます。"],
+      ["space", "余白の最中にタイマーは表示されますか？", "いいえ。余白は現実の時間として過ごすもので、タイマー、カウントダウン、専用モード、終了通知はありません。"],
+      ["space", "終了後の確認には答える必要がありますか？", "いいえ。回答は任意です。閉じるか横に払うと消え、同じ余白について再度尋ねません。"],
+      ["notice", "通知はいつ届きますか？", "通知を有効にすると、通常は登録した余白の開始時刻の3〜7分前に届きます。直前に作成した場合は、残り時間に応じて少し前に届くか、間に合わない場合は送信されません。"],
       ["notice", "通知許可はいつ表示されますか？", "最初の余白を作成したときに確認します。"],
       ["notice", "通知をオフにできますか？", "はい。設定画面からいつでもオフにできます。"],
       ["notice", "余白を編集すると通知も変わりますか？", "はい。開始時刻を変更すると、通知も新しい時刻へ更新されます。"],
@@ -184,7 +199,9 @@ const faqs = ja
       ["space", "What do the Week squares mean?", "How many spaces that day has. Empty days show an outline; days with spaces show filled squares."],
       ["space", "What do Month’s dark cells mean?", "That day has at least one space. Shade does not encode length or exact count."],
       ["space", "Does Month generate patterns?", "No. Month only marks days with space on a calendar. It does not generate art."],
-      ["notice", "When do notifications arrive?", "When enabled, at each space’s start time."],
+      ["space", "Is there a timer while a space is active?", "No. A space is real time away from the app, so there is no timer, countdown, dedicated mode or end notification."],
+      ["space", "Do I have to answer the check-in?", "No. It is optional. Close or swipe it away and the same space will not be asked about again."],
+      ["notice", "When do notifications arrive?", "Normally three to seven minutes before a space begins. For a space created at short notice, it may arrive closer to the start or be skipped if there is not enough time."],
       ["notice", "When is permission requested?", "When you create your first space."],
       ["notice", "Can I turn notifications off?", "Yes, anytime in Settings."],
       ["notice", "Do edits update notifications?", "Yes. Changing the start time reschedules the notification."],
@@ -204,17 +221,103 @@ const faqCats = ja
   : [["all", "All"], ["base", "Basics"], ["space", "Spaces"], ["notice", "Notifications"], ["data", "Data"], ["net", "Network"]];
 
 const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+
+const newsPosts = ja
+  ? [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "お知らせ",
+        badgeTone: "default" as const,
+        title: "Yohaku公式ブランドサイトを公開しました",
+        summary: "コンセプト、機能、使い方、料金、FAQ、プライバシーポリシー、利用規約を一か所にまとめました。",
+        body: [
+          "Yohakuの公式ブランドサイトを公開しました。アプリの考え方や、Today / Week / Monthでできること、無料で使える範囲と広告削除の位置づけを、公開準備中の段階からそのままお伝えしています。",
+          "いまのサイトは、App Storeでの配信に先立つブランド案内です。ダウンロード用のリンクはまだ用意していません。公開の準備が整い次第、サイトからもご案内します。",
+          "余白の記録は端末内に置かれ、アカウント登録やYohaku独自のクラウド同期はありません。詳しくはプライバシーポリシーと利用規約をご確認ください。",
+        ],
+      },
+      {
+        id: "column-space",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "予定ではなく、余白だけを置くということ",
+        summary: "Yohakuはタスク管理でも、習慣トラッカーでもありません。名前と時間で「何もしない時間」を置くための小さな道具です。",
+        body: [
+          "カレンダーは予定で埋まりやすく、空いている時間もすぐに何かを割り当ててしまいがちです。Yohakuはその逆で、何もしない時間に名前と開始・終了を与え、今日・週・月の印として静かに残します。",
+          "Weekは各日の余白を黒い四角で、Monthは余白のある日をマスで示します。アートやパターンを自動生成するアプリではなく、置いた時間そのものを見返すための画面です。",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "準備中",
+        badgeTone: "note" as const,
+        title: "App Store公開に向けて",
+        summary: "iPhone・iOS 17以降向け。基本機能は無料、バナー広告あり。一度きりの広告削除も用意しています。",
+        body: [
+          "現在はApp Storeでの公開準備中です。基本機能はすべて無料で、無料版には控えめなバナー広告が表示される場合があります。一度きりの「広告を永久に削除」は応援のお礼であり、追加機能の解放やサブスクリプションではありません。",
+          "価格や表示内容は、公開時のApp Store上の記載が正しいものとします。",
+        ],
+      },
+    ]
+  : [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "News",
+        badgeTone: "default" as const,
+        title: "The official Yohaku brand site is now live",
+        summary: "Concept, features, how-to, pricing, FAQ, Privacy Policy, and Terms of Use—in one place.",
+        body: [
+          "The official Yohaku brand site is live. It explains the idea behind the app, what Today / Week / Month can do, and how free use and ad removal fit together—while the product is still preparing for release.",
+          "This site is a brand guide ahead of App Store availability. There is no download link yet. When the app is ready, we will share it here as well.",
+          "Spaces stay on your device. There is no Yohaku account or cloud sync. See the Privacy Policy and Terms for details.",
+        ],
+      },
+      {
+        id: "column-space",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "Not another plan—just space",
+        summary: "Yohaku is not a task manager or habit tracker. It is a small tool for naming time with nothing planned.",
+        body: [
+          "Calendars fill quickly, and open time is easy to assign. Yohaku does the opposite: give unplanned time a name and start/end, then look back through quiet marks on day, week, and month views.",
+          "Week shows filled squares for each day; Month marks days that hold a space. It does not generate art—it helps you notice the spaces you chose to leave.",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Coming soon",
+        badgeTone: "note" as const,
+        title: "Preparing for the App Store",
+        summary: "iPhone, iOS 17+. Core features free with optional banner ads; one-time ad removal as a thank-you.",
+        body: [
+          "Yohaku is being prepared for the App Store. Every core feature is free; the free version may show unobtrusive banner ads. A one-time “Remove ads permanently” purchase is a thank-you for support—not a feature unlock or subscription.",
+          "When the app ships, the App Store listing is the source of truth for pricing and availability.",
+        ],
+      },
+    ];
 ---
 
 <AppShell lang={lang} title={title} page={page} description={description}>
   <section class:list={["content-page", `content-${page}`]}>
-    <header class="content-hero">
+    <header class:list={["content-hero", page !== "privacy" && page !== "terms" && "content-hero--center"]}>
       <p class="content-eyebrow">{page.toUpperCase()}</p>
       <h1>{title}</h1>
       {(page === "privacy" || page === "terms") && (
         <div class="legal-dates">
           <p>{ja ? "制定日：2026年7月29日" : "Effective date: July 29, 2026"}</p>
-          <p>{ja ? "最終更新日：2026年8月2日" : "Last updated: August 2, 2026"}</p>
+          <p>{ja ? "最終更新日：2026年8月4日" : "Last updated: August 4, 2026"}</p>
         </div>
       )}
     </header>
@@ -296,8 +399,8 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
           </div>
           <ul class="pricing-list">
             {(ja
-              ? ["余白の作成・編集・削除", "Today / Week / Month", "ローカル通知", "18言語", "端末内保存", "アカウント不要"]
-              : ["Create, edit and delete spaces", "Today / Week / Month", "Local notifications", "18 languages", "On-device storage", "No account"]
+              ? ["余白の作成・編集・削除", "Today / Week / Month", "任意の通知と振り返り", "18言語", "端末内保存", "アカウント不要"]
+              : ["Create, edit and delete spaces", "Today / Week / Month", "Optional notices and check-ins", "18 languages", "On-device storage", "No account"]
             ).map((item) => <li>{item}</li>)}
           </ul>
           <p class="pricing-note">
@@ -338,30 +441,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
       </div>
     )}
 
-    {page === "updates" && (
-      <article class="news-article">
-        <header>
-          <time datetime="2026-08-01">2026.08.01</time>
-          <span class="news-badge">{ja ? "お知らせ" : "News"}</span>
-          <h2>{ja ? "Yohaku公式ブランドサイトを公開しました" : "The official Yohaku brand site is now live"}</h2>
-        </header>
-        <div class="news-body">
-          {ja ? (
-            <>
-              <p>Yohakuの公式ブランドサイトを公開しました。</p>
-              <p>アプリのコンセプトや機能、使い方、よくある質問、プライバシーポリシー、利用規約などをご確認いただけます。</p>
-              <p>Yohakuは現在、App Storeでの公開に向けて準備を進めています。</p>
-            </>
-          ) : (
-            <>
-              <p>The official Yohaku brand site is now live.</p>
-              <p>You can now explore the app’s concept, features, how-to guide, FAQ, Privacy Policy, and Terms of Use.</p>
-              <p>Yohaku is currently being prepared for release on the App Store.</p>
-            </>
-          )}
-        </div>
-      </article>
-    )}
+    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
@@ -387,20 +467,25 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
 
 <script is:inline>
   (() => {
-    const tabs = document.querySelector("[data-faq-tabs]");
-    const list = document.querySelector("[data-faq-list]");
-    if (!tabs || !list) return;
-    const items = Array.from(list.querySelectorAll("details"));
-    tabs.addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-cat]");
-      if (!btn) return;
-      const cat = btn.getAttribute("data-cat");
-      items.forEach((item) => {
-        item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        items.forEach((item) => {
+          item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
       });
-      tabs.querySelectorAll("button").forEach((b) => {
-        b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
-      });
-    });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
   })();
 </script>

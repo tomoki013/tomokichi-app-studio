@@ -54,10 +54,11 @@ const footerColumns = ja
         ],
       },
       {
-        title: "Tomokichi",
+        title: "運営者情報",
         links: [
-          { label: "Tomokichi", href: mainSiteUrl("ja"), external: true },
+          { label: "運営サイト", href: mainSiteUrl("ja"), external: true },
           { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
+          { label: "お問い合わせ", href: supportHref, external: true },
         ],
       },
     ]
@@ -88,10 +89,11 @@ const footerColumns = ja
         ],
       },
       {
-        title: "Tomokichi",
+        title: "Operator",
         links: [
-          { label: "Tomokichi", href: mainSiteUrl("en"), external: true },
+          { label: "Operator site", href: mainSiteUrl("en"), external: true },
           { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
+          { label: "Contact", href: supportHref, external: true },
         ],
       },
     ];
@@ -100,7 +102,7 @@ const mobileFooterLinks = [
   { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
   { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
   { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
-  { label: "Tomokichi", href: mainSiteUrl(lang), external: true },
+  { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
   { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
 ];
 
@@ -118,6 +120,7 @@ const metaDescription =
   page={page}
   brand="Colorvia"
   logoImage="/assets/colorvia-icon.png"
+  favicon="/assets/colorvia-favicon.png"
   ogImage="/og.png"
   tagline={ja ? "世界を、シンプルに彩ろう。" : "Colour the world, simply."}
   siteUrl={appSiteUrl("colorvia")}

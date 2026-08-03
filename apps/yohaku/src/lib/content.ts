@@ -70,7 +70,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "3. 端末内に保存する情報",
-          "本アプリは、次の情報を利用者の端末内（SwiftData等）に保存します。\n\n・余白の名前、日付、開始時刻、終了時刻\n・作成日時、更新日時\n・外観設定（システム／ライト／ダーク）\n・通知のオン／オフなどの設定\n・サポート用のランダムなクライアントID\n・その他、アプリの動作に必要なローカル設定\n\nアカウント登録は不要です。通常のアプリ利用だけでは、余白の内容は運営者のサーバーへ送信されません。",
+          "本アプリは、次の情報を利用者の端末内（SwiftData等）に保存します。\n\n・余白の名前、日付、開始時刻、終了時刻\n・作成日時、更新日時\n・任意の終了後回答と確認カードの表示状態\n・外観設定（システム／ライト／ダーク）\n・通知のオン／オフなどの設定\n・サポート用のランダムなクライアントID\n・その他、アプリの動作に必要なローカル設定\n\nアカウント登録は不要です。通常のアプリ利用だけでは、余白の内容や終了後回答は運営者のサーバーへ送信されません。",
         ],
         [
           "4. 広告",
@@ -86,7 +86,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "7. 通知",
-          "利用者が許可した場合に限り、端末上のローカル通知を利用します。通知は登録した余白の開始時刻に表示されます。通知のために余白の内容を外部サーバーへ送信しません。許可はiOSの設定から変更できます。",
+          "利用者が許可した場合に限り、端末上のローカル通知を利用します。通知は通常、登録した余白の開始時刻の3〜7分前に表示されます。直前に作成された場合は、残り時間に応じて通知時刻を調整するか、開始に間に合わない通知を送らない場合があります。通知のために余白の内容を外部サーバーへ送信しません。許可はiOSの設定から変更できます。",
         ],
         [
           "8. お問い合わせ",
@@ -136,7 +136,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "3. Information stored on your device",
-          "The App stores the following on your device (including via SwiftData):\n\n・Space name, date, start time, end time\n・Created and updated timestamps\n・Appearance setting (system / light / dark)\n・Notification on/off and related settings\n・A random client id for support rate limiting\n・Other local settings needed for the App to work\n\nNo account is required. During ordinary use, space contents are not sent to the Operator’s servers.",
+          "The App stores the following on your device (including via SwiftData):\n\n・Space name, date, start time, end time\n・Created and updated timestamps\n・Optional post-space responses and check-in display state\n・Appearance setting (system / light / dark)\n・Notification on/off and related settings\n・A random client id for support rate limiting\n・Other local settings needed for the App to work\n\nNo account is required. During ordinary use, space contents and post-space responses are not sent to the Operator’s servers.",
         ],
         [
           "4. Advertising",
@@ -152,7 +152,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "7. Notifications",
-          "Local notifications are used only with your permission. They fire at the start time of each space you create. Space contents are not sent to an external server for notifications. You can change permission in iOS Settings.",
+          "Local notifications are used only with your permission. They normally fire three to seven minutes before a space begins. For spaces created at short notice, timing may be adjusted based on the remaining time or skipped when a useful advance notice is no longer possible. Space contents are not sent to an external server for notifications. You can change permission in iOS Settings.",
         ],
         [
           "8. Support",

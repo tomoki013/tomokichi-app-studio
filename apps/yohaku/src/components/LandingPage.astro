@@ -13,13 +13,15 @@ const features = ja
   ? [
       { mark: "□", title: "余白を置く", body: "名前と時間で、何もしない時間を今日の中に置けます。" },
       { mark: "□□■", title: "今日・週・月で見渡す", body: "カードと印で、静かに余白のリズムを振り返れます。" },
-      { mark: "◌", title: "開始時刻の通知", body: "許可すると、余白の始まりをそっとお知らせします。" },
+      { mark: "◌", title: "始まる前の通知", body: "許可すると、余白の少し前にそっとお知らせします。" },
+      { mark: "…", title: "あとから、ひとこと", body: "終わった余白を、答えても答えなくてもいい小さな問いで振り返れます。" },
       { mark: "◇", title: "端末の中に", body: "アカウントなし。余白は端末内に保存されます。" },
     ]
   : [
       { mark: "□", title: "Leave space", body: "Give unplanned time a name and a start and end." },
       { mark: "□□■", title: "Day, week, month", body: "Look back through quiet cards and simple marks." },
-      { mark: "◌", title: "Start-time notices", body: "When enabled, a gentle reminder at the start of each space." },
+      { mark: "◌", title: "A notice beforehand", body: "When enabled, a gentle reminder shortly before each space." },
+      { mark: "…", title: "A quiet check-in", body: "Afterward, reflect with one small question—or simply dismiss it." },
       { mark: "◇", title: "On your device", body: "No account. Spaces stay on your iPhone." },
     ];
 
@@ -41,7 +43,7 @@ const jsonLd = JSON.stringify({
   },
   description,
   url: `${appSiteUrl("yohaku")}${base || ""}` || appSiteUrl("yohaku"),
-  image: `${appSiteUrl("yohaku")}/og.png`,
+  image: `${appSiteUrl("yohaku")}/og.jpg`,
 });
 ---
 

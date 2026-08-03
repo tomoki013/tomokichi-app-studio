@@ -1,5 +1,6 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
 import AppShell from "./AppShell.astro";
 
@@ -110,18 +111,22 @@ const jsonLd = JSON.stringify({
           <a class="secondary-link" href={`${base}/how-to`}>▷　{c.howLink}</a>
         </div>
       </div>
-      <picture class="home-phone-picture">
-        <source srcset="/assets/app-phone.webp" type="image/webp" />
-        <img
-          class="home-phone"
-          src="/assets/app-phone.png"
-          alt={ja ? "Remeetのホーム画面。再会までのカウントダウンとルートイラスト" : "Remeet home screen showing the reunion countdown and route illustration"}
-          width="941"
-          height="1672"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </picture>
+      <div class="home-phone-picture">
+        <PhoneFrame size="lg">
+          <picture>
+            <source srcset="/assets/app-phone.webp" type="image/webp" />
+            <img
+              class="home-phone"
+              src="/assets/app-phone.png"
+              alt={ja ? "Remeetのホーム画面。再会までのカウントダウンとルートイラスト" : "Remeet home screen showing the reunion countdown and route illustration"}
+              width="941"
+              height="1672"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
+        </PhoneFrame>
+      </div>
     </div>
   </section>
 

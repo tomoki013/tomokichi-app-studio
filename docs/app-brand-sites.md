@@ -11,7 +11,9 @@ This document defines the shared structure for Tomokichi app landing pages.
 - The header remains sticky. After 96px of scrolling it contracts into a compact
   brand pill; hover or keyboard focus expands it so navigation remains available.
 - Mobile keeps a full-width compact header and an accessible menu button.
-- Use the standard four footer columns: Product, Support, Legal, and Tomokichi.
+- Use the standard four footer columns: Product, Support, Legal, and Operator
+  (運営者情報). Operator links should point to the main site, other apps, and
+  support—not a bare “Tomokichi” brand column.
 - Contact links open the shared Tomokichi support form with the app query parameter.
 
 ### App-specific theming

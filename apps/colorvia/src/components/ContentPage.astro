@@ -12,6 +12,8 @@ import {
   termsSections,
   titles,
 } from "../lib/content";
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import AppShell from "./AppShell.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
@@ -21,6 +23,89 @@ const title = pick(ja, titles[page]);
 const description = pick(ja, descriptions[page]);
 const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
 const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+
+const newsPosts = ja
+  ? [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "お知らせ",
+        title: "Colorvia公式ブランドサイトを公開しました",
+        summary: "機能、国内地域マップ、使い方、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+        body: [
+          "Colorviaの公式ブランドサイトを公開しました。訪れた国や地域を地図の色として残すアプリの考え方と、対応している国内地域の範囲を、公開準備中の段階からそのままお伝えしています。",
+          "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
+          "地図はCanvas描画で、オフラインでも閲覧できます。データはJSONで書き出し・読み込みでき、端末内に保存されます。詳細はプライバシーポリシーと利用規約をご確認ください。",
+        ],
+      },
+      {
+        id: "column-map",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "国から、その先の地域まで",
+        summary: "対応国では都道府県・州など、国の内側まで訪れた場所を残せます。",
+        body: [
+          "Colorviaは訪問した国を色づけるだけでなく、対応している国では都道府県や州などの単位まで記録できます。都市名や地名から該当する地域を探すこともできます。",
+          "地図や地域区分は旅の記録のために簡略化したもので、政治的な立場を示すものではありません。",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "準備中",
+        badgeTone: "note" as const,
+        title: "App Store公開に向けて",
+        summary: "iPhone・iOS 18以降向け。現在公開準備中です。",
+        body: [
+          "Colorviaは現在App Store公開準備中です。対応環境や価格の最終表示は、公開時のApp Store上の記載が正しいものとします。",
+        ],
+      },
+    ]
+  : [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "News",
+        title: "The official Colorvia brand site is now live",
+        summary: "Features, regional maps, how-to, FAQ, Privacy Policy, and Terms—in one place.",
+        body: [
+          "The official Colorvia brand site is live. It explains colouring countries and regions you have visited, and which in-country maps are supported—while the app is still preparing for release.",
+          "There is no App Store link yet. When distribution is ready, we will share it here as well.",
+          "Maps are canvas-drawn and work offline. Data can be exported and imported as JSON and stays on your device. See the Privacy Policy and Terms for details.",
+        ],
+      },
+      {
+        id: "column-map",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "From countries to the places inside them",
+        summary: "In supported countries, record prefectures, states, and other travel areas.",
+        body: [
+          "Colorvia does more than tint countries: where supported, you can mark prefectures, states, and similar units, and search by city or place name.",
+          "Maps and divisions are simplified for travel logging and do not express a political position.",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Coming soon",
+        badgeTone: "note" as const,
+        title: "Preparing for the App Store",
+        summary: "Designed for iPhone on iOS 18+.",
+        body: [
+          "Colorvia is being prepared for the App Store. The listing will be the source of truth for requirements and pricing when it ships.",
+        ],
+      },
+    ];
+
 
 const featureGroups = ja
   ? [
@@ -368,13 +453,12 @@ const shots = [
     {page === "screenshots" && (
       <div class="shot-gallery">
         {shots.map((s) => (
-          <figure>
+          <PhoneFrame size="md" label={ja ? s.capJa : s.capEn}>
             <picture>
               <source srcset={s.webp} type="image/webp" />
               <img src={s.png} alt={ja ? s.altJa : s.altEn} width="1170" height="2532" loading="lazy" decoding="async" />
             </picture>
-            <figcaption>{ja ? s.capJa : s.capEn}</figcaption>
-          </figure>
+          </PhoneFrame>
         ))}
       </div>
     )}
@@ -401,30 +485,7 @@ const shots = [
       </div>
     )}
 
-    {page === "updates" && (
-      <article class="news-article">
-        <header>
-          <time datetime="2026-08-01">2026.08.01</time>
-          <span class="news-badge">{ja ? "お知らせ" : "News"}</span>
-          <h2>{ja ? "Colorvia公式ブランドサイトを公開しました" : "The official Colorvia brand site is now live"}</h2>
-        </header>
-        <div class="news-body">
-          {ja ? (
-            <>
-              <p>Colorviaの公式ブランドサイトを公開しました。</p>
-              <p>アプリの機能や使い方、対応している国内地域マップ、よくある質問、プライバシーポリシー、利用規約などをご確認いただけます。</p>
-              <p>Colorviaは現在、App Storeでの公開に向けて準備を進めています。</p>
-            </>
-          ) : (
-            <>
-              <p>The official Colorvia brand site is now live.</p>
-              <p>You can explore the app’s features, learn how regional maps work, read frequently asked questions, and review the Privacy Policy and Terms of Service.</p>
-              <p>Colorvia is currently being prepared for release on the App Store.</p>
-            </>
-          )}
-        </div>
-      </article>
-    )}
+    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
@@ -449,20 +510,25 @@ const shots = [
 
 <script is:inline>
   (() => {
-    const tabs = document.querySelector("[data-faq-tabs]");
-    const list = document.querySelector("[data-faq-list]");
-    if (!tabs || !list) return;
-    const items = Array.from(list.querySelectorAll("details"));
-    tabs.addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-cat]");
-      if (!btn) return;
-      const cat = btn.getAttribute("data-cat");
-      items.forEach((item) => {
-        item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        items.forEach((item) => {
+          item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
       });
-      tabs.querySelectorAll("button").forEach((b) => {
-        b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
-      });
-    });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
   })();
 </script>

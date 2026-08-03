@@ -1,0 +1,31 @@
+---
+import "./phone-frame.css";
+
+type Size = "sm" | "md" | "lg";
+
+const {
+  size = "md",
+  alt = "",
+  class: className = "",
+  label = "",
+} = Astro.props as {
+  size?: Size;
+  alt?: string;
+  class?: string;
+  /** Optional caption shown above the frame */
+  label?: string;
+};
+---
+
+<figure class:list={["app-phone-frame", `app-phone-frame--${size}`, className]}>
+  {label && <figcaption class="app-phone-frame-label">{label}</figcaption>}
+  <div class="app-phone-frame-shell">
+    <div class="app-phone-frame-notch" aria-hidden="true"></div>
+    <div class="app-phone-frame-screen">
+      <slot>
+        {/* Prefer passing <img> or <picture> as the default slot */}
+      </slot>
+    </div>
+    <div class="app-phone-frame-home" aria-hidden="true"></div>
+  </div>
+</figure>

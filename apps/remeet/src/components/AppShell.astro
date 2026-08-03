@@ -31,27 +31,27 @@ const footerColumns = ja
       { title: "プロダクト", links: [{ label: "機能", href: href("features") }, { label: "使い方", href: href("how-to") }, { label: "スクリーンショット", href: href("screenshots") }, { label: "ウィジェット", href: href("widgets") }, { label: "料金", href: href("pricing") }] },
       { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("updates") }, { label: "お問い合わせ", href: supportHref("ja"), external: true }] },
       { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }, { label: "特定商取引法に基づく表記", href: href("commercial-transactions") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
+      { title: "運営者情報", links: [{ label: "運営サイト", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }, { label: "お問い合わせ", href: supportHref("ja"), external: true }] },
     ]
   : [
       { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "How it works", href: href("how-to") }, { label: "Screenshots", href: href("screenshots") }, { label: "Widgets", href: href("widgets") }, { label: "Pricing", href: href("pricing") }] },
       { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("updates") }, { label: "Contact", href: supportHref("en"), external: true }] },
       { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }, { label: "Commercial Transactions", href: href("commercial-transactions") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
+      { title: "Operator", links: [{ label: "Operator site", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }, { label: "Contact", href: supportHref("en"), external: true }] },
     ];
 const mobileFooterLinks = ja
   ? [
       { label: "お問い合わせ", href: supportHref("ja"), external: true },
       { label: "プライバシーポリシー", href: href("privacy") },
       { label: "利用規約", href: href("terms") },
-      { label: "Tomokichi", href: mainSiteUrl("ja"), external: true },
+      { label: "運営サイト", href: mainSiteUrl("ja"), external: true },
       { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
     ]
   : [
       { label: "Contact", href: supportHref("en"), external: true },
       { label: "Privacy Policy", href: href("privacy") },
       { label: "Terms of Service", href: href("terms") },
-      { label: "Tomokichi", href: mainSiteUrl("en"), external: true },
+      { label: "Operator site", href: mainSiteUrl("en"), external: true },
       { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
     ];
 const metaDescription = description ?? (ja
@@ -67,6 +67,7 @@ const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Sto
   page={page}
   brand="Remeet"
   logoImage="/assets/remeet-icon.png"
+  favicon="/assets/remeet-favicon.png"
   ogImage="/assets/og.png"
   tagline={ja ? "再会までの時間を、特別な思い出に。" : "Make the wait part of your story."}
   siteUrl={appSiteUrl("remeet")}
@@ -88,33 +89,34 @@ const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Sto
   <slot />
   <script is:inline>
     (() => {
-      const items = document.querySelectorAll(
-        ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro):not(.page-hero), .app-hero-notice, .guide-visual, .shot-gallery figure",
-      );
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-        items.forEach((item) => {
-          item.classList.add("is-visible");
+      const initReveal = () => {
+        const items = document.querySelectorAll(
+          ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro):not(.page-hero), .app-hero-notice, .guide-visual, .shot-gallery .app-phone-frame",
+        );
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+          items.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
+        );
+        items.forEach((item, index) => {
+          if (item.classList.contains("is-visible")) return;
+          item.classList.add("reveal-item");
+          item.style.setProperty("--reveal-delay", `${(index % 6) * 45}ms`);
+          observer.observe(item);
         });
-        return;
-      }
-      items.forEach((item, index) => {
-        item.classList.add("reveal-item");
-        item.style.setProperty("--reveal-delay", `${(index % 6) * 45}ms`);
-      });
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
-      );
-      items.forEach((item) => {
-        observer.observe(item);
-      });
+      };
+      document.addEventListener("astro:page-load", initReveal);
+      initReveal();
     })();
   </script>
 </AppSiteShell>

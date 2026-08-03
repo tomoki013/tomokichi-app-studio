@@ -20,7 +20,11 @@
   --app-site-footer-tagline: #a9c0c1;
   --app-site-footer-heading: #88a4a6;
   --app-site-footer-link: #c5d4d5;
-  --app-site-footer-link-hover: #fff;
+  --app-site-footer-link-hover: #ffffff;
+  --app-news-card-bg: #fff;
+  --app-news-badge-column-bg: #17383d;
+  --app-news-badge-note-bg: #e7f3f1;
+  --app-news-badge-note-fg: #1f5c52;
   --app-site-footer-border: rgb(255 255 255 / 10%);
   --app-site-footer-meta: #85a0a2;
   --app-site-hero-muted: var(--muted);
@@ -253,14 +257,20 @@ button {
   overflow: visible;
   border-radius: 0;
   box-shadow: none;
+  display: grid;
+  justify-items: center;
+}
+.hero-phone .app-phone-frame {
+  --phone-w: min(280px, 100%);
+  width: 100%;
 }
 .hero-phone img,
 .hero-phone picture {
   width: 100%;
-  height: auto;
+  height: 100%;
   max-width: 100%;
-  border-radius: 36px;
-  box-shadow: 0 25px 45px rgb(24 71 74 / 23%);
+  border-radius: 0;
+  box-shadow: none;
   transform: none;
 }
 .world-wash {
@@ -1074,23 +1084,15 @@ button {
 }
 .screen-grid.real-shots {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
+  gap: 24px;
+  justify-items: center;
 }
-.screen-grid.real-shots figure {
-  margin: 0;
+.screen-grid.real-shots .app-phone-frame {
+  --phone-w: min(200px, 100%);
 }
-.screen-grid.real-shots img {
-  width: 100%;
-  height: auto;
-  border-radius: 22px;
-  box-shadow: 0 16px 40px rgb(30 70 75 / 14%);
-  background: #fff;
-}
-.screen-grid.real-shots figcaption {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 12.5px;
+.screen-grid.real-shots .app-phone-frame-label {
   color: var(--muted);
+  font-size: 12.5px;
 }
 .lang-note {
   text-align: center;
@@ -1207,23 +1209,16 @@ button {
 }
 .shot-gallery {
   display: grid;
+  justify-items: center;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 18px;
+  gap: 24px;
 }
-.shot-gallery figure {
-  margin: 0;
-  text-align: center;
+.shot-gallery .app-phone-frame {
+  --phone-w: min(200px, 100%);
 }
-.shot-gallery img {
-  width: 100%;
-  height: auto;
-  border-radius: 20px;
-  box-shadow: 0 14px 32px rgb(30 70 75 / 12%);
-}
-.shot-gallery figcaption {
-  margin-top: 10px;
-  font-size: 12.5px;
+.shot-gallery .app-phone-frame-label {
   color: var(--muted);
+  font-size: 12.5px;
 }
 .faq-page {
   display: grid;

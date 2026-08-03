@@ -459,12 +459,18 @@ html.app-site-menu-open body {
   color: var(--app-site-footer-link, #5f5951);
   font-size: 11.5px;
   text-decoration: none;
-  transition: color 0.2s ease;
+  text-underline-offset: 0.18em;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .app-site-footer-columns a:hover,
 .app-site-footer-columns a:focus-visible {
-  color: var(--app-site-footer-link-hover, #d98c3c);
+  color: var(--app-site-footer-link-hover, var(--app-site-ink, #111));
+  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 .app-site-footer-base {

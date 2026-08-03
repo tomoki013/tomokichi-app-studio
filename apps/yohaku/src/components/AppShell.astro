@@ -54,10 +54,11 @@ const footerColumns = [
     ],
   },
   {
-    title: "Tomokichi",
+    title: ja ? "運営者情報" : "Operator",
     links: [
-      { label: "Tomokichi", href: mainSiteUrl(lang), external: true },
-      { label: ja ? "ほかのアプリ" : "Other apps", href: "https://tmkch.io/apps", external: true },
+      { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
+      { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+      { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
     ],
   },
 ];
@@ -66,8 +67,8 @@ const mobileFooterLinks = [
   { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
   { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
   { label: ja ? "利用規約" : "Terms of Use", href: href("terms") },
-  { label: "Tomokichi", href: mainSiteUrl(lang), external: true },
-  { label: ja ? "ほかのアプリ" : "Other apps", href: "https://tmkch.io/apps", external: true },
+  { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
 ];
 ---
 
@@ -80,7 +81,8 @@ const mobileFooterLinks = [
   page={page}
   brand="Yohaku"
   logoImage="/assets/yohaku-icon.png"
-  ogImage="/og.png"
+  favicon="/assets/yohaku-favicon.png"
+  ogImage="/og.jpg"
   tagline={ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}
   siteUrl={appSiteUrl("yohaku")}
   homeHref={ja ? "/ja" : "/"}

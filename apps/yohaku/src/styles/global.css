@@ -23,8 +23,11 @@
   --app-site-footer-foreground: #111111;
   --app-site-footer-tagline: #888888;
   --app-site-footer-heading: #999999;
-  --app-site-footer-link: #444444;
-  --app-site-footer-link-hover: #000000;
+  --app-site-footer-link: #555555;
+  --app-site-footer-link-hover: #111111;
+  --app-news-badge-column-bg: #111;
+  --app-news-badge-note-bg: #f0f0f0;
+  --app-news-badge-note-fg: #333;
   --app-site-footer-border: rgb(0 0 0 / 8%);
   --app-site-footer-meta: #999999;
   --app-site-hero-muted: #777777;
@@ -1567,6 +1570,14 @@ a {
 .content-hero {
   margin-bottom: clamp(36px, 6vw, 56px);
 }
+.content-hero--center {
+  text-align: center;
+  max-width: 40rem;
+  margin-inline: auto;
+}
+.content-hero--center .content-eyebrow {
+  letter-spacing: 0.2em;
+}
 .content-eyebrow {
   margin: 0 0 12px;
   font-family: var(--sans);
@@ -1627,11 +1638,20 @@ a {
 }
 
 .how-steps {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   list-style: none;
   display: grid;
   gap: 22px;
+  max-width: 42rem;
+}
+.pricing-page {
+  display: grid;
+  justify-items: center;
+}
+.faq-page {
+  max-width: 42rem;
+  margin-inline: auto;
 }
 .how-steps li {
   display: grid;
@@ -1669,11 +1689,12 @@ a {
 
 .concept-lead {
   max-width: 42rem;
-  margin: 0 0 36px;
+  margin: 0 auto 36px;
   color: var(--yohaku-muted);
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.9;
+  text-align: center;
 }
 .concept-phones {
   display: flex;
