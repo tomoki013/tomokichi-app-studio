@@ -1,0 +1,22 @@
+---
+import AppShell from "../components/AppShell.astro";
+import "../styles/global.css";
+---
+
+<AppShell lang="en" title="Page not found" description="The page you were looking for could not be found.">
+  <section class="content-page">
+    <header class="content-hero">
+      <h1>Page not found / ページが見つかりません</h1>
+      <p class="lead" style="margin-top:16px">
+        The URL may have changed, or the page may not exist.<br />
+        URLが変わったか、ページが存在しない可能性があります。
+      </p>
+      <p style="margin-top:28px;display:flex;flex-wrap:wrap;gap:16px 24px;font-weight:600">
+        <a href="/">Home (EN)</a>
+        <a href="/ja">ホーム（日本語）</a>
+        <a href="/faq">FAQ</a>
+        <a href="/ja/faq">よくある質問</a>
+      </p>
+    </header>
+  </section>
+</AppShell>

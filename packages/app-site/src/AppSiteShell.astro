@@ -3,7 +3,8 @@ import "./app-site-shell.css";
 
 type Locale = "ja" | "en";
 type NavItem = { slug: string; label: string; href: string };
-type FooterColumn = { title: string; links: { label: string; href: string; external?: boolean }[] };
+type FooterLink = { label: string; href: string; external?: boolean };
+type FooterColumn = { title: string; links: FooterLink[] };
 
 const {
   lang,
@@ -20,12 +21,16 @@ const {
   footerColumns,
   appStoreLabel,
   appStoreHref = "#download",
+  appStoreComingSoon = false,
   menuLabel,
+  menuCloseLabel,
   logoMark = "◎",
   logoImage = "",
   themeColor = "#f8fbfa",
   ogImage = "",
   pageClass = "",
+  jsonLd = "",
+  mobileFooterLinks = [] as FooterLink[],
 } = Astro.props as {
   lang: Locale;
   title: string;
@@ -41,67 +46,150 @@ const {
   footerColumns: FooterColumn[];
   appStoreLabel: string;
   appStoreHref?: string;
+  /** When true, App Store control is non-interactive “coming soon”. */
+  appStoreComingSoon?: boolean;
   menuLabel: string;
+  menuCloseLabel?: string;
   logoMark?: string;
   logoImage?: string;
   themeColor?: string;
   ogImage?: string;
   pageClass?: string;
+  jsonLd?: string;
+  mobileFooterLinks?: FooterLink[];
 };
+
 const absolutePageUrl = `${siteUrl}${lang === "ja" ? jaPageHref : enPageHref}`;
 const absoluteOgImage = ogImage ? new URL(ogImage, siteUrl).toString() : "";
 const mobileNavId = `app-site-mobile-nav-${lang}`;
+const closeLabel = menuCloseLabel ?? (lang === "ja" ? "メニューを閉じる" : "Close menu");
+const storeIsLink = Boolean(appStoreHref) && !appStoreComingSoon;
+const resolvedMobileFooter =
+  mobileFooterLinks.length > 0
+    ? mobileFooterLinks
+    : footerColumns.flatMap((column) => column.links).slice(0, 6);
 ---
 
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
     <meta name="theme-color" content={themeColor} />
     <link rel="canonical" href={absolutePageUrl} />
     <link rel="alternate" hreflang="ja" href={`${siteUrl}${jaPageHref}`} />
     <link rel="alternate" hreflang="en" href={`${siteUrl}${enPageHref}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${enPageHref}`} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={brand} />
     <meta property="og:title" content={`${title} — ${brand}`} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={absolutePageUrl} />
+    <meta property="og:locale" content={lang === "ja" ? "ja_JP" : "en_US"} />
     {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
     <meta name="twitter:card" content={absoluteOgImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={`${title} — ${brand}`} />
+    <meta name="twitter:description" content={description} />
+    {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
     {logoImage && <link rel="icon" type="image/png" href={logoImage} />}
     <title>{title} — {brand}</title>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
   </head>
   <body>
     <div class:list={["app-site-page", pageClass]}>
+      <a class="app-site-skip" href="#main">{lang === "ja" ? "本文へスキップ" : "Skip to content"}</a>
       <header class="app-site-header" data-app-header>
         <div class="app-site-header-inner">
           <a class="app-site-logo" href={homeHref}>
-            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" /> : <span class="app-site-logo-mark">{logoMark}</span>}
+            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" /> : <span class="app-site-logo-mark">{logoMark}</span>}
             {brand}
           </a>
           <nav class="app-site-primary-nav" aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
-            {nav.map((item) => <a class:list={{ active: page === item.slug }} href={item.href} aria-current={page === item.slug ? "page" : undefined}>{item.label}</a>)}
+            {nav.map((item) => (
+              <a class:list={{ active: page === item.slug }} href={item.href} aria-current={page === item.slug ? "page" : undefined}>
+                {item.label}
+              </a>
+            ))}
           </nav>
           <div class="app-site-actions">
-            <div class="app-site-locale">
-              <a class:list={{ active: lang === "en" }} href={enPageHref}>EN</a>
-              <span>/</span>
-              <a class:list={{ active: lang === "ja" }} href={jaPageHref}>JA</a>
+            <div class="app-site-locale app-site-desktop-only">
+              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en">EN</a>
+              <span aria-hidden="true">/</span>
+              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja">JA</a>
             </div>
-            <a class="app-site-store-link" href={appStoreHref}>{appStoreLabel}</a>
-            <button class="app-site-mobile-menu" type="button" aria-label={menuLabel} aria-expanded="false" aria-controls={mobileNavId}>☰</button>
+            {storeIsLink ? (
+              <a class="app-site-store-link app-site-desktop-only" href={appStoreHref}>{appStoreLabel}</a>
+            ) : (
+              <span class="app-site-store-link app-site-store-soon app-site-desktop-only" aria-disabled="true">{appStoreLabel}</span>
+            )}
+            <button
+              class="app-site-mobile-menu"
+              type="button"
+              aria-label={menuLabel}
+              aria-expanded="false"
+              aria-controls={mobileNavId}
+              data-menu-open-label={menuLabel}
+              data-menu-close-label={closeLabel}
+            >
+              <span class="app-site-menu-icon" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+            </button>
           </div>
         </div>
-        <nav class="app-site-mobile-nav" id={mobileNavId} aria-label={menuLabel} hidden>
-          {nav.map((item) => <a href={item.href} aria-current={page === item.slug ? "page" : undefined}>{item.label}</a>)}
-        </nav>
       </header>
-      <main><slot /></main>
+
+      <div class="app-site-mobile-scrim" data-mobile-scrim hidden></div>
+      <nav class="app-site-mobile-nav" id={mobileNavId} aria-label={menuLabel} hidden data-mobile-nav>
+        <div class="app-site-mobile-nav-panel">
+          <div class="app-site-mobile-nav-top">
+            <p class="app-site-mobile-nav-brand">{brand}</p>
+            <button class="app-site-mobile-close" type="button" aria-label={closeLabel} data-mobile-close>
+              <span class="app-site-menu-icon is-open" aria-hidden="true"><i></i><i></i><i></i></span>
+            </button>
+          </div>
+          <div class="app-site-mobile-nav-links">
+            {nav.map((item, index) => (
+              <a
+                href={item.href}
+                aria-current={page === item.slug ? "page" : undefined}
+                style={`--item-i:${index}`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <div class="app-site-mobile-nav-meta">
+            <nav class="app-site-mobile-locale" aria-label={lang === "ja" ? "言語" : "Language"}>
+              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en">EN</a>
+              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja">JA</a>
+            </nav>
+            {storeIsLink ? (
+              <a class="app-site-mobile-store" href={appStoreHref}>{appStoreLabel}</a>
+            ) : (
+              <span class="app-site-mobile-store app-site-store-soon" aria-disabled="true">{appStoreLabel}</span>
+            )}
+            <div class="app-site-mobile-footer-links">
+              {resolvedMobileFooter.map((link) => (
+                <a
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main id="main"><slot /></main>
       <footer class="app-site-footer">
         <div class="app-site-footer-brand">
           <a class="app-site-logo" href={homeHref}>
-            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" /> : <span class="app-site-logo-mark">{logoMark}</span>}
+            {logoImage ? <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" /> : <span class="app-site-logo-mark">{logoMark}</span>}
             {brand}
           </a>
           <p>{tagline}</p>
@@ -122,10 +210,12 @@ const mobileNavId = `app-site-mobile-nav-${lang}`;
     <script is:inline>
       (() => {
         const header = document.querySelector("[data-app-header]");
+        const mobileQuery = matchMedia("(max-width: 900px)");
         if (header) {
           let scheduled = false;
           const syncHeader = () => {
-            const compact = window.scrollY > 96;
+            // Compact pill is desktop-only; mobile keeps a stable full-width bar.
+            const compact = !mobileQuery.matches && window.scrollY > 96;
             header.classList.toggle("is-compact", compact);
             scheduled = false;
           };
@@ -135,30 +225,68 @@ const mobileNavId = `app-site-mobile-nav-${lang}`;
               requestAnimationFrame(syncHeader);
             }
           }, { passive: true });
+          mobileQuery.addEventListener("change", syncHeader);
           syncHeader();
         }
 
         const button = document.querySelector(".app-site-mobile-menu");
-        const menu = document.querySelector(".app-site-mobile-nav");
-        const closeMenu = (restoreFocus = false) => {
+        const menu = document.querySelector("[data-mobile-nav]");
+        const scrim = document.querySelector("[data-mobile-scrim]");
+        const closeBtn = document.querySelector("[data-mobile-close]");
+        const openLabel = button?.getAttribute("data-menu-open-label") || "Menu";
+        const closeLabelText = button?.getAttribute("data-menu-close-label") || "Close menu";
+        let lastFocus = null;
+
+        const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        const setOpen = (open, restoreFocus = false) => {
           if (!button || !menu) return;
-          button.setAttribute("aria-expanded", "false");
-          button.textContent = "☰";
-          menu.hidden = true;
-          if (restoreFocus) button.focus();
+          button.setAttribute("aria-expanded", String(open));
+          button.setAttribute("aria-label", open ? closeLabelText : openLabel);
+          button.classList.toggle("is-open", open);
+          menu.hidden = !open;
+          if (scrim) scrim.hidden = !open;
+          document.documentElement.classList.toggle("app-site-menu-open", open);
+          menu.setAttribute("aria-hidden", String(!open));
+          if (open) {
+            lastFocus = document.activeElement;
+            const first = menu.querySelector(focusableSelector);
+            first?.focus({ preventScroll: true });
+          } else if (restoreFocus) {
+            (lastFocus || button).focus({ preventScroll: true });
+          }
         };
+
+        const closeMenu = (restoreFocus = false) => setOpen(false, restoreFocus);
+
         button?.addEventListener("click", () => {
           const open = button.getAttribute("aria-expanded") !== "true";
-          button.setAttribute("aria-expanded", String(open));
-          button.textContent = open ? "×" : "☰";
-          if (menu) menu.hidden = !open;
+          setOpen(open, true);
         });
+        closeBtn?.addEventListener("click", () => closeMenu(true));
+        scrim?.addEventListener("click", () => closeMenu(true));
         menu?.addEventListener("click", (event) => {
           if (event.target.closest("a")) closeMenu();
         });
         document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape" && button?.getAttribute("aria-expanded") === "true") {
+          if (button?.getAttribute("aria-expanded") !== "true") return;
+          if (event.key === "Escape") {
             closeMenu(true);
+            return;
+          }
+          if (event.key !== "Tab" || !menu) return;
+          const focusables = Array.from(menu.querySelectorAll(focusableSelector)).filter(
+            (el) => !el.hasAttribute("disabled") && el.offsetParent !== null,
+          );
+          if (!focusables.length) return;
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
           }
         });
         matchMedia("(min-width: 901px)").addEventListener("change", (event) => {

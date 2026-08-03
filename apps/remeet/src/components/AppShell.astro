@@ -4,11 +4,12 @@ import { appSiteUrl, mainSiteUrl } from "@tomokichi/app-site/urls";
 import { supportHref } from "../lib/links";
 
 type Locale = "ja" | "en";
-const { lang, title, page = "", description } = Astro.props as {
+const { lang, title, page = "", description, jsonLd = "" } = Astro.props as {
   lang: Locale;
   title: string;
   page?: string;
   description?: string;
+  jsonLd?: string;
 };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
@@ -38,9 +39,25 @@ const footerColumns = ja
       { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }, { label: "Commercial Transactions", href: href("commercial-transactions") }] },
       { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
     ];
+const mobileFooterLinks = ja
+  ? [
+      { label: "お問い合わせ", href: supportHref("ja"), external: true },
+      { label: "プライバシーポリシー", href: href("privacy") },
+      { label: "利用規約", href: href("terms") },
+      { label: "Tomokichi", href: mainSiteUrl("ja"), external: true },
+      { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
+    ]
+  : [
+      { label: "Contact", href: supportHref("en"), external: true },
+      { label: "Privacy Policy", href: href("privacy") },
+      { label: "Terms of Service", href: href("terms") },
+      { label: "Tomokichi", href: mainSiteUrl("en"), external: true },
+      { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
+    ];
 const metaDescription = description ?? (ja
-  ? "Remeetは、大切な人との次の再会までを、思い出とともに楽しむためのアプリです。"
-  : "Remeet makes the wait until your next reunion part of the story.");
+  ? "Remeetは、大切な人との次の再会までをカウントダウンし、待っている間の記録を端末に残すiPhoneアプリです。基本機能は無料（一部画面に広告）。現在App Store公開準備中。"
+  : "Remeet counts down to your next reunion and keeps waiting memories on your iPhone. Free core features with ads on some screens. Currently preparing for the App Store.");
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
 ---
 
 <AppSiteShell
@@ -50,7 +67,7 @@ const metaDescription = description ?? (ja
   page={page}
   brand="Remeet"
   logoImage="/assets/remeet-icon.png"
-  ogImage="/assets/sky-vase.png"
+  ogImage="/assets/og.png"
   tagline={ja ? "再会までの時間を、特別な思い出に。" : "Make the wait part of your story."}
   siteUrl={appSiteUrl("remeet")}
   homeHref={ja ? "/ja" : "/"}
@@ -58,15 +75,21 @@ const metaDescription = description ?? (ja
   enPageHref={enPageHref}
   nav={nav}
   footerColumns={footerColumns}
-  appStoreLabel={ja ? "App Storeで見る" : "View on App Store"}
+  mobileFooterLinks={mobileFooterLinks}
+  appStoreLabel={storeLabel}
+  appStoreHref=""
+  appStoreComingSoon
   menuLabel={ja ? "メニュー" : "Menu"}
+  menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
   pageClass="remeet-page"
+  themeColor="#f8f4ef"
+  jsonLd={jsonLd}
 >
   <slot />
   <script is:inline>
     (() => {
       const items = document.querySelectorAll(
-        ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro):not(.page-hero), .app-hero-notice",
+        ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro):not(.page-hero), .app-hero-notice, .guide-visual, .shot-gallery figure",
       );
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
         items.forEach((item) => {

@@ -3,11 +3,12 @@ import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
 import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
 
 type Locale = "ja" | "en";
-const { lang, title, page = "", description } = Astro.props as {
+const { lang, title, page = "", description, jsonLd = "" } = Astro.props as {
   lang: Locale;
   title: string;
   page?: string;
   description?: string;
+  jsonLd?: string;
 };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
@@ -15,28 +16,99 @@ const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
 const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const supportHref = supportUrl("colorvia", lang);
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+
 const nav = [
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
-  { slug: "how-to", label: ja ? "使い方" : "How it works", href: href("how-to") },
+  { slug: "regions", label: ja ? "国内地域" : "Regions", href: href("regions") },
+  { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
   { slug: "faq", label: "FAQ", href: href("faq") },
   { slug: "updates", label: ja ? "お知らせ" : "News", href: href("updates") },
 ];
+
 const footerColumns = ja
   ? [
-      { title: "プロダクト", links: [{ label: "機能", href: href("features") }, { label: "使い方", href: href("how-to") }, { label: "スクリーンショット", href: href("screenshots") }] },
-      { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("updates") }, { label: "お問い合わせ", href: supportHref, external: true }] },
-      { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }, { label: "特定商取引法に基づく表記", href: href("commercial-transactions") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
+      {
+        title: "プロダクト",
+        links: [
+          { label: "機能", href: href("features") },
+          { label: "国内地域", href: href("regions") },
+          { label: "使い方", href: href("how-to") },
+          { label: "スクリーンショット", href: href("screenshots") },
+        ],
+      },
+      {
+        title: "サポート",
+        links: [
+          { label: "よくある質問", href: href("faq") },
+          { label: "お知らせ", href: href("updates") },
+          { label: "お問い合わせ", href: supportHref, external: true },
+        ],
+      },
+      {
+        title: "規約",
+        links: [
+          { label: "プライバシーポリシー", href: href("privacy") },
+          { label: "利用規約", href: href("terms") },
+          { label: "特定商取引法に基づく表記", href: href("commercial-transactions") },
+        ],
+      },
+      {
+        title: "Tomokichi",
+        links: [
+          { label: "Tomokichi", href: mainSiteUrl("ja"), external: true },
+          { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
+        ],
+      },
     ]
   : [
-      { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "How it works", href: href("how-to") }, { label: "Screenshots", href: href("screenshots") }] },
-      { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("updates") }, { label: "Contact", href: supportHref, external: true }] },
-      { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }, { label: "Commercial Transactions", href: href("commercial-transactions") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
+      {
+        title: "Product",
+        links: [
+          { label: "Features", href: href("features") },
+          { label: "Regions", href: href("regions") },
+          { label: "How to", href: href("how-to") },
+          { label: "Screenshots", href: href("screenshots") },
+        ],
+      },
+      {
+        title: "Support",
+        links: [
+          { label: "FAQ", href: href("faq") },
+          { label: "News", href: href("updates") },
+          { label: "Contact", href: supportHref, external: true },
+        ],
+      },
+      {
+        title: "Legal",
+        links: [
+          { label: "Privacy Policy", href: href("privacy") },
+          { label: "Terms of Service", href: href("terms") },
+          { label: "Commercial Transactions", href: href("commercial-transactions") },
+        ],
+      },
+      {
+        title: "Tomokichi",
+        links: [
+          { label: "Tomokichi", href: mainSiteUrl("en"), external: true },
+          { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
+        ],
+      },
     ];
-const metaDescription = description ?? (ja
-  ? "訪れた国を選ぶだけで、自分だけの世界地図をつくれるシンプルな記録アプリColorvia。"
-  : "Colorvia is a simple app that turns the countries you visit into a world map of your own.");
+
+const mobileFooterLinks = [
+  { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
+  { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
+  { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
+  { label: "Tomokichi", href: mainSiteUrl(lang), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+];
+
+const metaDescription =
+  description ??
+  (ja
+    ? "Colorviaは、訪れた国や地域を選ぶだけで世界地図が色づく旅の記録アプリです。現在App Store公開準備中。"
+    : "Colorvia turns the countries and regions you visit into a personal world map. Currently preparing for the App Store.");
 ---
 
 <AppSiteShell
@@ -54,9 +126,15 @@ const metaDescription = description ?? (ja
   enPageHref={enPageHref}
   nav={nav}
   footerColumns={footerColumns}
-  appStoreLabel={ja ? "App Storeで見る" : "View on App Store"}
+  mobileFooterLinks={mobileFooterLinks}
+  appStoreLabel={storeLabel}
+  appStoreHref=""
+  appStoreComingSoon
   menuLabel={ja ? "メニュー" : "Menu"}
+  menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
+  themeColor="#eff8f7"
   pageClass="colorvia-page"
+  jsonLd={jsonLd}
 >
   <slot />
 </AppSiteShell>

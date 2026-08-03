@@ -1,51 +1,80 @@
 ---
 /**
- * Lightweight CSS phone mockups matching the Yohaku product UI.
- * kind: "today" | "week" | "month"
+ * CSS phone mockups aligned with Yohaku v1 UI (Today / Week / Month).
+ * No FAB on Week/Month. Localized labels. Near-current dates only.
  */
-const { kind = "today", size = "md", dateLabel, showTabs = true } = Astro.props as {
+const {
+  kind = "today",
+  size = "md",
+  lang = "en",
+  showTabs = true,
+} = Astro.props as {
   kind?: "today" | "week" | "month";
   size?: "sm" | "md" | "lg";
-  dateLabel?: string;
+  lang?: "ja" | "en";
   showTabs?: boolean;
 };
 
-const weekDays = [
-  { label: "月", day: "13", blocks: 1 },
-  { label: "火", day: "14", blocks: 0 },
-  { label: "水", day: "15", blocks: 1 },
-  { label: "木", day: "16", blocks: 2 },
-  { label: "金", day: "17", blocks: 0 },
-  { label: "土", day: "18", blocks: 1 },
-  { label: "日", day: "19", blocks: 0 },
-];
+const ja = lang === "ja";
 
-const todaySlots = [
-  { filled: true, time: "09:00 - 10:00" },
-  { filled: false, time: "13:30 - 14:00" },
-  { filled: false, time: "21:00 - 21:30" },
-];
+const weekDays = ja
+  ? [
+      { label: "月", day: "28", blocks: 1 },
+      { label: "火", day: "29", blocks: 0 },
+      { label: "水", day: "30", blocks: 2 },
+      { label: "木", day: "31", blocks: 1 },
+      { label: "金", day: "1", blocks: 0 },
+      { label: "土", day: "2", blocks: 1 },
+      { label: "日", day: "3", blocks: 0 },
+    ]
+  : [
+      { label: "Mon", day: "28", blocks: 1 },
+      { label: "Tue", day: "29", blocks: 0 },
+      { label: "Wed", day: "30", blocks: 2 },
+      { label: "Thu", day: "31", blocks: 1 },
+      { label: "Fri", day: "1", blocks: 0 },
+      { label: "Sat", day: "2", blocks: 1 },
+      { label: "Sun", day: "3", blocks: 0 },
+    ];
 
-// Distinctive month pattern (≈ mid-month cluster)
+const todaySlots = ja
+  ? [
+      { active: true, name: "何もしない時間", time: "09:00 – 10:00" },
+      { active: false, name: "ぼーっとする", time: "13:30 – 14:00" },
+      { active: false, name: "ゆっくりお茶を飲む", time: "21:00 – 21:30" },
+    ]
+  : [
+      { active: true, name: "Time for nothing", time: "09:00 – 10:00" },
+      { active: false, name: "Space out", time: "13:30 – 14:00" },
+      { active: false, name: "Slow cup of tea", time: "21:00 – 21:30" },
+    ];
+
 const monthCells = [
-  0, 0, 0, 0, 1, 0, 0,
-  0, 0, 1, 1, 0, 1, 0,
-  0, 1, 0, 1, 1, 0, 0,
-  0, 0, 1, 1, 0, 1, 0,
+  0, 0, 0, 1, 0, 0, 1,
   0, 1, 0, 0, 1, 0, 0,
-  0, 0, 1, 0, 0, 0, 0,
+  1, 0, 1, 0, 0, 1, 0,
+  0, 0, 1, 1, 0, 0, 1,
+  0, 1, 0, 0, 1, 0, 0,
+  1, 0, 0, 0, 0, 0, 0,
 ];
 
-const titles = { today: "Today", week: "Week", month: "Month" } as const;
-const defaultDates = {
-  today: "2024年5月13日（月）",
-  week: "5.13 - 5.19",
-  month: "2024年5月",
-} as const;
-const resolvedDate = dateLabel ?? defaultDates[kind];
+const titles = ja
+  ? { today: "今日", week: "週", month: "月" }
+  : { today: "Today", week: "Week", month: "Month" };
+
+const dates = ja
+  ? { today: "2026年7月28日（火）", week: "7.28 – 8.3", month: "2026年7月" }
+  : { today: "Tue, Jul 28, 2026", week: "Jul 28 – Aug 3", month: "July 2026" };
+
+const tabLabels = ja
+  ? { today: "今日", week: "週", month: "月" }
+  : { today: "Today", week: "Week", month: "Month" };
+
+const monthCount = ja ? "余白 11" : "11 spaces";
+const aria = `Yohaku ${titles[kind]}`;
 ---
 
-<div class:list={["yh-phone", `yh-phone--${size}`, `yh-phone--${kind}`]} role="img" aria-label={`Yohaku ${titles[kind]}`}>
+<div class:list={["yh-phone", `yh-phone--${size}`, `yh-phone--${kind}`]} role="img" aria-label={aria}>
   <div class="yh-phone-frame">
     <div class="yh-phone-notch" aria-hidden="true"></div>
     <div class="yh-phone-status">
@@ -53,16 +82,20 @@ const resolvedDate = dateLabel ?? defaultDates[kind];
       <span class="yh-phone-status-icons" aria-hidden="true"></span>
     </div>
 
+    <div class="yh-phone-brand" aria-hidden="true">
+      <span class="yh-phone-mark"></span>
+    </div>
+
     {kind === "today" && (
       <div class="yh-phone-body">
-        <h3 class="yh-phone-title">Today</h3>
-        <p class="yh-phone-date">{resolvedDate}</p>
+        <h3 class="yh-phone-title">{titles.today}</h3>
+        <p class="yh-phone-date">{dates.today}</p>
         <ul class="yh-today-list">
           {todaySlots.map((slot) => (
-            <li class:list={{ "is-filled": slot.filled }}>
-              <i class:list={{ filled: slot.filled }} aria-hidden="true"></i>
+            <li class:list={{ "is-active": slot.active }}>
+              <i class:list={{ filled: true, active: slot.active }} aria-hidden="true"></i>
               <div>
-                <strong>余白の時間</strong>
+                <strong>{slot.name}</strong>
                 <span>{slot.time}</span>
               </div>
             </li>
@@ -75,11 +108,11 @@ const resolvedDate = dateLabel ?? defaultDates[kind];
     {kind === "week" && (
       <div class="yh-phone-body">
         <div class="yh-phone-header-row">
-          <h3 class="yh-phone-title">Week</h3>
+          <h3 class="yh-phone-title">{titles.week}</h3>
         </div>
         <p class="yh-phone-period">
           <span aria-hidden="true">‹</span>
-          <span>{resolvedDate}</span>
+          <span>{dates.week}</span>
           <span aria-hidden="true">›</span>
         </p>
         <ol class="yh-week-list">
@@ -88,38 +121,40 @@ const resolvedDate = dateLabel ?? defaultDates[kind];
               <span class="yh-week-label">{d.label} {d.day}</span>
               <span class="yh-week-blocks">
                 {d.blocks === 0 && <i aria-hidden="true"></i>}
-                {d.blocks >= 1 && <i class="filled" aria-hidden="true"></i>}
-                {d.blocks >= 2 && <i class="filled" aria-hidden="true"></i>}
+                {Array.from({ length: Math.min(d.blocks, 5) }).map(() => (
+                  <i class="filled" aria-hidden="true"></i>
+                ))}
               </span>
             </li>
           ))}
         </ol>
-        <span class="yh-phone-fab" aria-hidden="true">+</span>
       </div>
     )}
 
     {kind === "month" && (
       <div class="yh-phone-body">
         <div class="yh-phone-header-row">
-          <h3 class="yh-phone-title">Month</h3>
+          <h3 class="yh-phone-title">{titles.month}</h3>
         </div>
         <p class="yh-phone-period">
           <span aria-hidden="true">‹</span>
-          <span>{resolvedDate}</span>
+          <span>{dates.month}</span>
           <span aria-hidden="true">›</span>
         </p>
         <div class="yh-month-grid" aria-hidden="true">
-          {monthCells.map((filled) => <i class:list={{ filled: Boolean(filled) }}></i>)}
+          {monthCells.map((filled, i) => (
+            <i class:list={{ filled: Boolean(filled), today: i === 27 }}></i>
+          ))}
         </div>
-        <span class="yh-phone-fab" aria-hidden="true">+</span>
+        <p class="yh-month-count">{monthCount}</p>
       </div>
     )}
 
     {showTabs && (
       <nav class="yh-phone-tabs" aria-hidden="true">
-        <span class:list={{ active: kind === "today" }}>□</span>
-        <span class:list={{ active: kind === "week" }}>▦</span>
-        <span class:list={{ active: kind === "month" }}>▩</span>
+        <span class:list={{ active: kind === "today" }}>{tabLabels.today}</span>
+        <span class:list={{ active: kind === "week" }}>{tabLabels.week}</span>
+        <span class:list={{ active: kind === "month" }}>{tabLabels.month}</span>
       </nav>
     )}
   </div>

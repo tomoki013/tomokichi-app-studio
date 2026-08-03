@@ -1,5 +1,6 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import { appSiteUrl } from "@tomokichi/app-site/urls";
 import AppShell from "./AppShell.astro";
 
 type Locale = "ja" | "en";
@@ -9,88 +10,119 @@ const base = ja ? "/ja" : "";
 const c = ja
   ? {
       title: "再会までの時間を、特別な思い出に。",
-      body: "離れている日々を、ふたりの絆がもっと深まる時間に。\n再会までを一緒にカウントダウンして、\n思い出を記録しよう。",
-      store: "App Storeからダウンロード",
-      notice: "Remeet 1.0.0をリリースしました！",
+      body: "大切な人と次に会える日までをカウントダウン。\n離れている日々の写真や気持ち、\n会ったらやりたいことを、自分の記録として残せます。",
+      store: "App Storeで近日公開",
+      notice: "Remeet公式ブランドサイトを公開しました",
       features: "Remeetの特徴",
       featureSub: "距離を、やさしくつなぐ機能たち。",
-      howTitle: "使い方はかんたん、3ステップ",
-      widgetTitle: "ウィジェットで、もっと身近に",
-      widgetBody: "ホーム画面やロック画面で、ふたりのつながりをいつでも感じられます。",
-      storyTitle: "距離があるから、\nつながりは、もっとやさしくなる。",
-      storyBody: "会えない時間は、さみしいだけじゃない。\n思い出を重ねる時間でもある。\nRemeetは、ふたりの心の距離を近づける\n小さなきっかけになりますように。",
-      cta: "再会の日を、もっと楽しみに。",
-      ctaSub: "Remeetをはじめて、ふたりだけの時間を育てていこう。",
+      howTitle: "使い方はかんたん、4ステップ",
       howLink: "使い方を見る",
+      widgetTitle: "ウィジェットで、もっと身近に",
+      widgetBody: "ホーム画面やロック画面から、再会までの日数をいつでも確認できます。",
+      storyTitle: "距離があるから、\nつながりは、もっとやさしくなる。",
+      storyBody: "会えない時間は、さみしいだけじゃない。\n思い出を重ねる時間でもある。\nRemeetは、大切な人との再会を待つ日々を\nそっと支える小さなきっかけになりますように。",
+      cta: "再会の日を、もっと楽しみに。",
+      ctaSub: "Remeetをはじめて、待つ時間も物語の一部に。",
+      description: "Remeetは、大切な人との次の再会までをカウントダウンし、待っている間の記録を端末に残すiPhoneアプリです。基本機能は無料（一部画面に広告）。現在App Store公開準備中。",
+      env: "iPhone・iOS 26以降に対応",
+      envNote: "現在のバージョンはiPhone向けです。iPadに最適化されたレイアウトは今後対応予定です。",
     }
   : {
       title: "Make the wait part of your story.",
-      body: "Turn days apart into time that brings you closer.\nCount down together and keep every memory\nuntil the day you meet again.",
-      store: "Download on the App Store",
-      notice: "Remeet 1.0.0 is now available!",
+      body: "Count down to the day you meet someone important again.\nKeep photos, thoughts, and things you want to do\nwhile the distance slowly becomes smaller.",
+      store: "Coming soon on the App Store",
+      notice: "The official Remeet brand site is now live",
       features: "Remeet features",
       featureSub: "Thoughtful ways to stay close across the distance.",
-      howTitle: "Simple to use, in 3 steps",
-      widgetTitle: "Always close with widgets",
-      widgetBody: "Feel your connection at a glance from your Home Screen or Lock Screen.",
-      storyTitle: "Distance can make\nyour connection feel even gentler.",
-      storyBody: "Time apart isn’t only about missing someone.\nIt can be time to gather memories, too.\nRemeet offers small moments that bring\ntwo hearts a little closer.",
-      cta: "Make the reunion worth the wait.",
-      ctaSub: "Start with Remeet and grow the time that belongs to just the two of you.",
+      howTitle: "Simple to use in four steps",
       howLink: "See how it works",
+      widgetTitle: "Always close with widgets",
+      widgetBody: "Check the days remaining at a glance from your Home Screen or Lock Screen.",
+      storyTitle: "Distance can make\nyour connection feel even gentler.",
+      storyBody: "Time apart isn’t only about missing someone.\nIt can be time to gather memories, too.\nRemeet offers small moments that support\nthe wait until you meet again.",
+      cta: "Make the reunion worth the wait.",
+      ctaSub: "Start with Remeet and let the waiting days become part of the story.",
+      description: "Remeet counts down to your next reunion and keeps waiting memories on your iPhone. Free core features with ads on some screens. Currently preparing for the App Store.",
+      env: "Requires an iPhone running iOS 26 or later.",
+      envNote: "The current version is designed for iPhone. An iPad-optimized layout is planned for a future update.",
     };
 
 const features = ja
   ? [
-      ["再会までをカウントダウン", "次に会える日を設定すると、日数と進捗を自動でカウント。楽しみが少しずつ近づきます。"],
-      ["ルートでつながる地図", "ふたりの場所を地図でつなぎ、飛行機のルートがやさしく移動。距離を感じさせないデザイン。"],
-      ["待っている時間を思い出に", "メモや写真、気持ちの記録を残せます。小さな日常も、大切な思い出になります。"],
-      ["会ったらやりたいことリスト", "行きたい場所や、やりたいことを一緒にリスト化。再会の計画がもっと楽しくなります。"],
-      ["ウィジェットでいつも一緒に", "ホーム画面やロック画面で、再会までの日数やカードをいつでも確認できます。"],
-      ["再会をアルバムに保存", "再会の思い出を写真と一緒にアルバムに。未来のふたりの宝物になります。"],
+      ["再会までをカウントダウン", "次に会える日を設定すると、日数と進捗を自動で表示。楽しみが少しずつ近づきます。"],
+      ["ルートでつながるイラスト", "ふたりの場所をつなぐルートイラストで、離れている距離をやさしく表現します。"],
+      ["待っている時間を思い出に", "メモや写真を、自分の記録として残せます。小さな日常も大切な記憶になります。"],
+      ["会ったらやりたいことリスト", "行きたい場所や、やりたいことをリストに。再会の日がもっと楽しみになります。"],
+      ["ウィジェットでいつでも確認", "ホーム画面やロック画面で、再会までの日数をいつでも確認できます。"],
+      ["再会をアルバムに保存", "再会の写真と振り返りをアルバムに。未来の自分への宝物になります。"],
     ]
   : [
-      ["Countdown to reunion", "Set your next meeting date and follow the days and progress automatically as the moment draws closer."],
-      ["A map that connects you", "See your places connected by a gentle flight path, making the distance feel a little smaller."],
-      ["Turn waiting into memories", "Save notes, photos and feelings. Even ordinary days become part of your shared story."],
-      ["Things to do together", "Collect places to go and things to try, so planning the reunion becomes part of the fun."],
-      ["Together through widgets", "Keep the countdown and your shared cards close on the Home Screen and Lock Screen."],
-      ["Save reunions in albums", "Keep reunion photos together in an album that grows into a treasure for your future."],
+      ["Countdown to reunion", "Set your next meeting date and follow the days and progress as the moment draws closer."],
+      ["A gentle route illustration", "A gentle route illustration connects both places and gives the distance a softer shape."],
+      ["Turn waiting into memories", "Save notes and photos as your own record. Even ordinary days become part of the story."],
+      ["Things to do together", "Collect places to go and things to try, so the reunion day feels even closer."],
+      ["Always close with widgets", "Keep the countdown on the Home Screen and Lock Screen."],
+      ["Save reunions in albums", "Keep a reunion photo and reflection in an album you can revisit later."],
     ];
 const featureImages = ["countdown", "map", "memory", "list", "widget", "album"];
 const steps = ja
   ? [
-      ["1", "再会を作る", "ふたりの場所と、次に会える日を設定します。"],
-      ["2", "待つあいだに残す", "やりたいことやメモ、写真で日々を記録します。"],
-      ["3", "再会を記録する", "会えた日を記録して、思い出をアルバムに残します。"],
-      ["4", "思い出として残る", "ふたりだけのストーリーが、未来の宝物になります。"],
+      ["1", "再会予定を作る", "場所と、次に会える日を設定します。"],
+      ["2", "待っている日々を記録する", "写真やメモで、離れている時間を残します。"],
+      ["3", "会ったらやりたいことを残す", "再会の日にしたいことを、ひとつずつリストに。"],
+      ["4", "再会の日を記録してアルバムに残す", "会えた日の写真と振り返りを、アルバムへ。"],
     ]
   : [
-      ["1", "Create a reunion", "Set both locations and the next date you will meet."],
-      ["2", "Save the waiting days", "Record plans, notes and photos while you wait."],
-      ["3", "Capture the reunion", "Mark the day and save your memories to an album."],
-      ["4", "Keep the story", "Your shared journey becomes something to treasure."],
+      ["1", "Create a reunion", "Set both places and the next date you will meet."],
+      ["2", "Record the waiting days", "Keep photos and notes from the time apart."],
+      ["3", "Save things to do", "List what you want to do when you meet again."],
+      ["4", "Capture the reunion in an album", "Save a photo and reflection from the day you meet."],
     ];
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Remeet",
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "iOS 26 or later",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+    availability: "https://schema.org/PreOrder",
+  },
+  description: c.description,
+  url: `${appSiteUrl("remeet")}${base || "/"}`.replace(/\/$/, "") || appSiteUrl("remeet"),
+  image: `${appSiteUrl("remeet")}/assets/og.png`,
+});
 ---
 
-<AppShell lang={lang} title={c.title}>
+<AppShell lang={lang} title={c.title} description={c.description} jsonLd={jsonLd}>
   <section class="new-home">
-    <img class="home-sky" src="/assets/sky-vase.png" alt="" />
-    <div class="home-copy">
-      <h1>{c.title}</h1>
-      <p>{c.body.split("\n").map((line) => <>{line}<br /></>)}</p>
-      <a class="download-badge" href="#download">● <span>{c.store}</span></a>
+    <img class="home-sky" src="/assets/sky-vase.png" alt="" width="1122" height="1402" decoding="async" />
+    <div class="home-stack">
+      <AppHeroChrome lang={lang} date="2026-08-01" news={c.notice} newsHref={`${base}/updates`} />
+      <div class="home-copy">
+        <h1>{c.title}</h1>
+        <p>{c.body.split("\n").map((line) => <>{line}<br /></>)}</p>
+        <div class="home-actions">
+          <span class="store-soon" aria-disabled="true">{c.store}</span>
+          <a class="secondary-link" href={`${base}/how-to`}>▷　{c.howLink}</a>
+        </div>
+      </div>
+      <picture class="home-phone-picture">
+        <source srcset="/assets/app-phone.webp" type="image/webp" />
+        <img
+          class="home-phone"
+          src="/assets/app-phone.png"
+          alt={ja ? "Remeetのホーム画面。再会までのカウントダウンとルートイラスト" : "Remeet home screen showing the reunion countdown and route illustration"}
+          width="941"
+          height="1672"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
     </div>
-    <img
-      class="home-phone"
-      src="/assets/app-phone.png"
-      alt="Remeetのホーム画面"
-      width="941"
-      height="1672"
-      fetchpriority="high"
-    />
-    <div class="home-route" aria-hidden="true"><i></i><b>✈</b><i></i></div>
-    <AppHeroChrome lang={lang} date="2026-07-24" news={c.notice} newsHref={`${base}/updates`} />
   </section>
 
   <div class="landing-sections">
@@ -105,12 +137,17 @@ const steps = ja
               <p>{body}</p>
             </div>
             <figure class:list={["feature-shot", featureImages[i] === "widget" && "is-wide"]}>
-              <img
-                src={`/assets/feature-${featureImages[i]}.png`}
-                alt={title}
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source srcset={`/assets/feature-${featureImages[i]}.webp`} type="image/webp" />
+                <img
+                  src={`/assets/feature-${featureImages[i]}.png`}
+                  alt={title}
+                  width={featureImages[i] === "widget" ? 1448 : 941}
+                  height={featureImages[i] === "widget" ? 1086 : 1672}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </figure>
           </article>
         ))}
@@ -120,7 +157,17 @@ const steps = ja
     <section class="how landing-pad" id="how">
       <h2>{c.howTitle}</h2>
       <div class="step-grid">
-        {steps.map(([n, title, body], i) => <article><div class="step-icon">{["⌖", "✎", "▣", "♡"][i]}</div><div><small>{n}</small><h3>{title}</h3><p>{body}</p></div>{i < steps.length - 1 && <b>›</b>}</article>)}
+        {steps.map(([n, title, body], i) => (
+          <article>
+            <div class="step-icon" aria-hidden="true">{["⌖", "✎", "▣", "♡"][i]}</div>
+            <div>
+              <small>{n}</small>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </div>
+            {i < steps.length - 1 && <b aria-hidden="true">›</b>}
+          </article>
+        ))}
       </div>
     </section>
 
@@ -129,7 +176,7 @@ const steps = ja
       <div class="widget-art">
         <img
           src="/assets/widgets.png"
-          alt="Remeetのホーム画面とウィジェット"
+          alt={ja ? "Remeetのホーム画面とウィジェット" : "Remeet home screen and widgets"}
           width="1448"
           height="1086"
           loading="lazy"
@@ -137,12 +184,16 @@ const steps = ja
         />
       </div>
     </section>
+
     <section class="story landing-pad">
-      <div><h2>{c.storyTitle.split("\n").map(line => <>{line}<br /></>)}</h2><p>{c.storyBody.split("\n").map(line => <>{line}<br /></>)}</p></div>
+      <div>
+        <h2>{c.storyTitle.split("\n").map((line) => <>{line}<br /></>)}</h2>
+        <p>{c.storyBody.split("\n").map((line) => <>{line}<br /></>)}</p>
+      </div>
       <div class="story-art">
         <img
           src="/assets/couple.png"
-          alt="夕暮れの海を眺めるふたりを描いたRemeetの開始画面"
+          alt={ja ? "夕暮れの海を眺めるふたりを描いたRemeetの開始画面" : "Remeet onboarding art of two people at sunset"}
           width="941"
           height="1672"
           loading="lazy"
@@ -151,6 +202,22 @@ const steps = ja
       </div>
       <div class="flight" aria-hidden="true">········· ♡ ········· ✈</div>
     </section>
-    <section class="download landing-pad" id="download"><div><h2>{c.cta}</h2><p>{c.ctaSub}</p></div><div class="buttons"><a class="store" href="#download">●　App Store</a><a class="secondary" href={`${base}/how-to`}>▷　{c.howLink}</a></div></section>
+
+    <section class="download landing-pad" id="download">
+      <div>
+        <h2>{c.cta}</h2>
+        <p>{c.ctaSub}</p>
+        <p class="download-footnote">
+          {ja
+            ? "基本機能は無料です。一部画面に広告が表示されます。アカウント登録は不要です。"
+            : "Core features are free. Ads may appear on some screens. No account required."}
+        </p>
+        <p class="env-note"><strong>{c.env}</strong><br />{c.envNote}</p>
+      </div>
+      <div class="buttons">
+        <span class="store store-soon" aria-disabled="true">●　{c.store}</span>
+        <a class="secondary" href={`${base}/how-to`}>▷　{c.howLink}</a>
+      </div>
+    </section>
   </div>
 </AppShell>

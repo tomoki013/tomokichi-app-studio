@@ -1,20 +1,28 @@
 ---
 import { supportUrl } from "./urls";
 
-const { lang, appName, appSlug } = Astro.props as {
+const { lang, appName, appSlug, adSupported = false } = Astro.props as {
   lang: "ja" | "en";
   appName: string;
   appSlug: string;
+  /** When true, price copy notes that the free app shows ads. */
+  adSupported?: boolean;
 };
 const ja = lang === "ja";
 const contactHref = supportUrl(appSlug, lang);
+const priceJa = adSupported
+  ? `現在、${appName}は無料で提供しており、アプリ内の一部画面に広告が表示されます。将来、有料商品を提供する場合は、購入画面またはApp Storeの商品ページに税込価格を表示します。`
+  : `現在、${appName}は無料で提供しています。将来、有料商品を提供する場合は、購入画面またはApp Storeの商品ページに税込価格を表示します。`;
+const priceEn = adSupported
+  ? `${appName} is currently free and shows ads on some screens. If paid products are introduced, tax-inclusive prices will be shown on the purchase screen or App Store product page.`
+  : `${appName} is currently provided free of charge. If paid products are introduced, tax-inclusive prices will be shown on the purchase screen or App Store product page.`;
 const rows = ja
   ? [
       ["販売事業者", "Tomokichi"],
       ["運営責任者", "請求があった場合、遅滞なく開示します。"],
       ["所在地・電話番号", "請求があった場合、遅滞なく開示します。"],
       ["お問い合わせ", "support@tmkch.io"],
-      ["販売価格", `現在、${appName}は無料で提供しています。将来、有料商品を提供する場合は、購入画面またはApp Storeの商品ページに税込価格を表示します。`],
+      ["販売価格", priceJa],
       ["商品代金以外の必要料金", "インターネット接続に必要な通信料等は、利用者の負担となります。"],
       ["支払方法・支払時期", "有料商品を提供する場合は、Apple IDに登録された支払方法により、購入確定時に決済されます。"],
       ["サービスの提供時期", "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。有料機能を提供する場合は、購入手続き完了後に利用できます。"],
@@ -26,7 +34,7 @@ const rows = ja
       ["Responsible operator", "Disclosed without delay upon request."],
       ["Address and telephone number", "Disclosed without delay upon request."],
       ["Contact", "support@tmkch.io"],
-      ["Price", `${appName} is currently provided free of charge. If paid products are introduced, tax-inclusive prices will be shown on the purchase screen or App Store product page.`],
+      ["Price", priceEn],
       ["Additional charges", "You are responsible for internet access and data charges."],
       ["Payment method and timing", "If paid products are introduced, payment will be charged at confirmation using the payment method registered to your Apple ID."],
       ["Delivery", "The app is available immediately after its App Store download completes. Any future paid feature will become available after purchase is completed."],
