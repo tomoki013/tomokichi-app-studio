@@ -1166,6 +1166,12 @@ body:has(.remeet-page) {
   font-size: 11.5px;
   line-height: 2.1;
 }
+.hero-art .hero-art-screen {
+  --phone-w: 108px;
+  position: relative;
+  z-index: 2;
+}
+
 .hero-art {
   position: relative;
   margin: 0;
@@ -1174,7 +1180,8 @@ body:has(.remeet-page) {
   align-items: center;
   justify-content: center;
 }
-.hero-art img {
+.hero-art > img,
+.hero-art > picture img {
   max-width: 100%;
   max-height: 226px;
   object-fit: contain;
@@ -1413,7 +1420,8 @@ body:has(.remeet-page) {
   display: grid;
   place-items: center;
 }
-.guide-visual img {
+.guide-visual figure > img,
+.guide-visual figure > picture img {
   width: min(100%, 260px);
   height: auto;
   border-radius: 24px;
@@ -2092,7 +2100,7 @@ body:has(.remeet-page) {
   place-items: end center;
   overflow: hidden;
 }
-.landing-sections .feature-grid .feature-shot img {
+.landing-sections .feature-grid .feature-shot > picture img {
   width: auto;
   height: min(410px, 36vw);
   max-width: 100%;
@@ -2302,7 +2310,7 @@ body:has(.remeet-page) {
     min-height: 680px;
     padding-inline: 38px;
   }
-  .landing-sections .feature-grid .feature-shot img {
+  .landing-sections .feature-grid .feature-shot > picture img {
     height: 450px;
   }
   .landing-sections .feature-grid .feature-shot.is-wide img {
@@ -2497,7 +2505,8 @@ body:has(.remeet-page) {
   .guide-visual:nth-child(even) .guide-visual-copy {
     order: 0;
   }
-  .guide-visual img {
+  .guide-visual figure > img,
+  .guide-visual figure > picture img {
     width: min(100%, 240px);
   }
   .faq-tabs button {
@@ -2522,8 +2531,13 @@ body:has(.remeet-page) {
     height: 150px;
     order: -1;
   }
-  .hero-art img {
+  .hero-art > img,
+  .hero-art > picture img {
     max-height: 150px;
+  }
+
+  .hero-art .hero-art-screen {
+    --phone-w: 72px;
   }
   .blob-a {
     width: 140px;

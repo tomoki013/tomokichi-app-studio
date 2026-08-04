@@ -5,5 +5,12 @@ import "../../styles/global.css";
 ---
 
 <AppShell lang="ja" title="特定商取引法に基づく表記" page="commercial-transactions">
-  <CommercialTransactionsPage lang="ja" appName="Yohaku" appSlug="yohaku" adSupported />
+  <CommercialTransactionsPage
+    lang="ja"
+    appName="Yohaku"
+    appSlug="yohaku"
+    adSupported
+    purchases={[{ name: ["広告を永久に削除", "Remove ads permanently"], price: "¥300" }]}
+    lastUpdated={["2026年8月4日", "August 4, 2026"]}
+  />
 </AppShell>

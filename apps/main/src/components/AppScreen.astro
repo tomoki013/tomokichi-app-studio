@@ -1,0 +1,57 @@
+---
+/**
+ * A real app screen inside the shared device frame.
+ *
+ * Sources are unretouched iPhone 17 Pro Max captures produced by each app's
+ * own `AppStoreScreenshotTests` and imported with
+ * `scripts/import-app-screenshots.mjs --prefix <app> --keep`. Only apps that
+ * have captures get one; nothing else on this site is presented as a
+ * screenshot.
+ */
+import { Image } from "astro:assets";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+import type { Locale } from "../data/apps";
+
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
+
+const {
+  screen,
+  lang,
+  alt,
+  size = "sm",
+  class: className = "",
+} = Astro.props as {
+  /** Asset stem without locale, e.g. `remeet-home`. */
+  screen: string;
+  lang: Locale;
+  alt: string;
+  size?: Size;
+  class?: string;
+};
+
+const [app, ...rest] = screen.split("-");
+const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", {
+  eager: true,
+});
+const key = `../assets/screens/${app}-${lang}-${rest.join("-")}.webp`;
+const image = screens[key]?.default;
+if (!image) {
+  throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
+}
+
+// The screen is 89.6% of the device width, so this is the widest the bitmap can
+// ever be laid out at — the frame only ever shrinks below its nominal size.
+const screenWidth: Record<Size, number> = { xs: 118, sm: 158, md: 208, lg: 262, xl: 323 };
+---
+
+<PhoneFrame size={size} class={className}>
+  <Image
+    src={image}
+    format="webp"
+    widths={[240, 360, 480]}
+    sizes={`${screenWidth[size]}px`}
+    alt={alt}
+    loading="lazy"
+    decoding="async"
+  />
+</PhoneFrame>

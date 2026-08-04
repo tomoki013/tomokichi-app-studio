@@ -151,289 +151,6 @@ a {
   flex: 0 0 auto;
 }
 
-/* ——— Phone mockups ——— */
-
-.yh-phone {
-  --phone-w: 220px;
-  --phone-h: 450px;
-  --phone-pad: 18px;
-  --phone-radius: 36px;
-  --phone-bezel: 8px;
-  width: var(--phone-w);
-  height: var(--phone-h);
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.yh-phone--sm {
-  --phone-w: 180px;
-  --phone-h: 370px;
-  --phone-pad: 14px;
-  --phone-radius: 30px;
-  --phone-bezel: 7px;
-}
-
-.yh-phone--lg {
-  --phone-w: 250px;
-  --phone-h: 510px;
-  --phone-pad: 20px;
-  --phone-radius: 40px;
-  --phone-bezel: 9px;
-}
-
-.yh-phone-frame {
-  width: 100%;
-  height: 100%;
-  padding: 14px var(--phone-pad) 12px;
-  position: relative;
-  overflow: hidden;
-  border: var(--phone-bezel) solid #141414;
-  border-radius: var(--phone-radius);
-  background: #fff;
-  box-shadow:
-    inset 0 0 0 1px #cfcfcf,
-    0 18px 40px rgb(0 0 0 / 10%);
-}
-
-.yh-phone-notch {
-  width: 72px;
-  height: 18px;
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  z-index: 2;
-  border-radius: 0 0 12px 12px;
-  background: #111;
-  transform: translateX(-50%);
-}
-
-.yh-phone-status {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--sans);
-  font-size: 8px;
-  font-weight: 600;
-}
-
-.yh-phone-status-icons {
-  width: 28px;
-  height: 6px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #111 55%, transparent 55%), #111;
-  opacity: 0.85;
-}
-
-.yh-phone-body {
-  height: calc(100% - 42px);
-  position: relative;
-  padding-top: 18px;
-}
-
-.yh-phone-title {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-.yh-phone--sm .yh-phone-title {
-  font-size: 18px;
-}
-
-.yh-phone-date,
-.yh-phone-period {
-  margin: 6px 0 0;
-  color: #888;
-  font-family: var(--sans);
-  font-size: 9px;
-  letter-spacing: 0.02em;
-}
-
-.yh-phone-period {
-  margin-top: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #333;
-  font-size: 10px;
-}
-
-.yh-today-list {
-  margin: 22px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-  list-style: none;
-}
-
-.yh-today-list li {
-  min-height: 52px;
-  padding: 10px 12px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  background: #fff;
-}
-
-.yh-today-list i {
-  width: 12px;
-  height: 12px;
-  flex: 0 0 auto;
-  border: 1px solid #bbb;
-  border-radius: 2px;
-  background: #fff;
-}
-
-.yh-today-list i.filled,
-.yh-week-blocks i.filled,
-.yh-month-grid i.filled,
-.howto-note i.filled {
-  border-color: #111;
-  background: #111;
-}
-
-.yh-today-list strong {
-  display: block;
-  font-family: var(--sans);
-  font-size: 10px;
-  font-weight: 500;
-}
-
-.yh-today-list span {
-  display: block;
-  margin-top: 3px;
-  color: #888;
-  font-family: var(--sans);
-  font-size: 9px;
-}
-
-.yh-week-list {
-  margin: 18px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0;
-  list-style: none;
-}
-
-.yh-week-list li {
-  min-height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #f0f0f0;
-  font-family: var(--sans);
-  font-size: 10px;
-}
-
-.yh-week-label {
-  color: #333;
-}
-
-.yh-week-blocks {
-  display: flex;
-  gap: 5px;
-}
-
-.yh-week-blocks i {
-  width: 12px;
-  height: 12px;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  background: #fff;
-}
-
-.yh-month-grid {
-  margin-top: 22px;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
-
-.yh-month-grid i {
-  aspect-ratio: 1;
-  border-radius: 2px;
-  background: #f1f1f1;
-}
-
-.yh-phone-brand {
-  position: absolute;
-  top: 34px;
-  left: var(--phone-pad);
-  z-index: 2;
-}
-
-.yh-phone-mark {
-  width: 14px;
-  height: 14px;
-  display: block;
-  border: 1.5px solid #111;
-  border-radius: 3px;
-}
-
-.yh-today-list li.is-active {
-  border-color: #111;
-  box-shadow: inset 0 0 0 1px #111;
-}
-
-.yh-today-list i.active {
-  box-shadow:
-    0 0 0 2px #fff,
-    0 0 0 3px #111;
-}
-
-.yh-month-grid i.today {
-  box-shadow: inset 0 0 0 1.5px #111;
-}
-
-.yh-month-count {
-  margin: 14px 0 0;
-  color: #666;
-  font-family: var(--sans);
-  font-size: 10px;
-  text-align: center;
-  letter-spacing: 0.04em;
-}
-
-.yh-phone-fab {
-  width: 34px;
-  height: 34px;
-  position: absolute;
-  right: 0;
-  bottom: 40px;
-  display: grid;
-  place-items: center;
-  border: 0;
-  border-radius: 50%;
-  color: #fff;
-  background: #111;
-  font-family: var(--sans);
-  font-size: 20px;
-  line-height: 1;
-  pointer-events: none;
-}
-
-.yh-phone-tabs {
-  position: absolute;
-  right: var(--phone-pad);
-  bottom: 10px;
-  left: var(--phone-pad);
-  display: flex;
-  justify-content: space-around;
-  color: #bbb;
-  font-family: var(--sans);
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.yh-phone-tabs .active {
-  color: #111;
-}
-
 /* ——— Landing hero ——— */
 
 .yohaku-hero {
@@ -508,7 +225,12 @@ a {
 
 .hero-device {
   margin: 0;
+  /* Lets the three frames shrink together when the hero column is narrower
+     than their nominal width. `minmax(0, 1fr)` matters: in an auto column the
+     frame's `max-width: 100%` would resolve against the overflowing column. */
+  min-width: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: 14px;
 }
@@ -619,6 +341,7 @@ a {
 }
 
 .story-visual {
+  min-width: 0;
   display: flex;
   justify-content: center;
 }
@@ -1535,8 +1258,7 @@ a {
   }
 
   .concept-phones {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: repeat(2, minmax(0, max-content));
   }
 
   .faq-tabs {
@@ -1551,6 +1273,12 @@ a {
 
   .shape-scatter {
     display: none;
+  }
+}
+
+@media (max-width: 460px) {
+  .concept-phones {
+    grid-template-columns: minmax(0, max-content);
   }
 }
 
@@ -1633,7 +1361,9 @@ a {
   line-height: 1.9;
 }
 .feature-block-visual {
+  min-width: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
 }
 
@@ -1697,9 +1427,10 @@ a {
   text-align: center;
 }
 .concept-phones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 28px;
+  /* Six screens read as three-and-three, not a four/two orphan row. */
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  gap: 40px 28px;
   justify-content: center;
   margin-bottom: 48px;
 }
@@ -1802,6 +1533,61 @@ a {
   font-family: var(--sans);
   font-size: 14px;
 }
+.pricing-iap {
+  margin: 24px 0;
+  padding: 22px;
+  border: 1px solid var(--yohaku-ink);
+  border-radius: 16px;
+  text-align: left;
+}
+.pricing-iap h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.pricing-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 10px 0 16px;
+}
+.pricing-amount {
+  font-size: clamp(28px, 5vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.pricing-kind {
+  color: var(--yohaku-soft);
+  font-family: var(--sans);
+  font-size: 12px;
+}
+.pricing-iap-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.pricing-iap-list li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+.pricing-iap-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  opacity: 0.55;
+}
+
 .pricing-note,
 .pricing-env {
   margin: 0 0 12px;

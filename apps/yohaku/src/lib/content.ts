@@ -48,8 +48,8 @@ export const descriptions: Record<Page, [string, string]> = {
     "Yohaku Privacy Policy: on-device storage, Google Mobile Ads, and support.",
   ],
   terms: [
-    "Yohakuの利用規約。無料機能、広告、応援購入、データの管理について。",
-    "Yohaku Terms of Use covering free features, ads, support purchase, and data.",
+    "Yohakuの利用規約。無料機能、広告、広告削除のアプリ内課金、データの管理について。",
+    "Yohaku Terms of Use covering free features, ads, the ad-removal in-app purchase, and data.",
   ],
   updates: [
     "Yohaku公式ブランドサイト公開のお知らせ。",
@@ -74,7 +74,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "4. 広告",
-          "本アプリは広告表示のためGoogle Mobile Ads SDKを使用します。無料版では、Today・Week・Monthなどの画面にアンカー型バナー広告が表示される場合があります。\n\n広告配信事業者（Googleおよび広告配信パートナー）は、広告の配信、効果測定、不正防止等のため、端末情報、IPアドレス、IPアドレスから推定されるおおよその地域、広告識別子、広告への反応、広告の表示・クリック情報、診断情報、同意状況、プライバシー選択などを取り扱う場合があります。取扱いはGoogleのプライバシーポリシーおよび利用者の同意設定に従います。\n\n運営者は、余白の名前・日時や、問い合わせで入力された氏名・メールアドレスを、広告目的で広告配信事業者へ提供しません。",
+          "本アプリは広告表示のためGoogle Mobile Ads SDKを使用します。本アプリは初回リリースより広告を掲載しており、無料版では、Today・Week・Monthなどの画面にアンカー型バナー広告が表示されます。\n\n広告配信事業者（Googleおよび広告配信パートナー）は、広告の配信、効果測定、不正防止等のため、端末情報、IPアドレス、IPアドレスから推定されるおおよその地域、広告識別子、広告への反応、広告の表示・クリック情報、診断情報、同意状況、プライバシー選択などを取り扱う場合があります。取扱いはGoogleのプライバシーポリシーおよび利用者の同意設定に従います。\n\n運営者は、余白の名前・日時や、問い合わせで入力された氏名・メールアドレスを、広告目的で広告配信事業者へ提供しません。",
         ],
         [
           "5. 広告の同意とプライバシー設定",
@@ -82,7 +82,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "6. アプリ内課金",
-          "非消耗型の一回払い商品「広告を永久に削除」は、AppleのStoreKitを通じて処理されます。Appleが決済を処理し、運営者はクレジットカード情報を取得しません。アプリが確認するのは広告削除に必要な購入権利のみです。購入履歴、返金、Apple Account情報はAppleが管理します。購入復元に対応しています。サブスクリプションではありません。",
+          "非消耗型の一回払い商品「広告を永久に削除」（¥300・税込）は、AppleのStoreKitを通じて処理されます。Appleが決済を処理し、運営者はクレジットカード情報を取得しません。アプリが確認するのは広告削除に必要な購入権利のみです。購入履歴、返金、Apple Account情報はAppleが管理します。購入復元に対応しています。サブスクリプションではありません。",
         ],
         [
           "7. 通知",
@@ -140,7 +140,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "4. Advertising",
-          "The App uses the Google Mobile Ads SDK. The free version may show anchored banner ads on screens such as Today, Week and Month.\n\nGoogle and advertising partners may process information needed to deliver and measure ads and prevent fraud, such as device details, IP address, approximate region derived from IP, advertising identifiers, ad interactions, impression/click data, diagnostics, consent status and privacy choices. Handling follows Google’s privacy policy and your consent choices.\n\nThe Operator does not provide space names/times, or support-form names/emails, to advertising providers for advertising purposes.",
+          "The App uses the Google Mobile Ads SDK. The App carries advertising from its first release: in the free version, an anchored banner ad appears on screens such as Today, Week and Month.\n\nGoogle and advertising partners may process information needed to deliver and measure ads and prevent fraud, such as device details, IP address, approximate region derived from IP, advertising identifiers, ad interactions, impression/click data, diagnostics, consent status and privacy choices. Handling follows Google’s privacy policy and your consent choices.\n\nThe Operator does not provide space names/times, or support-form names/emails, to advertising providers for advertising purposes.",
         ],
         [
           "5. Consent and privacy settings",
@@ -148,7 +148,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "6. In-app purchases",
-          "The non-consumable one-time product “Remove ads permanently” is processed through Apple’s StoreKit. Apple handles payment; the Operator never receives card details. The App only checks the entitlement needed to remove ads. Purchase history, refunds and Apple Account data are managed by Apple. Restore purchases is supported. This is not a subscription.",
+          "The non-consumable one-time product “Remove ads permanently” (¥300, tax included) is processed through Apple’s StoreKit. Apple handles payment; the Operator never receives card details. The App only checks the entitlement needed to remove ads. Purchase history, refunds and Apple Account data are managed by Apple. Restore purchases is supported. This is not a subscription.",
         ],
         [
           "7. Notifications",
@@ -206,11 +206,11 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第3条（広告）",
-          "無料版では、一部の画面にバナー広告が表示される場合があります。広告は操作を大きく妨げないことを目指していますが、常に完全な非干渉を保証するものではありません。広告配信には外部事業者（Google Mobile Ads）を利用します。",
+          "本アプリは初回リリースより広告を掲載しています。無料版では、Today・Week・Monthなどの画面にアンカー型バナー広告が表示されます。広告は操作を大きく妨げないことを目指していますが、常に完全な非干渉を保証するものではありません。広告配信には外部事業者（Google Mobile Ads）を利用し、広告の内容および表示順は運営者が個別に選定するものではありません。第4条の「広告を永久に削除」を購入した場合、広告は表示されません。",
         ],
         [
-          "第4条（応援購入）",
-          "非消耗型の一回払い「広告を永久に削除」を購入すると、開発への応援のお礼として広告が永久に削除されます。基本機能が追加されるものではなく、サブスクリプションでもありません。購入・復元・返金はAppleの条件に従い、価格はApp Store上の表示が正しいものとします。",
+          "第4条（アプリ内課金）",
+          "本アプリは、非消耗型の一回払い商品「広告を永久に削除」（¥300・税込）を提供します。購入すると、開発への応援のお礼として広告が永久に表示されなくなります。基本機能が追加されるものではなく、サブスクリプションでも、有効期限のある商品でもありません。\n\n同じApple Accountを利用している場合、設定画面から購入を復元できます。購入・復元・返金はAppleの条件に従い、返金の可否および手続きはAppleが判断します。価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。",
         ],
         [
           "第5条（利用許諾）",
@@ -268,11 +268,11 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 3 — Advertising",
-          "The free version may show banner ads on some screens. Ads are intended to stay unobtrusive, but complete non-interference is not guaranteed. Advertising uses an external provider (Google Mobile Ads).",
+          "The App carries advertising from its first release. In the free version, an anchored banner ad appears on screens such as Today, Week and Month. Ads are intended to stay unobtrusive, but complete non-interference is not guaranteed. Advertising uses an external provider (Google Mobile Ads), and the Operator does not individually select which ads appear or in what order. Ads do not appear after the “Remove ads permanently” purchase described in Article 4.",
         ],
         [
-          "Article 4 — Support purchase",
-          "A non-consumable one-time purchase, “Remove ads permanently”, permanently removes ads as a thank-you for supporting development. It does not unlock extra core features and is not a subscription. Purchases, restores and refunds follow Apple’s terms; the price shown on the App Store is authoritative.",
+          "Article 4 — In-app purchase",
+          "The App offers one non-consumable, one-time product: “Remove ads permanently” (¥300, tax included). Buying it permanently stops ads as a thank-you for supporting development. It does not unlock extra core features, and it is neither a subscription nor a product that expires.\n\nOn the same Apple Account, the purchase can be restored from Settings. Purchases, restores and refunds follow Apple’s terms, and Apple decides whether a refund is granted. The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative.",
         ],
         [
           "Article 5 — License",

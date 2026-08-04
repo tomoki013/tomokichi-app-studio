@@ -1,7 +1,7 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
-import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 
 type Locale = "ja" | "en";
@@ -65,7 +65,9 @@ const features = ja
       ["Always close with widgets", "Keep the countdown on the Home Screen and Lock Screen."],
       ["Save reunions in albums", "Keep a reunion photo and reflection in an album you can revisit later."],
     ];
-const featureImages = ["countdown", "map", "memory", "list", "widget", "album"];
+// One real screen per feature; `null` keeps the widget illustration, since a
+// Home Screen widget cannot be captured from inside the app.
+const featureScreens = ["home", "home", "memories", "wishes", null, "album"] as const;
 const steps = ja
   ? [
       ["1", "再会予定を作る", "場所と、次に会える日を設定します。"],
@@ -112,20 +114,7 @@ const jsonLd = JSON.stringify({
         </div>
       </div>
       <div class="home-phone-picture">
-        <PhoneFrame size="lg">
-          <picture>
-            <source srcset="/assets/app-phone.webp" type="image/webp" />
-            <img
-              class="home-phone"
-              src="/assets/app-phone.png"
-              alt={ja ? "Remeetのホーム画面。再会までのカウントダウンとルートイラスト" : "Remeet home screen showing the reunion countdown and route illustration"}
-              width="941"
-              height="1672"
-              fetchpriority="high"
-              decoding="async"
-            />
-          </picture>
-        </PhoneFrame>
+        <AppScreen screen="home" size="lg" lang={lang} priority />
       </div>
     </div>
   </section>
@@ -141,18 +130,22 @@ const jsonLd = JSON.stringify({
               <h3>{title}</h3>
               <p>{body}</p>
             </div>
-            <figure class:list={["feature-shot", featureImages[i] === "widget" && "is-wide"]}>
-              <picture>
-                <source srcset={`/assets/feature-${featureImages[i]}.webp`} type="image/webp" />
-                <img
-                  src={`/assets/feature-${featureImages[i]}.png`}
-                  alt={title}
-                  width={featureImages[i] === "widget" ? 1448 : 941}
-                  height={featureImages[i] === "widget" ? 1086 : 1672}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </picture>
+            <figure class:list={["feature-shot", featureScreens[i] === null && "is-wide"]}>
+              {featureScreens[i] ? (
+                <AppScreen screen={featureScreens[i]} size="sm" lang={lang} />
+              ) : (
+                <picture>
+                  <source srcset="/assets/feature-widget.webp" type="image/webp" />
+                  <img
+                    src="/assets/feature-widget.png"
+                    alt={title}
+                    width="1448"
+                    height="1086"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              )}
             </figure>
           </article>
         ))}

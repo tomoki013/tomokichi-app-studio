@@ -259,8 +259,11 @@ export function steps(ja: boolean) {
 export type Guide = {
   icon: string;
   title: string;
-  image: string;
-  imageAlt: string;
+  /** The real app screen this step happens on. */
+  screen?: "home" | "memories" | "wishes" | "album" | "settings";
+  /** Illustration, for the widget steps that cannot be captured in-app. */
+  image?: string;
+  imageAlt?: string;
   steps: string[];
   note?: string;
 };
@@ -271,8 +274,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "phone",
           title: "初回設定",
-          image: "/assets/couple.png",
-          imageAlt: "Remeetの初回オンボーディング画面",
+          screen: "home",
           steps: [
             "アプリを開くと、はじめに世界観の紹介が表示されます。",
             "続いて、最初の再会予定（名前・場所・日付）を入力します。",
@@ -283,8 +285,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "calendar",
           title: "再会予定の作成",
-          image: "/assets/feature-countdown.png",
-          imageAlt: "再会予定作成後のホーム画面",
+          screen: "home",
           steps: [
             "ホーム上部の予定名をタップします。",
             "「新しい再会をつくる」を選びます。",
@@ -294,8 +295,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "edit",
           title: "再会予定の編集",
-          image: "/assets/feature-map.png",
-          imageAlt: "再会予定とルートイラストが表示されたホーム画面",
+          screen: "home",
           steps: [
             "ホームの編集ボタンを開きます。",
             "日付・時刻・場所・名前などを変更します。",
@@ -305,8 +305,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "camera",
           title: "待っている間の記録",
-          image: "/assets/feature-memory.png",
-          imageAlt: "待っている間の記録画面",
+          screen: "memories",
           steps: [
             "ホームから「写真やメモを追加」を開きます。",
             "写真を選び、メモを添えて保存します。",
@@ -316,8 +315,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "checklist",
           title: "会ったらやりたいことの追加",
-          image: "/assets/feature-list.png",
-          imageAlt: "会ったらやりたいことリスト画面",
+          screen: "wishes",
           steps: [
             "ホームから「やりたいことを追加」を開きます。",
             "タイトル、メモ、写真を追加して保存します。",
@@ -327,8 +325,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "reunion",
           title: "再会当日の記録",
-          image: "/assets/feature-album.png",
-          imageAlt: "再会記録とアルバムの画面",
+          screen: "album",
           steps: [
             "再会時刻になると、再会画面へ切り替わります。",
             "写真と振り返りを残して完了します。",
@@ -338,8 +335,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "album",
           title: "アルバムの確認",
-          image: "/assets/feature-album.png",
-          imageAlt: "再会アルバム一覧",
+          screen: "album",
           steps: [
             "下部の「アルバム」タブを開きます。",
             "完了した再会を選ぶと、写真と振り返りを見返せます。",
@@ -371,8 +367,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "bell",
           title: "通知設定",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeetホーム画面（通知設定は設定タブから）",
+          screen: "settings",
           steps: [
             "下部の「設定」タブを開きます。",
             "「通知」を開きます。",
@@ -383,8 +378,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "calendar",
           title: "カレンダーへの追加",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeetホーム画面（カレンダー追加は設定から）",
+          screen: "settings",
           steps: [
             "「設定」を開きます。",
             "「カレンダー」をタップします。",
@@ -394,8 +388,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "globe",
           title: "表示言語の変更",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeetの画面（言語はiOS設定から変更）",
+          screen: "settings",
           steps: [
             "iOSの「設定」アプリを開きます。",
             "「Remeet」を選びます。",
@@ -405,8 +398,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "export",
           title: "データ概要の書き出し",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeetの設定関連画面イメージ",
+          screen: "settings",
           steps: [
             "「設定」→「データ管理」を開きます。",
             "「データ概要を書き出す」を選びます。",
@@ -417,8 +409,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "trash",
           title: "すべてのデータの削除",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeetのデータ管理画面イメージ",
+          screen: "settings",
           steps: [
             "「設定」→「データ管理」を開きます。",
             "「すべてのデータを削除」を選びます。",
@@ -431,8 +422,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "phone",
           title: "First setup",
-          image: "/assets/couple.png",
-          imageAlt: "Remeet first-run onboarding screen",
+          screen: "home",
           steps: [
             "Open the app to see a short introduction.",
             "Create your first reunion with names, places and a date.",
@@ -443,8 +433,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "calendar",
           title: "Create a reunion",
-          image: "/assets/feature-countdown.png",
-          imageAlt: "Home screen after creating a reunion",
+          screen: "home",
           steps: [
             "Tap the plan name at the top of Home.",
             "Choose “Create a new reunion”.",
@@ -454,8 +443,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "edit",
           title: "Edit a reunion",
-          image: "/assets/feature-map.png",
-          imageAlt: "Home screen with reunion details and route illustration",
+          screen: "home",
           steps: [
             "Open the edit control on Home.",
             "Change the date, time, places or names.",
@@ -465,8 +453,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "camera",
           title: "Memories while apart",
-          image: "/assets/feature-memory.png",
-          imageAlt: "Waiting memories screen",
+          screen: "memories",
           steps: [
             "From Home, open “Add photo or note”.",
             "Choose a photo, add a note, and save.",
@@ -476,8 +463,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "checklist",
           title: "Add things to do",
-          image: "/assets/feature-list.png",
-          imageAlt: "Wish list screen",
+          screen: "wishes",
           steps: [
             "From Home, open “Add something to do”.",
             "Add a title, optional note and photo, then save.",
@@ -487,8 +473,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "reunion",
           title: "Capture reunion day",
-          image: "/assets/feature-album.png",
-          imageAlt: "Reunion capture and album screen",
+          screen: "album",
           steps: [
             "When reunion time arrives, the reunion screen opens.",
             "Save a photo and reflection to finish.",
@@ -498,8 +483,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "album",
           title: "Browse albums",
-          image: "/assets/feature-album.png",
-          imageAlt: "Reunion album list",
+          screen: "album",
           steps: [
             "Open the “Album” tab.",
             "Select a completed reunion to revisit its photo and reflection.",
@@ -531,8 +515,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "bell",
           title: "Notification settings",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeet home screen; notifications live in Settings",
+          screen: "settings",
           steps: [
             "Open the Settings tab.",
             "Open Notifications.",
@@ -543,8 +526,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "calendar",
           title: "Add to Calendar",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeet home screen; calendar export lives in Settings",
+          screen: "settings",
           steps: [
             "Open Settings.",
             "Tap Calendar.",
@@ -554,8 +536,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "globe",
           title: "Change the language",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeet screen; language is changed in iOS Settings",
+          screen: "settings",
           steps: [
             "Open the iOS Settings app.",
             "Select Remeet.",
@@ -565,8 +546,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "export",
           title: "Export a data summary",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeet settings imagery",
+          screen: "settings",
           steps: [
             "Open Settings → Data management.",
             "Choose Export data summary.",
@@ -577,8 +557,7 @@ export function guides(ja: boolean): Guide[] {
         {
           icon: "trash",
           title: "Delete all data",
-          image: "/assets/app-phone.png",
-          imageAlt: "Remeet data management imagery",
+          screen: "settings",
           steps: [
             "Open Settings → Data management.",
             "Choose Delete all data.",

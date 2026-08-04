@@ -5,8 +5,12 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: SITE_ORIGINS.main,
   // English is served from the root; Japanese lives under /ja.
-  // The old /en/* URLs, and the retired Principles page, redirect accordingly.
+  // The old /en/* URLs, the retired Principles page, and /apps — which became
+  // /products when the site stopped being an app list — redirect accordingly.
   redirects: {
+    "/apps": "/products",
+    "/ja/apps": "/ja/products",
+    "/en/apps": "/products",
     "/principles": "/about#approach",
     "/philosophy": "/about#approach",
     "/ja/principles": "/ja/about#approach",
@@ -14,7 +18,6 @@ export default defineConfig({
     "/en": "/",
     "/en/principles": "/about#approach",
     "/en/philosophy": "/about#approach",
-    "/en/apps": "/apps",
     "/en/about": "/about",
     "/en/privacy": "/privacy",
     "/en/terms": "/terms",

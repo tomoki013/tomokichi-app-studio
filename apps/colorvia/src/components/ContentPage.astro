@@ -1,4 +1,6 @@
 ---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import {
   descriptions,
@@ -12,8 +14,6 @@ import {
   termsSections,
   titles,
 } from "../lib/content";
-import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
-import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import AppShell from "./AppShell.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };

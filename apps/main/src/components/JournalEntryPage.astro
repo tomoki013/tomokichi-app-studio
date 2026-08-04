@@ -1,0 +1,81 @@
+---
+import { render } from "astro:content";
+import type { Locale } from "../data/apps";
+import { orderedApps } from "../data/apps";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { journal } from "../lib/copy";
+import {
+  categoryLabels,
+  entrySlug,
+  formatDate,
+  type JournalEntry,
+  relatedEntries,
+} from "../lib/journal";
+import ArrowLink from "./ArrowLink.astro";
+import JournalCard from "./JournalCard.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+
+const { lang, entry } = Astro.props as { lang: Locale; entry: JournalEntry };
+const { Content } = await render(entry);
+const { title, date, category, summary, products } = entry.data;
+
+const base = lang === "ja" ? "/ja" : "";
+const bornFrom = products
+  .map((slug) => orderedApps.find((app) => app.slug === slug))
+  .filter((app): app is NonNullable<typeof app> => Boolean(app));
+const alsoRead = await relatedEntries(entry, lang);
+---
+
+<BaseLayout lang={lang} title={`${title} — Tomokichi`} description={summary}>
+  <div class="site">
+    <SiteHeader lang={lang} path={`/journal/${entrySlug(entry)}`} current="journal" />
+
+    <main>
+      <article class="entry shell">
+        <header class="entry-head">
+          <p class="journal-meta">
+            <time datetime={date.toISOString().slice(0, 10)}>{formatDate(date, lang)}</time>
+            <span class="journal-dot" aria-hidden="true">·</span>
+            <span>{categoryLabels[category][lang]}</span>
+          </p>
+          <h1>{title}</h1>
+        </header>
+
+        <div class="entry-body">
+          <Content />
+        </div>
+
+        {bornFrom.length > 0 && (
+          <aside class="entry-born">
+            <h2>{journal.bornFrom[lang]}</h2>
+            <ul>
+              {bornFrom.map((app) => (
+                <li>
+                  <a href={`${base}/products#${app.slug}`}>
+                    <span>{app.name}</span>
+                    <span class="arrow" aria-hidden="true">→</span>
+                  </a>
+                  <p>{app.origin ? app.origin[lang] : app.tagline[lang]}</p>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
+
+        {alsoRead.length > 0 && (
+          <aside class="entry-related">
+            <h2>{journal.alsoRead[lang]}</h2>
+            {alsoRead.map((related) => <JournalCard entry={related} lang={lang} />)}
+          </aside>
+        )}
+
+        <footer class="entry-foot">
+          <ArrowLink href={`${base}/journal`} label={journal.back[lang]} soft />
+        </footer>
+      </article>
+    </main>
+
+    <SiteFooter lang={lang} />
+  </div>
+</BaseLayout>

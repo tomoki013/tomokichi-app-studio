@@ -1,0 +1,14 @@
+---
+import type { GetStaticPaths } from "astro";
+import JournalEntryPage from "../../components/JournalEntryPage.astro";
+import { entrySlug, journalEntries } from "../../lib/journal";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const entries = await journalEntries("en");
+  return entries.map((entry) => ({ params: { slug: entrySlug(entry) }, props: { entry } }));
+};
+
+const { entry } = Astro.props;
+---
+
+<JournalEntryPage lang="en" entry={entry} />

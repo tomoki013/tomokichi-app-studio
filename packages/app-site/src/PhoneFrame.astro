@@ -1,31 +1,60 @@
 ---
+/**
+ * An iPhone 17 Pro device frame around a real app screenshot.
+ *
+ * Pass an `<img>` or `<picture>` as the default slot — sized for a 1320x2868
+ * capture, which is what the app repos' `AppStoreScreenshotTests` produce.
+ *
+ * The side buttons are rendered before the body so the body's own background
+ * covers the half of each that sits behind the rail, leaving only the
+ * protruding half visible.
+ */
 import "./phone-frame.css";
 
-type Size = "sm" | "md" | "lg";
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
+type Tone = "titanium" | "graphite";
 
 const {
   size = "md",
-  alt = "",
   class: className = "",
   label = "",
+  tone = "titanium",
+  glare = true,
 } = Astro.props as {
   size?: Size;
-  alt?: string;
   class?: string;
   /** Optional caption shown above the frame */
   label?: string;
+  /** Body finish of the device shell */
+  tone?: Tone;
+  /** Subtle diagonal screen reflection */
+  glare?: boolean;
 };
 ---
 
-<figure class:list={["app-phone-frame", `app-phone-frame--${size}`, className]}>
+<figure
+  class:list={[
+    "app-phone-frame",
+    `app-phone-frame--${size}`,
+    `app-phone-frame--${tone}`,
+    className,
+  ]}
+>
   {label && <figcaption class="app-phone-frame-label">{label}</figcaption>}
-  <div class="app-phone-frame-shell">
-    <div class="app-phone-frame-notch" aria-hidden="true"></div>
-    <div class="app-phone-frame-screen">
-      <slot>
-        {/* Prefer passing <img> or <picture> as the default slot */}
-      </slot>
+  <div class="app-phone-frame-device">
+    <span class="app-phone-frame-button app-phone-frame-button--action" aria-hidden="true"></span>
+    <span class="app-phone-frame-button app-phone-frame-button--volume-up" aria-hidden="true"></span>
+    <span class="app-phone-frame-button app-phone-frame-button--volume-down" aria-hidden="true"></span>
+    <span class="app-phone-frame-button app-phone-frame-button--power" aria-hidden="true"></span>
+    <div class="app-phone-frame-body">
+      <div class="app-phone-frame-bezel">
+        <div class="app-phone-frame-screen">
+          <slot />
+          <span class="app-phone-frame-island" aria-hidden="true"></span>
+          <span class="app-phone-frame-home" aria-hidden="true"></span>
+          {glare && <span class="app-phone-frame-glare" aria-hidden="true"></span>}
+        </div>
+      </div>
     </div>
-    <div class="app-phone-frame-home" aria-hidden="true"></div>
   </div>
 </figure>

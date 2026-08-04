@@ -1,4 +1,5 @@
 ---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import {
   faqs as faqList,
   features as featureList,
@@ -14,9 +15,8 @@ import {
   termsSections,
   titleMap,
 } from "../lib/content";
-import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
-import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { supportHref } from "../lib/links";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
@@ -61,23 +61,23 @@ const planIncludes = ja
       "On-device storage",
     ];
 
-const screenshots = ja
-  ? [
-      { src: "/assets/feature-countdown.png", alt: "再会までのカウントダウン画面", label: "カウントダウン" },
-      { src: "/assets/feature-map.png", alt: "ルートイラストのホーム画面", label: "ルートイラスト" },
-      { src: "/assets/feature-memory.png", alt: "待っている間の記録", label: "待っている間の記録" },
-      { src: "/assets/feature-list.png", alt: "会ったらやりたいことリスト", label: "やりたいこと" },
-      { src: "/assets/feature-album.png", alt: "再会アルバム", label: "アルバム" },
-      { src: "/assets/feature-widget.png", alt: "ホーム画面とロック画面のウィジェット", label: "ウィジェット" },
-    ]
-  : [
-      { src: "/assets/feature-countdown.png", alt: "Reunion countdown screen", label: "Countdown" },
-      { src: "/assets/feature-map.png", alt: "Home screen with route illustration", label: "Route illustration" },
-      { src: "/assets/feature-memory.png", alt: "Waiting memories", label: "Memories" },
-      { src: "/assets/feature-list.png", alt: "Wish list", label: "Wish list" },
-      { src: "/assets/feature-album.png", alt: "Reunion album", label: "Album" },
-      { src: "/assets/feature-widget.png", alt: "Home Screen and Lock Screen widgets", label: "Widgets" },
-    ];
+const screenshots = (
+  ja
+    ? [
+        ["home", "ホーム"],
+        ["memories", "待っている間の記録"],
+        ["wishes", "やりたいこと"],
+        ["album", "アルバム"],
+        ["settings", "設定"],
+      ]
+    : [
+        ["home", "Home"],
+        ["memories", "Memories"],
+        ["wishes", "Wish list"],
+        ["album", "Album"],
+        ["settings", "Settings"],
+      ]
+) as ["home" | "memories" | "wishes" | "album" | "settings", string][];
 
 const heroEyebrow: Partial<Record<Page, string>> = {
   features: "FEATURES",
@@ -190,10 +190,10 @@ const newsPosts = ja
         <figure class="hero-art" aria-hidden="true">
           <span class="blob blob-a"></span>
           <span class="blob blob-b"></span>
-          {page === "features" && <img src="/assets/app-phone.png" alt="" width="941" height="1672" loading="lazy" decoding="async" />}
-          {page === "how-to" && <img src="/assets/feature-countdown.png" alt="" width="941" height="1672" loading="lazy" decoding="async" />}
+          {page === "features" && <AppScreen screen="home" size="sm" lang={lang} class="hero-art-screen" />}
+          {page === "how-to" && <AppScreen screen="wishes" size="sm" lang={lang} class="hero-art-screen" />}
           {page === "updates" && <img src="/assets/update-showcase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
-          {page === "screenshots" && <img src="/assets/app-phone.png" alt="" width="941" height="1672" loading="lazy" decoding="async" />}
+          {page === "screenshots" && <AppScreen screen="album" size="sm" lang={lang} class="hero-art-screen" />}
           {page === "widgets" && <img src="/assets/widget-showcase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
           {page === "faq" && <span class="hero-marks"><b>?</b><i>?</i></span>}
           {page === "pricing" && <img src="/assets/sky-vase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
@@ -255,7 +255,11 @@ const newsPosts = ja
                   {guide.note && <p class="guide-note">{guide.note}</p>}
                 </div>
                 <figure>
-                  <img src={guide.image} alt={guide.imageAlt} width="941" height="1672" loading="lazy" decoding="async" />
+                  {guide.screen ? (
+                    <AppScreen screen={guide.screen} size="sm" lang={lang} />
+                  ) : (
+                    <img src={guide.image} alt={guide.imageAlt} width="1448" height="1086" loading="lazy" decoding="async" />
+                  )}
                 </figure>
               </article>
             ))}
@@ -271,10 +275,8 @@ const newsPosts = ja
 
     {page === "screenshots" && (
       <div class="shot-gallery">
-        {screenshots.map((shot) => (
-          <PhoneFrame size="md" label={shot.label}>
-            <img src={shot.src} alt={shot.alt} width="941" height="1672" loading="lazy" decoding="async" />
-          </PhoneFrame>
+        {screenshots.map(([screen, label]) => (
+          <AppScreen screen={screen} size="md" lang={lang} label={label} />
         ))}
       </div>
     )}

@@ -1,10 +1,30 @@
+/*
+ * iPhone 17 Pro device frame.
+ *
+ * Every dimension is a ratio of the device's *used* width, expressed in `cqw`
+ * against `.app-phone-frame-device`, so the frame stays proportional when a
+ * flex or grid parent shrinks it below `--phone-w`. The ratios come from the
+ * real hardware:
+ *   screen         1320 x 2868 px  (also the aspect of every capture we ship)
+ *   side bezel     5.2% of the device width
+ *   screen radius  14% of the screen width
+ *   Dynamic Island 125 x 36.5 pt on a 393 pt wide screen
+ */
+
 .app-phone-frame {
-  --phone-w: 220px;
-  --phone-radius: 36px;
-  --phone-bezel: 9px;
-  --phone-notch-w: 88px;
-  --phone-notch-h: 22px;
+  --phone-w: 232px;
+  --phone-screen-ratio: 1320 / 2868;
+  --phone-rail: 0.9cqw;
+  --phone-bezel: 5.2cqw;
+  --phone-screen-w: 89.6cqw;
+  --phone-screen-radius: 12.54cqw;
+  --phone-radius: 17.74cqw;
+  --phone-shadow: 0 24px 48px -12px rgb(15 18 22 / 30%), 0 6px 16px -6px rgb(15 18 22 / 22%);
+
   margin: 0;
+  /* A definite width, not `min(…, 100%)`: the device below is a size container,
+     so its contents no longer supply an intrinsic width for a `%` to resolve
+     against. `max-width` still lets a flex or grid parent shrink the frame. */
   width: var(--phone-w);
   max-width: 100%;
   display: grid;
@@ -12,69 +32,100 @@
   gap: 12px;
 }
 
+.app-phone-frame--xs {
+  --phone-w: 132px;
+}
+
 .app-phone-frame--sm {
-  --phone-w: 168px;
-  --phone-radius: 30px;
-  --phone-bezel: 7px;
-  --phone-notch-w: 68px;
-  --phone-notch-h: 18px;
+  --phone-w: 176px;
 }
 
 .app-phone-frame--md {
-  --phone-w: 220px;
-  --phone-radius: 36px;
-  --phone-bezel: 9px;
+  --phone-w: 232px;
 }
 
 .app-phone-frame--lg {
-  --phone-w: 280px;
-  --phone-radius: 42px;
-  --phone-bezel: 10px;
-  --phone-notch-w: 104px;
-  --phone-notch-h: 24px;
+  --phone-w: 292px;
+}
+
+.app-phone-frame--xl {
+  --phone-w: 360px;
 }
 
 .app-phone-frame-label {
-  color: var(--app-phone-frame-label, #888);
+  color: var(--app-phone-frame-label, #8a8a8a);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-align: center;
 }
 
-.app-phone-frame-shell {
+.app-phone-frame-device {
   position: relative;
   width: 100%;
-  padding: var(--phone-bezel);
-  border-radius: var(--phone-radius);
-  background: linear-gradient(160deg, #2a2a2a 0%, #111 45%, #000 100%);
-  box-shadow:
-    0 18px 40px rgb(0 0 0 / 16%),
-    inset 0 0 0 1px rgb(255 255 255 / 8%);
+  container-type: inline-size;
 }
 
-.app-phone-frame-notch {
-  position: absolute;
-  top: calc(var(--phone-bezel) + 8px);
-  left: 50%;
-  z-index: 2;
-  width: var(--phone-notch-w);
-  height: var(--phone-notch-h);
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: #0a0a0a;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 6%);
+/* --- Titanium rail ------------------------------------------------------- */
+
+.app-phone-frame-body {
+  position: relative;
+  padding: var(--phone-rail);
+  border-radius: var(--phone-radius);
+  background: var(--phone-rail-finish);
+  box-shadow: var(--phone-shadow);
+}
+
+.app-phone-frame--titanium {
+  --phone-rail-finish: linear-gradient(
+    148deg,
+    #f2eee7 0%,
+    #a29d95 9%,
+    #dedad2 19%,
+    #7e7a74 34%,
+    #cfcac2 48%,
+    #6f6c67 62%,
+    #c9c4bc 76%,
+    #8b8781 88%,
+    #ece8e1 100%
+  );
+  --phone-button-finish: linear-gradient(180deg, #b6b1a9, #85817b 55%, #a9a49c);
+}
+
+.app-phone-frame--graphite {
+  --phone-rail-finish: linear-gradient(
+    148deg,
+    #6d7075 0%,
+    #303338 10%,
+    #5a5d62 21%,
+    #232529 35%,
+    #4c4f54 49%,
+    #1e2024 63%,
+    #4a4d52 77%,
+    #2a2c30 89%,
+    #63666b 100%
+  );
+  --phone-button-finish: linear-gradient(180deg, #4b4e53, #26282c 55%, #43464b);
+}
+
+/* --- Black glass bezel --------------------------------------------------- */
+
+.app-phone-frame-bezel {
+  padding: calc(var(--phone-bezel) - var(--phone-rail));
+  border-radius: calc(var(--phone-radius) - var(--phone-rail));
+  background: #08090b;
 }
 
 .app-phone-frame-screen {
   position: relative;
   overflow: hidden;
-  border-radius: calc(var(--phone-radius) - var(--phone-bezel) + 2px);
-  background: #111;
-  aspect-ratio: 9 / 19.5;
+  border-radius: var(--phone-screen-radius);
+  background: #0d0e10;
+  aspect-ratio: var(--phone-screen-ratio);
+  isolation: isolate;
 }
 
-.app-phone-frame-screen > :is(img, picture),
+.app-phone-frame-screen > :is(img, picture, video, svg),
 .app-phone-frame-screen picture img {
   display: block;
   width: 100%;
@@ -83,20 +134,99 @@
   object-position: top center;
 }
 
-.app-phone-frame-home {
+/* --- Screen furniture ---------------------------------------------------- */
+
+/* Measured off a 1320 x 2868 simulator capture: the island occupies
+   x 475-845, y 42-151. Captures either leave it white (XCTest) or draw it
+   black (simctl), so the frame always paints its own. */
+.app-phone-frame-island {
   position: absolute;
-  bottom: calc(var(--phone-bezel) + 5px);
+  top: calc(var(--phone-screen-w) * 0.032);
   left: 50%;
   z-index: 2;
-  width: 34%;
-  height: 4px;
+  width: calc(var(--phone-screen-w) * 0.28);
+  height: calc(var(--phone-screen-w) * 0.083);
   transform: translateX(-50%);
   border-radius: 999px;
-  background: rgb(255 255 255 / 28%);
+  background: #000;
+}
+
+/* 139 x 5 pt, 8 pt above the bottom edge. Captures never bake this in. */
+.app-phone-frame-home {
+  position: absolute;
+  bottom: calc(var(--phone-screen-w) * 0.018);
+  left: 50%;
+  z-index: 2;
+  width: calc(var(--phone-screen-w) * 0.316);
+  height: max(2px, calc(var(--phone-screen-w) * 0.0114));
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgb(0 0 0 / 32%);
+  mix-blend-mode: multiply;
+}
+
+.app-phone-frame-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    128deg,
+    rgb(255 255 255 / 16%) 0%,
+    rgb(255 255 255 / 5%) 14%,
+    rgb(255 255 255 / 0%) 34%
+  );
+}
+
+/* --- Side buttons -------------------------------------------------------- */
+
+.app-phone-frame-button {
+  position: absolute;
+  width: 1.6cqw;
+  border-radius: 0.6cqw;
+  background: var(--phone-button-finish);
+}
+
+.app-phone-frame-button--action,
+.app-phone-frame-button--volume-up,
+.app-phone-frame-button--volume-down {
+  left: -0.8cqw;
+}
+
+.app-phone-frame-button--power {
+  right: -0.8cqw;
+}
+
+.app-phone-frame-button--action {
+  top: 15.5%;
+  height: 4.2%;
+}
+
+.app-phone-frame-button--volume-up {
+  top: 23%;
+  height: 7.2%;
+}
+
+.app-phone-frame-button--volume-down {
+  top: 32%;
+  height: 7.2%;
+}
+
+.app-phone-frame-button--power {
+  top: 25.5%;
+  height: 11%;
+}
+
+/* --- Themes -------------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  .app-phone-frame {
+    --phone-shadow: 0 24px 52px -14px rgb(0 0 0 / 62%), 0 4px 14px -6px rgb(0 0 0 / 48%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-phone-frame-shell {
-    box-shadow: 0 8px 20px rgb(0 0 0 / 12%);
+  .app-phone-frame {
+    --phone-shadow: 0 10px 24px -10px rgb(15 18 22 / 26%);
   }
 }

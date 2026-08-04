@@ -3,8 +3,10 @@ import type { Locale } from "../data/apps";
 import { featuredApps } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { home, principles, principlesHeading } from "../lib/copy";
+import { currentEntry, recentEntries } from "../lib/journal";
 import AppCard from "./AppCard.astro";
 import ArrowLink from "./ArrowLink.astro";
+import JournalCard from "./JournalCard.astro";
 import PrincipleItem from "./PrincipleItem.astro";
 import SectionHeader from "./SectionHeader.astro";
 import SiteFooter from "./SiteFooter.astro";
@@ -13,6 +15,9 @@ import SiteHeader from "./SiteHeader.astro";
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
 const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
+
+const current = await currentEntry(lang);
+const recent = await recentEntries(lang, 3);
 ---
 
 <BaseLayout lang={lang} title={home.metaTitle[lang]} description={home.hero.body[lang].replaceAll("\n", " ")}>
@@ -25,8 +30,8 @@ const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
           <h1>{home.hero.heading[lang]}</h1>
           <p class="lead">{home.hero.body[lang]}</p>
           <div class="hero-actions">
-            <ArrowLink href={p("/apps")} label={home.hero.cta[lang]} />
-            <ArrowLink href={p("/about")} label={home.hero.ctaSub[lang]} soft />
+            <ArrowLink href={p("/journal")} label={home.hero.cta[lang]} />
+            <ArrowLink href={p("/products")} label={home.hero.ctaSub[lang]} soft />
           </div>
         </div>
         <figure class="hero-visual">
@@ -37,8 +42,28 @@ const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
         </div>
       </section>
 
+      {current && (
+        <section class="home-current shell">
+          <SectionHeader title={home.currentHeading[lang]} />
+          <JournalCard entry={current} lang={lang} variant="current" />
+        </section>
+      )}
+
+      {recent.length > 0 && (
+        <section class="home-journal shell">
+          <SectionHeader
+            title={home.journalHeading[lang]}
+            linkHref={p("/journal")}
+            linkLabel={home.journalAll[lang]}
+          />
+          <div class="journal-rows">
+            {recent.map((entry) => <JournalCard entry={entry} lang={lang} />)}
+          </div>
+        </section>
+      )}
+
       <section class="home-apps shell">
-        <SectionHeader title={home.appsHeading[lang]} linkHref={p("/apps")} linkLabel={home.appsAll[lang]} />
+        <SectionHeader title={home.appsHeading[lang]} linkHref={p("/products")} linkLabel={home.appsAll[lang]} />
         <div class="app-grid">
           {featuredApps.map((app) => <AppCard app={app} lang={lang} variant="compact" />)}
         </div>
@@ -63,7 +88,7 @@ const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
       <section class="home-prefooter shell">
         <h2>{home.prefooter.heading[lang]}</h2>
         <p>{home.prefooter.body[lang]}</p>
-        <ArrowLink href={p("/apps")} label={home.appsAll[lang]} />
+        <ArrowLink href={p("/products")} label={home.appsAll[lang]} />
       </section>
     </main>
 

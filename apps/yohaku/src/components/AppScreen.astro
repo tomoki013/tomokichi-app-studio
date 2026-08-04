@@ -1,0 +1,86 @@
+---
+/**
+ * A real Yohaku screen inside the shared device frame.
+ *
+ * The images are unretouched iPhone 17 Pro Max captures produced by
+ * `AppStoreScreenshotTests` in the app repo and imported with
+ * `scripts/import-app-screenshots.mjs`, so what the site shows is what the app
+ * renders. Astro resizes them and emits WebP at build time.
+ */
+import { Image } from "astro:assets";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+
+type Screen = "today" | "week" | "month" | "settings-iap" | "add" | "reflection";
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
+
+const {
+  screen,
+  lang,
+  size = "md",
+  label = "",
+  priority = false,
+  class: className = "",
+} = Astro.props as {
+  screen: Screen;
+  lang: "ja" | "en";
+  size?: Size;
+  label?: string;
+  priority?: boolean;
+  class?: string;
+};
+
+const ja = lang === "ja";
+
+const alts: Record<Screen, [string, string]> = {
+  today: [
+    "Yohakuの今日の画面。その日に置いた余白がカードで並んでいる",
+    "Yohaku’s Today screen, with the day’s spaces listed as cards",
+  ],
+  week: [
+    "Yohakuの週の画面。各日の余白が黒い四角で並んでいる",
+    "Yohaku’s Week screen, with each day’s spaces shown as filled squares",
+  ],
+  month: [
+    "Yohakuの月の画面。余白のある日がカレンダー上の黒いマスになっている",
+    "Yohaku’s Month screen, with days that hold a space marked on the calendar",
+  ],
+  "settings-iap": [
+    "Yohakuの設定画面。広告を永久に削除する買い切り購入と外観・通知の設定",
+    "Yohaku’s Settings screen, showing the one-time ad-removal purchase alongside appearance and notification settings",
+  ],
+  add: [
+    "Yohakuの余白作成画面。名前の候補と日付・開始・終了時刻を選べる",
+    "Yohaku’s create screen, with suggested names and date, start and end times",
+  ],
+  reflection: [
+    "Yohakuの振り返りカード。終わった余白について一度だけ小さく尋ねる",
+    "Yohaku’s check-in card, asking once about a space that has ended",
+  ],
+};
+
+const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", {
+  eager: true,
+});
+const key = `../assets/screens/${lang}-${screen}.webp`;
+const image = screens[key]?.default;
+if (!image) {
+  throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
+}
+
+// The screen is 89.6% of the device width, so this is the widest the bitmap can
+// ever be laid out at — the frame only ever shrinks below its nominal size.
+const screenWidth: Record<Size, number> = { xs: 118, sm: 158, md: 208, lg: 262, xl: 323 };
+---
+
+<PhoneFrame size={size} label={label} class={className}>
+  <Image
+    src={image}
+    format="webp"
+    widths={[240, 360, 480, 640, 960]}
+    sizes={`${screenWidth[size]}px`}
+    alt={alts[screen][ja ? 0 : 1]}
+    loading={priority ? "eager" : "lazy"}
+    decoding="async"
+    fetchpriority={priority ? "high" : undefined}
+  />
+</PhoneFrame>

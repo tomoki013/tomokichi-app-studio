@@ -18,6 +18,12 @@
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "@tomokichi/tripory", "dev"],
       "port": 4323
+    },
+    {
+      "name": "yohaku",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tomokichi/yohaku", "dev"],
+      "port": 4325
     }
   ]
 }

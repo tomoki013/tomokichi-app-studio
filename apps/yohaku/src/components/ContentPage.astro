@@ -1,4 +1,5 @@
 ---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import {
   descriptions,
@@ -9,9 +10,8 @@ import {
   termsSections,
   titles,
 } from "../lib/content";
-import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
-import PhoneMock from "./PhoneMock.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
@@ -25,94 +25,94 @@ const featureBlocks = ja
       {
         heading: "今日の余白を、名前と時間で置く。",
         body: "何もしない時間、ぼーっとする時間、ゆっくりお茶を飲む時間。名前、日付、開始時刻、終了時刻を選び、今日の中に余白を置けます。1日に複数の余白を作成でき、後から編集や削除もできます。",
-        kind: "today" as const,
+        screen: "add" as const,
       },
       {
         heading: "その日の余白を、カードで見る。",
         body: "Today画面では、選択した日の余白をカードで確認できます。左右の操作やスワイプで日付を移動できます。余白の最中にタイマーや専用モードへ切り替わることはありません。",
-        kind: "today" as const,
+        screen: "today" as const,
       },
       {
         heading: "一週間の余白を、小さな印で見渡す。",
         body: "Week画面では、各日に置いた余白を黒い四角で表示します。余白がない日は輪郭だけの四角です。日をタップすると、その日のToday画面を開けます。",
-        kind: "week" as const,
+        screen: "week" as const,
       },
       {
         heading: "ひと月の余白を、カレンダーで振り返る。",
         body: "Month画面では、余白のある日が黒いマスとして残ります。月に置いた余白の数も確認できます。画像やアートを自動生成する機能ではありません。",
-        kind: "month" as const,
+        screen: "month" as const,
       },
       {
         heading: "余白の始まりを、そっと知らせる。",
         body: "通知を有効にすると、通常は登録した開始時刻の3〜7分前にお知らせします。余白を編集・削除すると、通知も自動的に更新されます。初期状態ではオフで、最初の余白作成時に許可を確認します。",
-        kind: "today" as const,
+        screen: "today" as const,
       },
       {
         heading: "終わったあとに、ひとことだけ。",
         body: "次にアプリを開いたとき、直近の余白について小さな確認カードが一度だけ表示されます。回答は任意で、閉じるか横に払っても再表示されません。回答は端末内にだけ保存されます。",
-        kind: "today" as const,
+        screen: "reflection" as const,
       },
       {
         heading: "白と黒を、自分の環境に合わせる。",
         body: "システム、ライト、ダークの3つから外観を選べます。",
-        kind: "week" as const,
+        screen: "settings-iap" as const,
       },
       {
         heading: "アカウントなしで、端末の中に。",
         body: "余白の記録は端末内に保存されます。アカウント登録やYohaku独自のクラウド同期はありません。",
-        kind: "month" as const,
+        screen: "month" as const,
       },
       {
         heading: "18の言語に対応。",
         body: "英語、日本語を含む18言語に対応しています。表示言語はiPhoneの設定に従います。",
-        kind: "today" as const,
+        screen: "today" as const,
       },
     ]
   : [
       {
         heading: "Leave space in your day with a name and time.",
         body: "Time for nothing, a slow cup of tea, or simply looking out the window. Choose a name, date, start time, and end time. Add more than one space in a day, then edit or remove it later.",
-        kind: "today" as const,
+        screen: "add" as const,
       },
       {
         heading: "See that day’s spaces as cards.",
         body: "On Today, review the spaces for the selected day and move between dates with the controls or a swipe. Yohaku does not switch to a timer or dedicated mode while a space is in progress.",
-        kind: "today" as const,
+        screen: "today" as const,
       },
       {
         heading: "Glance across a week of quiet marks.",
         body: "Week shows each day’s spaces as filled squares—outline only when empty. Tap a day to open its Today view.",
-        kind: "week" as const,
+        screen: "week" as const,
       },
       {
         heading: "Look back on a month through simple marks.",
         body: "Month marks days that have at least one space, and shows how many spaces you left that month. It does not generate art or patterns from your data.",
-        kind: "month" as const,
+        screen: "month" as const,
       },
       {
         heading: "A gentle notice before a space begins.",
         body: "When enabled, Yohaku normally reminds you three to seven minutes before a space. Edit or delete a space and its notification updates. Off by default; permission is requested when you create your first space.",
-        kind: "today" as const,
+        screen: "today" as const,
       },
       {
         heading: "One small question afterward.",
         body: "The next time you open the app, one small card may ask about your latest space. Answer, close, or swipe it away; it will not ask again. Responses stay on your device.",
-        kind: "today" as const,
+        screen: "reflection" as const,
       },
       {
         heading: "Match light and dark to your environment.",
         body: "Choose system, light, or dark appearance.",
-        kind: "week" as const,
+        screen: "settings-iap" as const,
       },
       {
         heading: "No account—on your device.",
         body: "Spaces stay on your iPhone. There is no Yohaku account or cloud sync.",
-        kind: "month" as const,
+        screen: "month" as const,
       },
       {
         heading: "Eighteen languages.",
         body: "Including English and Japanese. The display language follows your iPhone settings.",
-        kind: "today" as const,
+        screen: "today" as const,
       },
     ];
 
@@ -219,6 +219,15 @@ const faqs = ja
 const faqCats = ja
   ? [["all", "すべて"], ["base", "基本"], ["space", "余白"], ["notice", "通知"], ["data", "データ"], ["net", "通信"]]
   : [["all", "All"], ["base", "Basics"], ["space", "Spaces"], ["notice", "Notifications"], ["data", "Data"], ["net", "Network"]];
+
+const conceptScreens = [
+  { screen: "today" as const, label: ja ? "今日" : "Today" },
+  { screen: "week" as const, label: ja ? "週" : "Week" },
+  { screen: "month" as const, label: ja ? "月" : "Month" },
+  { screen: "add" as const, label: ja ? "余白を作る" : "Create" },
+  { screen: "reflection" as const, label: ja ? "振り返り" : "Check-in" },
+  { screen: "settings-iap" as const, label: ja ? "設定" : "Settings" },
+];
 
 const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
 
@@ -331,7 +340,7 @@ const newsPosts = ja
               <p>{block.body}</p>
             </div>
             <div class="feature-block-visual">
-              <PhoneMock kind={block.kind} size="md" lang={lang} />
+              <AppScreen screen={block.screen} size="md" lang={lang} />
             </div>
           </article>
         ))}
@@ -360,9 +369,9 @@ const newsPosts = ja
             : "Not another plan—just space. Yohaku is a small habit for leaving time with nothing planned, then looking back quietly."}
         </p>
         <div class="concept-phones">
-          <PhoneMock kind="today" size="md" lang={lang} />
-          <PhoneMock kind="week" size="md" lang={lang} />
-          <PhoneMock kind="month" size="md" lang={lang} />
+          {conceptScreens.map(({ screen, label }) => (
+            <AppScreen screen={screen} size="md" lang={lang} label={label} />
+          ))}
         </div>
         <div class="concept-ideas">
           {conceptIdeas.map((idea) => (
@@ -384,14 +393,14 @@ const newsPosts = ja
             {ja ? (
               <>
                 <p>Yohakuの基本機能は、すべて無料で利用できます。</p>
-                <p>無料版には、操作を妨げない控えめなバナー広告が表示される場合があります。</p>
+                <p>無料版では、Today・Week・Monthなどの画面に、操作を妨げない控えめなアンカー型バナー広告が表示されます。</p>
                 <p>一度きりの「広告を永久に削除」を購入すると、開発への応援のお礼として広告が表示されなくなります。</p>
                 <p>追加機能を解放する課金や、サブスクリプションではありません。</p>
               </>
             ) : (
               <>
                 <p>Every core feature in Yohaku is available for free.</p>
-                <p>The free version may show unobtrusive banner ads.</p>
+                <p>The free version shows an unobtrusive anchored banner ad on screens such as Today, Week and Month.</p>
                 <p>A one-time “Remove ads permanently” purchase removes ads as a thank-you for supporting development.</p>
                 <p>It does not unlock additional core features and is not a subscription.</p>
               </>
@@ -403,10 +412,33 @@ const newsPosts = ja
               : ["Create, edit and delete spaces", "Today / Week / Month", "Optional notices and check-ins", "18 languages", "On-device storage", "No account"]
             ).map((item) => <li>{item}</li>)}
           </ul>
+          <div class="pricing-iap">
+            <h3>{ja ? "広告を永久に削除" : "Remove ads permanently"}</h3>
+            <p class="pricing-price">
+              <span class="pricing-amount">¥300</span>
+              <span class="pricing-kind">{ja ? "買い切り（非消耗型）・税込" : "One-time (non-consumable), tax included"}</span>
+            </p>
+            <ul class="pricing-iap-list">
+              {(ja
+                ? [
+                    "アプリ内のすべての広告が表示されなくなります",
+                    "購入後は広告SDKを起動せず、原則としてトラッキング許可も求めません",
+                    "同じApple Accountなら、設定画面から購入を復元できます",
+                    "有効期限や更新はありません",
+                  ]
+                : [
+                    "Every ad in the app stops appearing",
+                    "After purchase the ads SDK does not start and tracking permission is generally not requested",
+                    "Restore from Settings on the same Apple Account",
+                    "No expiry, no renewal",
+                  ]
+              ).map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
           <p class="pricing-note">
             {ja
-              ? "価格はApp Store上の表示が正しいものとします。購入・復元・返金はAppleの条件に従います。"
-              : "The price shown on the App Store is authoritative. Purchases, restores and refunds follow Apple’s terms."}
+              ? "価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。購入・復元・返金はAppleの条件に従います。"
+              : "The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative. Purchases, restores and refunds follow Apple’s terms."}
           </p>
           <p class="pricing-env">
             {ja

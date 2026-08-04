@@ -1,8 +1,8 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
-import PhoneMock from "./PhoneMock.astro";
 
 const { lang } = Astro.props as { lang: "ja" | "en" };
 const ja = lang === "ja";
@@ -76,15 +76,15 @@ const jsonLd = JSON.stringify({
       <section class="hero-devices" aria-label={ja ? "YohakuのToday、Week、Month画面" : "Yohaku Today, Week and Month screens"}>
         <figure class="hero-device">
           <figcaption>{ja ? "今日" : "Today"}</figcaption>
-          <PhoneMock kind="today" size="md" lang={lang} />
+          <AppScreen screen="today" size="md" lang={lang} priority />
         </figure>
         <figure class="hero-device">
           <figcaption>{ja ? "週" : "Week"}</figcaption>
-          <PhoneMock kind="week" size="md" lang={lang} />
+          <AppScreen screen="week" size="md" lang={lang} priority />
         </figure>
         <figure class="hero-device">
           <figcaption>{ja ? "月" : "Month"}</figcaption>
-          <PhoneMock kind="month" size="md" lang={lang} />
+          <AppScreen screen="month" size="md" lang={lang} priority />
         </figure>
       </section>
     </div>
@@ -115,7 +115,7 @@ const jsonLd = JSON.stringify({
 
   <section class="story-section story-quiet section-pad" id="concept">
     <div class="story-visual" data-reveal>
-      <PhoneMock kind="today" size="lg" lang={lang} />
+      <AppScreen screen="today" size="lg" lang={lang} />
     </div>
     <div class="story-copy" data-reveal>
       <h2>{ja ? "静かに整える。" : "Settle, quietly."}</h2>
@@ -139,7 +139,7 @@ const jsonLd = JSON.stringify({
       </p>
     </div>
     <div class="story-visual" data-reveal>
-      <PhoneMock kind="month" size="lg" lang={lang} />
+      <AppScreen screen="month" size="lg" lang={lang} />
     </div>
   </section>
 
