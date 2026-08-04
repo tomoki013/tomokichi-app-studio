@@ -19,7 +19,7 @@ export const titles: Record<Page, [string, string]> = {
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Use"],
-  updates: ["ニュース", "News"],
+  updates: ["お知らせ", "Updates"],
 };
 
 export const descriptions: Record<Page, [string, string]> = {
@@ -52,8 +52,8 @@ export const descriptions: Record<Page, [string, string]> = {
     "Yohaku Terms of Use covering free features, ads, the ad-removal in-app purchase, and data.",
   ],
   updates: [
-    "Yohaku公式ブランドサイト公開のお知らせ。",
-    "News about the official Yohaku brand site launch.",
+    "Yohakuからのお知らせと、余白のある暮らしについてのコラム。",
+    "Product updates from Yohaku and columns about making room in everyday life.",
   ],
 };
 
@@ -82,7 +82,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "6. アプリ内課金",
-          "非消耗型の一回払い商品「広告を永久に削除」（¥300・税込）は、AppleのStoreKitを通じて処理されます。Appleが決済を処理し、運営者はクレジットカード情報を取得しません。アプリが確認するのは広告削除に必要な購入権利のみです。購入履歴、返金、Apple Account情報はAppleが管理します。購入復元に対応しています。サブスクリプションではありません。",
+          "非消耗型の一回払い商品「広告を永久に削除」（¥400・税込）は、AppleのStoreKitを通じて処理されます。Appleが決済を処理し、運営者はクレジットカード情報を取得しません。アプリが確認するのは広告削除に必要な購入権利のみです。購入履歴、返金、Apple Account情報はAppleが管理します。購入復元に対応しています。サブスクリプションではありません。",
         ],
         [
           "7. 通知",
@@ -148,7 +148,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "6. In-app purchases",
-          "The non-consumable one-time product “Remove ads permanently” (¥300, tax included) is processed through Apple’s StoreKit. Apple handles payment; the Operator never receives card details. The App only checks the entitlement needed to remove ads. Purchase history, refunds and Apple Account data are managed by Apple. Restore purchases is supported. This is not a subscription.",
+          "The non-consumable one-time product “Remove ads permanently” (¥400, tax included) is processed through Apple’s StoreKit. Apple handles payment; the Operator never receives card details. The App only checks the entitlement needed to remove ads. Purchase history, refunds and Apple Account data are managed by Apple. Restore purchases is supported. This is not a subscription.",
         ],
         [
           "7. Notifications",
@@ -210,7 +210,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第4条（アプリ内課金）",
-          "本アプリは、非消耗型の一回払い商品「広告を永久に削除」（¥300・税込）を提供します。購入すると、開発への応援のお礼として広告が永久に表示されなくなります。基本機能が追加されるものではなく、サブスクリプションでも、有効期限のある商品でもありません。\n\n同じApple Accountを利用している場合、設定画面から購入を復元できます。購入・復元・返金はAppleの条件に従い、返金の可否および手続きはAppleが判断します。価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。",
+          "本アプリは、非消耗型の一回払い商品「広告を永久に削除」（¥400・税込）を提供します。購入すると、開発への応援のお礼として広告が永久に表示されなくなります。基本機能が追加されるものではなく、サブスクリプションでも、有効期限のある商品でもありません。\n\n同じApple Accountを利用している場合、設定画面から購入を復元できます。購入・復元・返金はAppleの条件に従い、返金の可否および手続きはAppleが判断します。価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。",
         ],
         [
           "第5条（利用許諾）",
@@ -272,7 +272,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 4 — In-app purchase",
-          "The App offers one non-consumable, one-time product: “Remove ads permanently” (¥300, tax included). Buying it permanently stops ads as a thank-you for supporting development. It does not unlock extra core features, and it is neither a subscription nor a product that expires.\n\nOn the same Apple Account, the purchase can be restored from Settings. Purchases, restores and refunds follow Apple’s terms, and Apple decides whether a refund is granted. The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative.",
+          "The App offers one non-consumable, one-time product: “Remove ads permanently” (¥400, tax included). Buying it permanently stops ads as a thank-you for supporting development. It does not unlock extra core features, and it is neither a subscription nor a product that expires.\n\nOn the same Apple Account, the purchase can be restored from Settings. Purchases, restores and refunds follow Apple’s terms, and Apple decides whether a refund is granted. The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative.",
         ],
         [
           "Article 5 — License",

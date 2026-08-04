@@ -1,0 +1,68 @@
+---
+import type { Locale } from "../lib/content";
+import type { UpdatePost } from "../lib/updates";
+import { getUpdates, updateCategoryLabel } from "../lib/updates";
+import AppShell from "./AppShell.astro";
+
+const { lang, post } = Astro.props as { lang: Locale; post: UpdatePost };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const related = getUpdates(lang).filter((item) => item.slug !== post.slug).slice(0, 2);
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  datePublished: post.datetime,
+  dateModified: post.datetime,
+  description: post.summary,
+  inLanguage: ja ? "ja-JP" : "en",
+  author: { "@type": "Person", name: "Tomokichi" },
+});
+---
+
+<AppShell
+  lang={lang}
+  title={post.title}
+  description={post.summary}
+  page="updates"
+  routePath={`updates/${post.slug}`}
+  jsonLd={jsonLd}
+>
+  <div class="update-article-page">
+    <a class="update-back" href={`${base}/updates`}><span aria-hidden="true">←</span>{ja ? "お知らせ一覧へ" : "Back to updates"}</a>
+    <article class="update-article">
+      <header class="update-article-header">
+        <div class="update-article-meta">
+          <span class:list={["update-category", `is-${post.category}`]}>{updateCategoryLabel(lang, post.category)}</span>
+          <time datetime={post.datetime}>{post.date}</time>
+        </div>
+        <h1>{post.title}</h1>
+        <p>{post.summary}</p>
+      </header>
+      <div class="update-article-body">
+        {post.sections.map((section) => (
+          <section>
+            {section.heading && <h2>{section.heading}</h2>}
+            {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          </section>
+        ))}
+      </div>
+    </article>
+
+    <aside class="update-related" aria-labelledby="related-updates-title">
+      <div class="update-related-heading">
+        <p>{ja ? "もう少し読む" : "Keep reading"}</p>
+        <h2 id="related-updates-title">{ja ? "ほかの記事" : "More from Yohaku"}</h2>
+      </div>
+      <div class="update-related-grid">
+        {related.map((item) => (
+          <a href={`${base}/updates/${item.slug}`}>
+            <span>{updateCategoryLabel(lang, item.category)}</span>
+            <h3>{item.title}</h3>
+            <time datetime={item.datetime}>{item.date}</time>
+          </a>
+        ))}
+      </div>
+    </aside>
+  </div>
+</AppShell>

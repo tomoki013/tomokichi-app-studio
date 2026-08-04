@@ -1,0 +1,90 @@
+---
+import type { Locale } from "../lib/content";
+import { getUpdates, updateCategoryLabel } from "../lib/updates";
+
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const posts = getUpdates(lang);
+const categoryCounts = {
+  all: posts.length,
+  notice: posts.filter((post) => post.category === "notice").length,
+  column: posts.filter((post) => post.category === "column").length,
+};
+const tabs = [
+  { key: "all", label: ja ? "すべて" : "All", mark: "□" },
+  { key: "notice", label: ja ? "お知らせ" : "Updates", mark: "○" },
+  { key: "column", label: ja ? "コラム" : "Columns", mark: "◇" },
+] as const;
+---
+
+<div class="updates-page">
+  <div class="updates-intro">
+    <p>{ja
+      ? "Yohakuからのお知らせと、余白のある暮らしについて考えたこと。"
+      : "Product updates from Yohaku, and thoughts on making room in everyday life."}</p>
+  </div>
+
+  <nav class="updates-tabs" aria-label={ja ? "記事の種類" : "Article type"} data-update-tabs>
+    {tabs.map((tab, index) => (
+      <button type="button" data-category={tab.key} aria-pressed={index === 0 ? "true" : "false"}>
+        <span class="updates-tab-mark" aria-hidden="true">{tab.mark}</span>
+        <span>{tab.label}</span>
+        <span class="updates-tab-count">{categoryCounts[tab.key]}</span>
+      </button>
+    ))}
+  </nav>
+
+  <div class="updates-grid" data-update-list>
+    {posts.map((post, index) => (
+      <article class:list={["update-card", index === 0 && "is-featured"]} data-category={post.category}>
+        <a href={`${base}/updates/${post.slug}`}>
+          <div class="update-card-top">
+            <span class:list={["update-category", `is-${post.category}`]}>
+              {updateCategoryLabel(lang, post.category)}
+            </span>
+            <time datetime={post.datetime}>{post.date}</time>
+          </div>
+          <div class="update-card-copy">
+            <h2>{post.title}</h2>
+            <p>{post.summary}</p>
+          </div>
+          <span class="update-card-link">
+            {ja ? "読む" : "Read"}<span aria-hidden="true">↗</span>
+          </span>
+        </a>
+      </article>
+    ))}
+  </div>
+  <p class="updates-empty" data-update-empty hidden>{ja ? "この種類の記事はまだありません。" : "No articles in this category yet."}</p>
+</div>
+
+<script is:inline>
+  (() => {
+    const bindUpdateTabs = () => {
+      const tabs = document.querySelector("[data-update-tabs]");
+      const list = document.querySelector("[data-update-list]");
+      const empty = document.querySelector("[data-update-empty]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const cards = Array.from(list.querySelectorAll("[data-category]"));
+      tabs.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-category]");
+        if (!button) return;
+        const category = button.dataset.category;
+        let visible = 0;
+        cards.forEach((card) => {
+          const show = category === "all" || card.dataset.category === category;
+          card.hidden = !show;
+          if (show) visible += 1;
+        });
+        tabs.querySelectorAll("button").forEach((item) => {
+          item.setAttribute("aria-pressed", String(item === button));
+        });
+        if (empty) empty.hidden = visible > 0;
+      });
+    };
+    document.addEventListener("astro:page-load", bindUpdateTabs);
+    bindUpdateTabs();
+  })();
+</script>
