@@ -1,0 +1,141 @@
+---
+import { supportUrl } from "./urls";
+
+type Purchase = {
+  /** Display name, Japanese then English. */
+  name: [string, string];
+  /** Tax-inclusive price as shown on the App Store, e.g. "¥300". */
+  price: string;
+};
+
+const {
+  lang,
+  appName,
+  appSlug,
+  adSupported = false,
+  purchases = [],
+  lastUpdated = ["2026年8月1日", "August 1, 2026"],
+} = Astro.props as {
+  lang: "ja" | "en";
+  appName: string;
+  appSlug: string;
+  /** When true, price copy notes that the free app shows ads. */
+  adSupported?: boolean;
+  /** In-app purchases already on sale. Empty means the app ships free-only. */
+  purchases?: Purchase[];
+  /** Effective date of this disclosure, Japanese then English. */
+  lastUpdated?: [string, string];
+};
+const ja = lang === "ja";
+const hasPurchases = purchases.length > 0;
+const contactHref = supportUrl(appSlug, lang);
+
+const freeCopyJa = adSupported
+  ? `${appName}のダウンロードと基本機能の利用は無料です。無料版では、アプリ内の一部画面に広告が表示されます。`
+  : `${appName}のダウンロードと基本機能の利用は無料です。`;
+const freeCopyEn = adSupported
+  ? `Downloading ${appName} and using its core features is free. The free version shows ads on some screens.`
+  : `Downloading ${appName} and using its core features is free.`;
+
+const purchaseListJa = purchases
+  .map((purchase) => `「${purchase.name[0]}」${purchase.price}（税込・買い切り）`)
+  .join("、");
+const purchaseListEn = purchases
+  .map((purchase) => `“${purchase.name[1]}” ${purchase.price} (tax included, one-time)`)
+  .join(", ");
+
+const priceJa = hasPurchases
+  ? `${freeCopyJa}アプリ内課金：${purchaseListJa}。サブスクリプションはありません。価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。`
+  : `${freeCopyJa}将来、有料商品を提供する場合は、購入画面またはApp Storeの商品ページに税込価格を表示します。`;
+const priceEn = hasPurchases
+  ? `${freeCopyEn} In-app purchase: ${purchaseListEn}. There is no subscription. The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative.`
+  : `${freeCopyEn} If paid products are introduced, tax-inclusive prices will be shown on the purchase screen or App Store product page.`;
+
+const paymentJa = hasPurchases
+  ? "アプリ内課金は、Apple Accountに登録された支払方法により、購入確定時に決済されます。"
+  : "有料商品を提供する場合は、Apple Accountに登録された支払方法により、購入確定時に決済されます。";
+const paymentEn = hasPurchases
+  ? "In-app purchases are charged at confirmation using the payment method registered to your Apple Account."
+  : "If paid products are introduced, payment will be charged at confirmation using the payment method registered to your Apple Account.";
+
+const deliveryJa = hasPurchases
+  ? "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。アプリ内課金は、購入手続きの完了後、ただちに反映されます。同じApple Accountであれば、設定画面から購入を復元できます。"
+  : "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。有料機能を提供する場合は、購入手続き完了後に利用できます。";
+const deliveryEn = hasPurchases
+  ? "The app is available immediately after its App Store download completes. In-app purchases take effect as soon as the purchase completes, and can be restored from Settings on the same Apple Account."
+  : "The app is available immediately after its App Store download completes. Any future paid feature will become available after purchase is completed.";
+
+const returnsJa = hasPurchases
+  ? "デジタルコンテンツの性質上、提供開始後の返品・キャンセルには応じられません。返金の可否および手続きはAppleが定める条件に従い、Appleの返金請求ページからお申し込みください。法令に基づく場合を除きます。"
+  : "デジタルコンテンツの性質上、提供開始後の返品・キャンセルには応じられません。法令またはAppleの規定に基づく場合を除きます。";
+const returnsEn = hasPurchases
+  ? "Because the product is digital content, returns and cancellations are not accepted after delivery begins. Refunds follow Apple's terms and are requested through Apple's refund request page, except where required by law."
+  : "Because the product is digital content, returns and cancellations are not accepted after delivery begins, except where required by law or Apple's rules.";
+
+const rows = ja
+  ? [
+      ["販売事業者", "Tomokichi"],
+      ["運営責任者", "請求があった場合、遅滞なく開示します。"],
+      ["所在地・電話番号", "請求があった場合、遅滞なく開示します。"],
+      ["お問い合わせ", "support@tmkch.io"],
+      ["販売価格", priceJa],
+      ["商品代金以外の必要料金", "インターネット接続に必要な通信料等は、利用者の負担となります。"],
+      ["支払方法・支払時期", paymentJa],
+      ["サービスの提供時期", deliveryJa],
+      ["返品・キャンセル", returnsJa],
+      ["動作環境", "対応するOS・端末はApp Storeの商品ページに表示します。"],
+    ]
+  : [
+      ["Seller", "Tomokichi"],
+      ["Responsible operator", "Disclosed without delay upon request."],
+      ["Address and telephone number", "Disclosed without delay upon request."],
+      ["Contact", "support@tmkch.io"],
+      ["Price", priceEn],
+      ["Additional charges", "You are responsible for internet access and data charges."],
+      ["Payment method and timing", paymentEn],
+      ["Delivery", deliveryEn],
+      ["Returns and cancellations", returnsEn],
+      ["System requirements", "Supported operating systems and devices are listed on the App Store product page."],
+    ];
+---
+
+<section class="commercial-page">
+  <header class="commercial-intro">
+    <p class="commercial-eyebrow">LEGAL</p>
+    <h1>{ja ? "特定商取引法に基づく表記" : "Commercial Transactions Disclosure"}</h1>
+    <p>{ja ? `${appName}に関する販売条件と事業者情報を掲載しています。` : `Seller and transaction information for ${appName}.`}</p>
+  </header>
+
+  <dl class="commercial-list">
+    {rows.map(([term, description]) => (
+      <div>
+        <dt>{term}</dt>
+        <dd>
+          {term === (ja ? "お問い合わせ" : "Contact") ? (
+            <><a href="mailto:support@tmkch.io">{description}</a><span> · </span><a href={contactHref}>{ja ? "お問い合わせフォーム" : "Support form"}</a></>
+          ) : description}
+        </dd>
+      </div>
+    ))}
+  </dl>
+  <p class="commercial-updated">{ja ? `最終更新日：${lastUpdated[0]}` : `Last updated: ${lastUpdated[1]}`}</p>
+</section>
+
+<style>
+  .commercial-page { width: min(760px, calc(100% - 40px)); margin: 0 auto; padding: clamp(84px, 10vw, 128px) 0 clamp(80px, 10vw, 120px); }
+  .commercial-intro { margin-bottom: clamp(36px, 6vw, 58px); }
+  .commercial-eyebrow { margin: 0 0 14px; font-size: 10px; font-weight: 700; letter-spacing: .22em; opacity: .52; }
+  .commercial-intro h1 { margin: 0; font-size: clamp(30px, 5vw, 48px); font-weight: 500; line-height: 1.32; letter-spacing: -.035em; }
+  .commercial-intro > p:last-child { margin: 20px 0 0; line-height: 1.9; opacity: .68; }
+  .commercial-list { margin: 0; border-top: 1px solid currentColor; }
+  .commercial-list > div { display: grid; grid-template-columns: minmax(150px, 28%) 1fr; gap: 24px; padding: 23px 4px; border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
+  .commercial-list dt { font-size: 13px; font-weight: 650; line-height: 1.8; }
+  .commercial-list dd { margin: 0; font-size: 13px; line-height: 1.9; opacity: .78; }
+  .commercial-list a { color: inherit; text-underline-offset: 4px; }
+  .commercial-updated { margin: 24px 0 0; font-size: 11px; opacity: .52; }
+  @media (max-width: 600px) {
+    .commercial-page { width: min(100% - 32px, 760px); padding-top: 72px; }
+    .commercial-list > div { grid-template-columns: 1fr; gap: 7px; padding: 19px 2px; }
+    .commercial-list dt, .commercial-list dd { font-size: 12.5px; }
+  }
+</style>

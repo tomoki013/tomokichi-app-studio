@@ -215,6 +215,11 @@ img {
   border-radius: 50%;
   background: rgb(255 255 255 / 75%);
 }
+/* Real artwork already carries its own shape and lighting. */
+.app-icon-image {
+  display: block;
+  object-fit: cover;
+}
 .app-icon.remeet {
   background: linear-gradient(135deg, #1685eb, #8cd7ff);
 }
@@ -307,12 +312,10 @@ a.app-card:hover,
   line-height: 1.75;
   color: var(--ink-soft);
 }
-.app-card .preview {
-  width: 100%;
-  height: 168px;
-  object-fit: cover;
-  object-position: top;
-  border-top: 1px solid var(--line-soft);
+.app-card .preview-pane {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
   background: #f1ede7;
 }
 
@@ -321,6 +324,7 @@ a.app-card:hover,
   flex-direction: row;
 }
 .app-card.large .card-body {
+  max-width: 720px;
   padding: 30px 32px;
   gap: 14px;
 }
@@ -361,14 +365,76 @@ a.app-card:hover,
   font-size: 12px;
   color: var(--ink-mute);
 }
-.app-card.large .preview {
-  width: 236px;
-  flex: none;
-  height: auto;
+.app-card.large .preview-pane {
+  /* Takes whatever the capped body leaves, so the tinted panel always reaches
+     the card's right edge with the device centred in it. */
+  flex: 1;
+  min-width: 232px;
+  padding: 30px 24px 0;
   align-self: stretch;
-  object-position: center top;
+  align-items: flex-start;
   border-top: 0;
   border-left: 1px solid var(--line-soft);
+}
+
+/* Verified specifics -------------------------------------------------------- */
+.app-card.large .spec-heading {
+  margin: 6px 0 0;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.app-highlights {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+.app-highlights li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+}
+.app-highlights li::before {
+  content: "";
+  position: absolute;
+  top: 0.78em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+}
+.app-specs {
+  margin: 4px 0 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line-soft);
+}
+.app-specs > div {
+  display: grid;
+  grid-template-columns: minmax(72px, 22%) 1fr;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.app-specs dt {
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.85;
+  color: var(--ink-mute);
+}
+.app-specs dd {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.85;
+  color: var(--ink-soft);
 }
 .app-card.large .accent-line {
   height: 3px;
@@ -493,6 +559,291 @@ a.app-card:hover,
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   margin-top: 30px;
+}
+
+/* About — studio concept ---------------------------------------------------- */
+
+.about-concept {
+  padding-block: 46px 52px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.about-concept h2 {
+  margin: 0 0 26px;
+  font: 500 22px / 1.3 var(--serif);
+}
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 44px;
+}
+.concept-grid h3 {
+  margin: 0;
+  font: 500 15px / 1.6 var(--serif);
+}
+.concept-grid p {
+  margin: 9px 0 0;
+  white-space: pre-line;
+  font-size: 12.5px;
+  line-height: 2;
+  color: var(--ink-soft);
+}
+@media (max-width: 760px) {
+  .concept-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Journal ------------------------------------------------------------------ */
+
+.home-current,
+.home-journal {
+  padding-block: 50px 56px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.journal-rows {
+  margin-top: 8px;
+  display: grid;
+}
+
+.journal-meta {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+}
+.journal-dot {
+  opacity: 0.5;
+}
+
+.journal-card {
+  position: relative;
+  display: block;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line-soft);
+  transition: opacity 0.25s ease;
+}
+.journal-card:hover {
+  opacity: 0.62;
+}
+.journal-card h3 {
+  margin: 10px 0 0;
+  max-width: 34em;
+  font: 500 17px / 1.7 var(--serif);
+  letter-spacing: -0.01em;
+}
+.journal-summary {
+  margin: 8px 0 0;
+  max-width: 44em;
+  font-size: 12.5px;
+  line-height: 2;
+  color: var(--ink-soft);
+}
+.journal-arrow {
+  position: absolute;
+  top: 26px;
+  right: 2px;
+  font-size: 13px;
+  color: var(--ink-mute);
+  transition: transform 0.25s ease;
+}
+.journal-card:hover .journal-arrow {
+  transform: translateX(4px);
+}
+
+/* The one entry given the "right now" slot reads as a statement, not a row. */
+.journal-card--current {
+  padding: 30px 0 34px;
+  border-bottom: 0;
+}
+.journal-card--current h3 {
+  margin-top: 14px;
+  max-width: 22em;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.55;
+}
+.journal-card--current .journal-summary {
+  margin-top: 14px;
+  font-size: 13.5px;
+}
+.journal-card--current .journal-arrow {
+  top: 34px;
+}
+
+.journal-hero {
+  padding-block: 58px 44px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.journal-hero h1 {
+  margin: 0;
+  font: 500 clamp(30px, 3.6vw, 42px) / 1.4 var(--serif);
+  letter-spacing: -0.02em;
+}
+.journal-hero .lead {
+  margin: 26px 0 0;
+  max-width: 40em;
+  white-space: pre-line;
+  font-size: 13.5px;
+  line-height: 2;
+  color: var(--ink-soft);
+}
+.journal-list {
+  padding-block: 10px 56px;
+}
+.journal-empty {
+  padding: 40px 0;
+  color: var(--ink-mute);
+  font-size: 12.5px;
+}
+
+/* Journal entry ------------------------------------------------------------ */
+
+.entry {
+  width: min(680px, calc(100% - 44px));
+  padding-block: 56px 72px;
+}
+.entry-head {
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.entry-head h1 {
+  margin: 14px 0 0;
+  font: 500 clamp(26px, 3.2vw, 36px) / 1.5 var(--serif);
+  letter-spacing: -0.02em;
+}
+.entry-body {
+  padding-top: 30px;
+  font-size: 14px;
+  line-height: 2.1;
+  color: var(--ink-soft);
+}
+.entry-body > * + * {
+  margin-top: 1.7em;
+}
+.entry-body h2 {
+  margin-top: 2.4em;
+  font: 500 18px / 1.7 var(--serif);
+  color: var(--ink);
+}
+.entry-body ol,
+.entry-body ul {
+  padding-left: 1.3em;
+}
+.entry-body li + li {
+  margin-top: 0.5em;
+}
+.entry-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.entry-body img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.entry-born,
+.entry-related {
+  margin-top: 52px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line-soft);
+}
+.entry-born h2,
+.entry-related h2 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.entry-born ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.entry-born li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.entry-born li:last-child {
+  border-bottom: 0;
+}
+.entry-born a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  font: 500 16px / 1.6 var(--serif);
+}
+.entry-born a:hover .arrow {
+  transform: translateX(4px);
+}
+.entry-born .arrow {
+  font-size: 12px;
+  color: var(--ink-mute);
+  transition: transform 0.25s ease;
+}
+.entry-born p {
+  margin: 6px 0 0;
+  max-width: 40em;
+  font-size: 12.5px;
+  line-height: 1.95;
+  color: var(--ink-soft);
+}
+.entry-related .journal-card:last-child {
+  border-bottom: 0;
+}
+.entry-foot {
+  margin-top: 46px;
+}
+
+/* Product origin and the records behind it --------------------------------- */
+
+.app-origin {
+  margin: 4px 0 0;
+  padding: 0 0 0 14px;
+  border-left: 2px solid var(--line);
+}
+.app-origin p:last-child {
+  margin: 6px 0 0;
+  max-width: 40em;
+  font: 400 13px / 2 var(--serif);
+  color: var(--ink);
+}
+.app-behind {
+  margin-top: 4px;
+}
+.app-behind ul {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+.app-behind li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 12.5px;
+  line-height: 1.85;
+}
+.app-behind li::before {
+  content: "―";
+  position: absolute;
+  left: 0;
+  color: var(--ink-mute);
+}
+.app-behind a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
+}
+.app-behind a:hover {
+  color: var(--ink);
+  text-decoration-color: currentColor;
 }
 
 .home-approach {
@@ -844,8 +1195,10 @@ a.app-card:hover,
 }
 
 .apps-list {
+  /* One per row: the cards carry highlights and a spec table now, and two
+     columns squeezed both into hard wraps and long uneven gaps. */
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
   padding-block: 34px 44px;
   border-bottom: 1px solid var(--line-soft);
@@ -1107,6 +1460,17 @@ a.app-card:hover,
   font-size: 10.5px;
   line-height: 1.8;
 }
+.support-email-fallback {
+  margin: 10px 0 0;
+  color: var(--ink-mute);
+  text-align: center;
+  font-size: 10.5px;
+  line-height: 1.8;
+}
+.support-email-fallback a {
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+}
 .support-honeypot {
   position: absolute;
   left: -10000px;
@@ -1209,8 +1573,8 @@ a.app-card:hover,
   .apps-list {
     grid-template-columns: 1fr;
   }
-  .app-card.large .preview {
-    width: 200px;
+  .app-card.large .preview-pane {
+    min-width: 200px;
   }
 }
 
@@ -1316,12 +1680,17 @@ a.app-card:hover,
   .app-card.large {
     flex-direction: column;
   }
-  .app-card.large .preview {
+  .app-card.large .preview-pane {
     width: 100%;
-    height: 220px;
+    flex: none;
+    padding: 22px 24px 0;
     border-left: 0;
     border-top: 1px solid var(--line-soft);
     order: -1;
+  }
+  .app-specs > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
   }
   .app-card.large .card-body {
     padding: 26px 24px;
@@ -1346,6 +1715,41 @@ a.app-card:hover,
   .footer-base {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .shell {
+    padding-inline: 18px;
+  }
+  .site-header .brand {
+    font-size: 21px;
+  }
+  .hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .home-apps .app-grid,
+  .approach-grid,
+  .about-approach .approach-grid {
+    grid-template-columns: 1fr;
+  }
+  .apps-filter {
+    margin-inline: -18px;
+    padding-inline: 18px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .apps-filter::-webkit-scrollbar {
+    display: none;
+  }
+  .apps-filter button {
+    flex: 0 0 auto;
+  }
+  .footer-cols {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -3,7 +3,7 @@ import type { Locale } from "../data/apps";
 
 interface Props {
   lang: Locale;
-  /** Canonical path without locale prefix, e.g. "/", "/apps", "/about". */
+  /** Canonical path without locale prefix, e.g. "/", "/products", "/about". */
   path: string;
 }
 const { lang, path } = Astro.props;

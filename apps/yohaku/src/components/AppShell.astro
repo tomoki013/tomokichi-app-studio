@@ -3,11 +3,12 @@ import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
 import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
 
 type Locale = "ja" | "en";
-const { lang, title, page = "", description } = Astro.props as {
+const { lang, title, page = "", description, jsonLd = "" } = Astro.props as {
   lang: Locale;
   title: string;
   page?: string;
   description?: string;
+  jsonLd?: string;
 };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
@@ -15,13 +16,17 @@ const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
 const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const supportHref = supportUrl("yohaku", lang);
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+
 const nav = [
   { slug: "screenshots", label: ja ? "コンセプト" : "Concept", href: href("screenshots") },
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
   { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
+  { slug: "pricing", label: ja ? "料金" : "Pricing", href: href("pricing") },
   { slug: "faq", label: "FAQ", href: href("faq") },
   { slug: "updates", label: ja ? "ニュース" : "News", href: href("updates") },
 ];
+
 const footerColumns = [
   {
     title: ja ? "プロダクト" : "Product",
@@ -29,6 +34,7 @@ const footerColumns = [
       { label: ja ? "コンセプト" : "Concept", href: href("screenshots") },
       { label: ja ? "機能" : "Features", href: href("features") },
       { label: ja ? "使い方" : "How to", href: href("how-to") },
+      { label: ja ? "料金" : "Pricing", href: href("pricing") },
     ],
   },
   {
@@ -43,27 +49,40 @@ const footerColumns = [
     title: ja ? "規約" : "Legal",
     links: [
       { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
-      { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
+      { label: ja ? "利用規約" : "Terms of Use", href: href("terms") },
+      { label: ja ? "特定商取引法に基づく表記" : "Commercial Transactions", href: href("commercial-transactions") },
     ],
   },
   {
-    title: "Tomokichi",
+    title: ja ? "運営者情報" : "Operator",
     links: [
-      { label: "Tomokichi", href: mainSiteUrl(lang), external: true },
+      { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
       { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+      { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
     ],
   },
+];
+
+const mobileFooterLinks = [
+  { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
+  { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
+  { label: ja ? "利用規約" : "Terms of Use", href: href("terms") },
+  { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
 ];
 ---
 
 <AppSiteShell
   lang={lang}
   title={title}
-  description={description ?? (ja ? "Yohakuは、何もしない時間をそっと置くためのiPhoneアプリです。" : "Yohaku is an iPhone app for placing quiet, unplanned space in your day.")}
+  description={description ?? (ja
+    ? "Yohakuは、日々の中に何もしない時間を置き、今日・週・月で静かに振り返るためのiPhoneアプリです。現在App Store公開準備中。"
+    : "Yohaku is an iPhone app for leaving time with nothing planned, then looking back across your day, week and month. Currently preparing for the App Store.")}
   page={page}
   brand="Yohaku"
   logoImage="/assets/yohaku-icon.png"
-  ogImage="/og.png"
+  favicon="/assets/yohaku-favicon.png"
+  ogImage="/og.jpg"
   tagline={ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}
   siteUrl={appSiteUrl("yohaku")}
   homeHref={ja ? "/ja" : "/"}
@@ -71,11 +90,15 @@ const footerColumns = [
   enPageHref={enPageHref}
   nav={nav}
   footerColumns={footerColumns}
-  appStoreHref={`${ja ? "/ja" : ""}/#download`.replaceAll("//", "/")}
-  appStoreLabel={ja ? "ダウンロード" : "Download"}
+  mobileFooterLinks={mobileFooterLinks}
+  appStoreLabel={storeLabel}
+  appStoreHref=""
+  appStoreComingSoon
   menuLabel={ja ? "メニュー" : "Menu"}
+  menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
   themeColor="#ffffff"
   pageClass="yohaku-page"
+  jsonLd={jsonLd}
 >
   <slot />
 </AppSiteShell>

@@ -1,11 +1,41 @@
 ---
+/**
+ * An app's real icon, taken from its `AppIcon.appiconset` artwork.
+ *
+ * Apps that are still concepts have no icon yet, so they keep the CSS gradient
+ * placeholder the site has always used — the same reason nothing without a real
+ * capture gets a screenshot.
+ */
+import { Image } from "astro:assets";
+
 interface Props {
   iconClass: string;
   size?: number;
+  /** App slug; resolves `src/assets/icons/<slug>.png` when one exists. */
+  slug?: string;
+  name?: string;
 }
-const { iconClass, size = 46 } = Astro.props;
+const { iconClass, size = 46, slug, name } = Astro.props;
+
+const icons = import.meta.glob<{ default: ImageMetadata }>("../assets/icons/*.png", {
+  eager: true,
+});
+const icon = slug ? icons[`../assets/icons/${slug}.png`]?.default : undefined;
 ---
 
-<div class:list={["app-icon", iconClass]} style={`width:${size}px;height:${size}px`} aria-hidden="true">
-  <span></span>
-</div>
+{icon ? (
+  <Image
+    class="app-icon app-icon-image"
+    src={icon}
+    width={size}
+    height={size}
+    densities={[1, 2]}
+    alt={name ? `${name} app icon` : ""}
+    loading="lazy"
+    decoding="async"
+  />
+) : (
+  <div class:list={["app-icon", iconClass]} style={`width:${size}px;height:${size}px`} aria-hidden="true">
+    <span></span>
+  </div>
+)}

@@ -11,7 +11,9 @@ This document defines the shared structure for Tomokichi app landing pages.
 - The header remains sticky. After 96px of scrolling it contracts into a compact
   brand pill; hover or keyboard focus expands it so navigation remains available.
 - Mobile keeps a full-width compact header and an accessible menu button.
-- Use the standard four footer columns: Product, Support, Legal, and Tomokichi.
+- Use the standard four footer columns: Product, Support, Legal, and Operator
+  (運営者情報). Operator links should point to the main site, other apps, and
+  support—not a bare “Tomokichi” brand column.
 - Contact links open the shared Tomokichi support form with the app query parameter.
 
 ### App-specific theming
@@ -58,11 +60,53 @@ import order.
 
 ## Required pages
 
-- Privacy Policy and Terms of Service must contain product-specific, internally
+- Privacy Policy, Terms of Service, and the Commercial Transactions disclosure
+  (`/commercial-transactions`) must contain product-specific, internally
   consistent content and effective dates.
 - Contact must lead to the working shared support form with the correct app selected.
+- Customer-support email is `support@tmkch.io`; the form remains the primary route.
 - Features, usage, screenshots, FAQ, and updates may be mock content until product
   details are final, but links and responsive layouts must work.
+
+## Product screenshots
+
+Any image that claims to show the app must be a real capture, not a render.
+
+Each app repo owns its capture pipeline — an `AppStoreScreenshotTests` UI test
+that drives the iOS Simulator (iPhone 17 Pro Max, 1320x2868) through every
+localization and writes the same PNGs submitted to App Store Connect. Two rules
+hold there:
+
+- Navigation goes through accessibility identifiers, never translated button
+  labels, so one run covers every language.
+- Demo data comes from the app's own String Catalog and is entirely fictional.
+  No real person, place, or message belongs in a screenshot, and the fixture
+  must re-seed on each launch or the first language's data leaks into the rest.
+
+Bring them into a site with:
+
+```sh
+node scripts/import-app-screenshots.mjs <slug> <capture-dir> --only ja,en
+```
+
+The main site's Apps page gathers screens from every app into one folder, so it
+adds a per-app prefix and keeps what earlier runs imported:
+
+```sh
+node scripts/import-app-screenshots.mjs main <capture-dir> --only ja,en --prefix <app> --keep
+```
+
+Its `AppItem.detail` carries what the app concretely is — highlights, price,
+minimum OS, where data lives, languages. Every one of those has to be checkable
+against the app or its brand site; an app with nothing verified yet simply has
+no `detail`, and one without captures has no `screen`, so nothing on that page
+claims to be a screenshot when it isn't.
+
+That downsamples to WebP in `src/assets/screens/`, where Astro resizes per
+breakpoint. Render them through the app's local `AppScreen.astro`, which wraps
+`@tomokichi/app-site/PhoneFrame.astro` — the shared iPhone 17 Pro frame. Do not
+size the bitmap inside a frame from page CSS; the frame owns its geometry, and
+a stray `height` or `object-fit` rule on a descendant `img` will distort it.
 
 ## Quality
 

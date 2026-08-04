@@ -1,0 +1,122 @@
+.app-news {
+  width: min(100%, 760px);
+  margin-inline: auto;
+  display: grid;
+  gap: clamp(22px, 4vw, 32px);
+}
+
+.app-news-heading {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.app-news-featured,
+.app-news-card {
+  padding: clamp(22px, 4vw, 32px);
+  border: 1px solid var(--app-news-border, rgb(0 0 0 / 8%));
+  border-radius: 20px;
+  background: var(--app-news-card-bg, #fff);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 3%);
+}
+
+.app-news-featured {
+  background:
+    linear-gradient(180deg, var(--app-news-featured-tint, rgb(0 0 0 / 2%)) 0%, transparent 48%),
+    var(--app-news-card-bg, #fff);
+}
+
+.app-news-list {
+  display: grid;
+  gap: 16px;
+}
+
+.app-news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.app-news-meta time {
+  color: var(--app-news-meta, #888);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.app-news-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--app-news-badge-bg, #f3f3f3);
+  color: var(--app-news-badge-fg, #333);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.app-news-badge.is-column {
+  background: var(--app-news-badge-column-bg, #111);
+  color: var(--app-news-badge-column-fg, #fff);
+}
+
+.app-news-badge.is-note {
+  background: var(--app-news-badge-note-bg, #eef6f4);
+  color: var(--app-news-badge-note-fg, #1f5c52);
+}
+
+.app-news-title {
+  margin: 0 0 12px;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.app-news-summary {
+  margin: 0 0 18px;
+  color: var(--app-news-summary, #444);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.app-news-body {
+  display: grid;
+  gap: 12px;
+  padding-top: 4px;
+  border-top: 1px solid var(--app-news-border, rgb(0 0 0 / 6%));
+}
+
+.app-news-body p {
+  margin: 0;
+  color: var(--app-news-body, #555);
+  font-size: 14.5px;
+  line-height: 1.9;
+}
+
+.app-news-card .app-news-title {
+  font-size: clamp(17px, 2.4vw, 20px);
+}
+
+.app-news-card .app-news-summary {
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.app-news-card .app-news-body p {
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .app-news-featured,
+  .app-news-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+}

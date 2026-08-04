@@ -5,7 +5,8 @@
   --yohaku-line: #ececec;
   --yohaku-panel: #f7f7f7;
   --yohaku-card: #fafafa;
-  --sans: Inter, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+  --sans:
+    Inter, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
   --serif: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "Songti SC", Georgia, serif;
 
   --app-site-ink: var(--yohaku-ink);
@@ -22,8 +23,11 @@
   --app-site-footer-foreground: #111111;
   --app-site-footer-tagline: #888888;
   --app-site-footer-heading: #999999;
-  --app-site-footer-link: #444444;
-  --app-site-footer-link-hover: #000000;
+  --app-site-footer-link: #555555;
+  --app-site-footer-link-hover: #111111;
+  --app-news-badge-column-bg: #111;
+  --app-news-badge-note-bg: #f0f0f0;
+  --app-news-badge-note-fg: #333;
   --app-site-footer-border: rgb(0 0 0 / 8%);
   --app-site-footer-meta: #999999;
   --app-site-hero-muted: #777777;
@@ -86,6 +90,19 @@ a {
 
 /* ——— Buttons ——— */
 
+.store-soon {
+  opacity: 0.72;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+.store-button.store-soon:hover,
+.store-button.store-soon:focus-visible {
+  transform: none;
+  background: #111;
+}
+
 .store-button,
 .secondary-button {
   min-height: 46px;
@@ -134,251 +151,10 @@ a {
   flex: 0 0 auto;
 }
 
-/* ——— Phone mockups ——— */
-
-.yh-phone {
-  --phone-w: 220px;
-  --phone-h: 450px;
-  --phone-pad: 18px;
-  --phone-radius: 36px;
-  --phone-bezel: 8px;
-  width: var(--phone-w);
-  height: var(--phone-h);
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.yh-phone--sm {
-  --phone-w: 180px;
-  --phone-h: 370px;
-  --phone-pad: 14px;
-  --phone-radius: 30px;
-  --phone-bezel: 7px;
-}
-
-.yh-phone--lg {
-  --phone-w: 250px;
-  --phone-h: 510px;
-  --phone-pad: 20px;
-  --phone-radius: 40px;
-  --phone-bezel: 9px;
-}
-
-.yh-phone-frame {
-  width: 100%;
-  height: 100%;
-  padding: 14px var(--phone-pad) 12px;
-  position: relative;
-  overflow: hidden;
-  border: var(--phone-bezel) solid #141414;
-  border-radius: var(--phone-radius);
-  background: #fff;
-  box-shadow:
-    inset 0 0 0 1px #cfcfcf,
-    0 18px 40px rgb(0 0 0 / 10%);
-}
-
-.yh-phone-notch {
-  width: 72px;
-  height: 18px;
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  z-index: 2;
-  border-radius: 0 0 12px 12px;
-  background: #111;
-  transform: translateX(-50%);
-}
-
-.yh-phone-status {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--sans);
-  font-size: 8px;
-  font-weight: 600;
-}
-
-.yh-phone-status-icons {
-  width: 28px;
-  height: 6px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #111 55%, transparent 55%), #111;
-  opacity: 0.85;
-}
-
-.yh-phone-body {
-  height: calc(100% - 42px);
-  position: relative;
-  padding-top: 18px;
-}
-
-.yh-phone-title {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-.yh-phone--sm .yh-phone-title {
-  font-size: 18px;
-}
-
-.yh-phone-date,
-.yh-phone-period {
-  margin: 6px 0 0;
-  color: #888;
-  font-family: var(--sans);
-  font-size: 9px;
-  letter-spacing: 0.02em;
-}
-
-.yh-phone-period {
-  margin-top: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #333;
-  font-size: 10px;
-}
-
-.yh-today-list {
-  margin: 22px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-  list-style: none;
-}
-
-.yh-today-list li {
-  min-height: 52px;
-  padding: 10px 12px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  background: #fff;
-}
-
-.yh-today-list i {
-  width: 12px;
-  height: 12px;
-  flex: 0 0 auto;
-  border: 1px solid #bbb;
-  border-radius: 2px;
-  background: #fff;
-}
-
-.yh-today-list i.filled,
-.yh-week-blocks i.filled,
-.yh-month-grid i.filled,
-.howto-note i.filled {
-  border-color: #111;
-  background: #111;
-}
-
-.yh-today-list strong {
-  display: block;
-  font-family: var(--sans);
-  font-size: 10px;
-  font-weight: 500;
-}
-
-.yh-today-list span {
-  display: block;
-  margin-top: 3px;
-  color: #888;
-  font-family: var(--sans);
-  font-size: 9px;
-}
-
-.yh-week-list {
-  margin: 18px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0;
-  list-style: none;
-}
-
-.yh-week-list li {
-  min-height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #f0f0f0;
-  font-family: var(--sans);
-  font-size: 10px;
-}
-
-.yh-week-label {
-  color: #333;
-}
-
-.yh-week-blocks {
-  display: flex;
-  gap: 5px;
-}
-
-.yh-week-blocks i {
-  width: 12px;
-  height: 12px;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  background: #fff;
-}
-
-.yh-month-grid {
-  margin-top: 22px;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
-
-.yh-month-grid i {
-  aspect-ratio: 1;
-  border-radius: 2px;
-  background: #f1f1f1;
-}
-
-.yh-phone-fab {
-  width: 34px;
-  height: 34px;
-  position: absolute;
-  right: 0;
-  bottom: 28px;
-  border: 0;
-  border-radius: 50%;
-  color: #fff;
-  background: #111;
-  font-family: var(--sans);
-  font-size: 20px;
-  line-height: 1;
-  pointer-events: none;
-}
-
-.yh-phone-tabs {
-  position: absolute;
-  right: var(--phone-pad);
-  bottom: 12px;
-  left: var(--phone-pad);
-  display: flex;
-  justify-content: space-around;
-  color: #bbb;
-  font-family: var(--sans);
-  font-size: 12px;
-}
-
-.yh-phone-tabs .active {
-  color: #111;
-}
-
 /* ——— Landing hero ——— */
 
 .yohaku-hero {
-  min-height: calc(100vh - 72px);
-  min-height: 880px;
+  min-height: max(calc(100vh - 72px), 880px);
   padding: 88px max(28px, calc((100vw - 1180px) / 2)) 140px;
   position: relative;
   display: flex;
@@ -449,7 +225,12 @@ a {
 
 .hero-device {
   margin: 0;
+  /* Lets the three frames shrink together when the hero column is narrower
+     than their nominal width. `minmax(0, 1fr)` matters: in an auto column the
+     frame's `max-width: 100%` would resolve against the overflowing column. */
+  min-width: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: 14px;
 }
@@ -560,6 +341,7 @@ a {
 }
 
 .story-visual {
+  min-width: 0;
   display: flex;
   justify-content: center;
 }
@@ -586,12 +368,48 @@ a {
   background: #111;
 }
 
-.shape-scatter .s1 { top: 8%; left: 18%; width: 34px; height: 34px; background: #ececec; }
-.shape-scatter .s2 { top: 22%; left: 58%; width: 22px; height: 22px; background: #d8d8d8; }
-.shape-scatter .s3 { top: 40%; left: 28%; width: 26px; height: 26px; background: #111; }
-.shape-scatter .s4 { top: 48%; left: 68%; width: 32px; height: 32px; background: #111; }
-.shape-scatter .s5 { top: 68%; left: 12%; width: 24px; height: 24px; background: #111; }
-.shape-scatter .s6 { top: 78%; left: 48%; width: 20px; height: 20px; background: #cfcfcf; }
+.shape-scatter .s1 {
+  top: 8%;
+  left: 18%;
+  width: 34px;
+  height: 34px;
+  background: #ececec;
+}
+.shape-scatter .s2 {
+  top: 22%;
+  left: 58%;
+  width: 22px;
+  height: 22px;
+  background: #d8d8d8;
+}
+.shape-scatter .s3 {
+  top: 40%;
+  left: 28%;
+  width: 26px;
+  height: 26px;
+  background: #111;
+}
+.shape-scatter .s4 {
+  top: 48%;
+  left: 68%;
+  width: 32px;
+  height: 32px;
+  background: #111;
+}
+.shape-scatter .s5 {
+  top: 68%;
+  left: 12%;
+  width: 24px;
+  height: 24px;
+  background: #111;
+}
+.shape-scatter .s6 {
+  top: 78%;
+  left: 48%;
+  width: 20px;
+  height: 20px;
+  background: #cfcfcf;
+}
 
 .download-section {
   width: min(100% - 48px, 720px);
@@ -1088,7 +906,9 @@ a {
   border: 1px solid var(--yohaku-line);
   border-radius: 16px;
   text-decoration: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .faq-card:hover {
@@ -1347,24 +1167,60 @@ a {
 @media (max-width: 760px) {
   .yohaku-hero {
     min-height: 0;
-    padding: 96px 20px 130px;
+    padding: 88px 16px 48px;
+  }
+
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .hero-copy {
+    text-align: center;
   }
 
   .hero-copy h1 {
-    font-size: 34px;
+    font-size: clamp(30px, 8vw, 36px);
+  }
+
+  .hero-body {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .hero-actions {
+    justify-content: center;
   }
 
   .hero-devices {
-    width: max-content;
-    margin-inline: auto;
-    gap: 10px;
-    transform: scale(0.62);
-    transform-origin: top center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    transform: none;
+  }
+
+  .hero-device {
+    width: min(100%, 280px);
+  }
+
+  .yohaku-page .app-hero-notice {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    margin: 0 0 8px;
+    order: -1;
+  }
+
+  .yohaku-page .app-hero-scroll {
+    display: none;
   }
 
   .section-pad {
-    width: min(100% - 36px, 1100px);
-    padding: 72px 0;
+    width: min(100% - 32px, 1100px);
+    padding: 64px 0;
   }
 
   .feature-grid,
@@ -1373,53 +1229,56 @@ a {
   }
 
   .content-page {
-    width: min(100% - 32px, 1040px);
-    padding-top: 104px;
+    width: min(100% - 28px, 1040px);
+    padding-top: 96px;
+    padding-bottom: 72px;
   }
 
-  .news-list a {
-    grid-template-columns: 1fr auto;
-    gap: 8px 12px;
-  }
-
-  .news-list time {
-    grid-column: 1;
-  }
-
-  .news-list .news-tag {
-    grid-column: 2;
-    justify-self: end;
-  }
-
-  .news-list-title {
-    grid-column: 1 / -1;
-  }
-
-  .news-arrow {
-    display: none;
-  }
-
-  .faq-item summary {
-    grid-template-columns: 36px 1fr 16px;
-    gap: 10px;
-    padding: 16px;
-    font-size: 14px;
-  }
-
-  .faq-item p {
-    padding: 0 16px 18px 16px;
-  }
-
-  .faq-cards {
+  .feature-block,
+  .feature-block.is-reverse {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .news-featured {
-    padding: 24px 20px;
+  .feature-block-copy h2 {
+    font-size: 22px;
+  }
+
+  .feature-block-copy p,
+  .how-steps p,
+  .legal-copy,
+  .pricing-copy p,
+  .faq-list p {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .how-steps li {
+    grid-template-columns: 40px 1fr;
+  }
+
+  .concept-phones {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+  }
+
+  .faq-tabs {
+    gap: 8px;
+    overflow-x: auto;
+  }
+
+  .faq-tabs button {
+    min-height: 44px;
+    white-space: nowrap;
   }
 
   .shape-scatter {
     display: none;
+  }
+}
+
+@media (max-width: 460px) {
+  .concept-phones {
+    grid-template-columns: minmax(0, max-content);
   }
 }
 
@@ -1433,4 +1292,440 @@ a {
   [data-reveal] {
     transition: none;
   }
+}
+
+/* ——— Content pages (v1 rewrite) ——— */
+.content-hero {
+  margin-bottom: clamp(36px, 6vw, 56px);
+}
+.content-hero--center {
+  text-align: center;
+  max-width: 40rem;
+  margin-inline: auto;
+}
+.content-hero--center .content-eyebrow {
+  letter-spacing: 0.2em;
+}
+.content-eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  opacity: 0.45;
+}
+.content-hero h1 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.legal-dates {
+  margin-top: 18px;
+  display: grid;
+  gap: 4px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.legal-dates p {
+  margin: 0;
+}
+
+.feature-blocks {
+  display: grid;
+  gap: clamp(40px, 7vw, 72px);
+}
+.feature-block {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(24px, 5vw, 48px);
+  align-items: center;
+}
+.feature-block.is-reverse .feature-block-copy {
+  order: 2;
+}
+.feature-block-copy h2 {
+  margin: 0 0 14px;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 500;
+  line-height: 1.4;
+}
+.feature-block-copy p {
+  margin: 0;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.9;
+}
+.feature-block-visual {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+}
+
+.how-steps {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 22px;
+  max-width: 42rem;
+}
+.pricing-page {
+  display: grid;
+  justify-items: center;
+}
+.faq-page {
+  max-width: 42rem;
+  margin-inline: auto;
+}
+.how-steps li {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--yohaku-line);
+  border-radius: 18px;
+  background: var(--yohaku-card);
+}
+.how-n {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+}
+.how-steps h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.how-steps p {
+  margin: 0;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.85;
+}
+
+.concept-lead {
+  max-width: 42rem;
+  margin: 0 auto 36px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.9;
+  text-align: center;
+}
+.concept-phones {
+  /* Six screens read as three-and-three, not a four/two orphan row. */
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  gap: 40px 28px;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+.concept-ideas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.concept-ideas article {
+  padding: 22px;
+  border: 1px solid var(--yohaku-line);
+  border-radius: 16px;
+  background: #fff;
+}
+.concept-ideas h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.concept-ideas p {
+  margin: 0;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.8;
+}
+@media (max-width: 900px) {
+  .concept-ideas {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-teaser {
+  text-align: center;
+}
+.pricing-teaser-body {
+  max-width: 40rem;
+  margin: 0 auto 18px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.9;
+}
+.text-link {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+.download-note {
+  margin: 0 0 18px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 13px;
+}
+
+.pricing-page {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.pricing-card {
+  padding: clamp(28px, 5vw, 40px);
+  border: 1px solid var(--yohaku-line);
+  border-radius: 22px;
+  background: #fff;
+  text-align: center;
+}
+.pricing-kicker {
+  margin: 0 0 10px;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  opacity: 0.5;
+}
+.pricing-card h2 {
+  margin: 0 0 18px;
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 500;
+}
+.pricing-copy p {
+  margin: 0 0 12px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.9;
+}
+.pricing-list {
+  margin: 24px 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+.pricing-list li {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--yohaku-panel);
+  font-family: var(--sans);
+  font-size: 14px;
+}
+.pricing-iap {
+  margin: 24px 0;
+  padding: 22px;
+  border: 1px solid var(--yohaku-ink);
+  border-radius: 16px;
+  text-align: left;
+}
+.pricing-iap h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.pricing-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 10px 0 16px;
+}
+.pricing-amount {
+  font-size: clamp(28px, 5vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.pricing-kind {
+  color: var(--yohaku-soft);
+  font-family: var(--sans);
+  font-size: 12px;
+}
+.pricing-iap-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.pricing-iap-list li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+.pricing-iap-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  opacity: 0.55;
+}
+
+.pricing-note,
+.pricing-env {
+  margin: 0 0 12px;
+  color: var(--yohaku-soft);
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+
+.faq-page {
+  display: grid;
+  gap: 28px;
+}
+.faq-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.faq-tabs button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--yohaku-line);
+  border-radius: 999px;
+  background: #fff;
+  font-family: var(--sans);
+  font-size: 13px;
+  cursor: pointer;
+}
+.faq-tabs button[aria-current="true"] {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+.faq-list details {
+  border-bottom: 1px solid var(--yohaku-line);
+}
+.faq-list summary {
+  min-height: 52px;
+  padding: 16px 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  list-style: none;
+}
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+.faq-list p {
+  margin: 0 0 16px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.85;
+}
+.faq-contact {
+  padding: 22px;
+  border: 1px solid var(--yohaku-line);
+  border-radius: 16px;
+  background: var(--yohaku-card);
+}
+.faq-contact h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.faq-contact p {
+  margin: 0 0 12px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 14px;
+}
+.faq-contact a {
+  font-family: var(--sans);
+  font-weight: 600;
+}
+
+.news-article {
+  max-width: 680px;
+  padding: 28px;
+  border: 1px solid var(--yohaku-line);
+  border-radius: 18px;
+  background: #fff;
+}
+.news-article header {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.news-article time {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--yohaku-soft);
+}
+.news-badge {
+  justify-self: start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--yohaku-panel);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+.news-article h2 {
+  margin: 0;
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-weight: 500;
+  line-height: 1.4;
+}
+.news-body p {
+  margin: 0 0 12px;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.legal-copy {
+  max-width: 720px;
+  font-family: var(--sans);
+  font-size: 15.5px;
+  line-height: 1.95;
+}
+.legal-copy section {
+  margin-bottom: 28px;
+}
+.legal-copy h2 {
+  margin: 0 0 12px;
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+}
+.legal-copy p {
+  margin: 0 0 12px;
+  color: #333;
+}
+
+.yohaku-page {
+  --app-site-mobile-background: linear-gradient(165deg, #fff 0%, #f7f7f7 100%);
+  --app-site-mobile-menu-background: #fff;
+  --app-site-accent: #111;
 }

@@ -5,7 +5,7 @@ import LanguageSwitcher from "./LanguageSwitcher.astro";
 
 interface Props {
   lang: Locale;
-  /** Canonical path of the current page, e.g. "/", "/apps", "/about". */
+  /** Canonical path of the current page, e.g. "/", "/products", "/about". */
   path: string;
   /** nav "match" key of the current page, if any. */
   current?: string;
@@ -32,7 +32,7 @@ const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
 
   <div style="display:flex; align-items:center; gap:14px; justify-self:end;">
     <LanguageSwitcher lang={lang} path={path} />
-    <button class="header-menu" type="button" aria-label={lang === "ja" ? "メニュー" : "Menu"} data-menu-toggle>☰</button>
+    <button class="header-menu" type="button" aria-label={lang === "ja" ? "メニュー" : "Menu"} aria-expanded="false" data-menu-toggle>☰</button>
   </div>
 </header>
 
@@ -62,6 +62,22 @@ const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
       if (open) { menu.removeAttribute("data-open"); menu.setAttribute("hidden", ""); }
       else { menu.setAttribute("data-open", ""); menu.removeAttribute("hidden"); }
       btn.setAttribute("aria-expanded", String(!open));
+      btn.textContent = open ? "☰" : "×";
+    });
+    menu.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element) || !event.target.closest("a")) return;
+      menu.removeAttribute("data-open");
+      menu.setAttribute("hidden", "");
+      btn.setAttribute("aria-expanded", "false");
+      btn.textContent = "☰";
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !menu.hasAttribute("data-open")) return;
+      menu.removeAttribute("data-open");
+      menu.setAttribute("hidden", "");
+      btn.setAttribute("aria-expanded", "false");
+      btn.textContent = "☰";
+      btn.focus();
     });
   })();
 </script>

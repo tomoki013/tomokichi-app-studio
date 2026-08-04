@@ -1,91 +1,534 @@
 ---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
+import {
+  descriptions,
+  type Locale,
+  languagesEn,
+  languagesJa,
+  type Page,
+  pick,
+  privacySections,
+  regions,
+  termsSections,
+  titles,
+} from "../lib/content";
 import AppShell from "./AppShell.astro";
 
-type Locale = "ja" | "en";
-type Page = "features" | "how-to" | "screenshots" | "faq" | "privacy" | "terms" | "updates";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
-const titleMap: Record<Page, [string, string]> = {
-  features: ["機能", "Features"],
-  "how-to": ["使い方", "How it works"],
-  screenshots: ["スクリーンショット", "Screenshots"],
-  faq: ["よくある質問", "Frequently asked questions"],
-  privacy: ["プライバシーポリシー", "Privacy Policy"],
-  terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "News"],
-};
-const title = titleMap[page][ja ? 0 : 1];
-const features = ja
-  ? [["◎", "世界地図", "訪れた国を選ぶと、あなただけの色で世界地図が塗られます。"], ["＋", "かんたん記録", "地図またはリストから国を選ぶだけ。複雑な入力はありません。"], ["◔", "統計", "訪れた国の数や世界に占める割合、地域ごとの進捗を確認できます。"], ["☰", "国リスト", "訪問済み・未訪問の国を一覧からすばやく探せます。"], ["⌁", "オフライン", "地図タイルの読み込みを除く主要機能はオフラインで利用できます。"], ["♢", "端末内保存", "旅の記録は端末内に保存され、アカウント登録も必要ありません。"]]
-  : [["◎", "World map", "Choose a visited country and see your world map fill with colour."], ["＋", "Simple tracking", "Pick from the map or list. There are no complicated forms."], ["◔", "Statistics", "See visited countries, global coverage and progress by region."], ["☰", "Country list", "Quickly browse visited and unvisited countries."], ["⌁", "Offline", "Core features work offline, aside from loading map tiles."], ["♢", "On-device data", "Records stay on your device and no account is required."]];
-const steps = ja
-  ? [["01", "国を探す", "世界地図を動かすか、国リストから訪れた国を探します。"], ["02", "訪問済みにする", "国を選んで訪問済みにすると、地図があなたの色で塗られます。"], ["03", "世界を振り返る", "地図と統計を眺めながら、これまでの旅を振り返ります。"]]
-  : [["01", "Find a country", "Explore the map or use the country list to find a place you visited."], ["02", "Mark it visited", "Choose visited and the country is coloured on your map."], ["03", "Look back", "Revisit your journeys through the completed map and statistics."]];
+const supportHref = supportUrl("colorvia", lang);
+const title = pick(ja, titles[page]);
+const description = pick(ja, descriptions[page]);
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+
+const newsPosts = ja
+  ? [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "お知らせ",
+        title: "Colorvia公式ブランドサイトを公開しました",
+        summary: "機能、国内地域マップ、使い方、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+        body: [
+          "Colorviaの公式ブランドサイトを公開しました。訪れた国や地域を地図の色として残すアプリの考え方と、対応している国内地域の範囲を、公開準備中の段階からそのままお伝えしています。",
+          "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
+          "地図はCanvas描画で、オフラインでも閲覧できます。データはJSONで書き出し・読み込みでき、端末内に保存されます。詳細はプライバシーポリシーと利用規約をご確認ください。",
+        ],
+      },
+      {
+        id: "column-map",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "国から、その先の地域まで",
+        summary: "対応国では都道府県・州など、国の内側まで訪れた場所を残せます。",
+        body: [
+          "Colorviaは訪問した国を色づけるだけでなく、対応している国では都道府県や州などの単位まで記録できます。都市名や地名から該当する地域を探すこともできます。",
+          "地図や地域区分は旅の記録のために簡略化したもので、政治的な立場を示すものではありません。",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "準備中",
+        badgeTone: "note" as const,
+        title: "App Store公開に向けて",
+        summary: "iPhone・iOS 18以降向け。現在公開準備中です。",
+        body: [
+          "Colorviaは現在App Store公開準備中です。対応環境や価格の最終表示は、公開時のApp Store上の記載が正しいものとします。",
+        ],
+      },
+    ]
+  : [
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "News",
+        title: "The official Colorvia brand site is now live",
+        summary: "Features, regional maps, how-to, FAQ, Privacy Policy, and Terms—in one place.",
+        body: [
+          "The official Colorvia brand site is live. It explains colouring countries and regions you have visited, and which in-country maps are supported—while the app is still preparing for release.",
+          "There is no App Store link yet. When distribution is ready, we will share it here as well.",
+          "Maps are canvas-drawn and work offline. Data can be exported and imported as JSON and stays on your device. See the Privacy Policy and Terms for details.",
+        ],
+      },
+      {
+        id: "column-map",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "From countries to the places inside them",
+        summary: "In supported countries, record prefectures, states, and other travel areas.",
+        body: [
+          "Colorvia does more than tint countries: where supported, you can mark prefectures, states, and similar units, and search by city or place name.",
+          "Maps and divisions are simplified for travel logging and do not express a political position.",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Coming soon",
+        badgeTone: "note" as const,
+        title: "Preparing for the App Store",
+        summary: "Designed for iPhone on iOS 18+.",
+        body: [
+          "Colorvia is being prepared for the App Store. The listing will be the source of truth for requirements and pricing when it ships.",
+        ],
+      },
+    ];
+
+
+const featureGroups = ja
+  ? [
+      {
+        h: "世界地図",
+        items: [
+          "訪問国を選んだ地図色で表示",
+          "ピンチズーム、ドラッグ移動、ダブルタップズーム",
+          "拡大・縮小ボタンと地図位置リセット",
+          "アプリ内同梱の地理データ（オンライン地図タイルは不使用）",
+        ],
+      },
+      {
+        h: "国の選択",
+        items: [
+          "ホーム右下の＋ボタンから追加",
+          "国名検索、国旗、日本語名／英語名",
+          "地域別一覧、複数国の一括選択",
+          "確定前の地図プレビュー",
+        ],
+      },
+      {
+        h: "統計",
+        items: [
+          "訪問国数と世界の訪問率",
+          "大陸別の訪問数",
+          "訪問済み国一覧",
+          "国内地域の訪問数・訪問率・一覧",
+        ],
+      },
+      {
+        h: "国内地域マップ",
+        items: [
+          "対応11か国",
+          "地域の塗り分け、訪問済み／未訪問フィルター",
+          "都市名・地名からの地域検索",
+          "地域別統計と共有用画像",
+        ],
+      },
+      {
+        h: "パーソナライズとデータ",
+        items: [
+          "ライト／ダーク／システム設定",
+          "地図色の変更",
+          "JSON書き出し・読み込みと不整合の検出",
+          "全データ削除",
+        ],
+      },
+      {
+        h: "その他",
+        items: [
+          "共有",
+          "11言語",
+          "オフライン対応",
+          "アカウント不要・端末内保存",
+          "アプリ内問い合わせ",
+          "法務文書のオフラインフォールバック",
+          "控えめなバナー広告（高さに余裕がある端末）",
+        ],
+      },
+    ]
+  : [
+      {
+        h: "World map",
+        items: [
+          "Visited countries in your chosen map colour",
+          "Pinch, drag and double-tap zoom",
+          "Zoom buttons and map reset",
+          "Bundled geography—no online map tiles",
+        ],
+      },
+      {
+        h: "Country selection",
+        items: [
+          "Add from the + button on Home",
+          "Search, flags, local and English names",
+          "Browse by region; multi-select",
+          "Map preview before confirming",
+        ],
+      },
+      {
+        h: "Statistics",
+        items: [
+          "Visit count and world percentage",
+          "Breakdown by continent",
+          "List of visited countries",
+          "Regional visit counts, rates and lists",
+        ],
+      },
+      {
+        h: "Regional maps",
+        items: [
+          "Eleven supported countries",
+          "Colour by visit; visited/unvisited filters",
+          "Search by city or place name",
+          "Regional stats and share images",
+        ],
+      },
+      {
+        h: "Personalisation and data",
+        items: [
+          "Light / dark / system appearance",
+          "Map colour choices",
+          "JSON export/import with inconsistency checks",
+          "Delete all data",
+        ],
+      },
+      {
+        h: "More",
+        items: [
+          "Sharing",
+          "Eleven languages",
+          "Offline use",
+          "No account; on-device storage",
+          "In-app support",
+          "Offline legal fallback",
+          "Quiet banner ads on taller screens",
+        ],
+      },
+    ];
+
+const howGuides = ja
+  ? [
+      {
+        t: "はじめる",
+        steps: ["アプリを開くとオンボーディングのあとホームの世界地図が表示されます。", "アカウント登録は不要です。"],
+      },
+      {
+        t: "国を追加・削除する",
+        steps: [
+          "ホーム右下の＋をタップします。",
+          "国名を検索するか、地域別一覧から探します。",
+          "訪れた国にチェックを付け、右上の確定で保存します。",
+          "世界地図を直接タップして国を追加することはできません。",
+        ],
+      },
+      {
+        t: "世界地図を見る",
+        steps: ["ピンチやボタンで拡大・縮小します。", "ドラッグで移動し、リセットで初期表示に戻せます。", "設定から地図色を変えられます。"],
+      },
+      {
+        t: "統計を見る",
+        steps: ["ホーム下部のシートを開きます。", "訪問国数、世界の訪問率、大陸別の内訳、訪問済み国一覧を確認します。"],
+      },
+      {
+        t: "国内地域を記録する",
+        steps: [
+          "対応国を開き、国内マップまたは一覧へ進みます。",
+          "訪れた都道府県・州・県などにチェックを付けます。",
+          "訪問数と割合、フィルター、共有用画像が使えます。",
+        ],
+      },
+      {
+        t: "地名検索",
+        steps: ["国内地域画面の検索から、都市名や地名で該当地域を探せます。", "検索データはアプリ内に同梱されており、オフラインでも利用できます。"],
+      },
+      {
+        t: "データ移行",
+        steps: [
+          "設定 → データ管理 → JSON書き出し。",
+          "新しい端末でJSONを読み込み、訪問国と国内地域を復元します。",
+          "親国が未訪問の不整合は、親国を訪問済みにするか該当地域を除外して解決できます。",
+        ],
+      },
+      {
+        t: "テーマ・地図色",
+        steps: ["設定からシステム／ライト／ダークを選べます。", "地図色を変更して世界地図の印象を変えられます。"],
+      },
+    ]
+  : [
+      {
+        t: "Getting started",
+        steps: ["After a short onboarding, Home shows the world map.", "No account is required."],
+      },
+      {
+        t: "Add or remove countries",
+        steps: [
+          "Tap + at the bottom-right of Home.",
+          "Search by name or browse by region.",
+          "Check visited countries and confirm.",
+          "You cannot add countries by tapping the world map.",
+        ],
+      },
+      {
+        t: "Explore the world map",
+        steps: ["Pinch or use buttons to zoom.", "Drag to pan; reset returns to the default view.", "Change map colour in Settings."],
+      },
+      {
+        t: "View statistics",
+        steps: ["Open the bottom sheet on Home.", "See visit count, world percentage, continents and visited lists."],
+      },
+      {
+        t: "Record regions",
+        steps: [
+          "Open a supported country and its regional map or list.",
+          "Check prefectures, states, provinces and more.",
+          "Use counts, rates, filters and share images.",
+        ],
+      },
+      {
+        t: "Place search",
+        steps: ["Search by city or place name inside regional views.", "Search indexes are bundled and work offline."],
+      },
+      {
+        t: "Move your data",
+        steps: [
+          "Settings → Data management → export JSON.",
+          "Import on a new device to restore countries and regions.",
+          "Inconsistent parent countries can be marked visited or regions excluded.",
+        ],
+      },
+      {
+        t: "Theme and map colour",
+        steps: ["Choose system, light or dark in Settings.", "Pick a map colour that suits you."],
+      },
+    ];
+
 const faqs = ja
-  ? [["無料で使えますか？", "はい。Colorviaは無料でご利用いただけます。"], ["アカウント登録は必要ですか？", "必要ありません。ダウンロード後すぐに使い始められます。"], ["データはどこに保存されますか？", "訪問国などの記録はお使いの端末内に保存されます。"], ["オフラインでも使えますか？", "地図タイルの読み込みを除く主要な記録・閲覧機能はオフラインでも利用できます。"], ["端末間で同期できますか？", "現在、端末間同期には対応していません。"], ["データを削除できますか？", "アプリ内の設定から削除できます。アプリをアンインストールした場合も端末内データは削除されます。"]]
-  : [["Is Colorvia free?", "Yes. Colorvia is free to use."], ["Do I need an account?", "No. You can start immediately after downloading."], ["Where is my data stored?", "Visited-country records are stored on your device."], ["Can I use it offline?", "Core tracking and viewing work offline, aside from loading map tiles."], ["Can I sync devices?", "Cross-device sync is not currently supported."], ["Can I delete my data?", "You can delete it from Settings. Uninstalling the app also removes its on-device data."]];
-const privacy = ja
   ? [
-      ["1. はじめに", "本ポリシーは、運営者（Tomokichi）が提供するiOSアプリケーション「Colorvia」および本ウェブサイト（以下あわせて「本サービス」）における利用者情報の取扱いを定めるものです。"],
-      ["2. 基本方針", "本アプリはアカウント登録を必要とせず、広告配信または行動解析を目的とするSDKを組み込みません。訪問国などの記録は利用者の端末内に保存され、運営者がその内容を閲覧することはできません。"],
-      ["3. 端末内に保存する情報", "訪問済みの国、表示設定その他利用者がアプリ内で設定した情報を端末内に保存します。これらはアプリの機能提供にのみ利用します。"],
-      ["4. 地図機能", "地図の表示にはApple MapKit等の地図サービスを利用する場合があります。地図タイル等の取得に必要な通信は各提供者の方針に従って処理されますが、利用者が記録した訪問国の一覧を運営者のサーバーへ送信することはありません。"],
-      ["5. お問い合わせ", "Tomokichi共通お問い合わせフォームを送信した場合に限り、名前（入力した場合）、メールアドレス、お問い合わせ内容、対象アプリ、問い合わせカテゴリ、表示言語、問い合わせ識別子および送信日時を取得します。これらは回答、不具合調査、サービス改善および不正利用防止に利用します。"],
-      ["6. 外部サービス", "お問い合わせ受付APIの実行基盤としてCloudflare Workersを、メール配送のためResendを利用します。各サービスでは、それぞれのプライバシーポリシーに従って情報が処理されます。"],
-      ["7. 第三者提供", "運営者は利用者情報を販売または貸与しません。ただし、利用目的に必要な委託先による処理、法令に基づく開示、または生命・身体・財産の保護に必要な場合を除きます。"],
-      ["8. 保存期間と削除", "端末内データは利用者が削除するまで保存されます。お問い合わせは専用データベースへ保存せずメールとして受信し、対応に必要な期間保存した後に削除します。"],
-      ["9. 未成年者", "未成年の方は、必要に応じて保護者の同意を得たうえで本サービスをご利用ください。"],
-      ["10. 変更とお問い合わせ", "本ポリシーを変更する場合は、本ウェブサイト等でお知らせします。個人情報の取扱いに関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。"],
+      ["base", "Colorviaはどんなアプリですか？", "訪れた国を記録し、世界地図を色づかせる旅の記録アプリです。対応国では国内地域まで残せます。"],
+      ["base", "無料で使えますか？", "はい。基本機能は無料です。高さに余裕がある端末ではホーム下部にバナー広告が表示される場合があります。現在、広告削除課金はありません。"],
+      ["base", "アカウントは必要ですか？", "いいえ。"],
+      ["base", "対応環境は？", "iPhone・iOS 18以降向けです。iPad専用の最適化レイアウトは現時点ではありません。"],
+      ["country", "地図上で国をタップして追加できますか？", "いいえ。ホームの＋から国選択リストで追加します。地図では拡大・移動・リセットができます。"],
+      ["country", "一度に複数の国を選べますか？", "はい。リストで複数にチェックを付けてから確定できます。"],
+      ["country", "世界割合はどう計算されますか？", "Colorviaが定義する195か国を基準に計算しています。"],
+      ["region", "国内地域マップとは？", "日本・フランスなど11か国で、都道府県や州など国の中の地域まで訪問を記録できる機能です。"],
+      ["region", "どの国に対応していますか？", "日本、フランス、スペイン、韓国、エジプト、タイ、トルコ、アメリカ、マレーシア、ベルギー、シンガポールです。"],
+      ["region", "地名から地域を探せますか？", "はい。都市名や地名の検索インデックスがアプリ内にあり、オフラインでも使えます。"],
+      ["data", "データはどこに保存されますか？", "訪問国と国内地域の記録は端末内に保存されます。"],
+      ["data", "自動同期できますか？", "現在、iCloudなどを使った端末間の自動同期には対応していません。"],
+      ["data", "データをバックアップできますか？", "はい。設定の「データ管理」から、訪問国と国内地域の訪問記録をJSONファイルとして書き出せます。"],
+      ["data", "新しい端末へ復元できますか？", "旧端末で書き出したJSONを、新しい端末のColorviaで読み込むことで、対応する訪問記録を復元できます。"],
+      ["data", "JSONには何が含まれますか？", "訪問国、国内地域の訪問状態、各記録の更新日時などが含まれます。"],
+      ["data", "すべてのデータを削除できますか？", "はい。設定のデータ管理から削除できます。"],
+      ["display", "テーマや地図色を変えられますか？", "はい。設定からライト／ダーク／システムと地図色を変更できます。"],
+      ["display", "共有できますか？", "はい。訪問状況や国内マップの共有用画像を作成できます。"],
+      ["net", "オフラインでも使えますか？", "世界地図、訪問国の登録、統計、国内地域マップ、地名検索、データの書き出し・読み込みなど、主要機能はオフラインで利用できます。"],
+      ["net", "通信が必要な操作は？", "広告の取得、広告同意、問い合わせ送信、最新のプライバシーポリシー・利用規約の表示、外部サイトやライセンスページの表示などです。"],
+      ["net", "広告は表示されますか？", "はい。Google Mobile Adsによるバナーがホーム下部に出る場合があります。画面高が700pt未満の端末では表示しないことがあります。インタースティシャルやリワード広告はありません。"],
     ]
   : [
-      ["1. Introduction", "This policy explains how the operator (Tomokichi) handles user information in the Colorvia iOS application and this website (together, the Service)."],
-      ["2. Basic policy", "The App requires no account and includes no SDK for advertising or behavioural analytics. Visited-country records stay on your device and cannot be viewed by the operator."],
-      ["3. Information stored on your device", "The App stores visited countries, display settings and other choices you make on your device. This information is used only to provide App features."],
-      ["4. Map features", "The App may use map services such as Apple MapKit. Network requests needed to load map tiles are handled under each provider’s policy, but your list of visited countries is not sent to the operator’s server."],
-      ["5. Contact", "Only when you submit the shared Tomokichi support form, we collect your name (if provided), email address, message, selected app, category, display language, enquiry identifier and submission time. We use this to reply, investigate issues, improve the Service and prevent abuse."],
-      ["6. Service providers", "We use Cloudflare Workers to operate the support API and Resend to deliver email. Information is processed under each provider’s privacy policy."],
-      ["7. Third-party disclosure", "The operator does not sell or rent user information. Information may be processed by necessary service providers, disclosed where required by law, or disclosed where needed to protect life, safety or property."],
-      ["8. Retention and deletion", "On-device data remains until you delete it. Enquiries are received as email rather than stored in a dedicated database and are deleted after they are no longer reasonably needed."],
-      ["9. Minors", "Minors should obtain a parent or guardian’s consent where appropriate."],
-      ["10. Changes and contact", "Changes to this policy will be announced on this website or through the Service. Use the shared Tomokichi support form for privacy questions."],
+      ["base", "What is Colorvia?", "A travel log that colours the countries you visit on a world map, with regional detail in 11 supported countries."],
+      ["base", "Is it free?", "Yes. Core features are free. A banner ad may appear on taller devices. There is no remove-ads purchase today."],
+      ["base", "Do I need an account?", "No."],
+      ["base", "What devices are supported?", "iPhone on iOS 18 or later. There is no iPad-optimized layout yet."],
+      ["country", "Can I tap the world map to add a country?", "No. Use Home’s + button and the country list. The map supports zoom, pan and reset only."],
+      ["country", "Can I select multiple countries at once?", "Yes. Check several in the list, then confirm."],
+      ["country", "How is world percentage calculated?", "Against the 195 countries defined by Colorvia."],
+      ["region", "What are regional maps?", "In 11 countries you can mark prefectures, states, provinces and similar units inside the country."],
+      ["region", "Which countries are supported?", "Japan, France, Spain, South Korea, Egypt, Thailand, Türkiye, the United States, Malaysia, Belgium and Singapore."],
+      ["region", "Can I search by city name?", "Yes. Place-search indexes are bundled and work offline."],
+      ["data", "Where is data stored?", "On your device."],
+      ["data", "Is there automatic sync?", "Not via iCloud or similar today."],
+      ["data", "Can I back up my data?", "Yes. Export visited countries and regions as JSON from Settings → Data management."],
+      ["data", "Can I restore on a new phone?", "Import the JSON exported from your previous device."],
+      ["data", "What does the JSON include?", "Visited countries, regional visit state and update timestamps."],
+      ["data", "Can I delete everything?", "Yes, from Data management in Settings."],
+      ["display", "Can I change theme or map colour?", "Yes, in Settings."],
+      ["display", "Can I share?", "Yes—share summaries and regional map images."],
+      ["net", "Does it work offline?", "Yes for the world map, visit tracking, statistics, regional maps, place search and JSON import/export."],
+      ["net", "What needs a network?", "Loading ads, ad consent, support messages, the latest legal documents, and opening external sites or licences."],
+      ["net", "Are there ads?", "Yes—a Google Mobile Ads banner may appear on Home on taller screens. No interstitial or rewarded ads."],
     ];
-const terms = ja
-  ? [
-      ["第1条（適用）", "本規約は、運営者（Tomokichi）が提供するiOSアプリケーション「Colorvia」および本ウェブサイト（以下あわせて「本サービス」）の利用条件を定めます。"],
-      ["第2条（サービス内容）", "本アプリは、利用者が訪れた国を端末上で記録し、世界地図および統計として表示する機能を提供します。"],
-      ["第3条（利用条件）", "利用者は、自己の責任において本サービスを利用し、法令または第三者の権利を侵害する目的で利用してはなりません。"],
-      ["第4条（地図表示）", "本サービスの国境線、地名および地域区分は簡易的な表示であり、いかなる政治的立場または見解を示すものでもありません。"],
-      ["第5条（知的財産権）", "本サービスに含まれるプログラム、デザイン、文章、画像等の権利は、運営者または正当な権利者に帰属します。利用者が記録した情報の権利は利用者に帰属します。"],
-      ["第6条（データ管理）", "データは端末内に保存されるため、端末の変更、故障、アプリの削除または再インストールにより失われる場合があります。データ管理は利用者の責任で行ってください。"],
-      ["第7条（免責）", "本サービスは現状有姿で提供されます。運営者の故意または重過失による場合を除き、本サービスの利用により生じた損害について責任を負いません。"],
-      ["第8条（変更・終了）", "運営者は本サービスの内容を変更し、または提供を中断・終了する場合があります。重要な変更は合理的な方法でお知らせします。"],
-      ["第9条（準拠法・管轄）", "本規約は日本法に準拠し、本サービスに関する紛争は東京地方裁判所を第一審の専属的合意管轄裁判所とします。"],
-      ["第10条（お問い合わせ）", "本規約に関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。"],
-    ]
-  : [
-      ["Article 1 — Application", "These Terms govern use of the Colorvia iOS application and this website (together, the Service), provided by the operator (Tomokichi)."],
-      ["Article 2 — Service", "The App lets you record countries you have visited on your device and view them as a world map and statistics."],
-      ["Article 3 — Conditions of use", "You use the Service at your own responsibility and must not use it unlawfully or to infringe another party’s rights."],
-      ["Article 4 — Map display", "Borders, place names and regional groupings are simplified displays and do not represent any political position or view."],
-      ["Article 5 — Intellectual property", "Rights in the Service, including its program, design, text and images, belong to the operator or relevant rights holders. Rights in information you record remain yours."],
-      ["Article 6 — Data management", "Because data is stored on your device, it may be lost when changing or damaging the device, or deleting or reinstalling the App. You are responsible for managing your data."],
-      ["Article 7 — Disclaimer", "The Service is provided as is. Except for wilful misconduct or gross negligence by the operator, the operator is not liable for damage arising from use of the Service."],
-      ["Article 8 — Changes and termination", "The operator may change, suspend or discontinue the Service. Material changes will be announced by reasonable means."],
-      ["Article 9 — Governing law", "These Terms are governed by Japanese law. The Tokyo District Court has exclusive jurisdiction in the first instance over disputes relating to the Service."],
-      ["Article 10 — Contact", "Use the shared Tomokichi support form for questions about these Terms."],
-    ];
-const legal = page === "privacy" ? privacy : terms;
+
+const faqCats = ja
+  ? [["all", "すべて"], ["base", "基本"], ["country", "国の記録"], ["region", "国内地域"], ["data", "データ"], ["display", "表示"], ["net", "通信・広告"]]
+  : [["all", "All"], ["base", "Basics"], ["country", "Countries"], ["region", "Regions"], ["data", "Data"], ["display", "Display"], ["net", "Network & ads"]];
+
+const shots = [
+  { webp: "/assets/colorvia-home.webp", png: "/assets/colorvia-home.png", altJa: "世界地図ホーム", altEn: "World map home", capJa: "世界地図", capEn: "World map" },
+  { webp: "/assets/colorvia-home-bottom-sheet.webp", png: "/assets/colorvia-home-bottom-sheet.png", altJa: "統計シート", altEn: "Statistics sheet", capJa: "統計", capEn: "Statistics" },
+  { webp: "/assets/colorvia-home-localized-map-controls.webp", png: "/assets/colorvia-home-localized-map-controls.png", altJa: "地図コントロール", altEn: "Map controls", capJa: "地図操作", capEn: "Map controls" },
+  { webp: "/assets/colorvia-map-coral.webp", png: "/assets/colorvia-map-coral.png", altJa: "地図色", altEn: "Map colour", capJa: "地図色", capEn: "Map colour" },
+  { webp: "/assets/colorvia-home-dark.webp", png: "/assets/colorvia-home-dark.png", altJa: "ダークテーマ", altEn: "Dark theme", capJa: "ダーク", capEn: "Dark" },
+  { webp: "/assets/colorvia-home-en.webp", png: "/assets/colorvia-home-en.png", altJa: "英語UI", altEn: "English UI", capJa: "英語表示", capEn: "English UI" },
+];
 ---
 
-<AppShell lang={lang} title={title} page={page}>
-  <section class:list={["subpage", `subpage-${page}`]}>
-    <header class="page-intro"><p class="eyebrow">{page.toUpperCase()}</p><h1>{title}</h1>{(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月28日／最終更新日：2026年7月28日" : "Effective: July 28, 2026 / Last updated: July 28, 2026"}</small>}</header>
-    {page === "features" && <div class="content-grid">{features.map(([icon, heading, body]) => <article><i>{icon}</i><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div>}
-    {page === "how-to" && <div class="how-list">{steps.map(([n, heading, body]) => <article><b>{n}</b><div><h2>{heading}</h2><p>{body}</p></div></article>)}</div>}
-    {page === "screenshots" && <div class="screen-grid content-screens"><figure><div class="screen-crop map-shot"><img src="/assets/lp-reference.png" alt="" /></div><figcaption>{ja ? "地図" : "Map"}</figcaption></figure><figure><div class="screen-crop stats-shot"><img src="/assets/lp-reference.png" alt="" /></div><figcaption>{ja ? "統計" : "Statistics"}</figcaption></figure></div>}
-    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>{q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="contact-card"><div><h2>{ja ? "解決しない場合" : "Still need help?"}</h2><p>{ja ? "Colorviaについてお気軽にお問い合わせください。" : "Send us a message about Colorvia."}</p></div><a href={supportUrl("colorvia", lang)}>{ja ? "お問い合わせ" : "Contact"} →</a></div></>}
-    {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal.map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p></section>)}</article>}
-    {page === "updates" && <div class="updates-list"><article><div><h2>1.0.0</h2><p>{ja ? "2026年7月28日" : "July 28, 2026"}</p><ul><li>{ja ? "Colorviaを公開しました" : "Colorvia is now available"}</li><li>{ja ? "訪れた国を記録する世界地図" : "World map for visited countries"}</li><li>{ja ? "地域別の統計" : "Statistics by region"}</li></ul></div><span>{ja ? "新機能" : "New"}</span></article></div>}
+<AppShell lang={lang} title={title} page={page} description={description}>
+  <section class:list={["content-page", `content-${page}`]}>
+    <header class="content-hero">
+      <p class="content-eyebrow">{page.toUpperCase()}</p>
+      <h1>{title}</h1>
+      {(page === "privacy" || page === "terms") && (
+        <div class="legal-dates">
+          <p>{ja ? "制定日：2026年7月28日" : "Effective date: July 28, 2026"}</p>
+          <p>{ja ? "最終更新日：2026年8月1日" : "Last updated: August 1, 2026"}</p>
+        </div>
+      )}
+    </header>
+
+    {page === "features" && (
+      <div class="feature-groups">
+        {featureGroups.map((g) => (
+          <article>
+            <h2>{g.h}</h2>
+            <ul>{g.items.map((item) => <li>{item}</li>)}</ul>
+          </article>
+        ))}
+        <p class="env-line">
+          {ja
+            ? `11言語対応：${languagesJa}`
+            : `Eleven languages: ${languagesEn}`}
+        </p>
+      </div>
+    )}
+
+    {page === "regions" && (
+      <div class="regions-page">
+        <p class="lead">
+          {ja
+            ? "対応している国では、都道府県、州、県、連邦直轄領、旅行エリアなど、国の中で訪れた地域まで記録できます。都市名や地名から該当する地域を検索することもできます。"
+            : "In supported countries, record states, prefectures, provinces, federal territories and travel areas. Search by city or place name to find the matching region."}
+        </p>
+        <div class="region-grid">
+          {regions.map((r) => (
+            <article class="region-card">
+              <span class="region-flag" aria-hidden="true">{r.flag}</span>
+              <h2>{ja ? r.nameJa : r.nameEn}</h2>
+              <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
+              <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
+            </article>
+          ))}
+        </div>
+        <p class="region-disclaimer">
+          {ja
+            ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
+            : "Maps and regional divisions in Colorvia are simplified for travel logging and do not express a political position."}
+        </p>
+      </div>
+    )}
+
+    {page === "how-to" && (
+      <div class="how-guides">
+        {howGuides.map((g, i) => (
+          <article>
+            <h2><span>{i + 1}</span>{g.t}</h2>
+            <ol>{g.steps.map((s) => <li>{s}</li>)}</ol>
+          </article>
+        ))}
+      </div>
+    )}
+
+    {page === "screenshots" && (
+      <div class="shot-gallery">
+        {shots.map((s) => (
+          <PhoneFrame size="md" label={ja ? s.capJa : s.capEn}>
+            <picture>
+              <source srcset={s.webp} type="image/webp" />
+              <img src={s.png} alt={ja ? s.altJa : s.altEn} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        ))}
+      </div>
+    )}
+
+    {page === "faq" && (
+      <div class="faq-page">
+        <nav class="faq-tabs" data-faq-tabs aria-label={ja ? "カテゴリ" : "Categories"}>
+          {faqCats.map(([key, label], i) => (
+            <button type="button" data-cat={key} aria-current={i === 0 ? "true" : "false"}>{label}</button>
+          ))}
+        </nav>
+        <div class="faq-list" data-faq-list>
+          {faqs.map(([cat, q, a], i) => (
+            <details data-cat={cat} open={i === 0}>
+              <summary>{q}</summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
+        <aside class="faq-contact">
+          <h2>{ja ? "解決しない場合" : "Still need help?"}</h2>
+          <a href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact"} →</a>
+        </aside>
+      </div>
+    )}
+
+    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
+
+    {(page === "privacy" || page === "terms") && (
+      <article class="legal-copy">
+        {legal.map(([heading, body]) => (
+          <section>
+            <h2>{heading}</h2>
+            {body.split("\n\n").map((para) => (
+              <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>
+            ))}
+          </section>
+        ))}
+      </article>
+    )}
+
+    {(page === "features" || page === "how-to" || page === "regions") && (
+      <div class="content-cta">
+        <span class="store-button store-soon" aria-disabled="true">● <span>{storeLabel}</span></span>
+      </div>
+    )}
   </section>
 </AppShell>
+
+<script is:inline>
+  (() => {
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        items.forEach((item) => {
+          item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
+      });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
+  })();
+</script>

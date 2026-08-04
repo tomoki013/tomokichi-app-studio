@@ -1,18 +1,32 @@
 ---
 import type { AppItem, Locale } from "../data/apps";
-import { appsPage } from "../lib/copy";
+import { appsPage, journal } from "../lib/copy";
+import { entryHref, type JournalEntry } from "../lib/journal";
 import AppIcon from "./AppIcon.astro";
+import AppScreen from "./AppScreen.astro";
 import StatusBadge from "./StatusBadge.astro";
 
 interface Props {
   app: AppItem;
   lang: Locale;
   variant?: "compact" | "large";
+  /** Journal entries this product came out of. */
+  behind?: JournalEntry[];
 }
-const { app, lang, variant = "compact" } = Astro.props;
-const appsHref = lang === "ja" ? "/ja/apps" : "/apps";
+const { app, lang, variant = "compact", behind = [] } = Astro.props;
+const appsHref = lang === "ja" ? "/ja/products" : "/products";
 const compactHref = app.url ?? appsHref;
 const externalCompact = Boolean(app.url);
+
+const detail = app.detail;
+const specs = detail
+  ? ([
+      [appsPage.spec.pricing[lang], detail.pricing[lang]],
+      [appsPage.spec.requirements[lang], detail.requirements[lang]],
+      [appsPage.spec.privacy[lang], detail.privacy[lang]],
+      ...(detail.languages ? [[appsPage.spec.languages[lang], detail.languages[lang]]] : []),
+    ] as [string, string][])
+  : [];
 ---
 
 {variant === "compact" ? (
@@ -25,28 +39,67 @@ const externalCompact = Boolean(app.url);
   >
     <div class="card-body">
       <div class="card-top">
-        <AppIcon iconClass={app.iconClass} size={44} />
+        <AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={44} />
         <StatusBadge status={app.status} lang={lang} />
       </div>
       <h3>{app.name}</h3>
       <p class="tagline">{app.tagline[lang]}</p>
     </div>
-    {app.previewImage && <img class="preview" src={app.previewImage} alt="" loading="lazy" />}
   </a>
 ) : (
-  <article class="app-card large" data-status={app.status}>
+  <article class="app-card large" id={app.slug} data-status={app.status}>
     <div class="card-body">
       {app.accent && <span class="accent-line" style={`background:${app.accent}`} aria-hidden="true"></span>}
       <div class="card-top">
-        <AppIcon iconClass={app.iconClass} size={54} />
+        <AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={54} />
         <StatusBadge status={app.status} lang={lang} />
       </div>
       <h3>{app.name}</h3>
       <p class="tagline">{app.tagline[lang]}</p>
+
+      <blockquote class="app-origin">
+        <p class="spec-heading">{appsPage.origin[lang]}</p>
+        <p>{app.origin[lang]}</p>
+      </blockquote>
+
       <p class="desc">{app.description[lang]}</p>
-      <div class="meta">
-        <span>{app.platform.join(" / ")}</span>
-      </div>
+
+      {detail && (
+        <>
+          <h4 class="spec-heading">{appsPage.spec.highlights[lang]}</h4>
+          <ul class="app-highlights">
+            {detail.highlights[lang].map((item) => <li>{item}</li>)}
+          </ul>
+          <dl class="app-specs">
+            {specs.map(([term, value]) => (
+              <div>
+                <dt>{term}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </>
+      )}
+
+      {!detail && (
+        <div class="meta">
+          <span>{app.platform.join(" / ")}</span>
+        </div>
+      )}
+
+      {behind.length > 0 && (
+        <div class="app-behind">
+          <p class="spec-heading">{journal.behindProduct[lang]}</p>
+          <ul>
+            {behind.map((entry) => (
+              <li>
+                <a href={entryHref(entry, lang)}>{entry.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div class="card-actions">
         {app.url ? (
           <a class="arrow-link soft" href={app.url} rel="noopener noreferrer" target="_blank">
@@ -58,6 +111,10 @@ const externalCompact = Boolean(app.url);
         )}
       </div>
     </div>
-    {app.previewImage && <img class="preview" src={app.previewImage} alt={`${app.name}`} loading="lazy" />}
+    {app.screen && (
+      <div class="preview-pane">
+        <AppScreen screen={app.screen} lang={lang} alt={`${app.name} — ${app.tagline[lang]}`} size="sm" />
+      </div>
+    )}
   </article>
 )}

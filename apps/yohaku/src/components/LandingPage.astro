@@ -1,63 +1,57 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import { appSiteUrl } from "@tomokichi/app-site/urls";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
-import PhoneMock from "./PhoneMock.astro";
 
 const { lang } = Astro.props as { lang: "ja" | "en" };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
 
 const features = ja
   ? [
-      {
-        mark: "□",
-        title: "余白を記録する",
-        body: "予定ではなく、余白を置いた時間をそっと記録します。",
-      },
-      {
-        mark: "□□■□□",
-        title: "静かに見渡す",
-        body: "日・週・月のリズムで、静かに余白を見渡せます。",
-      },
-      {
-        mark: "▦",
-        title: "かたちになる",
-        body: "積み重ねた余白が、美しいパターンになります。",
-      },
-      {
-        mark: "◌",
-        title: "言葉にならない心地よさ",
-        body: "アイコン中心の、シンプルでやさしいデザインです。",
-      },
+      { mark: "□", title: "余白を置く", body: "名前と時間で、何もしない時間を今日の中に置けます。" },
+      { mark: "□□■", title: "今日・週・月で見渡す", body: "カードと印で、静かに余白のリズムを振り返れます。" },
+      { mark: "◌", title: "始まる前の通知", body: "許可すると、余白の少し前にそっとお知らせします。" },
+      { mark: "…", title: "あとから、ひとこと", body: "終わった余白を、答えても答えなくてもいい小さな問いで振り返れます。" },
+      { mark: "◇", title: "端末の中に", body: "アカウントなし。余白は端末内に保存されます。" },
     ]
   : [
-      {
-        mark: "□",
-        title: "Record the space",
-        body: "Not another plan—just a quiet mark where you left room.",
-      },
-      {
-        mark: "□□■□□",
-        title: "See it calmly",
-        body: "Glance across day, week and month without noise.",
-      },
-      {
-        mark: "▦",
-        title: "It takes shape",
-        body: "Stacked spaces become a quiet pattern of their own.",
-      },
-      {
-        mark: "◌",
-        title: "Comfort without words",
-        body: "An icon-led interface designed to stay out of the way.",
-      },
+      { mark: "□", title: "Leave space", body: "Give unplanned time a name and a start and end." },
+      { mark: "□□■", title: "Day, week, month", body: "Look back through quiet cards and simple marks." },
+      { mark: "◌", title: "A notice beforehand", body: "When enabled, a gentle reminder shortly before each space." },
+      { mark: "…", title: "A quiet check-in", body: "Afterward, reflect with one small question—or simply dismiss it." },
+      { mark: "◇", title: "On your device", body: "No account. Spaces stay on your iPhone." },
     ];
+
+const description = ja
+  ? "Yohakuは、日々の中に何もしない時間を置き、今日・週・月で静かに振り返るためのiPhoneアプリです。現在App Store公開準備中。"
+  : "Yohaku is an iPhone app for leaving time with nothing planned, then looking back across your day, week and month. Currently preparing for the App Store.";
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Yohaku",
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "iOS 17.0 or later",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+    availability: "https://schema.org/PreOrder",
+  },
+  description,
+  url: `${appSiteUrl("yohaku")}${base || ""}` || appSiteUrl("yohaku"),
+  image: `${appSiteUrl("yohaku")}/og.jpg`,
+});
 ---
 
 <AppShell
   lang={lang}
   title={ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}
-  description={ja ? "予定ではなく、余白だけを置くiPhoneアプリYohaku。" : "Yohaku is an iPhone app for leaving room in your day, without turning it into another plan."}
+  description={description}
+  jsonLd={jsonLd}
 >
   <section class="yohaku-hero">
     <div class="hero-inner">
@@ -67,38 +61,38 @@ const features = ja
         <span class="hero-rule" aria-hidden="true"></span>
         <p class="hero-body">
           {ja
-            ? "Yohakuは、日々の中に何も入れない時間をそっと置くためのアプリです。"
-            : "Yohaku is an app for gently placing time with nothing in it into your day."}
+            ? "Yohakuは、日々の中に何もしない時間を置き、今日・週・月で静かに振り返るためのiPhoneアプリです。"
+            : "Yohaku is an iPhone app for leaving time with nothing planned, then looking back across your day, week, and month."}
         </p>
         <div class="hero-actions">
-          <a class="store-button" href="#download">
+          <span class="store-button store-soon" aria-disabled="true">
             <svg class="store-apple" viewBox="0 0 16 20" aria-hidden="true"><path fill="currentColor" d="M13.2 10.6c0-2 1.6-3 1.7-3.1-0.9-1.3-2.4-1.5-2.9-1.5-1.2-0.1-2.4 0.7-3 0.7-0.6 0-1.6-0.7-2.6-0.7-1.3 0-2.6 0.8-3.3 2-1.4 2.5-0.4 6.1 1 8.1 0.7 1 1.5 2 2.6 2 1 0 1.4-0.7 2.7-0.7s1.6 0.7 2.7 0.7c1.1 0 1.8-1 2.5-1.9 0.8-1.1 1.1-2.2 1.1-2.3-0.0-0.0-2.1-0.8-2.1-3.2zM11.1 4.4c0.6-0.7 1-1.7 0.9-2.7-0.9 0-1.9 0.6-2.5 1.3-0.5 0.6-1 1.6-0.9 2.6 1 0.1 1.9-0.5 2.5-1.2z"/></svg>
-            App Store
-          </a>
+            {storeLabel}
+          </span>
           <a class="secondary-button" href={`${base}/features`}>{ja ? "詳しく見る" : "Learn more"}</a>
         </div>
       </div>
 
-      <div class="hero-devices" role="group" aria-label={ja ? "YohakuのToday、Week、Month画面" : "Yohaku Today, Week and Month screens"}>
+      <section class="hero-devices" aria-label={ja ? "YohakuのToday、Week、Month画面" : "Yohaku Today, Week and Month screens"}>
         <figure class="hero-device">
-          <figcaption>Today</figcaption>
-          <PhoneMock kind="today" size="md" />
+          <figcaption>{ja ? "今日" : "Today"}</figcaption>
+          <AppScreen screen="today" size="md" lang={lang} priority />
         </figure>
         <figure class="hero-device">
-          <figcaption>Week</figcaption>
-          <PhoneMock kind="week" size="md" />
+          <figcaption>{ja ? "週" : "Week"}</figcaption>
+          <AppScreen screen="week" size="md" lang={lang} priority />
         </figure>
         <figure class="hero-device">
-          <figcaption>Month</figcaption>
-          <PhoneMock kind="month" size="md" />
+          <figcaption>{ja ? "月" : "Month"}</figcaption>
+          <AppScreen screen="month" size="md" lang={lang} priority />
         </figure>
-      </div>
+      </section>
     </div>
 
     <AppHeroChrome
       lang={lang}
-      date="2026-07-29"
-      news={ja ? "Yohakuブランドサイトを公開しました。" : "The Yohaku brand site is now available."}
+      date="2026-08-01"
+      news={ja ? "Yohaku公式ブランドサイトを公開しました" : "The official Yohaku brand site is now live"}
       newsHref={`${base}/updates`}
     />
   </section>
@@ -121,47 +115,57 @@ const features = ja
 
   <section class="story-section story-quiet section-pad" id="concept">
     <div class="story-visual" data-reveal>
-      <PhoneMock kind="today" size="lg" />
+      <AppScreen screen="today" size="lg" lang={lang} />
     </div>
     <div class="story-copy" data-reveal>
       <h2>{ja ? "静かに整える。" : "Settle, quietly."}</h2>
       <span class="story-rule" aria-hidden="true"></span>
       <p>
         {ja
-          ? "気づいたときに、余白をそっと置く。それだけで、心は少しずつ整っていきます。"
-          : "When you notice the need, leave a little space. That alone can gently settle the mind."}
+          ? "気づいたときに、余白をそっと置く。完璧でなくていい、小さな習慣です。"
+          : "When you notice the need, leave a little space. A small habit—no need to be perfect."}
       </p>
     </div>
   </section>
 
   <section class="story-section story-shape section-pad">
     <div class="story-copy" data-reveal>
-      <h2>{ja ? <>余白が、<br />かたちになる。</> : <>Space takes<br />a shape.</>}</h2>
+      <h2>{ja ? <>余白のある日が、<br />静かな印になる。</> : <>Days with space<br />leave quiet marks.</>}</h2>
       <span class="story-rule" aria-hidden="true"></span>
       <p>
         {ja
-          ? "積み重ねた余白は、やがて美しいパターンに。自分だけのリズムが、静かに見えてきます。"
-          : "The spaces you stack become a quiet pattern—your own rhythm, made visible without noise."}
+          ? "Month画面では、余白のある日がカレンダー上の黒いマスとして残ります。ひと月の件数も確認でき、自分の時間のリズムが少しずつ見えてきます。"
+          : "On Month, days with space remain as quiet marks on the calendar. A monthly count helps you notice the rhythm of time you left open."}
       </p>
     </div>
-    <div class="story-visual story-visual-shape" data-reveal>
-      <PhoneMock kind="month" size="lg" />
-      <div class="shape-scatter" aria-hidden="true">
-        <i class="s1"></i>
-        <i class="s2"></i>
-        <i class="s3"></i>
-        <i class="s4"></i>
-        <i class="s5"></i>
-        <i class="s6"></i>
-      </div>
+    <div class="story-visual" data-reveal>
+      <AppScreen screen="month" size="lg" lang={lang} />
     </div>
+  </section>
+
+  <section class="pricing-teaser section-pad" data-reveal>
+    <header class="section-heading">
+      <h2>{ja ? "基本機能は、すべて無料です。" : "Every core feature is free."}</h2>
+      <span class="section-rule" aria-hidden="true"></span>
+    </header>
+    <p class="pricing-teaser-body">
+      {ja
+        ? "無料版には控えめなバナー広告が表示される場合があります。一度きりの「広告を永久に削除」で、広告を非表示にできます。サブスクリプションではありません。"
+        : "The free version may show unobtrusive banner ads. A one-time “Remove ads permanently” purchase removes ads. It is not a subscription."}
+    </p>
+    <a class="text-link" href={`${base}/pricing`}>{ja ? "料金について詳しく" : "About pricing"} →</a>
   </section>
 
   <section class="download-section" id="download" data-reveal>
     <h2>{ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}</h2>
-    <a class="store-button" href="#download">
+    <p class="download-note">
+      {ja
+        ? "iPhone・iOS 17以降に対応。現在はApp Store公開準備中です。"
+        : "Requires an iPhone with iOS 17 or later. Currently preparing for the App Store."}
+    </p>
+    <span class="store-button store-soon" aria-disabled="true">
       <svg class="store-apple" viewBox="0 0 16 20" aria-hidden="true"><path fill="currentColor" d="M13.2 10.6c0-2 1.6-3 1.7-3.1-0.9-1.3-2.4-1.5-2.9-1.5-1.2-0.1-2.4 0.7-3 0.7-0.6 0-1.6-0.7-2.6-0.7-1.3 0-2.6 0.8-3.3 2-1.4 2.5-0.4 6.1 1 8.1 0.7 1 1.5 2 2.6 2 1 0 1.4-0.7 2.7-0.7s1.6 0.7 2.7 0.7c1.1 0 1.8-1 2.5-1.9 0.8-1.1 1.1-2.2 1.1-2.3-0.0-0.0-2.1-0.8-2.1-3.2zM11.1 4.4c0.6-0.7 1-1.7 0.9-2.7-0.9 0-1.9 0.6-2.5 1.3-0.5 0.6-1 1.6-0.9 2.6 1 0.1 1.9-0.5 2.5-1.2z"/></svg>
-      App Store
-    </a>
+      {storeLabel}
+    </span>
   </section>
 </AppShell>

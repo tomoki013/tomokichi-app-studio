@@ -1,97 +1,282 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+import { appSiteUrl } from "@tomokichi/app-site/urls";
+import { languagesEn, languagesJa, regions } from "../lib/content";
 import AppShell from "./AppShell.astro";
 
 type Locale = "ja" | "en";
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
-const c = ja
-  ? {
-      kicker: "世界を、シンプルに彩ろう。",
-      title: "訪れた国を塗って、\n自分だけの世界地図をつくろう。",
-      body: "Colorviaは、行ったことのある国を選ぶだけで\n世界地図が少しずつ色づいていく、シンプルな記録アプリです。",
-      store: "App Storeでダウンロード",
-      features: "Colorviaの主な魅力",
-      featureSub: "余計な機能を削ぎ落とし、地図を塗る体験に集中しました。",
-      how: "使い方は、とても簡単",
-      shots: "スクリーンショット",
-      shotsSub: "シンプルで、心地よく、眺めたくなるUI。",
-      faq: "よくある質問",
-      cta: "さあ、世界を彩ろう。",
-      ctaBody: "Colorviaをダウンロードして、あなたの旅の軌跡を地図に残しましょう。",
-      notice: "Colorvia 1.0.0を公開しました！",
-    }
-  : {
-      kicker: "Colour the world, simply.",
-      title: "Paint the countries you visit.\nCreate a world map of your own.",
-      body: "Choose the countries you have visited and watch the world slowly fill with colour. Colorvia keeps travel tracking simple.",
-      store: "Download on the App Store",
-      features: "What makes Colorvia special",
-      featureSub: "Everything unnecessary removed, so you can focus on colouring your map.",
-      how: "It only takes three steps",
-      shots: "Screenshots",
-      shotsSub: "Simple, calm and made to be revisited.",
-      faq: "Frequently asked questions",
-      cta: "Colour your world.",
-      ctaBody: "Download Colorvia and leave the path of your travels on the map.",
-      notice: "Colorvia 1.0.0 is now available!",
-    };
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const homeImg = ja ? "/assets/colorvia-home.webp" : "/assets/colorvia-home-en.webp";
+const homeImgPng = ja ? "/assets/colorvia-home.png" : "/assets/colorvia-home-en.png";
+
+const description = ja
+  ? "Colorviaは、訪れた国や地域を選ぶだけで世界地図が色づく旅の記録アプリです。対応国では国内地域まで残せます。現在App Store公開準備中。"
+  : "Colorvia turns the countries and regions you have visited into a personal map of the world. Currently preparing for the App Store.";
+
 const features = ja
-  ? [["☝", "ワンタップで記録", "国を選ぶだけで、あなたの地図に記録されます。"], ["◎", "美しい世界地図", "静かで洗練されたデザインで、眺めたくなる地図に。"], ["◔", "世界の進捗が見える", "訪問国数や地域ごとの割合を、シンプルに確認できます。"], ["✈", "オフラインでも使える", "いつでも気軽に、自分の旅の軌跡を残せます。"]]
-  : [["☝", "One-tap tracking", "Choose a country and it is added to your map."], ["◎", "A beautiful world map", "A quiet, refined design made to be looked at."], ["◔", "See your progress", "Check countries and regional progress at a glance."], ["✈", "Works offline", "Keep your travel footprint close, wherever you are."]];
+  ? [
+      ["🔍", "国名で選ぶだけ", "国名を検索するか、地域別の一覧から訪れた国を選ぶだけ。複雑な入力はありません。"],
+      ["🗺", "自分だけの世界地図", "訪問国が色づき、ピンチやドラッグで地図を眺められます。"],
+      ["▣", "国の中まで記録", "対応11か国では、都道府県や州など国内の訪れた場所まで残せます。"],
+      ["◔", "訪問数と割合", "訪問国数、世界の訪問率、大陸別・地域別の統計を確認できます。"],
+      ["💾", "JSONで移行", "設定から書き出し・読み込みでき、新しい端末へ手動で移せます。"],
+      ["✈", "オフラインでも", "地図・記録・統計・地名検索など主要機能はオフラインで使えます。"],
+    ]
+  : [
+      ["🔍", "Search and select", "Search by country name or browse by region, then select the places you have visited."],
+      ["🗺", "Your world map", "Visited countries light up. Pinch, drag and reset the map anytime."],
+      ["▣", "Go beyond countries", "In 11 supported countries, record prefectures, states, provinces and travel areas."],
+      ["◔", "Counts and progress", "See visit counts, world percentage and breakdowns by continent and region."],
+      ["💾", "JSON transfer", "Export and import from Settings to move records to a new device."],
+      ["✈", "Works offline", "Map, tracking, stats and place search work without a network."],
+    ];
+
 const steps = ja
-  ? [["1", "国を選ぶ", "地図上で国をタップして選択します。", "◎"], ["2", "地図が色づく", "訪れた国が、あなたの色で塗られます。", "◜"], ["3", "自分の世界が残る", "あなただけの世界地図が完成します。", "♡"]]
-  : [["1", "Choose a country", "Tap a country on the world map.", "◎"], ["2", "Watch it fill", "Every visit colours another place.", "◜"], ["3", "Keep your world", "Your own world map takes shape.", "♡"]];
+  ? [
+      ["1", "＋から国を追加", "ホーム右下の＋を開き、検索または一覧から訪れた国にチェックを付けて確定します。"],
+      ["2", "地図と統計を見る", "世界地図が色づき、訪問国数や割合をシートで確認できます。"],
+      ["3", "国内地域まで残す", "対応国では、地名検索や一覧から都道府県・州などを記録できます。"],
+    ]
+  : [
+      ["1", "Add countries with +", "Open +, search or browse, check countries you visited, then confirm."],
+      ["2", "See map and stats", "The world map fills in colour; open the sheet for counts and percentages."],
+      ["3", "Record regions", "In supported countries, mark prefectures, states and more via search or lists."],
+    ];
+
 const faqs = ja
-  ? [["無料で使えますか？", "はい。Colorviaは無料でご利用いただけます。"], ["オフラインでも使えますか？", "地図タイルの読み込みを除く主要な記録機能は、オフラインでも利用できます。"], ["データのバックアップはできますか？", "現時点では端末間同期やクラウドバックアップには対応していません。"]]
-  : [["Is Colorvia free?", "Yes. Colorvia is free to use."], ["Can I use it offline?", "Core tracking works offline, aside from loading map tiles."], ["Can I back up my data?", "Cloud backup and cross-device sync are not currently supported."]];
+  ? [
+      ["無料で使えますか？", "はい。基本機能は無料です。画面高に余裕がある端末では、ホーム下部にバナー広告が表示される場合があります。"],
+      ["地図上で国をタップして追加できますか？", "いいえ。世界地図のタップでは国を追加できません。ホームの＋から国選択リストで追加します。地図では拡大・移動・リセットができます。"],
+      ["データをバックアップできますか？", "はい。設定の「データ管理」からJSONで書き出し、別の端末で読み込めます。iCloudなどの自動同期はありません。"],
+    ]
+  : [
+      ["Is Colorvia free?", "Yes. Core features are free. On taller devices, a banner ad may appear at the bottom of Home."],
+      ["Can I tap the world map to add a country?", "No. Use Home’s + button and the country list. The map supports zoom, pan and reset only."],
+      ["Can I back up my data?", "Yes. Export JSON from Settings → Data management and import it on another device. There is no automatic iCloud sync."],
+    ];
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Colorvia",
+  applicationCategory: "TravelApplication",
+  operatingSystem: "iOS 18.0 or later",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+    availability: "https://schema.org/PreOrder",
+  },
+  description,
+  url: `${appSiteUrl("colorvia")}${base || ""}` || appSiteUrl("colorvia"),
+  image: `${appSiteUrl("colorvia")}/og.png`,
+});
 ---
 
-<AppShell lang={lang} title={ja ? "自分だけの世界地図をつくろう" : "Create a world map of your own"}>
+<AppShell
+  lang={lang}
+  title={ja ? "旅した場所を塗って、自分だけの世界地図をつくろう。" : "Colour the places you visit. Build a world map of your own."}
+  description={description}
+  jsonLd={jsonLd}
+>
   <section class="hero">
     <div class="hero-copy" data-reveal>
-      <p class="eyebrow">{c.kicker}</p>
-      <h1>{c.title.split("\n").map((line) => <>{line}<br /></>)}</h1>
-      <p>{c.body.split("\n").map((line) => <>{line}<br /></>)}</p>
-      <a class="store-button" href="#download">● <span>{c.store}</span></a>
-      <small>{ja ? "iPhone対応" : "Made for iPhone"}</small>
+      <p class="eyebrow">{ja ? "世界を、シンプルに彩ろう。" : "Colour the world, simply."}</p>
+      <h1>
+        {ja ? (
+          <>旅した場所を塗って、<br />自分だけの世界地図をつくろう。</>
+        ) : (
+          <>Colour the places you visit.<br />Build a world map of your own.</>
+        )}
+      </h1>
+      <p>
+        {ja ? (
+          <>
+            Colorviaは、訪れた国や地域を選ぶだけで、<br />
+            世界地図が少しずつ色づいていく旅の記録アプリです。<br />
+            対応している国では、都道府県や州など、<br />
+            国の中の訪れた場所まで残せます。
+          </>
+        ) : (
+          <>
+            Colorvia turns the countries and regions you have visited into a personal map of the world.
+            <br />
+            In supported countries, you can go deeper and record states, prefectures, provinces, and travel areas.
+          </>
+        )}
+      </p>
+      <div class="hero-actions">
+        <span class="store-button store-soon" aria-disabled="true">● <span>{storeLabel}</span></span>
+        <a class="secondary-button" href={`${base}/features`}>{ja ? "機能を見る" : "Explore features"}</a>
+      </div>
+      <small>{ja ? "iPhone・iOS 18以降向け。iPad専用レイアウトは未対応です。" : "Designed for iPhone on iOS 18+. No iPad-optimized layout yet."}</small>
     </div>
-    <div class="hero-phone" data-reveal><img src="/assets/lp-reference.png" alt={ja ? "ColorviaのiPhone画面" : "Colorvia on iPhone"} /></div>
+    <div class="hero-phone" data-reveal>
+      <PhoneFrame size="lg">
+        <picture>
+          <source srcset={homeImg} type="image/webp" />
+          <img
+            src={homeImgPng}
+            alt={ja ? "Colorviaのホーム画面。世界地図と訪問統計" : "Colorvia home screen with world map and visit stats"}
+            width="1170"
+            height="2532"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+      </PhoneFrame>
+    </div>
     <div class="world-wash" aria-hidden="true">WORLD</div>
-    <div class="flight-line" aria-hidden="true">················ ✈</div>
-    <AppHeroChrome lang={lang} date="2026-07-28" news={c.notice} newsHref={`${base}/updates`} />
+    <AppHeroChrome
+      lang={lang}
+      date="2026-08-01"
+      news={ja ? "Colorvia公式ブランドサイトを公開しました" : "The official Colorvia brand site is now live"}
+      newsHref={`${base}/updates`}
+    />
   </section>
 
   <div class="landing-sections">
     <section class="landing-pad features" id="features">
-      <header class="section-title" data-reveal><h2>{c.features}</h2><p>{c.featureSub}</p></header>
-      <div class="feature-grid">{features.map(([icon, title, body]) => <article data-reveal><i>{icon}</i><h3>{title}</h3><p>{body}</p></article>)}</div>
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "Colorviaの主な魅力" : "What makes Colorvia special"}</h2>
+        <p>{ja ? "国から、その先の地域まで。旅の記録を静かに積み重ねます。" : "From countries to regions—quietly build a record of your travels."}</p>
+      </header>
+      <div class="feature-grid">
+        {features.map(([icon, title, body]) => (
+          <article data-reveal>
+            <i>{icon}</i>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
       <a class="section-link" href={`${base}/features`}>{ja ? "すべての機能を見る" : "View all features"} →</a>
     </section>
 
+    <section class="landing-pad regions-section" id="regions">
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "国の中まで、旅を残せる。" : "Go beyond countries."}</h2>
+        <p>
+          {ja
+            ? "対応している国では、都道府県、州、県、連邦直轄領、旅行エリアなど、国の中で訪れた地域まで記録できます。都市名や地名から該当する地域を検索することもできます。"
+            : "In supported countries, record states, prefectures, provinces, federal territories and travel areas. Search by city or place name to find the right region."}
+        </p>
+      </header>
+      <div class="region-scroll" data-reveal>
+        {regions.map((r) => (
+          <article class="region-card">
+            <span class="region-flag" aria-hidden="true">{r.flag}</span>
+            <h3>{ja ? r.nameJa : r.nameEn}</h3>
+            <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
+            <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
+          </article>
+        ))}
+      </div>
+      <p class="region-disclaimer" data-reveal>
+        {ja
+          ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
+          : "Maps and regional divisions in Colorvia are simplified for travel logging and do not express a political position."}
+      </p>
+      <a class="section-link" href={`${base}/regions`}>{ja ? "国内地域マップの詳細" : "Regional maps in detail"} →</a>
+    </section>
+
     <section class="landing-pad how" id="how">
-      <header class="section-title" data-reveal><h2>{c.how}</h2></header>
-      <div class="step-grid">{steps.map(([n, title, body, icon]) => <article data-reveal><b>{n}</b><i>{icon}</i><h3>{title}</h3><p>{body}</p></article>)}</div>
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "使い方は、シンプル" : "Simple to start"}</h2>
+      </header>
+      <div class="step-grid">
+        {steps.map(([n, title, body]) => (
+          <article data-reveal>
+            <b>{n}</b>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      <a class="section-link" href={`${base}/how-to`}>{ja ? "詳しい使い方" : "Full how-to"} →</a>
     </section>
 
     <section class="landing-pad screenshots" id="screenshots">
-      <header class="section-title" data-reveal><h2>{c.shots}</h2><p>{c.shotsSub}</p></header>
-      <div class="screen-grid">
-        <figure data-reveal><div class="screen-crop map-shot"><img src="/assets/lp-reference.png" alt={ja ? "世界地図画面" : "World map screen"} /></div><figcaption>{ja ? "訪れた国を塗る地図" : "Colour the places you visit"}</figcaption></figure>
-        <figure data-reveal><div class="screen-crop stats-shot"><img src="/assets/lp-reference.png" alt={ja ? "統計画面" : "Statistics screen"} /></div><figcaption>{ja ? "世界の進捗をひと目で" : "See your world at a glance"}</figcaption></figure>
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "スクリーンショット" : "Screenshots"}</h2>
+        <p>{ja ? "実際のアプリ画面です。" : "Real screens from the app."}</p>
+      </header>
+      <div class="screen-grid real-shots">
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "世界地図と訪問統計" : "World map and visit stats"}>
+            <picture>
+              <source srcset="/assets/colorvia-home.webp" type="image/webp" />
+              <img src="/assets/colorvia-home.png" alt={ja ? "世界地図ホーム画面" : "World map home screen"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "訪問数と地域別の内訳" : "Counts and regional breakdown"}>
+            <picture>
+              <source srcset="/assets/colorvia-home-bottom-sheet.webp" type="image/webp" />
+              <img src="/assets/colorvia-home-bottom-sheet.png" alt={ja ? "統計ボトムシート" : "Statistics bottom sheet"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "地図色の変更" : "Custom map colours"}>
+            <picture>
+              <source srcset="/assets/colorvia-map-coral.webp" type="image/webp" />
+              <img src="/assets/colorvia-map-coral.png" alt={ja ? "地図色を変えた画面" : "Map with custom colour"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
+        <div data-reveal>
+          <PhoneFrame size="md" label={ja ? "ダークテーマ" : "Dark theme"}>
+            <picture>
+              <source srcset="/assets/colorvia-home-dark.webp" type="image/webp" />
+              <img src="/assets/colorvia-home-dark.png" alt={ja ? "ダークテーマのホーム" : "Home in dark theme"} width="1170" height="2532" loading="lazy" decoding="async" />
+            </picture>
+          </PhoneFrame>
+        </div>
       </div>
     </section>
 
     <section class="landing-pad faq" id="faq">
-      <header class="section-title" data-reveal><h2>{c.faq}</h2></header>
-      <div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0} data-reveal><summary>{q}<span>⌄</span></summary><p>{a}</p></details>)}</div>
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "よくある質問" : "Frequently asked questions"}</h2>
+      </header>
+      <div class="faq-list">
+        {faqs.map(([q, a], i) => (
+          <details open={i === 0} data-reveal>
+            <summary>{q}<span>⌄</span></summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </div>
       <a class="section-link" href={`${base}/faq`}>{ja ? "すべての質問を見る" : "View all questions"} →</a>
     </section>
 
+    <section class="landing-pad lang-note" data-reveal>
+      <h2>{ja ? "11言語に対応" : "Eleven languages"}</h2>
+      <p>{ja ? languagesJa : languagesEn}</p>
+    </section>
+
     <section class="download-cta" id="download" data-reveal>
-      <div><h2>{c.cta}</h2><p>{c.ctaBody}</p><a class="store-button light" href="#download">● <span>{c.store}</span></a></div>
-      <div class="cta-phone"><img src="/assets/lp-reference.png" alt="" /></div>
+      <div>
+        <h2>{ja ? "さあ、世界を彩ろう。" : "Colour your world."}</h2>
+        <p>
+          {ja
+            ? "Colorviaは現在、App Storeでの公開に向けて準備を進めています。基本機能は無料。一部端末ではバナー広告が表示されます。"
+            : "Colorvia is being prepared for the App Store. Core features are free; a banner ad may appear on some devices."}
+        </p>
+        <span class="store-button light store-soon" aria-disabled="true">● <span>{storeLabel}</span></span>
+      </div>
+      <div class="cta-phone">
+        <picture>
+          <source srcset={homeImg} type="image/webp" />
+          <img src={homeImgPng} alt="" width="1170" height="2532" loading="lazy" decoding="async" />
+        </picture>
+      </div>
     </section>
   </div>
 </AppShell>

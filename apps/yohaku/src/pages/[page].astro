@@ -3,7 +3,7 @@ import ContentPage from "../components/ContentPage.astro";
 import "../styles/global.css";
 
 export function getStaticPaths() {
-  return ["features", "how-to", "screenshots", "faq", "updates", "privacy", "terms"].map((page) => ({ params: { page } }));
+  return ["features", "how-to", "screenshots", "pricing", "faq", "updates", "privacy", "terms"].map((page) => ({ params: { page } }));
 }
 const { page } = Astro.params;
 const currentPage = page ?? "";

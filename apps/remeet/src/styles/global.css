@@ -520,11 +520,42 @@ body:has(.remeet-page) {
   color: #242321;
 }
 .remeet-page {
+  --app-site-ink: #242321;
+  --app-site-accent: #e99647;
+  --app-site-page-background: transparent;
+  --app-site-header-foreground: #242321;
+  --app-site-header-background: linear-gradient(rgb(255 255 255 / 55%), rgb(255 255 255 / 42%));
+  --app-site-header-compact-background: linear-gradient(
+    rgb(255 255 255 / 68%),
+    rgb(255 255 255 / 55%)
+  );
+  --app-site-store-background: rgb(255 255 255 / 82%);
+  --app-site-footer-background: rgb(255 255 255 / 55%);
+  --app-site-footer-foreground: #242321;
+  --app-site-footer-link: #5f5951;
+  --app-site-footer-link-hover: #1f1c19;
+  --app-news-badge-column-bg: #2c2620;
+  --app-news-badge-note-bg: #f3ebe2;
+  --app-news-badge-note-fg: #5a4634;
+  --app-site-hero-muted: #9a938c;
+  --app-site-notice-background: rgb(255 255 255 / 65%);
+  --app-site-mobile-background: linear-gradient(
+    165deg,
+    rgb(255 255 255 / 97%),
+    rgb(255 250 245 / 94%)
+  );
+  --app-site-mobile-menu-background: rgb(255 255 255 / 78%);
   width: 100%;
   min-height: 100vh;
   background:
     radial-gradient(circle at 92% 5%, rgb(213 232 247 / 80%), transparent 30%),
     radial-gradient(circle at 12% 85%, rgb(253 229 208 / 68%), transparent 29%), #fbfaf8;
+}
+.remeet-page .app-site-header {
+  z-index: 30;
+}
+.remeet-page .guide-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 .mock-header {
   height: 72px;
@@ -906,23 +937,33 @@ body:has(.remeet-page) {
 .download-badge span {
   font-size: 11px;
 }
-.home-phone {
+.home-phone-picture {
   position: absolute;
   top: 42px;
   right: 7%;
-  width: 37%;
-  height: 640px;
-  object-fit: contain;
-  object-position: top;
-  filter: drop-shadow(0 16px 25px rgb(28 34 40 / 20%));
+  width: min(280px, 37%);
   z-index: 1;
+  display: grid;
+  justify-items: center;
+}
+.home-phone-picture .app-phone-frame {
+  --phone-w: 100%;
+  width: 100%;
   transition:
     transform 0.5s cubic-bezier(0.2, 0.75, 0.2, 1),
     filter 0.4s ease;
+  filter: drop-shadow(0 16px 25px rgb(28 34 40 / 20%));
 }
-.home-phone:hover {
+.home-phone-picture:hover .app-phone-frame {
   transform: translateY(-5px) rotate(0.35deg);
   filter: drop-shadow(0 23px 30px rgb(28 34 40 / 24%));
+}
+.home-phone-picture .home-phone,
+.home-phone {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
 }
 .home-route {
   position: absolute;
@@ -1125,6 +1166,12 @@ body:has(.remeet-page) {
   font-size: 11.5px;
   line-height: 2.1;
 }
+.hero-art .hero-art-screen {
+  --phone-w: 108px;
+  position: relative;
+  z-index: 2;
+}
+
 .hero-art {
   position: relative;
   margin: 0;
@@ -1133,7 +1180,8 @@ body:has(.remeet-page) {
   align-items: center;
   justify-content: center;
 }
-.hero-art img {
+.hero-art > img,
+.hero-art > picture img {
   max-width: 100%;
   max-height: 226px;
   object-fit: contain;
@@ -1219,7 +1267,7 @@ body:has(.remeet-page) {
   line-height: 2;
 }
 .orange-cta {
-  width: 280px;
+  width: min(280px, 100%);
   min-height: 52px;
   margin: 45px auto 0;
   display: flex;
@@ -1230,8 +1278,185 @@ body:has(.remeet-page) {
   color: #fff;
   background: linear-gradient(135deg, #efa34e, #f2ac67);
   box-shadow: 0 10px 22px rgb(224 144 63 / 18%);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
+}
+.orange-cta.store-soon {
+  background: linear-gradient(135deg, #c9b4a0, #d4c0ad);
+  box-shadow: none;
+  color: #fff;
+  opacity: 0.9;
+}
+.landing-sections .store.store-soon,
+.buttons .store-soon {
+  opacity: 0.72;
+  pointer-events: none;
+  cursor: default;
+}
+.landing-sections .store.store-soon:hover {
+  transform: none;
+}
+.plan-ad-note {
+  margin: 18px 0 0;
+  color: #7a736c;
+  font-size: 11px;
+  line-height: 1.9;
+  text-align: center;
+}
+.shot-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 18px;
+  justify-items: center;
+}
+.shot-gallery .app-phone-frame {
+  --phone-w: min(220px, 100%);
+}
+.shot-gallery .app-phone-frame-label {
+  color: #6b645d;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.showcase-note {
+  margin: 22px auto 0;
+  max-width: 420px;
+  color: #6b645d;
+  font-size: 11.5px;
+  line-height: 1.9;
+  text-align: center;
+}
+.download-footnote {
+  margin: 14px 0 0;
+  color: #7a736c;
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+.env-note {
+  margin: 16px 0 0;
+  color: #6b645d;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.feature-env {
+  margin-top: 28px;
+  text-align: center;
+}
+.store-soon {
+  opacity: 0.78;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+.store-soon:hover,
+.store-soon:focus-visible {
+  transform: none !important;
+  box-shadow: none;
+}
+.home-stack {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: inherit;
+  display: contents;
+}
+.home-actions {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.home-actions .store-soon,
+.download-badge.store-soon {
+  margin-top: 0;
+  padding: 12px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 6px;
+  color: white;
+  background: #050505;
+  font-size: 12px;
+  opacity: 0.72;
+}
+.secondary-link {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+.plan-message {
+  margin: 18px 0 8px;
+  text-align: center;
+}
+.plan-message p {
+  margin: 0 0 10px;
+  color: #5e5a56;
+  font-size: 13.5px;
+  line-height: 1.9;
+}
+.guide-visual-list {
+  display: grid;
+  gap: 28px;
+}
+.guide-visual {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 28px;
+  align-items: center;
+  padding: 24px;
+  border: 1px solid rgb(60 48 40 / 6%);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 68%);
+}
+.guide-visual:nth-child(even) {
+  grid-template-columns: 0.9fr 1.1fr;
+}
+.guide-visual:nth-child(even) .guide-visual-copy {
+  order: 2;
+}
+.guide-visual figure {
+  margin: 0;
+  display: grid;
+  place-items: center;
+}
+.guide-visual figure > img,
+.guide-visual figure > picture img {
+  width: min(100%, 260px);
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgb(40 36 32 / 14%);
+}
+.guide-visual h3 {
+  margin: 14px 0 12px;
+  font-size: 16px;
+}
+.guide-visual ol {
+  margin: 0;
+  padding-left: 18px;
+  color: #5e5a56;
+  font-size: 13.5px;
+  line-height: 1.9;
+}
+.guide-note {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgb(255 246 236 / 90%);
+  color: #6b645d;
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+.news-body {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+.news-body p {
+  margin: 0;
+  color: #6b645d;
+  font-size: 13.5px;
+  line-height: 1.9;
 }
 
 /* Four numbered steps across, joined by a thin connector. */
@@ -1875,7 +2100,7 @@ body:has(.remeet-page) {
   place-items: end center;
   overflow: hidden;
 }
-.landing-sections .feature-grid .feature-shot img {
+.landing-sections .feature-grid .feature-shot > picture img {
   width: auto;
   height: min(410px, 36vw);
   max-width: 100%;
@@ -2072,10 +2297,10 @@ body:has(.remeet-page) {
   .home-copy p {
     font-size: 14px;
   }
-  .home-phone {
+  .home-phone-picture {
     top: 60px;
     right: 9%;
-    height: 735px;
+    width: min(300px, 36%);
   }
   .feature-grid {
     gap: 32px;
@@ -2085,7 +2310,7 @@ body:has(.remeet-page) {
     min-height: 680px;
     padding-inline: 38px;
   }
-  .landing-sections .feature-grid .feature-shot img {
+  .landing-sections .feature-grid .feature-shot > picture img {
     height: 450px;
   }
   .landing-sections .feature-grid .feature-shot.is-wide img {
@@ -2163,21 +2388,70 @@ body:has(.remeet-page) {
     align-items: flex-start;
   }
   .new-home {
-    min-height: 890px;
-    padding: 48px 22px 20px;
-    display: block;
+    min-height: 0;
+    padding: 18px 16px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 18px;
+  }
+  .home-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .remeet-page .app-hero-notice {
+    position: relative;
+    inset: auto;
+    order: -2;
+    width: 100%;
+    min-height: 52px;
+    margin: 0;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .remeet-page .app-hero-notice time {
+    display: none;
+  }
+  .remeet-page .app-hero-scroll {
+    display: none;
   }
   .home-copy {
-    padding-top: 25px;
+    order: -1;
+    max-width: 100%;
+    padding-top: 4px;
+    align-self: center;
   }
   .home-copy h1 {
-    font-size: 38px;
+    font-size: clamp(28px, 7.6vw, 36px);
+    letter-spacing: 0.02em;
+    line-height: 1.35;
   }
+  .home-copy p {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.85;
+  }
+  .home-actions {
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .home-phone-picture,
   .home-phone {
-    top: 330px;
-    right: 13%;
-    width: 74%;
-    height: 430px;
+    position: relative;
+    top: auto;
+    right: auto;
+    width: min(78vw, 300px);
+    height: auto;
+    max-height: none;
+    margin: 8px auto 0;
+  }
+  .home-phone-picture .home-phone {
+    width: 100%;
+    height: auto;
   }
   .home-route {
     display: none;
@@ -2195,25 +2469,75 @@ body:has(.remeet-page) {
     display: none;
   }
   .subpage {
-    width: min(100% - 36px, 760px);
-    min-height: 720px;
-    padding-top: 38px;
+    width: min(100% - 28px, 760px);
+    min-height: 0;
+    padding: 28px 0 64px;
+  }
+  .feature-page-grid h2,
+  .guide-visual h3,
+  .page-hero h1,
+  .page-intro h1 {
+    font-size: clamp(22px, 6vw, 30px);
+  }
+  .feature-page-grid p,
+  .step-row p,
+  .how-note p,
+  .guide-visual ol,
+  .faq-list p,
+  .plan-message p {
+    font-size: 14.5px;
+    line-height: 1.85;
+  }
+  .legal-copy {
+    font-size: 15.5px;
+    line-height: 1.95;
+  }
+  .legal-copy h2 {
+    font-size: 17px;
+    margin-top: 1.6em;
+  }
+  .guide-visual,
+  .guide-visual:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+  .guide-visual:nth-child(even) .guide-visual-copy {
+    order: 0;
+  }
+  .guide-visual figure > img,
+  .guide-visual figure > picture img {
+    width: min(100%, 240px);
+  }
+  .faq-tabs button {
+    min-height: 48px;
+    padding-inline: 14px;
+    font-size: 13px;
   }
   .page-intro {
-    margin-bottom: 32px;
+    margin-bottom: 28px;
+  }
+  .page-intro h1 {
+    font-size: clamp(28px, 7vw, 36px);
   }
   .page-hero {
     grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 34px 24px 30px;
-    margin-bottom: 36px;
+    gap: 18px;
+    padding: 28px 20px 24px;
+    margin-bottom: 28px;
+    border-radius: 22px;
   }
   .hero-art {
-    height: 180px;
+    height: 150px;
     order: -1;
   }
-  .hero-art img {
-    max-height: 180px;
+  .hero-art > img,
+  .hero-art > picture img {
+    max-height: 150px;
+  }
+
+  .hero-art .hero-art-screen {
+    --phone-w: 72px;
   }
   .blob-a {
     width: 140px;
@@ -2229,11 +2553,15 @@ body:has(.remeet-page) {
   .pricing-grid {
     grid-template-columns: 1fr;
   }
+  .feature-page-grid article {
+    padding: 20px;
+    gap: 14px;
+  }
   .guide-grid {
     grid-template-columns: 1fr;
   }
   .plan-card {
-    padding: 34px 24px 30px;
+    padding: 30px 20px 26px;
   }
   .plan-list {
     grid-template-columns: 1fr;
@@ -2243,15 +2571,29 @@ body:has(.remeet-page) {
     align-items: flex-start;
   }
   .step-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
   .step-row li:not(:last-child)::after {
     display: none;
   }
+  .step-row article {
+    margin-top: -12px;
+    padding: 28px 18px 22px;
+    justify-items: start;
+    text-align: left;
+  }
   .how-note {
-    grid-template-columns: 44px 1fr;
-    padding: 20px;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    padding: 18px;
+  }
+  .shot-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 12px;
+  }
+  .shot-gallery .app-phone-frame {
+    --phone-w: min(200px, 100%);
   }
   .screens-stage {
     min-height: 560px;
@@ -2266,11 +2608,29 @@ body:has(.remeet-page) {
     width: 100%;
     margin-top: 20px;
   }
+  .faq-tabs {
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .faq-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .faq-tabs button {
+    min-height: 40px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
   .faq-layout {
     grid-template-columns: 1fr;
   }
   .faq-side {
     position: static;
+  }
+  .faq-list details summary {
+    min-height: 52px;
+    align-items: center;
   }
   .news-row {
     grid-template-columns: auto auto;
@@ -2282,7 +2642,7 @@ body:has(.remeet-page) {
     grid-column: 1 / -1;
   }
   .landing-pad {
-    padding-inline: 20px;
+    padding-inline: 18px;
   }
   .landing-sections .widgets,
   .landing-sections .story,
@@ -2294,32 +2654,74 @@ body:has(.remeet-page) {
     grid-template-columns: 1fr;
   }
   .landing-sections .feature-grid article {
-    min-height: 580px;
-    border-radius: 24px;
+    min-height: 0;
+    height: auto;
+    border-radius: 22px;
+    padding: 24px 18px 18px;
   }
   .landing-sections .feature-grid .feature-shot img {
-    height: 390px;
+    height: auto;
+    max-height: 420px;
+    width: 100%;
+    object-fit: contain;
   }
   .landing-sections .feature-grid .feature-shot.is-wide img {
     width: 100%;
     height: auto;
+    max-height: 280px;
   }
   .landing-sections .widgets,
   .landing-sections .story {
     min-height: 0;
-    padding-block: 52px;
+    padding-block: 44px;
     grid-template-columns: 1fr;
-    gap: 34px;
+    gap: 28px;
   }
   .widget-art {
     width: min(100%, 620px);
     margin-inline: auto;
   }
   .story-art {
-    height: 500px;
+    height: auto;
+    min-height: 0;
+  }
+  .story-art img {
+    width: min(100%, 320px);
+    height: auto;
+    margin-inline: auto;
   }
   .landing-sections .story .flight {
     display: none;
+  }
+  .landing-sections .download .buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+  .landing-sections .download .store,
+  .landing-sections .download .secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .legal-copy {
+    font-size: 12.5px;
+  }
+  .legal-copy h2 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .shot-gallery {
+    grid-template-columns: 1fr;
+  }
+  .shot-gallery .app-phone-frame {
+    --phone-w: min(240px, 100%);
+  }
+  .home-copy h1 {
+    font-size: 28px;
+  }
+  .new-home {
+    padding-inline: 14px;
   }
 }
 

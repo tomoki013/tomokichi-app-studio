@@ -1,154 +1,83 @@
 ---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import {
+  faqs as faqList,
+  features as featureList,
+  guides as guideList,
+  icons,
+  type Locale,
+  type Page,
+  pageDescriptions,
+  pick,
+  privacySections,
+  steps as stepList,
+  subtitleMap,
+  termsSections,
+  titleMap,
+} from "../lib/content";
 import { supportHref } from "../lib/links";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 
-type Locale = "ja" | "en";
-type Page = "features" | "how-to" | "screenshots" | "widgets" | "pricing" | "faq" | "privacy" | "terms" | "updates";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
-
-const titleMap: Record<Page, [string, string]> = {
-  features: ["Remeetの機能", "Remeet features"],
-  "how-to": ["使い方", "How to use"],
-  screenshots: ["スクリーンショット", "Screenshots"],
-  widgets: ["ウィジェットでも\nいつでも確認", "Stay close with widgets"],
-  pricing: ["料金・プラン", "Pricing & plans"],
-  faq: ["よくある質問", "Frequently asked questions"],
-  privacy: ["プライバシーポリシー", "Privacy Policy"],
-  terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "News"],
-};
-const subtitleMap: Partial<Record<Page, [string, string]>> = {
-  features: ["必要な機能を、シンプルに。\n待つ時間を、そっと支えるために。", "The features you need, kept simple —\nquietly supporting the time you wait."],
-  "how-to": ["かんたん4ステップで、\n再会までの記録をはじめられます。", "In four simple steps,\nstart keeping the days until you meet."],
-  screenshots: ["美しく、シンプルで、使いやすいデザイン。", "Beautiful, simple, and easy to use."],
-  widgets: ["ホーム画面やロック画面から、再会までの時間をすぐにチェック。", "Check your countdown from the Home Screen or Lock Screen."],
-  pricing: ["いまのRemeetは、すべて無料です。\nアカウント登録も必要ありません。", "Everything in Remeet is free right now —\nand no account is needed."],
-  faq: ["よくいただくご質問をまとめました。\n解決しないときは、お気軽にご連絡ください。", "Answers to the questions we hear most.\nIf something is still unclear, just reach out."],
-  updates: ["Remeetからのお知らせと、\nこれから追加していく予定をお届けします。", "News from Remeet, and what we plan\nto add along the way."],
-};
-
-/* Thin line icons, drawn with currentColor inside soft tinted tiles. */
-const icons: Record<string, string> = {
-  countdown: `<circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.4 1.9"/><path d="M9.2 2.8h5.6"/>`,
-  album: `<rect x="3.2" y="5.2" width="17.6" height="13.6" rx="2.4"/><circle cx="8.6" cy="10.2" r="1.5"/><path d="M20.4 15.8l-4.9-4.9L10.2 16"/>`,
-  wish: `<path d="M12 19.6s-6.9-4.3-6.9-8.8a3.9 3.9 0 016.9-2.5 3.9 3.9 0 016.9 2.5c0 4.5-6.9 8.8-6.9 8.8z"/>`,
-  plans: `<path d="M12 3.4l8 4.4-8 4.4-8-4.4z"/><path d="M4 12.2l8 4.4 8-4.4"/><path d="M4 16.4l8 4.4 8-4.4"/>`,
-  widget: `<rect x="3.4" y="3.4" width="7.2" height="7.2" rx="2.1"/><rect x="13.4" y="3.4" width="7.2" height="7.2" rx="2.1"/><rect x="3.4" y="13.4" width="7.2" height="7.2" rx="2.1"/><rect x="13.4" y="13.4" width="7.2" height="7.2" rx="2.1"/>`,
-  globe: `<circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2"/><path d="M12 3.4c2.6 2.9 2.6 14.3 0 17.2-2.6-2.9-2.6-14.3 0-17.2z"/>`,
-  calendar: `<rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 10h17.2"/><path d="M8.2 3.4v3.4M15.8 3.4v3.4"/><path d="M12 13.4v4M10 15.4h4"/>`,
-  camera: `<path d="M4.2 8.2h2.9l1.5-2.1h6.8l1.5 2.1h2.9a1.2 1.2 0 011.2 1.2v8.5a1.2 1.2 0 01-1.2 1.2H4.2A1.2 1.2 0 013 17.9V9.4a1.2 1.2 0 011.2-1.2z"/><circle cx="12" cy="13.4" r="3.4"/>`,
-  checklist: `<path d="M3.8 7.2l1.9 1.9 2.9-2.9"/><path d="M3.8 16.2l1.9 1.9 2.9-2.9"/><path d="M12.6 8h7.6"/><path d="M12.6 17h7.6"/>`,
-  reunion: `<path d="M12 4.4l1.7 4.4 4.4 1.7-4.4 1.7L12 16.6l-1.7-4.4L5.9 10.5l4.4-1.7z"/><path d="M18.2 16.4l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>`,
-  mail: `<rect x="3.2" y="5.2" width="17.6" height="13.6" rx="2.4"/><path d="M3.8 6.6l8.2 5.8 8.2-5.8"/>`,
-  bulb: `<path d="M9.6 17.2h4.8"/><path d="M10.2 20h3.6"/><path d="M12 3.2a5.9 5.9 0 00-3.4 10.7c.4.3.5.7.5 1.1h5.8c0-.4.1-.8.5-1.1A5.9 5.9 0 0012 3.2z"/>`,
-export: `<path d="M12 3.8v10"/><path d="M8.4 10.2l3.6 3.6 3.6-3.6"/><path d="M4.4 15.8v3a1.6 1.6 0 001.6 1.6h12a1.6 1.6 0 001.6-1.6v-3"/>`,
-bell: `<path d="M12 3.4a5.4 5.4 0 00-5.4 5.4c0 4.4-1.6 5.8-1.6 5.8h14s-1.6-1.4-1.6-5.8A5.4 5.4 0 0012 3.4z"/><path d="M10.3 18a1.9 1.9 0 003.4 0"/>`,
-};
-
-const features = ja
-  ? [
-      ["countdown", "再会までのカウントダウン", "再会の日までを、日数と進捗で見守ります。\n少しずつ近づいていく感覚が、待つ時間を支えます。"],
-      ["album", "待っている間の記録", "写真や日記で、離れている日々を残せます。\n会えない時間も、ふたりの思い出になります。"],
-      ["wish", "会ったらやりたいこと", "一緒にしたいことをリストにして共有。\n次に会える日が、もっと楽しみになります。"],
-      ["plans", "複数の再会予定", "旅行や帰省など、いくつもの予定を並行して管理。\nそれぞれのカウントダウンを見守れます。"],
-      ["widget", "ウィジェット対応", "ホーム画面とロック画面から、\nアプリを開かずに残りの日数を確認できます。"],
-      ["globe", "6言語に対応", "日本語・英語・フランス語・韓国語・\nスペイン語・中国語でご利用いただけます。"],
-    ]
-  : [
-      ["countdown", "Reunion countdown", "Watch the days and progress until you meet again.\nFeeling it draw closer is what carries the waiting."],
-      ["album", "Memories while apart", "Keep photos and journals from the days in between,\nso time apart becomes part of your story too."],
-      ["wish", "Things to do together", "Build a shared list of what you want to do,\nand look forward to the next day you meet."],
-      ["plans", "Multiple reunion plans", "Trips, visits and more can run side by side,\neach with its own countdown to follow."],
-      ["widget", "Widget support", "See the days remaining from your Home Screen\nand Lock Screen, without opening the app."],
-      ["globe", "Six languages", "Available in Japanese, English, French,\nKorean, Spanish and Chinese."],
-    ];
-
-const steps = ja
-  ? [
-      ["calendar", "再会の予定をつくる", "再会の日付と、ふたりがいる場所を設定します。"],
-      ["camera", "日々を記録する", "写真や日記を添えて、待っている時間を残します。"],
-      ["checklist", "やりたいことを集める", "会ったらしたいことを、ひとつずつリストに。"],
-      ["reunion", "再会の日を迎える", "カウントダウンがゼロになったら、その日を記録に。"],
-    ]
-  : [
-      ["calendar", "Create a reunion", "Set the date, and where each of you will be."],
-      ["camera", "Record each day", "Add photos and journals from the days of waiting."],
-      ["checklist", "Collect things to do", "List what you want to do, one wish at a time."],
-      ["reunion", "Meet again", "When the countdown reaches zero, keep that day too."],
-    ];
-
-const guides = ja
-  ? [
-      ["widget", "ウィジェットを追加する", ["ホーム画面の空いているところを長押しします。", "左上の「＋」をタップします。", "「Remeet」を選び、好きなサイズを置きます。"]],
-      ["album", "写真や日記を残す", ["「アルバム」タブを開きます。", "「＋」から残したい写真を選びます。", "ひとことメモを添えて保存します。"]],
-      ["calendar", "カレンダーに追加する", ["再会予定の詳細を開きます。", "「カレンダーに追加」をタップします。", "初回のみ、カレンダーへのアクセスを許可します。"]],
-      ["bell", "通知を設定する", ["「設定」を開きます。", "通知のオン／オフを切り替えます。", "再会が近づくとお知らせが届きます。"]],
-      ["export", "データを書き出す", ["「設定」を開きます。", "「データを書き出す」を選びます。", "JSONファイルとして保存・共有できます。"]],
-      ["globe", "表示言語を変える", ["iOSの「設定」アプリを開きます。", "「Remeet」を選びます。", "「言語」から表示言語を変更します。"]],
-    ]
-  : [
-      ["widget", "Add a widget", ["Touch and hold an empty area of the Home Screen.", "Tap the “+” in the top-left corner.", "Choose “Remeet” and place the size you like."]],
-      ["album", "Keep photos and journals", ["Open the “Album” tab.", "Tap “+” and choose a photo to keep.", "Add a short note and save it."]],
-      ["calendar", "Add it to your calendar", ["Open the details of a reunion plan.", "Tap “Add to calendar”.", "Allow calendar access the first time only."]],
-      ["bell", "Set up notifications", ["Open “Settings”.", "Turn notifications on or off.", "You’ll be reminded as the day gets closer."]],
-      ["export", "Export your data", ["Open “Settings”.", "Choose “Export data”.", "Save or share it as a JSON file."]],
-      ["globe", "Change the language", ["Open the iOS “Settings” app.", "Select “Remeet”.", "Change the display language under “Language”."]],
-    ];
+const title = pick(ja, titleMap[page]);
+const subtitle = subtitleMap[page] ? pick(ja, subtitleMap[page]!) : undefined;
+const description = pageDescriptions[page] ? pick(ja, pageDescriptions[page]!) : undefined;
+const features = featureList(ja);
+const steps = stepList(ja);
+const guides = guideList(ja);
+const faqs = faqList(ja);
+const legalSections = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+const legalDate = ja
+  ? "制定日：2026年7月24日／最終更新日：2026年8月1日"
+  : "Effective date: July 24, 2026 / Last updated: August 1, 2026";
 
 const faqCategories = ja
   ? [["all", "すべて"], ["start", "はじめての方へ"], ["feature", "機能について"], ["data", "データについて"], ["other", "その他"]]
   : [["all", "All"], ["start", "Getting started"], ["feature", "Features"], ["data", "Your data"], ["other", "Other"]];
 
-const faqs = ja
+const planIncludes = ja
   ? [
-      ["start", "Remeetはどんなアプリですか？", "大切な人と再会する日までをカウントダウンし、その間の思い出を残しておくためのアプリです。離れている時間を、ただ待つだけで終わらせないためにつくりました。"],
-      ["start", "アカウント登録は必要ですか？", "必要ありません。アプリを開いてすぐに使い始められます。メールアドレスの入力やログインの手間はありません。"],
-      ["start", "無料で使えますか？", "はい。現在のRemeetの機能は、すべて無料でご利用いただけます。"],
-      ["feature", "相手と共有できますか？", "現在のバージョンでは、ユーザー間でデータを共有する機能はありません。それぞれの端末で、それぞれの記録として残す形になります。"],
-      ["feature", "ウィジェットはどこで使えますか？", "ホーム画面とロック画面の両方に対応しています。アプリを開かなくても、再会までの残り日数を確認できます。"],
-      ["data", "データはどこに保存されますか？", "入力・撮影した内容は、原則としてお使いの端末内にのみ保存されます。運営者が記録の内容を閲覧できるサーバーは持っていません。"],
-      ["data", "機種変更のときはどうすればいいですか？", "設定画面から、保存されている情報をJSON形式で書き出せます。データは端末内にのみ保存されるため、機種変更の前に書き出しをおすすめします。"],
-      ["other", "オフラインでも使えますか？", "天気の取得と地名の検索を除き、記録の閲覧や編集はオフラインでもご利用いただけます。"],
+      "再会予定の作成（数の制限はありません）",
+      "待っている間の記録（写真・メモ）",
+      "会ったらやりたいことリスト",
+      "再会のアルバムと振り返り",
+      "ホーム画面・ロック画面のウィジェット",
+      "ローカル通知（4種類）",
+      "6言語対応",
+      "アカウント登録不要",
+      "端末内保存",
     ]
   : [
-      ["start", "What is Remeet?", "An app that counts down to the day you meet someone important again, and keeps the memories made in between. It exists so that time apart is more than just waiting."],
-      ["start", "Do I need an account?", "No. You can start using it the moment you open the app — no email address, no sign-in."],
-      ["start", "Is it free?", "Yes. Every feature in Remeet today is free to use."],
-      ["feature", "Can I share with my partner?", "Not in the current version. There is no data sharing between users; each device keeps its own record."],
-      ["feature", "Where do widgets work?", "Both the Home Screen and the Lock Screen, so you can see the days remaining without opening the app."],
-      ["data", "Where is my data stored?", "What you enter or capture is stored only on your device, in principle. There is no server where the operator can view your records."],
-      ["data", "What if I change phones?", "You can export your stored information as a JSON file from Settings. Because data lives only on your device, exporting before you switch is recommended."],
-      ["other", "Can I use it offline?", "Yes — aside from fetching weather and searching place names, viewing and editing your records works offline."],
+      "Create reunion plans (no limit)",
+      "Waiting memories (photos and notes)",
+      "List of things you want to do together",
+      "Reunion albums and reflections",
+      "Home Screen and Lock Screen widgets",
+      "Local notifications (four kinds)",
+      "Six languages",
+      "No account required",
+      "On-device storage",
     ];
 
-const news = ja
-  ? [{
-      date: "2026.07.24",
-      kind: "release",
-      badge: "リリース",
-      headline: "Remeet 1.0.0 を公開しました",
-      points: [
-        "再会までのカウントダウン",
-        "待っている間の記録（写真・日記）",
-        "会ったらやりたいことリスト",
-        "ホーム画面・ロック画面のウィジェット",
-        "6言語対応",
-      ],
-    }]
-  : [{
-      date: "2026.07.24",
-      kind: "release",
-      badge: "Release",
-      headline: "Remeet 1.0.0 is now available",
-      points: [
-        "Countdown to the day you meet again",
-        "Records from the days apart (photos and journals)",
-        "A shared list of things to do together",
-        "Home Screen and Lock Screen widgets",
-        "Available in six languages",
-      ],
-    }];
+const screenshots = (
+  ja
+    ? [
+        ["home", "ホーム"],
+        ["memories", "待っている間の記録"],
+        ["wishes", "やりたいこと"],
+        ["album", "アルバム"],
+        ["settings", "設定"],
+      ]
+    : [
+        ["home", "Home"],
+        ["memories", "Memories"],
+        ["wishes", "Wish list"],
+        ["album", "Album"],
+        ["settings", "Settings"],
+      ]
+) as ["home" | "memories" | "wishes" | "album" | "settings", string][];
 
 const heroEyebrow: Partial<Record<Page, string>> = {
   features: "FEATURES",
@@ -156,95 +85,100 @@ const heroEyebrow: Partial<Record<Page, string>> = {
   pricing: "PRICING",
   faq: "FAQ",
   updates: "NEWS",
+  screenshots: "SCREENSHOTS",
+  widgets: "WIDGETS",
 };
 
-const planIncludes = ja
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const envLine = ja ? "iPhone・iOS 26以降に対応" : "Requires an iPhone running iOS 26 or later.";
+const envNote = ja
+  ? "現在のバージョンはiPhone向けです。iPadに最適化されたレイアウトは今後対応予定です。"
+  : "The current version is designed for iPhone. An iPad-optimized layout is planned for a future update.";
+
+const newsPosts = ja
   ? [
-      "再会予定の作成（数の制限はありません）",
-      "待っている間の記録（写真・日記）",
-      "会ったらやりたいことリスト",
-      "ホーム画面・ロック画面のウィジェット",
-      "6言語対応",
-      "広告表示はありません",
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "お知らせ",
+        title: "Remeet公式ブランドサイトを公開しました",
+        summary: "機能、使い方、ウィジェット、料金、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+        body: [
+          "Remeetの公式ブランドサイトを公開しました。大切な人との次の再会までのカウントダウンと、待っている間の記録というアプリの位置づけを、公開準備中の段階からそのままお伝えしています。",
+          "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
+          "v1.0.0はアカウント不要で、データは端末内に保存されます。相手との共有機能は含みません。詳細はプライバシーポリシーと利用規約をご確認ください。",
+        ],
+      },
+      {
+        id: "column-wait",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "待つ時間を、物語の一部にする",
+        summary: "Remeetは再会の日までの日数を見える化し、そのあいだのメモや思い出を端末に残せます。",
+        body: [
+          "次に会う日が決まっていると、日常の中でその日までの距離を測りたくなることがあります。Remeetはそのカウントダウンを中心に、待っている間に残したい記録を手元に置いておくためのアプリです。",
+          "ホーム画面やロック画面のウィジェットも、その待ち時間をそっと思い出させるためのものです。共有やサブスクリプションは v1 の範囲外です。",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "準備中",
+        badgeTone: "note" as const,
+        title: "App Store公開に向けて",
+        summary: "基本機能は無料。一部画面に広告があります。iPhone向けに準備中です。",
+        body: [
+          "Remeetは現在App Store公開準備中です。基本機能は無料で利用でき、一部画面に広告が表示されます。価格や対応環境の最終表示はApp Store上の記載が正しいものとします。",
+        ],
+      },
     ]
   : [
-      "Create reunion plans (no limit on how many)",
-      "Records from the days apart (photos and journals)",
-      "A shared list of things to do together",
-      "Home Screen and Lock Screen widgets",
-      "Available in six languages",
-      "No advertising",
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "News",
+        title: "The official Remeet brand site is now live",
+        summary: "Features, how-to, widgets, pricing, FAQ, Privacy Policy, and Terms—in one place.",
+        body: [
+          "The official Remeet brand site is live. It explains the countdown to a reunion and the on-device records you keep while waiting—while the app is still preparing for release.",
+          "There is no App Store link yet. When distribution is ready, we will share it here as well.",
+          "v1.0.0 needs no account; data stays on your device. Partner sharing is not included. See the Privacy Policy and Terms for details.",
+        ],
+      },
+      {
+        id: "column-wait",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "Make the wait part of your story",
+        summary: "Remeet surfaces the days until you meet again and keeps notes and memories on your iPhone.",
+        body: [
+          "When the next meeting is set, the distance to that day becomes something you notice. Remeet centers that countdown and keeps the records you want nearby while you wait.",
+          "Home and Lock Screen widgets are there as gentle reminders. Sharing and subscriptions are outside v1.",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Coming soon",
+        badgeTone: "note" as const,
+        title: "Preparing for the App Store",
+        summary: "Core features free, with ads on some screens. Designed for iPhone.",
+        body: [
+          "Remeet is being prepared for the App Store. Core features are free; some screens may show ads. The App Store listing will be the source of truth for pricing and requirements.",
+        ],
+      },
     ];
-
-const legal = {
-  privacy: ja
-    ? [
-        ["1. はじめに", "本ポリシーは、運営者（Tomokichi）が提供するiOSアプリケーション「Remeet」および本ウェブサイト（以下あわせて「本サービス」）における、利用者情報の取扱いについて定めるものです。本ウェブサイトに掲載する内容を正本とし、本アプリ内からは本ウェブサイトを参照します。"],
-        ["2. 運営者情報", "本サービスは、運営者（Tomokichi）が個人で開発・運営しています。お問い合わせ先は本ページ末尾に記載しています。"],
-        ["3. 適用範囲", "本ポリシーは、本アプリの利用および本ウェブサイトの閲覧に関して適用されます。"],
-        ["4. 基本方針", "本アプリはアカウント登録を必要とせず、利用者が入力・撮影した情報は、原則として利用者の端末内にのみ保存されます。運営者は、利用者の記録内容を収集・閲覧できるサーバーを保有しておらず、広告配信や行動解析のためのSDKは組み込んでいません。"],
-        ["5. 端末内に保存する情報", "本アプリは、利用者が入力または選択した次の情報を、端末内のデータベースおよびApp Group領域に保存します。\n\n・再会予定の名称、離れ始めた日時、再会日時、メモ\n・自分・相手・待ち合わせ場所の地名、緯度経度、タイムゾーン\n・「会ったらやりたいこと」の項目と完了状態\n・待っている間の記録および再会記録の写真、日付、メモ、感想、5段階評価\n・通知のオン／オフなどのアプリ設定\n\nこれらはウィジェット表示のため同一開発者のApp Group内で共有されますが、端末外へは送信されません。"],
-        ["6. 外部サーバーへ送信される情報", "本アプリが外部と通信を行うのは、次の場合に限られます。通常のアプリ利用では、再会予定、写真、アルバム、メモ、現在地、やりたいことリストなどの記録内容は原則として端末内に保存されます。\n\n(1) 天気の取得：登録された場所の緯度経度を、天気情報の取得のためOpen-Meteo（open-meteo.com）へ送信します。氏名や端末識別子は送信しません。\n\n(2) 地名の検索・現在地の地名変換：入力された検索語または取得した座標を、Appleのジオコーディング機能へ送信します。取扱いはAppleのプライバシーポリシーに従います。\n\n(3) 法的文書の表示：プライバシーポリシー・利用規約の最新版を表示するため、本ウェブサイトへ通信します。\n\n(4) お問い合わせ：利用者が共通お問い合わせフォームを明示的に送信した場合に限り、名前（入力した場合）、メールアドレス、問い合わせ内容、アプリバージョン、OSバージョン、表示言語、問い合わせ識別子、送信日時等を、回答、不具合調査、サービス改善、不正利用防止のため送信します。写真、再会予定の内容、現在地、アルバム、メモ、やりたいことリストは問い合わせ時にも送信しません。"],
-        ["7. 端末の機能へのアクセス", "本アプリは次の機能を、利用者の許可を得たうえで、以下の目的にのみ使用します。許可はiOSの「設定」からいつでも変更・取消できます。\n\n・カメラ：再会の瞬間を写真として残すために使用します。\n・写真ライブラリ：再会までの思い出と再会の写真を残すために使用します。\n・位置情報：現在地を再会予定の場所として簡単に入力するために使用します。「現在地を使う」を押したときにのみ一度だけ取得し、継続的な追跡は行いません。\n・カレンダー：再会予定をカレンダーへ追加するために使用します。利用者が明示的に操作した場合にのみ書き込み、既存の予定を読み取ることはありません。"],
-        ["8. 外部サービスと第三者提供", "運営者は、利用者の情報を販売または貸与しません。問い合わせ受付APIの実行基盤としてCloudflare Workersを、メール配送のためResendを利用し、問い合わせに必要な情報は各社の方針に従って処理されます。法令に基づく開示請求があった場合を除き、その他の第三者へ提供しません。"],
-        ["9. 保存期間と削除", "端末内の情報は、利用者が削除するまで保存されます。個々の記録は各画面から、すべてのデータはアプリ内の設定画面から削除できます。本アプリをアンインストールした場合、端末内に保存された情報は削除され、運営者が復旧することはできません。お問い合わせは専用データベースへ保存せず、メールとして受信します。"],
-        ["10. データの持ち出し", "アプリ内の設定画面から、保存されている情報をJSON形式で書き出すことができます。書き出したファイルの管理は利用者の責任において行ってください。"],
-        ["11. 安全管理措置", "本アプリはアカウント登録を必要としないため、パスワードなどの認証情報を取り扱いません。端末内の情報は、iOSの標準的なセキュリティ機構のもとで保護されます。"],
-        ["12. 未成年者の利用", "未成年の方が本アプリを利用する場合は、保護者の同意を得たうえでご利用ください。"],
-        ["13. 本ポリシーの変更", "法令の改正または本アプリの機能変更に伴い、本ポリシーを変更する場合があります。重要な変更を行う場合は、本アプリ内または本ウェブサイトにて周知します。変更後の内容は、掲載された時点から適用されます。"],
-        ["14. お問い合わせ", "本ポリシーおよび個人情報の取扱いに関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。フォームを送信しない限り、問い合わせ情報は送信されません。"],
-      ]
-    : [
-        ["1. Introduction", "This policy sets out how the operator (Tomokichi) handles user information across the iOS application \"Remeet\" and this website (together, the \"Service\"). This website is the authoritative version; the App refers back to it."],
-        ["2. About the operator", "The Service is developed and operated by an individual, the operator (Tomokichi). Contact details are listed at the end of this page."],
-        ["3. Scope", "This policy applies to use of the app and browsing of this website."],
-        ["4. Basic policy", "The app does not require account registration. Information you enter or capture is stored only on your device, in principle. The operator does not operate any server that can collect or view your records, and no advertising or analytics SDKs are included."],
-        ["5. Information stored on your device", "The app stores the following information you enter or choose, in an on-device database and an App Group container.\n\n・Reunion plan names, the date you started being apart, the reunion date, and notes\n・Place names, coordinates and time zones for you, your partner, and the meeting place\n・Items on your shared wish list and their completed status\n・Photos, dates, notes, impressions and a 5-star rating for waiting-period and reunion records\n・App settings such as notification on/off\n\nThis data is shared within the developer's App Group so it can appear in widgets, but it is never sent off your device."],
-        ["6. Information sent to external servers", "During normal app use, reunion plans, photos, albums, notes, your current location, and wish-list items remain stored on your device in principle. The app communicates externally only in these cases:\n\n(1) Weather: the coordinates of a saved place are sent to Open-Meteo (open-meteo.com) to fetch current weather. No name or device identifier is sent.\n\n(2) Place search and reverse geocoding: a search term you enter, or coordinates obtained from the device, are sent to Apple's geocoding service. Handling follows Apple's own privacy policy.\n\n(3) Legal documents: the app connects to this website to display the latest Privacy Policy and Terms of Service.\n\n(4) Support: only when you explicitly submit the shared support form, your name (if provided), email address, message, app version, OS version, display language, enquiry identifier, submission time, and related details are sent so we can respond, investigate issues, improve the service, and prevent abuse. Photos, reunion plan details, your current location, albums, notes, and wish-list items are not sent with a support enquiry."],
-        ["7. Access to device features", "With your permission, the app uses the following features only for the stated purpose. You can change or revoke permission at any time from iOS Settings.\n\n・Camera: to capture photos of the reunion moment.\n・Photo library: to save memories and reunion photos.\n・Location: to make it easy to enter your current place as a reunion location. It is read once, only when you tap \"Use current location\", and is never tracked continuously.\n・Calendar: to add a reunion plan to your calendar. It only writes an entry when you explicitly choose to, and never reads existing events."],
-        ["8. Service providers and disclosure", "The operator does not sell or lend your information. Cloudflare Workers provides the support API infrastructure, and Resend delivers support email; information needed for an enquiry is processed under each provider's policies. It is not otherwise disclosed to third parties except where required by law."],
-        ["9. Retention and deletion", "Information stored on your device is kept until you delete it. Individual records can be deleted from their respective screens, and all data can be deleted from the app's settings screen. Uninstalling the app deletes the information stored on your device, and the operator cannot recover it. Support enquiries are received by email and are not stored in a dedicated support database."],
-        ["10. Exporting your data", "From the app's settings screen, you can export your stored information as a JSON file. You are responsible for managing any file you export."],
-        ["11. Security measures", "Because the app does not require an account, it does not handle authentication credentials such as passwords. Information on your device is protected by iOS's standard security mechanisms."],
-        ["12. Use by minors", "If a minor uses the app, please do so with the consent of a parent or guardian."],
-        ["13. Changes to this policy", "This policy may be revised in response to changes in law or to the app's functionality. Material changes will be announced within the app or on this website, and take effect once published."],
-        ["14. Contact", "For questions about this policy or how your information is handled, use the shared Tomokichi support form. Support information is not sent unless you submit the form."],
-      ],
-  terms: ja
-    ? [
-        ["第1条（適用）", "本規約は、運営者（Tomokichi）が提供するiOSアプリケーション「Remeet」（以下「本アプリ」）および本ウェブサイト（あわせて「本サービス」）の利用条件を定めるものです。本ウェブサイトに掲載する内容を正本とし、本アプリ内からは本ウェブサイトを参照します。利用者は、本アプリをダウンロードまたは本サービスを利用した時点で、本規約に同意したものとみなされます。"],
-        ["第2条（本サービスの内容）", "本アプリは、大切な人との再会予定、会ったらやりたいこと、写真やメモ、再会の記録を、利用者の端末上で作成・保存・閲覧するための機能を提供します。本アプリはアカウント登録を必要とせず、利用者間でデータを共有する機能は提供していません。"],
-        ["第3条（利用料金）", "本アプリは無料で提供されます。ただし、通信に必要な費用（パケット通信料等）は利用者の負担とします。"],
-        ["第4条（利用者の責任）", "利用者は、自己の責任において本サービスを利用するものとし、入力する情報について必要な権利を有していることを保証します。第三者が写り込んだ写真等を保存する場合は、当該第三者の権利に配慮するものとします。"],
-        ["第5条（禁止事項）", "利用者は、本サービスの利用にあたり、次の行為をしてはなりません。\n\n1. 法令または公序良俗に違反する行為\n2. 運営者または第三者の権利、財産、名誉、プライバシーを侵害する行為\n3. 本アプリの複製、改変、逆コンパイル、逆アセンブルその他のリバースエンジニアリング\n4. 本サービスの運営を妨害し、または不正にアクセスする行為\n5. その他、運営者が不適切と合理的に判断する行為"],
-        ["第6条（知的財産権）", "本サービスおよびこれに含まれるプログラム、デザイン、文章、画像等に関する著作権その他の知的財産権は、運営者または正当な権利者に帰属します。利用者が本アプリ内で作成・保存した記録の権利は、利用者に帰属します。"],
-        ["第7条（データの管理とバックアップ）", "本アプリのデータは利用者の端末内に保存されます。利用者は、必要に応じてアプリ内の設定画面から自らバックアップを作成するものとします。端末の故障・紛失、本アプリの削除、OSのアップデートその他の事由によるデータの消失について、運営者は責任を負いません。"],
-        ["第8条（保証の否認・免責事項）", "運営者は、本サービスが利用者の特定の目的に適合すること、期待する機能・正確性・有用性を有すること、および不具合が生じないことを保証しません。本アプリが表示する天気情報および地名情報は外部サービスから取得したものであり、その正確性・完全性を保証しません。運営者は、本サービスの利用によって利用者に生じた損害について、運営者の故意または重過失による場合を除き、責任を負いません。消費者契約法その他の強行法規により運営者の免責が認められない場合、運営者の責任は法令上認められる範囲に限定されます。"],
-        ["第9条（本サービスの変更・中断・終了）", "運営者は、事前の通知なく本サービスの内容を変更し、または提供を中断・終了することがあります。重要な変更については、本アプリ内または本ウェブサイトにて周知するよう努めます。"],
-        ["第10条（本規約の変更）", "運営者は、必要と判断した場合、本規約を変更することがあります。変更後の規約は、本アプリ内または本ウェブサイトに掲載された時点から効力を生じます。変更後に本サービスを継続して利用した場合、変更に同意したものとみなされます。"],
-        ["第11条（準拠法および管轄裁判所）", "本規約の解釈および適用は日本法に準拠します。本サービスに関して運営者と利用者との間で紛争が生じた場合は、東京地方裁判所を第一審の専属的合意管轄裁判所とします。"],
-        ["第12条（お問い合わせ）", "本規約に関するお問い合わせは、Tomokichi共通お問い合わせフォームからお送りください。"],
-      ]
-    : [
-        ["Article 1 — Application", "These Terms set out the conditions for using the iOS application \"Remeet\" (the \"App\") and this website (together, the \"Service\"), provided by the operator (Tomokichi). This website is the authoritative version; the App refers back to it. You are deemed to have agreed to these Terms once you download the App or otherwise use the Service."],
-        ["Article 2 — The Service", "The App lets you create, store and view reunion plans, a shared wish list, photos, notes and reunion records on your own device. The App does not require account registration and does not offer any feature for sharing data between users."],
-        ["Article 3 — Fees", "The App is provided free of charge. You are responsible for any data or communication charges incurred while using it."],
-        ["Article 4 — User responsibility", "You are responsible for your own use of the Service and warrant that you hold any rights necessary for the information you enter. When saving photos that include third parties, please be considerate of their rights."],
-        ["Article 5 — Prohibited conduct", "You must not:\n\n1. Violate any law or public order and morals\n2. Infringe the rights, property, reputation or privacy of the operator or any third party\n3. Copy, modify, decompile, disassemble or otherwise reverse-engineer the App\n4. Interfere with the operation of, or gain unauthorised access to, the Service\n5. Engage in any other conduct the operator reasonably considers inappropriate"],
-        ["Article 6 — Intellectual property", "Copyright and other intellectual property rights in the Service and the programs, design, text and images it contains belong to the operator or the relevant rights holders. Rights to records you create and store within the App belong to you."],
-        ["Article 7 — Data management and backup", "App data is stored on your device. You are responsible for creating your own backups from the app's settings screen when needed. The operator is not liable for loss of data caused by device failure or loss, uninstalling the App, OS updates, or other such events."],
-        ["Article 8 — Disclaimer", "The operator does not warrant that the Service will suit any particular purpose, that it will have any expected functionality, accuracy or usefulness, or that it will be free of defects. Weather and place-name information shown by the App comes from external services, and its accuracy and completeness are not guaranteed. Except where caused by the operator's willful misconduct or gross negligence, the operator is not liable for damages arising from your use of the Service. Where the Consumer Contract Act or other mandatory law does not permit this disclaimer, the operator's liability is limited to the extent permitted by law."],
-        ["Article 9 — Changes, suspension and termination", "The operator may change the content of the Service, or suspend or discontinue it, without prior notice. The operator will endeavor to announce material changes within the App or on this website."],
-        ["Article 10 — Changes to these Terms", "The operator may revise these Terms when considered necessary. Revised Terms take effect once posted within the App or on this website. Continued use of the Service after a revision constitutes acceptance of it."],
-        ["Article 11 — Governing law and jurisdiction", "These Terms are governed by the laws of Japan. Any dispute relating to the Service shall be subject to the exclusive jurisdiction of the Tokyo District Court as the court of first instance."],
-        ["Article 12 — Contact", "For questions about these Terms, use the shared Tomokichi support form."],
-      ],
-};
-const title = titleMap[page][ja ? 0 : 1];
-const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
 ---
 
-<AppShell lang={lang} title={title} page={page}>
+<AppShell lang={lang} title={title} page={page} description={description}>
   <section class:list={["subpage", `subpage-${page}`]}>
     {heroEyebrow[page] ? (
       <header class="page-hero">
@@ -256,144 +190,216 @@ const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
         <figure class="hero-art" aria-hidden="true">
           <span class="blob blob-a"></span>
           <span class="blob blob-b"></span>
-          {page === "features" && <img src="/assets/app-phone.png" alt="" />}
-          {page === "how-to" && <img src="/assets/hero-phones.png" alt="" />}
-          {page === "updates" && <img src="/assets/update-showcase.png" alt="" />}
+          {page === "features" && <AppScreen screen="home" size="sm" lang={lang} class="hero-art-screen" />}
+          {page === "how-to" && <AppScreen screen="wishes" size="sm" lang={lang} class="hero-art-screen" />}
+          {page === "updates" && <img src="/assets/update-showcase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
+          {page === "screenshots" && <AppScreen screen="album" size="sm" lang={lang} class="hero-art-screen" />}
+          {page === "widgets" && <img src="/assets/widget-showcase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
           {page === "faq" && <span class="hero-marks"><b>?</b><i>?</i></span>}
+          {page === "pricing" && <img src="/assets/sky-vase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
         </figure>
       </header>
     ) : (
       <header class="page-intro">
-        <h1>{title.split("\n").map((line) => <>{line}<br /></>)}</h1>
+        <h1>{title}</h1>
         {subtitle && <p>{subtitle}</p>}
-        {(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月24日／最終更新日：2026年7月26日" : "Effective: July 24, 2026 / Last updated: July 26, 2026"}</small>}
+        {(page === "privacy" || page === "terms") && <small>{legalDate}</small>}
       </header>
     )}
 
-    {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body]) => (
-      <article>
-        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} /></span>
-        <div><h2>{heading}</h2><p>{body}</p></div>
-      </article>
-    ))}</div><a class="orange-cta" href={ja ? "/ja/how-to" : "/how-to"}>{ja ? "使い方を見る" : "See how it works"} →</a></>}
+    {page === "features" && (
+      <>
+        <div class="feature-page-grid">
+          {features.map(([icon, heading, body]) => (
+            <article>
+              <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} /></span>
+              <div><h2>{heading}</h2><p>{body}</p></div>
+            </article>
+          ))}
+        </div>
+        <p class="env-note feature-env"><strong>{envLine}</strong><br />{envNote}</p>
+        <a class="orange-cta" href={ja ? "/ja/how-to" : "/how-to"}>{ja ? "使い方を見る" : "See how it works"} →</a>
+      </>
+    )}
 
-    {page === "how-to" && <><ol class="step-row">{steps.map(([icon, heading, body], i) => (
-      <li>
-        <span class="step-no">{i + 1}</span>
-        <article>
-          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} /></span>
-          <h2>{heading}</h2>
-          <p>{body}</p>
-        </article>
-      </li>
-    ))}</ol>
-    <aside class="how-note">
-      <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.bulb} /></span>
-      <div>
-        <h2>{ja ? "はじめての方へ" : "New to Remeet?"}</h2>
-        <p>{ja ? "アカウント登録は必要ありません。アプリを開いたその日から、再会までの記録をはじめられます。" : "No account is needed. From the day you open the app, you can start keeping the days until you meet again."}</p>
-      </div>
-    </aside>
-    <section class="guide-block">
-      <h2 class="block-title">{ja ? "もっと詳しく" : "In more detail"}</h2>
-      <div class="guide-grid">
-        {guides.map(([icon, heading, list]) => (
-          <article>
-            <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon as string]} /></span>
-            <h3>{heading}</h3>
-            <ol>{(list as string[]).map((item) => <li>{item}</li>)}</ol>
-          </article>
+    {page === "how-to" && (
+      <>
+        <ol class="step-row">
+          {steps.map(([icon, heading, body], i) => (
+            <li>
+              <span class="step-no">{i + 1}</span>
+              <article>
+                <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} /></span>
+                <h2>{heading}</h2>
+                <p>{body}</p>
+              </article>
+            </li>
+          ))}
+        </ol>
+        <aside class="how-note">
+          <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.bulb} /></span>
+          <div>
+            <h2>{ja ? "はじめての方へ" : "New to Remeet?"}</h2>
+            <p>{ja ? "アカウント登録は必要ありません。データは端末内に保存され、相手との共有機能は v1.0.0 にはありません。" : "No account is needed. Data stays on your device; partner sharing is not part of v1.0.0."}</p>
+          </div>
+        </aside>
+        <section class="guide-block">
+          <h2 class="block-title">{ja ? "もっと詳しく" : "In more detail"}</h2>
+          <div class="guide-visual-list">
+            {guides.map((guide) => (
+              <article class="guide-visual">
+                <div class="guide-visual-copy">
+                  <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[guide.icon]} /></span>
+                  <h3>{guide.title}</h3>
+                  <ol>{guide.steps.map((item) => <li>{item}</li>)}</ol>
+                  {guide.note && <p class="guide-note">{guide.note}</p>}
+                </div>
+                <figure>
+                  {guide.screen ? (
+                    <AppScreen screen={guide.screen} size="sm" lang={lang} />
+                  ) : (
+                    <img src={guide.image} alt={guide.imageAlt} width="1448" height="1086" loading="lazy" decoding="async" />
+                  )}
+                </figure>
+              </article>
+            ))}
+          </div>
+        </section>
+        <aside class="how-help">
+          <p>{ja ? "使い方でわからないことがあれば、よくある質問もご覧ください。" : "If anything is still unclear, the FAQ may help."}</p>
+          <a href={ja ? "/ja/faq" : "/faq"}>{ja ? "よくある質問へ" : "Go to the FAQ"} →</a>
+        </aside>
+        <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+      </>
+    )}
+
+    {page === "screenshots" && (
+      <div class="shot-gallery">
+        {screenshots.map(([screen, label]) => (
+          <AppScreen screen={screen} size="md" lang={lang} label={label} />
         ))}
       </div>
-    </section>
-    <aside class="how-help">
-      <p>{ja ? "使い方でわからないことがあれば、よくある質問もご覧ください。" : "If anything is still unclear, the FAQ may help."}</p>
-      <a href={ja ? "/ja/faq" : "/faq"}>{ja ? "よくある質問へ" : "Go to the FAQ"} →</a>
-    </aside>
-    <a class="orange-cta" href="#download">{ja ? "今すぐ始める" : "Get started"}</a></>}
+    )}
 
-    {page === "screenshots" && <div class="screens-stage"><div class="ghost-card left"></div><img src="/assets/app-phone.png" alt="Remeet app screen" /><div class="ghost-card right"></div><button type="button" aria-label="Previous">‹</button><button type="button" aria-label="Next">›</button><div class="carousel-dots">●　○ ○ ○ ○</div></div>}
-
-    {page === "widgets" && <div class="single-showcase"><img src="/assets/widget-showcase.png" alt="Remeet Home Screen and Lock Screen widgets" /></div>}
-
-    {page === "pricing" && <>
-      <div class="plan-card">
-        <p class="plan-label">{ja ? "すべての機能" : "Everything included"}</p>
-        <strong class="plan-price">{ja ? "無料" : "Free"}</strong>
-        <p class="plan-sub">{ja ? "アプリ内課金や、月額の費用はありません。" : "No in-app purchases, no monthly fee."}</p>
-        <ul class="plan-list">{planIncludes.map((item) => <li>{item}</li>)}</ul>
-        <a class="orange-cta" href="#download">{ja ? "App Storeで見る" : "View on App Store"}</a>
+    {page === "widgets" && (
+      <div class="single-showcase">
+        <img
+          src="/assets/widget-showcase.png"
+          alt={ja ? "Remeetのホーム画面とロック画面ウィジェット" : "Remeet Home Screen and Lock Screen widgets"}
+          width="1122"
+          height="1402"
+          loading="lazy"
+          decoding="async"
+        />
+        <p class="showcase-note">
+          {ja
+            ? "Small / Medium / Large とロック画面に対応。表示内容はウィジェットのサイズによって異なります。"
+            : "Supports Small, Medium, Large and Lock Screen families. What’s shown depends on the widget size."}
+        </p>
       </div>
-      <aside class="how-note">
-        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.bulb} /></span>
-        <div>
-          <h2>{ja ? "これから有料の機能を設ける場合" : "If a paid tier is ever added"}</h2>
-          <p>{ja ? "追加の機能について有料プランを設ける場合は、本サイトとアプリ内で事前にお知らせします。すでに保存された記録が読めなくなることはありません。" : "If a paid plan is ever introduced for additional features, it will be announced here and in the app beforehand. Records you have already saved will never become unreadable."}</p>
-        </div>
-      </aside>
-    </>}
+    )}
 
-    {page === "faq" && <>
-      <nav class="faq-tabs" aria-label={ja ? "カテゴリで絞り込み" : "Filter by category"} data-faq-tabs>
-        {faqCategories.map(([key, label], i) => <button type="button" data-cat={key} aria-current={i === 0 ? "true" : "false"}>{label}</button>)}
-      </nav>
-      <div class="faq-layout">
-        <div class="faq-list" data-faq-list>
-          {faqs.map(([cat, q, a], i) => (
-            <details data-cat={cat} open={i === 0}>
-              <summary><span class="q">Q.</span>{q}<span class="mark" aria-hidden="true"></span></summary>
-              <p>{a}</p>
-            </details>
+    {page === "pricing" && (
+      <>
+        <div class="plan-card">
+          <p class="plan-label">v1.0.0</p>
+          <strong class="plan-price">{ja ? "無料" : "Free"}</strong>
+          <div class="plan-message">
+            {ja ? (
+              <>
+                <p>Remeetは無料で利用できます。</p>
+                <p>アカウント登録やログインは必要ありません。<br />一部の画面には広告が表示されます。<br />現在、有料プランや広告削除機能は提供していません。</p>
+              </>
+            ) : (
+              <>
+                <p>Remeet is free to use.</p>
+                <p>No account or sign-in is required.<br />Ads may appear on some screens.<br />Paid plans and ad removal are not currently available.</p>
+              </>
+            )}
+          </div>
+          <ul class="plan-list">{planIncludes.map((item) => <li>{item}</li>)}</ul>
+          <p class="plan-ad-note">
+            {ja
+              ? "広告はホームや、件数が増えたやりたいこと・記録の一覧など、待つ体験の一部画面に表示されます。アルバム画面には広告を出しません。"
+              : "Ads may appear on Home and on longer wish or memory lists. The album screen is kept free of ads."}
+          </p>
+          <p class="env-note"><strong>{envLine}</strong><br />{envNote}</p>
+          <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+        </div>
+      </>
+    )}
+
+    {page === "faq" && (
+      <>
+        <nav class="faq-tabs" aria-label={ja ? "カテゴリで絞り込み" : "Filter by category"} data-faq-tabs>
+          {faqCategories.map(([key, label], i) => (
+            <button type="button" data-cat={key} aria-current={i === 0 ? "true" : "false"}>{label}</button>
           ))}
-          <p class="faq-empty" hidden data-faq-empty>{ja ? "このカテゴリの質問はまだありません。" : "No questions in this category yet."}</p>
+        </nav>
+        <div class="faq-layout">
+          <div class="faq-list" data-faq-list>
+            {faqs.map(([cat, q, a], i) => (
+              <details data-cat={cat} open={i === 0}>
+                <summary><span class="q">Q.</span>{q}<span class="mark" aria-hidden="true"></span></summary>
+                <p set:html={a.replaceAll("\n\n", "<br /><br />")} />
+              </details>
+            ))}
+            <p class="faq-empty" hidden data-faq-empty>{ja ? "このカテゴリの質問はまだありません。" : "No questions in this category yet."}</p>
+          </div>
+          <aside class="faq-side">
+            <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.mail} /></span>
+            <h2>{ja ? "解決しない場合は" : "Still stuck?"}</h2>
+            <p>{ja ? "お困りのことがあれば、お気軽にご連絡ください。通常3営業日以内にご返信いたします。" : "If something is still unclear, just get in touch. We usually reply within three business days."}</p>
+            <a href={supportHref(lang)} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact us"} →</a>
+          </aside>
         </div>
-        <aside class="faq-side">
-          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.mail} /></span>
-          <h2>{ja ? "解決しない場合は" : "Still stuck?"}</h2>
-          <p>{ja ? "お困りのことがあれば、お気軽にご連絡ください。通常3営業日以内にご返信いたします。" : "If something is still unclear, just get in touch. We usually reply within three business days."}</p>
-          <a href={supportHref(lang)} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact us"} →</a>
-        </aside>
-      </div>
-    </>}
+      </>
+    )}
 
-    {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2>{body.split("\n\n").map((para) => <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>)}</section>)}</article>}
+    {(page === "privacy" || page === "terms") && (
+      <article class="legal-copy">
+        {legalSections.map(([heading, body]) => (
+          <section>
+            <h2>{heading}</h2>
+            {body.split("\n\n").map((para) => (
+              <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>
+            ))}
+          </section>
+        ))}
+      </article>
+    )}
 
-
-    {page === "updates" && <ul class="news-list">{news.map((item) => (
-      <li class="news-row">
-        <time>{item.date}</time>
-        <span class:list={["news-badge", item.kind]}>{item.badge}</span>
-        <div>
-          <p>{item.headline}</p>
-          <ul class="news-points">{item.points.map((point) => <li>{point}</li>)}</ul>
-        </div>
-      </li>
-    ))}</ul>}
+    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
   </section>
 </AppShell>
 
 <script is:inline>
   (() => {
-    const tabs = document.querySelector("[data-faq-tabs]");
-    const list = document.querySelector("[data-faq-list]");
-    if (!tabs || !list) return;
-    const items = Array.from(list.querySelectorAll("details"));
-    const empty = list.querySelector("[data-faq-empty]");
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      const empty = list.querySelector("[data-faq-empty]");
 
-    tabs.addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-cat]");
-      if (!btn) return;
-      const cat = btn.getAttribute("data-cat");
-      let shown = 0;
-      items.forEach((item) => {
-        const match = cat === "all" || item.getAttribute("data-cat") === cat;
-        item.hidden = !match;
-        if (match) shown++;
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        let shown = 0;
+        items.forEach((item) => {
+          const match = cat === "all" || item.getAttribute("data-cat") === cat;
+          item.hidden = !match;
+          if (match) shown++;
+        });
+        if (empty) empty.hidden = shown !== 0;
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
       });
-      if (empty) empty.hidden = shown !== 0;
-      tabs.querySelectorAll("button").forEach((b) => {
-        b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
-      });
-    });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
   })();
 </script>

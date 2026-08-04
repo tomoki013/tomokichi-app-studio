@@ -6,10 +6,15 @@ type L<T = string> = Record<Locale, T>;
 
 /** Shared navigation + footer + status labels ------------------------------ */
 
+/**
+ * Support, privacy and terms deliberately live in the footer instead: the main
+ * nav follows the studio's own order — what was noticed, what it became, who
+ * made it.
+ */
 export const nav: { label: L; href: string; match: string }[] = [
-  { label: { ja: "アプリ", en: "Apps" }, href: "/apps", match: "apps" },
+  { label: { ja: "記録", en: "Journal" }, href: "/journal", match: "journal" },
+  { label: { ja: "つくったもの", en: "Products" }, href: "/products", match: "products" },
   { label: { ja: "私について", en: "About" }, href: "/about", match: "about" },
-  { label: { ja: "サポート", en: "Support" }, href: "/support", match: "support" },
 ];
 
 export interface FooterLink {
@@ -25,20 +30,21 @@ export const footer: {
   copyright: string;
 } = {
   tagline: {
-    ja: "心地よいプロダクトを、ひとつずつ。",
-    en: "Comfortable products, made one at a time.",
+    ja: "日常で感じたことを、形にする。",
+    en: "Turning what I notice into something.",
   } as L,
   columns: [
     {
       title: { ja: "サイト", en: "Site" } as L,
       links: [
-        { label: { ja: "アプリ", en: "Apps" } as L, href: "/apps" },
+        { label: { ja: "記録", en: "Journal" } as L, href: "/journal" },
+        { label: { ja: "つくったもの", en: "Products" } as L, href: "/products" },
         { label: { ja: "私について", en: "About" } as L, href: "/about" },
         { label: { ja: "サポート", en: "Support" } as L, href: "/support" },
       ],
     },
     {
-      title: { ja: "アプリ", en: "Apps" } as L,
+      title: { ja: "つくったもの", en: "Products" } as L,
       links: footerAppBrands.map((app) => ({
         label: { ja: app.name, en: app.name } as L,
         href: app.publicUrl,
@@ -115,33 +121,36 @@ export const principlesHeading: L = { ja: "つくるときに考えているこ�
 
 export const home = {
   metaTitle: {
-    ja: "Tomokichi — 気づかないところまで、丁寧につくる。",
-    en: "Tomokichi — Crafted carefully, down to the details.",
+    ja: "Tomokichi — 日常で感じたことを、形にする。",
+    en: "Tomokichi — Turning what I notice into something.",
   } as L,
   hero: {
     heading: {
-      ja: "気づかないところまで、\n丁寧につくる。",
-      en: "Crafted carefully,\ndown to the details.",
+      ja: "日常で感じたことを、\n形にする。",
+      en: "Turning what I notice\ninto something.",
     } as L,
     body: {
-      ja: "Tomokichiは、Webサイトやアプリを通して、\n使う人に余計な負荷をかけず、\n自然に便利を受け取れる体験をつくっています。\n\n必要な機能を、必要な密度で。\n細かな気配りと、少しの遊び心を添えて、\nひとつずつ形にしています。",
-      en: "Through websites and apps, Tomokichi builds\nexperiences that let people receive usefulness naturally,\nwithout extra effort.\n\nThe features you need, at the density they need.\nWith quiet attention and a little playfulness,\neach one is shaped one at a time.",
+      ja: "暮らしや旅、人との関わりの中で感じたことから、\nアプリやWebサイト、小さな企画をつくる個人スタジオです。\n\nはじめからアプリを作るのではなく、まず日常を観察する。\nそこで見つけた問いに向き合い、必要な形を考える。\nアプリは、そのための手段の一つです。",
+      en: "A one-person studio that makes apps, websites and small\nprojects out of things noticed in daily life, travel and\nthe people around me.\n\nAn app is never the starting point. I watch ordinary life\nfirst, sit with the question I find there, and then work out\nwhat form it needs. An app is one of those forms.",
     } as L,
-    cta: { ja: "アプリを見る", en: "See the apps" } as L,
-    ctaSub: { ja: "私について", en: "About me" } as L,
+    cta: { ja: "最近の記録を見る", en: "Read the journal" } as L,
+    ctaSub: { ja: "つくったものを見る", en: "See what came of it" } as L,
   },
-  appsHeading: { ja: "アプリ", en: "Apps" } as L,
+  currentHeading: { ja: "今、考えていること", en: "What I’m thinking about now" } as L,
+  journalHeading: { ja: "日々の記録", en: "Recent notes" } as L,
+  journalAll: { ja: "記録をすべて見る", en: "Read all notes" } as L,
+  appsHeading: { ja: "日常から生まれたもの", en: "What came out of it" } as L,
   appsAll: { ja: "すべて見る", en: "View all" } as L,
   about: {
     heading: { ja: "作っている人", en: "The person making these" } as L,
     body: {
-      ja: "Tomokichiという名前で、\nWebサイトやiPhoneアプリをつくっています。\n\n旅や記録、日常の道具まで、\nそのプロダクトに必要な形を考えながら、\nひとつずつ制作しています。",
-      en: "Under the name Tomokichi, I make\nwebsites and iPhone apps.\n\nFrom travel and records to everyday tools,\nI shape each one while considering\nthe form that product needs.",
+      ja: "Tomokichiという名前で、日常の中で感じたことを記録し、\nアプリやWebサイト、小さな企画として形にしています。\n\n旅や街、暮らし、人との関係。\n自分自身が体験したことから始め、\nその問いに合った形を一つずつ考えています。",
+      en: "Under the name Tomokichi, I write down what I notice\nin daily life and shape it into apps, websites and\nsmall projects.\n\nTravel, cities, living, the people around me.\nEach one starts from something I went through myself,\nand takes whatever form that question needs.",
     } as L,
     link: { ja: "私について", en: "About me" } as L,
   },
   prefooter: {
-    heading: { ja: "つくっているものを見る", en: "See what I’m making" } as L,
+    heading: { ja: "つくったものを見る", en: "See what I’m making" } as L,
     body: {
       ja: "公開中のものから、\nまだ構想の途中にあるものまで。",
       en: "From what’s already out\nto what’s still taking shape.",
@@ -149,29 +158,87 @@ export const home = {
   },
 };
 
+/** Journal ------------------------------------------------------------------ */
+
+export const journal = {
+  metaTitle: { ja: "記録 — Tomokichi", en: "Journal — Tomokichi" } as L,
+  metaDescription: {
+    ja: "日常で感じたこと、制作につながる問い、小さな実験の記録。",
+    en: "Things noticed in daily life, the questions behind what I make, and small experiments.",
+  } as L,
+  hero: {
+    heading: { ja: "記録", en: "Journal" } as L,
+    body: {
+      ja: "日常で感じたこと、そこから考えたこと、\n小さく試したことを書いています。\n\nすべてが何かの形になるわけではありません。\n作らなかったものも、ここに残しています。",
+      en: "Things noticed in ordinary life, what I made of them,\nand what I tried in a small way.\n\nNot all of it turns into something.\nWhat I decided not to build stays here too.",
+    } as L,
+  },
+  empty: { ja: "まだ記録がありません。", en: "No entries yet." } as L,
+  readMore: { ja: "続きを読む", en: "Read on" } as L,
+  back: { ja: "記録の一覧へ", en: "Back to the journal" } as L,
+  /** Shown on an entry, pointing at what it led to. */
+  bornFrom: { ja: "この記録から生まれたもの", en: "What came of this" } as L,
+  alsoRead: { ja: "あわせて読む", en: "Read next" } as L,
+  /** Shown on a product, pointing back at the records behind it. */
+  behindProduct: { ja: "このプロダクトが生まれるまで", en: "How this came about" } as L,
+};
+
 /** About page --------------------------------------------------------------- */
 
 export const about = {
   metaTitle: { ja: "私について — Tomokichi", en: "About — Tomokichi" } as L,
   metaDescription: {
-    ja: "Tomokichiは、使う人に余計な負荷をかけない体験を、ひとつずつ形にしています。",
-    en: "Tomokichi shapes experiences that don’t put extra load on the people who use them, one at a time.",
+    ja: "日常で感じたことから、アプリやWebサイト、小さな企画をつくる個人スタジオです。",
+    en: "A one-person studio making apps, websites and small projects out of what it notices in daily life.",
   } as L,
   hero: {
     heading: {
-      ja: "気づかないところまで、\n丁寧につくる。",
-      en: "Crafted carefully,\ndown to the details.",
+      ja: "日常で感じたことを、\n形にする。",
+      en: "Turning what I notice\ninto something.",
     } as L,
     body: {
-      ja: "Tomokichiは、Webサイトやアプリを通して、\n使う人に余計な負荷をかけない体験をつくっています。\n\n便利さの先に、静かな心地よさが残ること。\nそれを、ひとつずつ形にしています。",
-      en: "Through websites and apps, Tomokichi builds\nexperiences that don’t put extra load on people.\n\nA quiet comfort left beyond convenience —\nthat is what I shape, one at a time.",
+      ja: "Tomokichi App Studioは、暮らしや旅、人との関わりの中で\n感じたことから、アプリやWebサイト、小さな企画をつくる個人スタジオです。\n\nアプリを作ること自体が目的ではありません。\nまず日常を観察し、そこで見つけた問いに向き合い、\n必要な形を考える。その手段の一つがアプリです。",
+      en: "Tomokichi App Studio is a one-person studio that makes\napps, websites and small projects out of what it notices\nin living, travelling and being around people.\n\nMaking apps is not the point. I watch ordinary life first,\nsit with the question I find there, and work out what form\nit needs. An app is one of those forms.",
     } as L,
+  },
+  concept: {
+    heading: { ja: "このスタジオについて", en: "About this studio" } as L,
+    items: [
+      {
+        title: { ja: "日常から始める", en: "Start from daily life" } as L,
+        body: {
+          ja: "違和感、不便、願い、寂しさ、好奇心。\n出発点は、いつも自分が体験したことです。",
+          en: "Something off, something awkward, a wish, a loneliness,\na curiosity. It always starts from something I lived through.",
+        } as L,
+      },
+      {
+        title: { ja: "アプリを目的にしない", en: "An app is not the goal" } as L,
+        body: {
+          ja: "アプリ、Web、文章、企画。\n問いに合う形を選ぶだけで、形の方は決めていません。",
+          en: "An app, a website, a piece of writing, a plan.\nI choose whatever fits the question; the form is not decided in advance.",
+        } as L,
+      },
+      {
+        title: { ja: "小さく試す", en: "Try it small" } as L,
+        body: {
+          ja: "まず自分で試して、続くかどうかを見ます。\n作らないという結論も、同じくらい多いです。",
+          en: "I try it on myself first and see whether it lasts.\nDeciding not to build is just as common an outcome.",
+        } as L,
+      },
+      {
+        title: { ja: "過程も残す", en: "Keep the process" } as L,
+        body: {
+          ja: "完成したものだけでなく、\nその手前で考えていたことも記録に残しています。",
+          en: "Not only what got finished, but what I was thinking\nbefore it did, stays in the journal.",
+        } as L,
+      },
+    ],
   },
   maker: {
     heading: { ja: "作っている人", en: "The person making these" } as L,
     body: {
-      ja: "Tomokichiという名前で、\n個人でWebサイトやアプリをつくっています。\n\n旅や記録、日常の小さな感情から、\n便利な道具まで。\nつくるものによって、\n静かな画面にも、機能の詰まった画面にもなります。\n\n共通して大切にしているのは、\n使う人に複雑さを渡さず、\n必要なことが自然にできることです。",
-      en: "Under the name Tomokichi, I make\nwebsites and apps on my own.\n\nFrom travel, records and small everyday feelings\nto practical tools.\nDepending on what I’m making, the screen becomes\nquiet, or dense with features.\n\nWhat stays constant is not handing complexity\nto the people who use it — so the necessary things\ncan be done naturally.",
+      ja: "Tomokichiという名前で、日常の中で感じたことを記録し、\nアプリやWebサイト、小さな企画として形にしています。\n\n旅や街、暮らし、人との関係。\n自分自身が体験したことから始め、\nその問いに合った形を一つずつ考えています。\n\nつくるものによって、静かな画面にも、\n機能の詰まった画面にもなります。\n共通しているのは、使う人に複雑さを渡さないことです。",
+      en: "Under the name Tomokichi, I write down what I notice in\ndaily life and shape it into apps, websites and small projects.\n\nTravel, cities, living, the people around me.\nEach one starts from something I went through myself,\nand takes whatever form that question needs.\n\nDepending on what I’m making, the screen becomes quiet,\nor dense with features. What stays constant is not handing\ncomplexity to the people who use it.",
     } as L,
     location: "Kyoto / Tokyo",
     linksLabel: {
@@ -188,12 +255,12 @@ export const about = {
     } as L,
   },
   making: {
-    heading: { ja: "つくっているもの", en: "What I’m making" } as L,
-    all: { ja: "すべてのアプリを見る", en: "See all apps" } as L,
+    heading: { ja: "つくったもの", en: "What I’ve made" } as L,
+    all: { ja: "すべて見る", en: "See all" } as L,
   },
   bottom: {
     apps: {
-      heading: { ja: "アプリを見る", en: "See the apps" } as L,
+      heading: { ja: "つくったものを見る", en: "See what I’ve made" } as L,
       body: {
         ja: "公開中のものから、\nまだ構想の途中にあるものまで。",
         en: "From what’s already out\nto what’s still taking shape.",
@@ -209,19 +276,19 @@ export const about = {
   },
 };
 
-/** Apps page ---------------------------------------------------------------- */
+/** Products page ------------------------------------------------------------ */
 
 export const appsPage = {
-  metaTitle: { ja: "つくっているもの。 — Tomokichi", en: "What I’m making — Tomokichi" } as L,
+  metaTitle: { ja: "つくったもの。 — Tomokichi", en: "What I’ve made — Tomokichi" } as L,
   metaDescription: {
-    ja: "旅、記録、日常の道具。使う人が自然に便利を受け取れることを大切にしています。",
-    en: "Travel, records, everyday tools — made so people receive usefulness naturally.",
+    ja: "日常で感じたことから生まれた、アプリと小さな企画。何を感じて作ったのかから紹介します。",
+    en: "Apps and small projects that came out of something noticed in daily life — starting with why each one exists.",
   } as L,
   hero: {
-    heading: { ja: "つくっているもの。", en: "What I’m making." } as L,
+    heading: { ja: "つくったもの。", en: "What I’ve made." } as L,
     body: {
-      ja: "旅、記録、日常の道具。\n\n役割も見た目もそれぞれですが、\n使う人が自然に便利を受け取れることを\n大切にしています。\n\n公開中のものから、\nまだ構想の途中にあるものまで紹介します。",
-      en: "Travel, records, everyday tools.\n\nEach has its own role and look, but they share\none thing: people receive usefulness naturally.\n\nFrom what’s already out\nto what’s still taking shape.",
+      ja: "どれも、日常の中で気になったことから始まっています。\n\n何を感じて作ったのか、\n何を大切にしたのかから紹介します。\n\n公開中のものから、\nまだ構想の途中にあるものまで。",
+      en: "Every one of these started from something\nthat caught my attention in ordinary life.\n\nEach is introduced by what prompted it\nand what it tries to protect.\n\nFrom what’s already out\nto what’s still taking shape.",
     } as L,
   },
   filters: [
@@ -232,6 +299,14 @@ export const appsPage = {
   ],
   soon: { ja: "準備中", en: "Coming soon" } as L,
   visit: { ja: "アプリサイトを見る", en: "Visit app site" } as L,
+  origin: { ja: "はじまり", en: "Where it started" } as L,
+  spec: {
+    highlights: { ja: "できること", en: "What it does" } as L,
+    pricing: { ja: "料金", en: "Price" } as L,
+    requirements: { ja: "対応", en: "Requires" } as L,
+    privacy: { ja: "データ", en: "Data" } as L,
+    languages: { ja: "言語", en: "Languages" } as L,
+  },
   bottom: {
     heading: { ja: "アプリについて困ったときは", en: "If you need help with an app" } as L,
     body: {

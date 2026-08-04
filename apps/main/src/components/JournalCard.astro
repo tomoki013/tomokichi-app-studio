@@ -1,0 +1,24 @@
+---
+import type { Locale } from "../data/apps";
+import { categoryLabels, entryHref, formatDate, type JournalEntry } from "../lib/journal";
+
+interface Props {
+  entry: JournalEntry;
+  lang: Locale;
+  /** The large "right now" treatment used once at the top of the home page. */
+  variant?: "row" | "current";
+}
+const { entry, lang, variant = "row" } = Astro.props;
+const { title, date, category, summary } = entry.data;
+---
+
+<a class:list={["journal-card", `journal-card--${variant}`]} href={entryHref(entry, lang)}>
+  <p class="journal-meta">
+    <time datetime={date.toISOString().slice(0, 10)}>{formatDate(date, lang)}</time>
+    <span class="journal-dot" aria-hidden="true">·</span>
+    <span>{categoryLabels[category][lang]}</span>
+  </p>
+  <h3>{title}</h3>
+  <p class="journal-summary">{summary}</p>
+  <span class="journal-arrow" aria-hidden="true">→</span>
+</a>

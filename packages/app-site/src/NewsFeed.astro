@@ -1,0 +1,63 @@
+---
+import "./news-feed.css";
+
+export type NewsPost = {
+  id: string;
+  date: string;
+  datetime: string;
+  badge: string;
+  badgeTone?: "default" | "note" | "column";
+  title: string;
+  summary: string;
+  body: string[];
+};
+
+const { posts, lang = "en", heading = "" } = Astro.props as {
+  posts: NewsPost[];
+  lang?: "ja" | "en";
+  heading?: string;
+};
+
+const featured = posts[0];
+const rest = posts.slice(1);
+---
+
+<section class="app-news" aria-label={heading || (lang === "ja" ? "ニュース" : "News")}>
+  {heading && <h2 class="app-news-heading">{heading}</h2>}
+
+  {featured && (
+    <article class="app-news-featured" id={featured.id}>
+      <header class="app-news-meta">
+        <time datetime={featured.datetime}>{featured.date}</time>
+        <span class:list={["app-news-badge", featured.badgeTone && `is-${featured.badgeTone}`]}>
+          {featured.badge}
+        </span>
+      </header>
+      <h3 class="app-news-title">{featured.title}</h3>
+      <p class="app-news-summary">{featured.summary}</p>
+      <div class="app-news-body">
+        {featured.body.map((para) => <p>{para}</p>)}
+      </div>
+    </article>
+  )}
+
+  {rest.length > 0 && (
+    <div class="app-news-list">
+      {rest.map((post) => (
+        <article class="app-news-card" id={post.id}>
+          <header class="app-news-meta">
+            <time datetime={post.datetime}>{post.date}</time>
+            <span class:list={["app-news-badge", post.badgeTone && `is-${post.badgeTone}`]}>
+              {post.badge}
+            </span>
+          </header>
+          <h3 class="app-news-title">{post.title}</h3>
+          <p class="app-news-summary">{post.summary}</p>
+          <div class="app-news-body">
+            {post.body.map((para) => <p>{para}</p>)}
+          </div>
+        </article>
+      ))}
+    </div>
+  )}
+</section>

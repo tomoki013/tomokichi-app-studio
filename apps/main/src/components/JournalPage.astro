@@ -1,0 +1,39 @@
+---
+import type { Locale } from "../data/apps";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { journal } from "../lib/copy";
+import { journalEntries } from "../lib/journal";
+import JournalCard from "./JournalCard.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+
+const { lang } = Astro.props as { lang: Locale };
+const entries = await journalEntries(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={journal.metaTitle[lang]}
+  description={journal.metaDescription[lang]}
+>
+  <div class="site">
+    <SiteHeader lang={lang} path="/journal" current="journal" />
+
+    <main>
+      <section class="journal-hero shell">
+        <h1>{journal.hero.heading[lang]}</h1>
+        <p class="lead">{journal.hero.body[lang]}</p>
+      </section>
+
+      <section class="journal-list shell">
+        {entries.length === 0 ? (
+          <p class="journal-empty">{journal.empty[lang]}</p>
+        ) : (
+          entries.map((entry) => <JournalCard entry={entry} lang={lang} />)
+        )}
+      </section>
+    </main>
+
+    <SiteFooter lang={lang} />
+  </div>
+</BaseLayout>

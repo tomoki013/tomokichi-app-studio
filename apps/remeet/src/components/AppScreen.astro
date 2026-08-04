@@ -1,0 +1,83 @@
+---
+/**
+ * A real Remeet screen inside the shared device frame.
+ *
+ * The images are unretouched iPhone 17 Pro Max captures produced by
+ * `AppStoreScreenshotTests` in the app repo and imported with
+ * `scripts/import-app-screenshots.mjs`. They run against the fictional
+ * `-seedRemeetReference` fixture, so nothing personal and no ad appears in
+ * them. Astro resizes them and emits WebP at build time.
+ */
+import { Image } from "astro:assets";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+
+type Screen = "home" | "memories" | "wishes" | "album" | "settings";
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
+
+const {
+  screen,
+  lang,
+  size = "md",
+  label = "",
+  priority = false,
+  class: className = "",
+} = Astro.props as {
+  screen: Screen;
+  lang: "ja" | "en";
+  size?: Size;
+  label?: string;
+  priority?: boolean;
+  class?: string;
+};
+
+const ja = lang === "ja";
+
+const alts: Record<Screen, [string, string]> = {
+  home: [
+    "Remeetのホーム画面。再会までの残り日数、進捗、ふたつの都市をつなぐルートイラスト",
+    "Remeet’s home screen, with the days remaining, progress, and a route connecting both cities",
+  ],
+  memories: [
+    "待っている間の記録。写真とメモが月ごとに並んでいる",
+    "Waiting memories, with photos and notes grouped by month",
+  ],
+  wishes: [
+    "会ったらやりたいことリスト",
+    "The list of things to do together when you meet again",
+  ],
+  album: [
+    "再会アルバム。これまでの再会が写真付きで並んでいる",
+    "The reunion album, with past reunions and their photos",
+  ],
+  settings: [
+    "Remeetの設定画面。通知、データ管理、ヘルプ、法的情報",
+    "Remeet’s settings screen, with notifications, data, help, and legal information",
+  ],
+};
+
+const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", {
+  eager: true,
+});
+const key = `../assets/screens/${lang}-${screen}.webp`;
+const image = screens[key]?.default;
+if (!image) {
+  throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
+}
+
+// The screen is 89.6% of the device width, so this is the widest the bitmap can
+// ever be laid out at — the frame only ever shrinks below its nominal size.
+const screenWidth: Record<Size, number> = { xs: 118, sm: 158, md: 208, lg: 262, xl: 323 };
+---
+
+<PhoneFrame size={size} label={label} class={className}>
+  <Image
+    src={image}
+    format="webp"
+    widths={[240, 360, 480, 640, 960]}
+    sizes={`${screenWidth[size]}px`}
+    alt={alts[screen][ja ? 0 : 1]}
+    loading={priority ? "eager" : "lazy"}
+    decoding="async"
+    fetchpriority={priority ? "high" : undefined}
+  />
+</PhoneFrame>
