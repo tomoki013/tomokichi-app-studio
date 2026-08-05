@@ -10,7 +10,7 @@
 import { Image } from "astro:assets";
 import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 
-type Screen = "today" | "week" | "month" | "settings-iap" | "add" | "reflection";
+type Screen = "today" | "today-dark" | "week" | "month" | "settings-iap" | "add" | "reflection";
 type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
 const {
@@ -35,6 +35,10 @@ const alts: Record<Screen, [string, string]> = {
   today: [
     "Yohakuの今日の画面。その日に置いた余白がカードで並んでいる",
     "Yohaku’s Today screen, with the day’s spaces listed as cards",
+  ],
+  "today-dark": [
+    "Yohakuのダークモードの今日画面。その日に置いた余白がカードで並んでいる",
+    "Yohaku’s Today screen in dark mode, with the day’s spaces listed as cards",
   ],
   week: [
     "Yohakuの週の画面。各日の余白が黒い四角で並んでいる",

@@ -13,7 +13,7 @@ const categoryCounts = {
 };
 const tabs = [
   { key: "all", label: ja ? "すべて" : "All", mark: "□" },
-  { key: "notice", label: ja ? "お知らせ" : "Updates", mark: "○" },
+  { key: "notice", label: ja ? "お知らせ" : "News", mark: "○" },
   { key: "column", label: ja ? "コラム" : "Columns", mark: "◇" },
 ] as const;
 ---
@@ -22,7 +22,7 @@ const tabs = [
   <div class="updates-intro">
     <p>{ja
       ? "Yohakuからのお知らせと、余白のある暮らしについて考えたこと。"
-      : "Product updates from Yohaku, and thoughts on making room in everyday life."}</p>
+      : "News from Yohaku, and thoughts on making room in everyday life."}</p>
   </div>
 
   <nav class="updates-tabs" aria-label={ja ? "記事の種類" : "Article type"} data-update-tabs>
@@ -38,7 +38,7 @@ const tabs = [
   <div class="updates-grid" data-update-list>
     {posts.map((post, index) => (
       <article class:list={["update-card", index === 0 && "is-featured"]} data-category={post.category}>
-        <a href={`${base}/updates/${post.slug}`}>
+        <a href={`${base}/news/${post.slug}`}>
           <div class="update-card-top">
             <span class:list={["update-category", `is-${post.category}`]}>
               {updateCategoryLabel(lang, post.category)}

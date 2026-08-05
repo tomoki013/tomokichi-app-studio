@@ -7,6 +7,7 @@ export type Page =
   | "faq"
   | "privacy"
   | "terms"
+  | "news"
   | "updates";
 
 export const pick = <T>(ja: boolean, pair: [T, T]): T => pair[ja ? 0 : 1];
@@ -19,7 +20,8 @@ export const titles: Record<Page, [string, string]> = {
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Use"],
-  updates: ["お知らせ", "Updates"],
+  news: ["お知らせ", "News"],
+  updates: ["アップデート情報", "App updates"],
 };
 
 export const descriptions: Record<Page, [string, string]> = {
@@ -51,9 +53,13 @@ export const descriptions: Record<Page, [string, string]> = {
     "Yohakuの利用規約。無料機能、広告、広告削除のアプリ内課金、データの管理について。",
     "Yohaku Terms of Use covering free features, ads, the ad-removal in-app purchase, and data.",
   ],
-  updates: [
+  news: [
     "Yohakuからのお知らせと、余白のある暮らしについてのコラム。",
-    "Product updates from Yohaku and columns about making room in everyday life.",
+    "News from Yohaku and columns about making room in everyday life.",
+  ],
+  updates: [
+    "Yohakuアプリのバージョンごとの変更内容をお知らせします。",
+    "Version-by-version release notes for the Yohaku app.",
   ],
 };
 

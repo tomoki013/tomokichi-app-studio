@@ -1367,6 +1367,29 @@ a {
   place-items: center;
 }
 
+.appearance-screens {
+  width: min(100%, 420px);
+  min-height: 455px;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.appearance-screen {
+  position: absolute;
+  filter: drop-shadow(0 22px 24px rgb(0 0 0 / 12%));
+}
+
+.appearance-screen--light {
+  z-index: 2;
+  transform: translate(-23%, 2%) rotate(-5deg);
+}
+
+.appearance-screen--dark {
+  z-index: 1;
+  transform: translate(25%, -3%) rotate(6deg);
+}
+
 .how-steps {
   margin: 0 auto;
   padding: 0;
@@ -1953,9 +1976,9 @@ a {
 .pricing-columns {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: clamp(24px, 4vw, 44px);
+  align-items: start;
 }
 
 .pricing-plan {
@@ -1969,9 +1992,12 @@ a {
 }
 
 .pricing-plan--support {
-  color: #fff;
-  background: #111;
-  border-color: #111;
+  position: sticky;
+  top: 104px;
+  padding: 28px;
+  color: #111;
+  background: #f6f6f6;
+  border-color: var(--yohaku-line);
 }
 
 .pricing-plan header {
@@ -1980,7 +2006,11 @@ a {
 }
 
 .pricing-plan--support header {
-  border-color: #333;
+  border-color: var(--yohaku-line);
+}
+
+.pricing-plan--support h2 {
+  font-size: clamp(20px, 2.5vw, 25px);
 }
 
 .pricing-plan h2 {
@@ -2006,7 +2036,11 @@ a {
 .pricing-plan--support .pricing-kind,
 .pricing-plan--support .pricing-plan-copy,
 .pricing-plan--support .pricing-iap-list li {
-  color: #aaa;
+  color: var(--yohaku-muted);
+}
+
+.pricing-plan--support .pricing-plan-copy {
+  min-height: 0;
 }
 
 .pricing-plan .pricing-list {
@@ -2027,7 +2061,7 @@ a {
 }
 
 .pricing-ad-note {
-  margin-top: auto;
+  margin-top: 28px;
   padding: 18px;
   display: grid;
   grid-template-columns: 22px 1fr;
@@ -2049,15 +2083,15 @@ a {
 }
 
 .pricing-plan--support .pricing-iap-list li::before {
-  border-color: #888;
+  border-color: #777;
 }
 
 .pricing-support-note {
   margin-top: auto;
   padding-top: 22px;
   display: block;
-  border-top: 1px solid #333;
-  color: #ddd;
+  border-top: 1px solid var(--yohaku-line);
+  color: #555;
   font-family: var(--sans);
   font-size: 13px;
   line-height: 1.8;
@@ -2272,8 +2306,66 @@ a {
 
 /* ——— Updates index and articles ——— */
 
+.content-news,
 .content-updates {
   width: min(100% - 48px, 1100px);
+}
+
+.app-updates-page {
+  display: grid;
+  gap: 34px;
+}
+
+.app-updates-intro {
+  max-width: 680px;
+  margin: -18px auto 8px;
+  text-align: center;
+}
+
+.app-updates-intro p,
+.app-updates-empty > p:last-child {
+  margin: 0;
+  color: var(--yohaku-muted);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.app-updates-empty {
+  min-height: 380px;
+  padding: clamp(38px, 7vw, 72px);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  border: 1px solid var(--yohaku-line);
+  border-radius: 26px;
+  background: #f7f7f7;
+  text-align: center;
+}
+
+.app-updates-empty > span {
+  margin-bottom: 22px;
+  font-size: 26px;
+}
+
+.app-updates-empty > p:first-of-type {
+  margin: 0 0 14px;
+  color: var(--yohaku-soft);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.app-updates-empty h2 {
+  margin: 0 0 16px;
+  font-size: clamp(25px, 4vw, 38px);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.app-updates-empty > p:last-child {
+  max-width: 560px;
 }
 
 .updates-page {
@@ -2609,6 +2701,7 @@ a {
   .content-how-to,
   .content-pricing,
   .content-faq,
+  .content-news,
   .content-updates {
     width: min(100% - 28px, 1100px);
   }
@@ -2631,6 +2724,10 @@ a {
   .updates-grid,
   .update-related-grid {
     grid-template-columns: 1fr;
+  }
+
+  .pricing-plan--support {
+    position: static;
   }
 
   .pricing-plan .pricing-plan-copy {

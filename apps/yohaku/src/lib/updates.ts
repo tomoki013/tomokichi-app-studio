@@ -172,5 +172,5 @@ export const getUpdate = (lang: Locale, slug: string) =>
 
 export const updateCategoryLabel = (lang: Locale, category: UpdateCategory) => {
   if (lang === "ja") return category === "column" ? "コラム" : "お知らせ";
-  return category === "column" ? "Column" : "Updates";
+  return category === "column" ? "Column" : "News";
 };

@@ -11,6 +11,7 @@ import {
 } from "../lib/content";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
+import AppUpdatesPage from "./AppUpdatesPage.astro";
 import UpdatesPage from "./UpdatesPage.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
@@ -55,7 +56,7 @@ const featureBlocks = ja
       {
         heading: "白と黒を、自分の環境に合わせる。",
         body: "システム、ライト、ダークの3つから外観を選べます。",
-        screen: "settings-iap" as const,
+        appearance: true as const,
       },
       {
         heading: "アカウントなしで、端末の中に。",
@@ -102,7 +103,7 @@ const featureBlocks = ja
       {
         heading: "Match light and dark to your environment.",
         body: "Choose system, light, or dark appearance.",
-        screen: "settings-iap" as const,
+        appearance: true as const,
       },
       {
         heading: "No account—on your device.",
@@ -271,7 +272,14 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
               <p>{block.body}</p>
             </div>
             <div class="feature-block-visual">
-              <AppScreen screen={block.screen} size="md" lang={lang} />
+              {"appearance" in block ? (
+                <div class="appearance-screens">
+                  <AppScreen screen="today" size="md" lang={lang} class="appearance-screen appearance-screen--light" />
+                  <AppScreen screen="today-dark" size="md" lang={lang} class="appearance-screen appearance-screen--dark" />
+                </div>
+              ) : (
+                <AppScreen screen={block.screen} size="md" lang={lang} />
+              )}
             </div>
           </article>
         ))}
@@ -439,7 +447,8 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
       </div>
     )}
 
-    {page === "updates" && <UpdatesPage lang={lang} />}
+    {page === "news" && <UpdatesPage lang={lang} />}
+    {page === "updates" && <AppUpdatesPage lang={lang} />}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
