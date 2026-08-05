@@ -1,0 +1,14 @@
+---
+import UpdateArticlePage from "../../components/UpdateArticlePage.astro";
+import type { UpdatePost } from "../../lib/updates";
+import { getUpdates } from "../../lib/updates";
+import "../../styles/global.css";
+
+export function getStaticPaths() {
+  return getUpdates("en").map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: UpdatePost };
+---
+
+<UpdateArticlePage lang="en" post={post} />

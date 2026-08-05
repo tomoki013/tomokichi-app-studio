@@ -947,12 +947,7 @@ html.app-site-menu-open body {
     font-size: 17px;
   }
 
-  .app-site-mobile-footer-links {
-    grid-template-columns: 1fr;
-  }
-
   .app-site-footer-columns {
-    grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 22px 18px;
   }
 }

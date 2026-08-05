@@ -1,6 +1,6 @@
 ---
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
-import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import {
   descriptions,
@@ -14,6 +14,7 @@ import {
   termsSections,
   titles,
 } from "../lib/content";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
@@ -32,9 +33,9 @@ const newsPosts = ja
         datetime: "2026-08-01",
         badge: "お知らせ",
         title: "Colorvia公式ブランドサイトを公開しました",
-        summary: "機能、国内地域マップ、使い方、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+        summary: "機能、地域マップ、使い方、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
         body: [
-          "Colorviaの公式ブランドサイトを公開しました。訪れた国や地域を地図の色として残すアプリの考え方と、対応している国内地域の範囲を、公開準備中の段階からそのままお伝えしています。",
+          "Colorviaの公式ブランドサイトを公開しました。訪れた国や地域を地図の色として残すアプリの考え方と、対応している地域マップの範囲を、公開準備中の段階からそのままお伝えしています。",
           "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
           "地図はCanvas描画で、オフラインでも閲覧できます。データはJSONで書き出し・読み込みでき、端末内に保存されます。詳細はプライバシーポリシーと利用規約をご確認ください。",
         ],
@@ -70,7 +71,7 @@ const newsPosts = ja
         id: "site-launch",
         date: "2026.08.01",
         datetime: "2026-08-01",
-        badge: "News",
+        badge: "Update",
         title: "The official Colorvia brand site is now live",
         summary: "Features, regional maps, how-to, FAQ, Privacy Policy, and Terms—in one place.",
         body: [
@@ -111,6 +112,7 @@ const featureGroups = ja
   ? [
       {
         h: "世界地図",
+        screen: "home" as const,
         items: [
           "訪問国を選んだ地図色で表示",
           "ピンチズーム、ドラッグ移動、ダブルタップズーム",
@@ -120,6 +122,7 @@ const featureGroups = ja
       },
       {
         h: "国の選択",
+        screen: "controls" as const,
         items: [
           "ホーム右下の＋ボタンから追加",
           "国名検索、国旗、日本語名／英語名",
@@ -129,15 +132,17 @@ const featureGroups = ja
       },
       {
         h: "統計",
+        screen: "stats" as const,
         items: [
           "訪問国数と世界の訪問率",
           "大陸別の訪問数",
           "訪問済み国一覧",
-          "国内地域の訪問数・訪問率・一覧",
+          "地域マップの訪問数・訪問率・一覧",
         ],
       },
       {
-        h: "国内地域マップ",
+        h: "地域マップ",
+        screen: "home" as const,
         items: [
           "対応11か国",
           "地域の塗り分け、訪問済み／未訪問フィルター",
@@ -147,6 +152,7 @@ const featureGroups = ja
       },
       {
         h: "パーソナライズとデータ",
+        screen: "coral" as const,
         items: [
           "ライト／ダーク／システム設定",
           "地図色の変更",
@@ -156,6 +162,7 @@ const featureGroups = ja
       },
       {
         h: "その他",
+        screen: "dark" as const,
         items: [
           "共有",
           "11言語",
@@ -170,6 +177,7 @@ const featureGroups = ja
   : [
       {
         h: "World map",
+        screen: "home" as const,
         items: [
           "Visited countries in your chosen map colour",
           "Pinch, drag and double-tap zoom",
@@ -179,6 +187,7 @@ const featureGroups = ja
       },
       {
         h: "Country selection",
+        screen: "controls" as const,
         items: [
           "Add from the + button on Home",
           "Search, flags, local and English names",
@@ -188,6 +197,7 @@ const featureGroups = ja
       },
       {
         h: "Statistics",
+        screen: "stats" as const,
         items: [
           "Visit count and world percentage",
           "Breakdown by continent",
@@ -197,6 +207,7 @@ const featureGroups = ja
       },
       {
         h: "Regional maps",
+        screen: "home" as const,
         items: [
           "Eleven supported countries",
           "Colour by visit; visited/unvisited filters",
@@ -206,6 +217,7 @@ const featureGroups = ja
       },
       {
         h: "Personalisation and data",
+        screen: "coral" as const,
         items: [
           "Light / dark / system appearance",
           "Map colour choices",
@@ -215,6 +227,7 @@ const featureGroups = ja
       },
       {
         h: "More",
+        screen: "english" as const,
         items: [
           "Sharing",
           "Eleven languages",
@@ -231,10 +244,14 @@ const howGuides = ja
   ? [
       {
         t: "はじめる",
+        screen: "home" as const,
+        note: "まずは、これまでに訪れた国をひとつ選ぶだけで大丈夫です。",
         steps: ["アプリを開くとオンボーディングのあとホームの世界地図が表示されます。", "アカウント登録は不要です。"],
       },
       {
         t: "国を追加・削除する",
+        screen: "controls" as const,
+        note: "地図を直接タップするのではなく、右下の＋から選びます。",
         steps: [
           "ホーム右下の＋をタップします。",
           "国名を検索するか、地域別一覧から探します。",
@@ -244,44 +261,60 @@ const howGuides = ja
       },
       {
         t: "世界地図を見る",
+        screen: "coral" as const,
+        note: "地図色はあとから何度でも変えられます。",
         steps: ["ピンチやボタンで拡大・縮小します。", "ドラッグで移動し、リセットで初期表示に戻せます。", "設定から地図色を変えられます。"],
       },
       {
         t: "統計を見る",
+        screen: "stats" as const,
+        note: "ホーム下部のシートを上へ動かすと、旅の広がりが数字で見えます。",
         steps: ["ホーム下部のシートを開きます。", "訪問国数、世界の訪問率、大陸別の内訳、訪問済み国一覧を確認します。"],
       },
       {
-        t: "国内地域を記録する",
+        t: "地域を記録する",
+        screen: "home" as const,
+        note: "日本の都道府県やアメリカの州など、対応する11か国で使えます。",
         steps: [
-          "対応国を開き、国内マップまたは一覧へ進みます。",
+          "対応国を開き、地域マップまたは一覧へ進みます。",
           "訪れた都道府県・州・県などにチェックを付けます。",
           "訪問数と割合、フィルター、共有用画像が使えます。",
         ],
       },
       {
         t: "地名検索",
-        steps: ["国内地域画面の検索から、都市名や地名で該当地域を探せます。", "検索データはアプリ内に同梱されており、オフラインでも利用できます。"],
+        screen: "controls" as const,
+        note: "地名データはアプリ内に入っているため、旅先で通信がなくても検索できます。",
+        steps: ["地域マップの検索から、都市名や地名で該当地域を探せます。", "検索データはアプリ内に同梱されており、オフラインでも利用できます。"],
       },
       {
         t: "データ移行",
+        screen: "dark" as const,
+        note: "自動同期ではないため、機種変更前にJSONを書き出して保管してください。",
         steps: [
           "設定 → データ管理 → JSON書き出し。",
-          "新しい端末でJSONを読み込み、訪問国と国内地域を復元します。",
+          "新しい端末でJSONを読み込み、訪問国と地域の記録を復元します。",
           "親国が未訪問の不整合は、親国を訪問済みにするか該当地域を除外して解決できます。",
         ],
       },
       {
         t: "テーマ・地図色",
+        screen: "dark" as const,
+        note: "夜の旅支度にはダーク、地図を明るく眺めたいときはライトがおすすめです。",
         steps: ["設定からシステム／ライト／ダークを選べます。", "地図色を変更して世界地図の印象を変えられます。"],
       },
     ]
   : [
       {
         t: "Getting started",
+        screen: "english" as const,
+        note: "Begin with just one country you remember visiting.",
         steps: ["After a short onboarding, Home shows the world map.", "No account is required."],
       },
       {
         t: "Add or remove countries",
+        screen: "controls" as const,
+        note: "Use + at the bottom-right rather than tapping the map itself.",
         steps: [
           "Tap + at the bottom-right of Home.",
           "Search by name or browse by region.",
@@ -291,14 +324,20 @@ const howGuides = ja
       },
       {
         t: "Explore the world map",
+        screen: "coral" as const,
+        note: "You can change the map colour whenever you like.",
         steps: ["Pinch or use buttons to zoom.", "Drag to pan; reset returns to the default view.", "Change map colour in Settings."],
       },
       {
         t: "View statistics",
+        screen: "stats" as const,
+        note: "Pull up the sheet on Home to see your travels as clear totals.",
         steps: ["Open the bottom sheet on Home.", "See visit count, world percentage, continents and visited lists."],
       },
       {
         t: "Record regions",
+        screen: "home" as const,
+        note: "Regional maps are available for eleven supported countries.",
         steps: [
           "Open a supported country and its regional map or list.",
           "Check prefectures, states, provinces and more.",
@@ -307,10 +346,14 @@ const howGuides = ja
       },
       {
         t: "Place search",
+        screen: "controls" as const,
+        note: "The search index is bundled, so it works offline while travelling.",
         steps: ["Search by city or place name inside regional views.", "Search indexes are bundled and work offline."],
       },
       {
         t: "Move your data",
+        screen: "dark" as const,
+        note: "Export before changing phones; Colorvia does not sync automatically.",
         steps: [
           "Settings → Data management → export JSON.",
           "Import on a new device to restore countries and regions.",
@@ -319,31 +362,33 @@ const howGuides = ja
       },
       {
         t: "Theme and map colour",
+        screen: "dark" as const,
+        note: "Choose the appearance that feels best for the way you travel.",
         steps: ["Choose system, light or dark in Settings.", "Pick a map colour that suits you."],
       },
     ];
 
 const faqs = ja
   ? [
-      ["base", "Colorviaはどんなアプリですか？", "訪れた国を記録し、世界地図を色づかせる旅の記録アプリです。対応国では国内地域まで残せます。"],
+      ["base", "Colorviaはどんなアプリですか？", "訪れた国を記録し、世界地図を色づかせる旅の記録アプリです。対応国では都道府県や州まで残せます。"],
       ["base", "無料で使えますか？", "はい。基本機能は無料です。高さに余裕がある端末ではホーム下部にバナー広告が表示される場合があります。現在、広告削除課金はありません。"],
       ["base", "アカウントは必要ですか？", "いいえ。"],
       ["base", "対応環境は？", "iPhone・iOS 18以降向けです。iPad専用の最適化レイアウトは現時点ではありません。"],
       ["country", "地図上で国をタップして追加できますか？", "いいえ。ホームの＋から国選択リストで追加します。地図では拡大・移動・リセットができます。"],
       ["country", "一度に複数の国を選べますか？", "はい。リストで複数にチェックを付けてから確定できます。"],
       ["country", "世界割合はどう計算されますか？", "Colorviaが定義する195か国を基準に計算しています。"],
-      ["region", "国内地域マップとは？", "日本・フランスなど11か国で、都道府県や州など国の中の地域まで訪問を記録できる機能です。"],
+      ["region", "地域マップとは？", "日本・フランスなど11か国で、都道府県や州など国の中の地域まで訪問を記録できる機能です。"],
       ["region", "どの国に対応していますか？", "日本、フランス、スペイン、韓国、エジプト、タイ、トルコ、アメリカ、マレーシア、ベルギー、シンガポールです。"],
       ["region", "地名から地域を探せますか？", "はい。都市名や地名の検索インデックスがアプリ内にあり、オフラインでも使えます。"],
-      ["data", "データはどこに保存されますか？", "訪問国と国内地域の記録は端末内に保存されます。"],
+      ["data", "データはどこに保存されますか？", "訪問国と地域の記録は端末内に保存されます。"],
       ["data", "自動同期できますか？", "現在、iCloudなどを使った端末間の自動同期には対応していません。"],
-      ["data", "データをバックアップできますか？", "はい。設定の「データ管理」から、訪問国と国内地域の訪問記録をJSONファイルとして書き出せます。"],
+      ["data", "データをバックアップできますか？", "はい。設定の「データ管理」から、訪問国と地域の訪問記録をJSONファイルとして書き出せます。"],
       ["data", "新しい端末へ復元できますか？", "旧端末で書き出したJSONを、新しい端末のColorviaで読み込むことで、対応する訪問記録を復元できます。"],
-      ["data", "JSONには何が含まれますか？", "訪問国、国内地域の訪問状態、各記録の更新日時などが含まれます。"],
+      ["data", "JSONには何が含まれますか？", "訪問国、地域の訪問状態、各記録の更新日時などが含まれます。"],
       ["data", "すべてのデータを削除できますか？", "はい。設定のデータ管理から削除できます。"],
       ["display", "テーマや地図色を変えられますか？", "はい。設定からライト／ダーク／システムと地図色を変更できます。"],
-      ["display", "共有できますか？", "はい。訪問状況や国内マップの共有用画像を作成できます。"],
-      ["net", "オフラインでも使えますか？", "世界地図、訪問国の登録、統計、国内地域マップ、地名検索、データの書き出し・読み込みなど、主要機能はオフラインで利用できます。"],
+      ["display", "共有できますか？", "はい。訪問状況や地域マップの共有用画像を作成できます。"],
+      ["net", "オフラインでも使えますか？", "世界地図、訪問国の登録、統計、地域マップ、地名検索、データの書き出し・読み込みなど、主要機能はオフラインで利用できます。"],
       ["net", "通信が必要な操作は？", "広告の取得、広告同意、問い合わせ送信、最新のプライバシーポリシー・利用規約の表示、外部サイトやライセンスページの表示などです。"],
       ["net", "広告は表示されますか？", "はい。Google Mobile Adsによるバナーがホーム下部に出る場合があります。画面高が700pt未満の端末では表示しないことがあります。インタースティシャルやリワード広告はありません。"],
     ]
@@ -372,17 +417,17 @@ const faqs = ja
     ];
 
 const faqCats = ja
-  ? [["all", "すべて"], ["base", "基本"], ["country", "国の記録"], ["region", "国内地域"], ["data", "データ"], ["display", "表示"], ["net", "通信・広告"]]
+  ? [["all", "すべて"], ["base", "基本"], ["country", "国の記録"], ["region", "地域"], ["data", "データ"], ["display", "表示"], ["net", "通信・広告"]]
   : [["all", "All"], ["base", "Basics"], ["country", "Countries"], ["region", "Regions"], ["data", "Data"], ["display", "Display"], ["net", "Network & ads"]];
 
 const shots = [
-  { webp: "/assets/colorvia-home.webp", png: "/assets/colorvia-home.png", altJa: "世界地図ホーム", altEn: "World map home", capJa: "世界地図", capEn: "World map" },
-  { webp: "/assets/colorvia-home-bottom-sheet.webp", png: "/assets/colorvia-home-bottom-sheet.png", altJa: "統計シート", altEn: "Statistics sheet", capJa: "統計", capEn: "Statistics" },
-  { webp: "/assets/colorvia-home-localized-map-controls.webp", png: "/assets/colorvia-home-localized-map-controls.png", altJa: "地図コントロール", altEn: "Map controls", capJa: "地図操作", capEn: "Map controls" },
-  { webp: "/assets/colorvia-map-coral.webp", png: "/assets/colorvia-map-coral.png", altJa: "地図色", altEn: "Map colour", capJa: "地図色", capEn: "Map colour" },
-  { webp: "/assets/colorvia-home-dark.webp", png: "/assets/colorvia-home-dark.png", altJa: "ダークテーマ", altEn: "Dark theme", capJa: "ダーク", capEn: "Dark" },
-  { webp: "/assets/colorvia-home-en.webp", png: "/assets/colorvia-home-en.png", altJa: "英語UI", altEn: "English UI", capJa: "英語表示", capEn: "English UI" },
-];
+  { screen: "home" as const, cap: ["世界地図", "World map"] },
+  { screen: "stats" as const, cap: ["統計", "Statistics"] },
+  { screen: "controls" as const, cap: ["地図操作", "Map controls"] },
+  { screen: "coral" as const, cap: ["地図色", "Map colour"] },
+  { screen: "dark" as const, cap: ["ダーク", "Dark"] },
+  { screen: "english" as const, cap: ["英語表示", "English UI"] },
+] as const;
 ---
 
 <AppShell lang={lang} title={title} page={page} description={description}>
@@ -399,11 +444,21 @@ const shots = [
     </header>
 
     {page === "features" && (
-      <div class="feature-groups">
-        {featureGroups.map((g) => (
-          <article>
-            <h2>{g.h}</h2>
-            <ul>{g.items.map((item) => <li>{item}</li>)}</ul>
+      <div class="feature-showcase">
+        <header class="feature-showcase-intro">
+          <p>{ja ? "旅の記録を、地図の景色に。" : "Turn travel memories into a map."}</p>
+          <h2>{ja ? "選ぶ、眺める、振り返る。必要なことを、ひとつの場所に。" : "Choose, explore, and look back—all in one quiet place."}</h2>
+        </header>
+        {featureGroups.map((g, index) => (
+          <article class:list={["feature-story", index % 2 === 1 && "is-reverse"]}>
+            <div class="feature-story-copy">
+              <span>0{index + 1}</span>
+              <h2>{g.h}</h2>
+              <ul>{g.items.map((item) => <li>{item}</li>)}</ul>
+            </div>
+            <div class="feature-story-screen">
+              <AppScreen screen={g.screen} size="md" lang={lang} />
+            </div>
           </article>
         ))}
         <p class="env-line">
@@ -415,22 +470,97 @@ const shots = [
     )}
 
     {page === "regions" && (
-      <div class="regions-page">
+      <div class="regions-page" data-regions-page>
         <p class="lead">
           {ja
-            ? "対応している国では、都道府県、州、県、連邦直轄領、旅行エリアなど、国の中で訪れた地域まで記録できます。都市名や地名から該当する地域を検索することもできます。"
-            : "In supported countries, record states, prefectures, provinces, federal territories and travel areas. Search by city or place name to find the matching region."}
+            ? "11か国で、都道府県・州・県・旅行エリアなど国の中まで記録できます。国名や区分名で検索し、タップすると分け方の詳細を開けます。"
+            : "In 11 countries, record prefectures, states, provinces and travel areas. Search by country or unit name, then open a card for how it is divided."}
         </p>
-        <div class="region-grid">
-          {regions.map((r) => (
-            <article class="region-card">
-              <span class="region-flag" aria-hidden="true">{r.flag}</span>
-              <h2>{ja ? r.nameJa : r.nameEn}</h2>
-              <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
-              <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
-            </article>
-          ))}
+
+        <div class="region-toolbar" data-reveal>
+          <label class="region-search">
+            <span class="visually-hidden">{ja ? "地域マップを検索" : "Search regional maps"}</span>
+            <svg class="region-search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+              <path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <input
+              type="search"
+              data-region-search
+              placeholder={ja ? "国名・区分・地名で検索（例: 日本、州、バンコク）" : "Search country, unit or place (e.g. Japan, state, Bangkok)"}
+              autocomplete="off"
+              enterkeyhint="search"
+            />
+          </label>
+          <p class="region-result-meta" data-region-meta aria-live="polite">
+            {ja ? `全 ${regions.length} か国` : `All ${regions.length} countries`}
+          </p>
         </div>
+
+        <div class="region-directory" data-region-directory>
+          {regions.map((r) => {
+            const searchBlob = [
+              r.code,
+              r.nameJa,
+              r.nameEn,
+              r.unitJa,
+              r.unitEn,
+              r.schemeJa,
+              r.schemeEn,
+              ...r.samplesJa,
+              ...r.samplesEn,
+            ]
+              .join(" ")
+              .toLowerCase();
+            return (
+              <details
+                class="region-item"
+                id={`region-${r.code.toLowerCase()}`}
+                data-region-item
+                data-search={searchBlob}
+              >
+                <summary>
+                  <span class="region-flag" aria-hidden="true">{r.flag}</span>
+                  <span class="region-item-main">
+                    <span class="region-item-name">{ja ? r.nameJa : r.nameEn}</span>
+                    <span class="region-item-unit">{ja ? r.unitJa : r.unitEn}</span>
+                  </span>
+                  <span class="region-item-meta">
+                    <span class="region-item-count">{r.count}</span>
+                    <span class="region-item-count-label">{ja ? "地域" : "units"}</span>
+                  </span>
+                  <span class="region-item-chevron" aria-hidden="true"></span>
+                </summary>
+                <div class="region-item-body">
+                  <p class="region-scheme">{ja ? r.schemeJa : r.schemeEn}</p>
+                  <div class="region-samples">
+                    <p class="region-samples-label">{ja ? "区分の例" : "Sample units"}</p>
+                    <ul>
+                      {(ja ? r.samplesJa : r.samplesEn).map((name) => (
+                        <li>{name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </details>
+            );
+          })}
+        </div>
+
+        <p class="region-empty" data-region-empty hidden>
+          {ja ? "一致する国が見つかりませんでした。" : "No matching countries."}
+        </p>
+
+        <aside class="region-how-note" data-reveal>
+          <h2>{ja ? "アプリでの記録の流れ" : "How recording works in the app"}</h2>
+          <ol>
+            <li>{ja ? "ホームの＋から訪問国を追加する" : "Add visited countries from Home’s + button"}</li>
+            <li>{ja ? "対応国を開き、地域マップまたは一覧へ進む" : "Open a supported country and its regional map or list"}</li>
+            <li>{ja ? "都道府県・州などにチェックを付ける（地名検索も可）" : "Check prefectures, states and more—or search by place name"}</li>
+            <li>{ja ? "訪問数・割合・フィルター・共有画像で振り返る" : "Review counts, rates, filters and share images"}</li>
+          </ol>
+        </aside>
+
         <p class="region-disclaimer">
           {ja
             ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
@@ -440,11 +570,22 @@ const shots = [
     )}
 
     {page === "how-to" && (
-      <div class="how-guides">
+      <div class="how-showcase">
+        <header class="how-showcase-intro">
+          <p>{ja ? "はじめてのColorvia" : "Your first map"}</p>
+          <h2>{ja ? "思い出した国から、ひとつずつ色を置いてみましょう。" : "Start by colouring one place you remember."}</h2>
+        </header>
         {howGuides.map((g, i) => (
-          <article>
-            <h2><span>{i + 1}</span>{g.t}</h2>
-            <ol>{g.steps.map((s) => <li>{s}</li>)}</ol>
+          <article class:list={["how-story", i % 2 === 1 && "is-reverse"]}>
+            <div class="how-story-copy">
+              <p class="how-story-number">STEP {String(i + 1).padStart(2, "0")}</p>
+              <h2>{g.t}</h2>
+              <ol>{g.steps.map((s) => <li>{s}</li>)}</ol>
+              <aside><span aria-hidden="true">○</span><p>{g.note}</p></aside>
+            </div>
+            <div class="how-story-screen">
+              <AppScreen screen={g.screen} size="md" lang={lang} />
+            </div>
           </article>
         ))}
       </div>
@@ -453,12 +594,7 @@ const shots = [
     {page === "screenshots" && (
       <div class="shot-gallery">
         {shots.map((s) => (
-          <PhoneFrame size="md" label={ja ? s.capJa : s.capEn}>
-            <picture>
-              <source srcset={s.webp} type="image/webp" />
-              <img src={s.png} alt={ja ? s.altJa : s.altEn} width="1170" height="2532" loading="lazy" decoding="async" />
-            </picture>
-          </PhoneFrame>
+          <AppScreen screen={s.screen} size="md" lang={lang} label={s.cap[ja ? 0 : 1]} />
         ))}
       </div>
     )}
@@ -485,7 +621,8 @@ const shots = [
       </div>
     )}
 
-    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "updates" && <AppUpdatesPage lang={lang} appName="Colorvia" newsHref={ja ? "/ja/news" : "/news"} />}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
@@ -528,7 +665,62 @@ const shots = [
         });
       });
     };
-    document.addEventListener("astro:page-load", bindFaq);
+
+    const bindRegionSearch = () => {
+      const root = document.querySelector("[data-regions-page]");
+      if (!(root instanceof HTMLElement) || root.dataset.bound === "1") return;
+      root.dataset.bound = "1";
+      const input = root.querySelector("[data-region-search]");
+      const items = Array.from(root.querySelectorAll("[data-region-item]"));
+      const empty = root.querySelector("[data-region-empty]");
+      const meta = root.querySelector("[data-region-meta]");
+      if (!(input instanceof HTMLInputElement)) return;
+      const total = items.length;
+      const isJa =
+        document.documentElement.lang === "ja" ||
+        location.pathname === "/ja" ||
+        location.pathname.startsWith("/ja/");
+      const renderMeta = (shown) => {
+        if (!(meta instanceof HTMLElement)) return;
+        if (shown === total) {
+          meta.textContent = isJa ? `全 ${total} か国` : `All ${total} countries`;
+        } else {
+          meta.textContent = isJa ? `${shown} / ${total} か国` : `${shown} / ${total} countries`;
+        }
+      };
+      const apply = () => {
+        const q = input.value.trim().toLowerCase();
+        let shown = 0;
+        items.forEach((item) => {
+          if (!(item instanceof HTMLElement)) return;
+          const blob = item.getAttribute("data-search") || "";
+          const match = !q || blob.includes(q);
+          item.hidden = !match;
+          if (match) shown += 1;
+          if (!match && item instanceof HTMLDetailsElement) item.open = false;
+        });
+        if (empty instanceof HTMLElement) empty.hidden = shown !== 0;
+        renderMeta(shown);
+      };
+      input.addEventListener("input", apply);
+      apply();
+
+      // Open hash target if present (e.g. /regions#region-jp)
+      const hash = window.location.hash.replace("#", "");
+      if (hash) {
+        const target = root.querySelector(`#${CSS.escape(hash)}`);
+        if (target instanceof HTMLDetailsElement) {
+          target.open = true;
+          target.scrollIntoView({ block: "nearest" });
+        }
+      }
+    };
+
+    document.addEventListener("astro:page-load", () => {
+      bindFaq();
+      bindRegionSearch();
+    });
     bindFaq();
+    bindRegionSearch();
   })();
 </script>

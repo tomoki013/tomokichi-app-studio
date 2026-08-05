@@ -281,8 +281,8 @@ export const apps: AppItem[] = [
         ],
       },
       pricing: {
-        ja: "無料。控えめなバナー広告が表示されます。買い切り¥300で広告を削除できます。",
-        en: "Free with an unobtrusive banner ad. A one-time ¥300 purchase removes ads.",
+        ja: "無料。控えめなバナー広告が表示されます。買い切り¥400で広告を削除できます。",
+        en: "Free with an unobtrusive banner ad. A one-time ¥400 purchase removes ads.",
       },
       requirements: {
         ja: "iPhone・iOS 17以降",

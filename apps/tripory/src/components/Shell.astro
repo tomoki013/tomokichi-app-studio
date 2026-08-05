@@ -20,28 +20,30 @@ const nav = ja
       { slug: "principles", label: "こだわり", href: href("principles") },
       { slug: "screenshots", label: "スクリーンショット", href: href("screenshots") },
       { slug: "faq", label: "よくある質問", href: href("faq") },
-      { slug: "updates", label: "お知らせ", href: href("updates") },
+      { slug: "news", label: "お知らせ", href: href("news") },
+      { slug: "updates", label: "アップデート情報", href: href("updates") },
     ]
   : [
       { slug: "features", label: "Features", href: href("features") },
       { slug: "principles", label: "Principles", href: href("principles") },
       { slug: "screenshots", label: "Screenshots", href: href("screenshots") },
       { slug: "faq", label: "FAQ", href: href("faq") },
-      { slug: "updates", label: "News", href: href("updates") },
+      { slug: "news", label: "News", href: href("news") },
+      { slug: "updates", label: "App updates", href: href("updates") },
     ];
 const supportHref = supportUrl("tripory", lang);
 const footerColumns = ja
   ? [
       { title: "プロダクト", links: [{ label: "機能紹介", href: href("features") }, { label: "こだわり", href: href("principles") }, { label: "スクリーンショット", href: href("screenshots") }] },
-      { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("updates") }, { label: "お問い合わせ", href: supportHref, external: true }] },
+      { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("news") }, { label: "アップデート情報", href: href("updates") }, { label: "お問い合わせ", href: supportHref, external: true }] },
       { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }, { label: "特定商取引法に基づく表記", href: href("commercial-transactions") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
+      { title: "運営者情報", links: [{ label: "運営サイト", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
     ]
   : [
       { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "Principles", href: href("principles") }, { label: "Screenshots", href: href("screenshots") }] },
-      { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("updates") }, { label: "Contact", href: supportHref, external: true }] },
+      { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("news") }, { label: "App updates", href: href("updates") }, { label: "Contact", href: supportHref, external: true }] },
       { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }, { label: "Commercial Transactions", href: href("commercial-transactions") }] },
-      { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
+      { title: "Operator", links: [{ label: "Operator site", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
     ];
 const metaDescription = description ?? (ja
   ? "Triporyは、旅で訪れた場所と思い出を、自分だけの世界として残すアプリです。"

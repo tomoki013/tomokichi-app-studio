@@ -24,7 +24,7 @@ const c = ja
       storyBody: "会えない時間は、さみしいだけじゃない。\n思い出を重ねる時間でもある。\nRemeetは、大切な人との再会を待つ日々を\nそっと支える小さなきっかけになりますように。",
       cta: "再会の日を、もっと楽しみに。",
       ctaSub: "Remeetをはじめて、待つ時間も物語の一部に。",
-      description: "Remeetは、大切な人との次の再会までをカウントダウンし、待っている間の記録を端末に残すiPhoneアプリです。基本機能は無料（一部画面に広告）。現在App Store公開準備中。",
+      description: "Remeetは、再会までをカウントダウンし、待っている日々を記録して、1人のパートナーとも共有できるiPhoneアプリです。個人利用と最初の共有は無料。",
       env: "iPhone・iOS 26以降に対応",
       envNote: "現在のバージョンはiPhone向けです。iPadに最適化されたレイアウトは今後対応予定です。",
     }
@@ -43,7 +43,7 @@ const c = ja
       storyBody: "Time apart isn’t only about missing someone.\nIt can be time to gather memories, too.\nRemeet offers small moments that support\nthe wait until you meet again.",
       cta: "Make the reunion worth the wait.",
       ctaSub: "Start with Remeet and let the waiting days become part of the story.",
-      description: "Remeet counts down to your next reunion and keeps waiting memories on your iPhone. Free core features with ads on some screens. Currently preparing for the App Store.",
+      description: "Remeet counts down to your next reunion, keeps the waiting days, and can share one reunion with one partner. Personal use and the first shared reunion are free.",
       env: "Requires an iPhone running iOS 26 or later.",
       envNote: "The current version is designed for iPhone. An iPad-optimized layout is planned for a future update.",
     };
@@ -53,7 +53,7 @@ const features = ja
       ["再会までをカウントダウン", "次に会える日を設定すると、日数と進捗を自動で表示。楽しみが少しずつ近づきます。"],
       ["ルートでつながるイラスト", "ふたりの場所をつなぐルートイラストで、離れている距離をやさしく表現します。"],
       ["待っている時間を思い出に", "メモや写真を、自分の記録として残せます。小さな日常も大切な記憶になります。"],
-      ["会ったらやりたいことリスト", "行きたい場所や、やりたいことをリストに。再会の日がもっと楽しみになります。"],
+      ["ふたりで待つ再会", "最初の再会は無料で共有。予定、記録、やりたいことを、招待した相手と一緒に残せます。"],
       ["ウィジェットでいつでも確認", "ホーム画面やロック画面で、再会までの日数をいつでも確認できます。"],
       ["再会をアルバムに保存", "再会の写真と振り返りをアルバムに。未来の自分への宝物になります。"],
     ]
@@ -61,7 +61,7 @@ const features = ja
       ["Countdown to reunion", "Set your next meeting date and follow the days and progress as the moment draws closer."],
       ["A gentle route illustration", "A gentle route illustration connects both places and gives the distance a softer shape."],
       ["Turn waiting into memories", "Save notes and photos as your own record. Even ordinary days become part of the story."],
-      ["Things to do together", "Collect places to go and things to try, so the reunion day feels even closer."],
+      ["Wait together", "Share your first reunion for free, then keep the plan, memories, and wish list with the partner you invite."],
       ["Always close with widgets", "Keep the countdown on the Home Screen and Lock Screen."],
       ["Save reunions in albums", "Keep a reunion photo and reflection in an album you can revisit later."],
     ];
@@ -104,7 +104,7 @@ const jsonLd = JSON.stringify({
   <section class="new-home">
     <img class="home-sky" src="/assets/sky-vase.png" alt="" width="1122" height="1402" decoding="async" />
     <div class="home-stack">
-      <AppHeroChrome lang={lang} date="2026-08-01" news={c.notice} newsHref={`${base}/updates`} />
+      <AppHeroChrome lang={lang} date="2026-08-01" news={c.notice} newsHref={`${base}/news`} />
       <div class="home-copy">
         <h1>{c.title}</h1>
         <p>{c.body.split("\n").map((line) => <>{line}<br /></>)}</p>
@@ -183,12 +183,8 @@ const jsonLd = JSON.stringify({
       </div>
     </section>
 
-    <section class="story landing-pad">
-      <div>
-        <h2>{c.storyTitle.split("\n").map((line) => <>{line}<br /></>)}</h2>
-        <p>{c.storyBody.split("\n").map((line) => <>{line}<br /></>)}</p>
-      </div>
-      <div class="story-art">
+    <section class="closing-chapter landing-pad">
+      <div class="chapter-art">
         <img
           src="/assets/couple.png"
           alt={ja ? "夕暮れの海を眺めるふたりを描いたRemeetの開始画面" : "Remeet onboarding art of two people at sunset"}
@@ -197,24 +193,33 @@ const jsonLd = JSON.stringify({
           loading="lazy"
           decoding="async"
         />
+        <span aria-hidden="true">127</span>
       </div>
-      <div class="flight" aria-hidden="true">········· ♡ ········· ✈</div>
+      <div class="chapter-copy">
+        <p class="chapter-index">BETWEEN HERE &amp; THEN</p>
+        <h2>{c.storyTitle.split("\n").map((line) => <>{line}<br /></>)}</h2>
+        <p>{c.storyBody.split("\n").map((line) => <>{line}<br /></>)}</p>
+        <div class="chapter-route" aria-hidden="true"><i></i><span>♡</span><i></i></div>
+      </div>
     </section>
 
-    <section class="download landing-pad" id="download">
-      <div>
+    <section class="start-card landing-pad" id="download">
+      <div class="start-copy">
+        <p class="chapter-index">START YOUR COUNTDOWN</p>
         <h2>{c.cta}</h2>
         <p>{c.ctaSub}</p>
-        <p class="download-footnote">
-          {ja
-            ? "基本機能は無料です。一部画面に広告が表示されます。アカウント登録は不要です。"
-            : "Core features are free. Ads may appear on some screens. No account required."}
-        </p>
-        <p class="env-note"><strong>{c.env}</strong><br />{c.envNote}</p>
       </div>
-      <div class="buttons">
-        <span class="store store-soon" aria-disabled="true">●　{c.store}</span>
-        <a class="secondary" href={`${base}/how-to`}>▷　{c.howLink}</a>
+      <div class="start-details">
+        <div class="start-price">
+          <span>{ja ? "個人利用 + 最初の共有" : "PERSONAL + FIRST SHARE"}</span>
+          <strong>{ja ? "無料" : "Free"}</strong>
+          <small>{ja ? "追加の共有はShare Pass 1枚 ¥500" : "Additional sharing: one ¥500 Share Pass"}</small>
+        </div>
+        <p class="env-note"><strong>{c.env}</strong><br />{c.envNote}</p>
+        <div class="buttons">
+          <span class="store store-soon" aria-disabled="true">●　{c.store}</span>
+          <a class="secondary" href={`${base}/pricing`}>{ja ? "料金の詳細" : "Pricing details"} →</a>
+        </div>
       </div>
     </section>
   </div>

@@ -1,6 +1,6 @@
 ---
-import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import {
   descriptions,
   type Locale,
@@ -12,6 +12,7 @@ import {
 } from "../lib/content";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
+import UpdatesPage from "./UpdatesPage.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
@@ -55,7 +56,7 @@ const featureBlocks = ja
       {
         heading: "白と黒を、自分の環境に合わせる。",
         body: "システム、ライト、ダークの3つから外観を選べます。",
-        screen: "settings-iap" as const,
+        appearance: true as const,
       },
       {
         heading: "アカウントなしで、端末の中に。",
@@ -102,7 +103,7 @@ const featureBlocks = ja
       {
         heading: "Match light and dark to your environment.",
         body: "Choose system, light, or dark appearance.",
-        screen: "settings-iap" as const,
+        appearance: true as const,
       },
       {
         heading: "No account—on your device.",
@@ -118,20 +119,20 @@ const featureBlocks = ja
 
 const howSteps = ja
   ? [
-      { n: "1", title: "Today画面で＋をタップ", body: "Today画面右下の＋ボタンから、新しい余白を作成します。" },
-      { n: "2", title: "名前と時間を決める", body: "余白の名前、日付、開始時刻、終了時刻を入力します。名前の候補から選ぶこともできます。1日に複数の余白を置けます。" },
-      { n: "3", title: "今日・週・月で見渡す", body: "Todayでは詳しい時間、Weekでは一週間の数、Monthでは余白のある日と月間件数を確認できます。" },
-      { n: "4", title: "必要に応じて編集する", body: "余白のカードをタップすると、名前や時間を変更できます。必要がなくなった余白は削除できます。" },
-      { n: "5", title: "通知を使う", body: "通知を許可すると、余白が始まる少し前にお知らせします。通知は設定画面からいつでも変更できます。" },
-      { n: "6", title: "必要なら振り返る", body: "余白が終わったあとに小さな確認が一度だけ表示されます。答えず閉じてもかまいません。" },
+      { n: "1", title: "まず、余白をひとつ置く", body: "Today画面右下の＋をタップ。『お茶を飲む』『ぼーっとする』などの名前と、日付・開始・終了時刻を選びます。候補をそのまま使っても、自分の言葉で書いても大丈夫です。", note: "迷ったら、今日の10分から。長い時間を空ける必要はありません。", screen: "add" as const },
+      { n: "2", title: "今日の中で、そっと確かめる", body: "作った余白はTodayにカードで並びます。左右にスワイプすれば別の日へ移動。カードをタップすると、名前や時間をいつでも編集できます。", note: "余白の最中にタイマーは始まりません。アプリを閉じて、その時間を過ごしてください。", screen: "today" as const },
+      { n: "3", title: "週と月を、黒い印で見渡す", body: "Weekでは一週間の余白を小さな四角で、Monthでは余白を置いた日をカレンダーで振り返れます。うまくできたかを採点する画面ではなく、自分の時間のリズムに気づくための景色です。", note: "印が少ない週があっても大丈夫。続けることより、必要な日に置けたことを大切に。", screen: "month" as const },
+      { n: "4", title: "始まる少し前に、思い出す", body: "通知をオンにすると、余白が始まる通常3〜7分前にお知らせします。初回の余白作成時に確認し、あとから設定画面でいつでも変更できます。", note: "通知は任意です。オフのままでも、すべての機能を使えます。", screen: "week" as const },
+      { n: "5", title: "終わったら、ひとことだけ", body: "次にアプリを開いたとき、直近の余白について小さな確認が一度だけ現れます。答えても、閉じても、横に払ってもかまいません。", note: "答えは端末の中だけに保存され、運営者のサーバーには送られません。", screen: "reflection" as const },
+      { n: "6", title: "自分に合う見た目に整える", body: "設定では、システム・ライト・ダークの外観や通知を変更できます。広告を削除したい場合の購入と復元もここから行えます。", note: "アカウント登録は不要です。余白の記録も端末内に保存されます。", screen: "settings-iap" as const },
     ]
   : [
-      { n: "1", title: "Tap + on Today", body: "Create a new space from the + button at the bottom-right of Today." },
-      { n: "2", title: "Choose a name and times", body: "Enter a name, date, start time and end time—or pick a suggested name. You can add more than one space in a day." },
-      { n: "3", title: "Review day, week and month", body: "Today shows times in detail; Week shows counts; Month shows marked days and a monthly total." },
-      { n: "4", title: "Edit when needed", body: "Tap a card to change the name or times. Remove a space when you no longer need it." },
-      { n: "5", title: "Use notifications", body: "With permission, you’ll be notified shortly before each space. Change this anytime in Settings." },
-      { n: "6", title: "Reflect only if you want", body: "After a space, one small check-in may appear once. You can answer it or simply dismiss it." },
+      { n: "1", title: "Leave one small space", body: "Tap + at the bottom of Today. Give the space a name—tea, looking outside, doing nothing—then choose its date and times.", note: "Not sure where to begin? Ten minutes today is enough.", screen: "add" as const },
+      { n: "2", title: "Find it quietly in Today", body: "Your spaces appear as cards on Today. Swipe between dates, or tap a card whenever you need to change its name or times.", note: "There is no timer. Close the app and spend that time away from it.", screen: "today" as const },
+      { n: "3", title: "Look across Week and Month", body: "Week uses small squares; Month marks each day that held a space. These views are for noticing your rhythm, not grading it.", note: "A quieter week with fewer marks is completely fine.", screen: "month" as const },
+      { n: "4", title: "A gentle reminder beforehand", body: "With notifications enabled, Yohaku normally reminds you three to seven minutes before a space begins. Change this anytime in Settings.", note: "Notifications are optional. Every feature works without them.", screen: "week" as const },
+      { n: "5", title: "One small check-in afterward", body: "Next time you open the app, one small question may appear for your latest space. Answer, close, or swipe it away.", note: "Your response stays on your device.", screen: "reflection" as const },
+      { n: "6", title: "Make it feel at home", body: "Choose system, light or dark appearance, manage notifications, and access ad removal or purchase restore from Settings.", note: "No account is needed. Spaces stay on your device.", screen: "settings-iap" as const },
     ];
 
 const conceptIdeas = ja
@@ -217,8 +218,24 @@ const faqs = ja
     ];
 
 const faqCats = ja
-  ? [["all", "すべて"], ["base", "基本"], ["space", "余白"], ["notice", "通知"], ["data", "データ"], ["net", "通信"]]
-  : [["all", "All"], ["base", "Basics"], ["space", "Spaces"], ["notice", "Notifications"], ["data", "Data"], ["net", "Network"]];
+  ? [
+      { key: "all", label: "すべて", mark: "□", description: "すべての質問" },
+      { key: "base", label: "基本", mark: "○", description: "料金・対応環境" },
+      { key: "space", label: "余白", mark: "◇", description: "作成・編集・見方" },
+      { key: "notice", label: "通知", mark: "△", description: "届く時間・設定" },
+      { key: "data", label: "データ", mark: "▱", description: "保存・移行" },
+      { key: "net", label: "通信", mark: "⌁", description: "オフライン・広告" },
+    ]
+  : [
+      { key: "all", label: "All", mark: "□", description: "Every question" },
+      { key: "base", label: "Basics", mark: "○", description: "Price and devices" },
+      { key: "space", label: "Spaces", mark: "◇", description: "Create, edit, read" },
+      { key: "notice", label: "Notices", mark: "△", description: "Timing and settings" },
+      { key: "data", label: "Data", mark: "▱", description: "Storage and moving" },
+      { key: "net", label: "Network", mark: "⌁", description: "Offline and ads" },
+    ];
+
+const faqCount = (key: string) => key === "all" ? faqs.length : faqs.filter(([cat]) => cat === key).length;
 
 const conceptScreens = [
   { screen: "today" as const, label: ja ? "今日" : "Today" },
@@ -231,91 +248,6 @@ const conceptScreens = [
 
 const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
 
-const newsPosts = ja
-  ? [
-      {
-        id: "site-launch",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "お知らせ",
-        badgeTone: "default" as const,
-        title: "Yohaku公式ブランドサイトを公開しました",
-        summary: "コンセプト、機能、使い方、料金、FAQ、プライバシーポリシー、利用規約を一か所にまとめました。",
-        body: [
-          "Yohakuの公式ブランドサイトを公開しました。アプリの考え方や、Today / Week / Monthでできること、無料で使える範囲と広告削除の位置づけを、公開準備中の段階からそのままお伝えしています。",
-          "いまのサイトは、App Storeでの配信に先立つブランド案内です。ダウンロード用のリンクはまだ用意していません。公開の準備が整い次第、サイトからもご案内します。",
-          "余白の記録は端末内に置かれ、アカウント登録やYohaku独自のクラウド同期はありません。詳しくはプライバシーポリシーと利用規約をご確認ください。",
-        ],
-      },
-      {
-        id: "column-space",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "コラム",
-        badgeTone: "column" as const,
-        title: "予定ではなく、余白だけを置くということ",
-        summary: "Yohakuはタスク管理でも、習慣トラッカーでもありません。名前と時間で「何もしない時間」を置くための小さな道具です。",
-        body: [
-          "カレンダーは予定で埋まりやすく、空いている時間もすぐに何かを割り当ててしまいがちです。Yohakuはその逆で、何もしない時間に名前と開始・終了を与え、今日・週・月の印として静かに残します。",
-          "Weekは各日の余白を黒い四角で、Monthは余白のある日をマスで示します。アートやパターンを自動生成するアプリではなく、置いた時間そのものを見返すための画面です。",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "準備中",
-        badgeTone: "note" as const,
-        title: "App Store公開に向けて",
-        summary: "iPhone・iOS 17以降向け。基本機能は無料、バナー広告あり。一度きりの広告削除も用意しています。",
-        body: [
-          "現在はApp Storeでの公開準備中です。基本機能はすべて無料で、無料版には控えめなバナー広告が表示される場合があります。一度きりの「広告を永久に削除」は応援のお礼であり、追加機能の解放やサブスクリプションではありません。",
-          "価格や表示内容は、公開時のApp Store上の記載が正しいものとします。",
-        ],
-      },
-    ]
-  : [
-      {
-        id: "site-launch",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "News",
-        badgeTone: "default" as const,
-        title: "The official Yohaku brand site is now live",
-        summary: "Concept, features, how-to, pricing, FAQ, Privacy Policy, and Terms of Use—in one place.",
-        body: [
-          "The official Yohaku brand site is live. It explains the idea behind the app, what Today / Week / Month can do, and how free use and ad removal fit together—while the product is still preparing for release.",
-          "This site is a brand guide ahead of App Store availability. There is no download link yet. When the app is ready, we will share it here as well.",
-          "Spaces stay on your device. There is no Yohaku account or cloud sync. See the Privacy Policy and Terms for details.",
-        ],
-      },
-      {
-        id: "column-space",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "Column",
-        badgeTone: "column" as const,
-        title: "Not another plan—just space",
-        summary: "Yohaku is not a task manager or habit tracker. It is a small tool for naming time with nothing planned.",
-        body: [
-          "Calendars fill quickly, and open time is easy to assign. Yohaku does the opposite: give unplanned time a name and start/end, then look back through quiet marks on day, week, and month views.",
-          "Week shows filled squares for each day; Month marks days that hold a space. It does not generate art—it helps you notice the spaces you chose to leave.",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "Coming soon",
-        badgeTone: "note" as const,
-        title: "Preparing for the App Store",
-        summary: "iPhone, iOS 17+. Core features free with optional banner ads; one-time ad removal as a thank-you.",
-        body: [
-          "Yohaku is being prepared for the App Store. Every core feature is free; the free version may show unobtrusive banner ads. A one-time “Remove ads permanently” purchase is a thank-you for support—not a feature unlock or subscription.",
-          "When the app ships, the App Store listing is the source of truth for pricing and availability.",
-        ],
-      },
-    ];
 ---
 
 <AppShell lang={lang} title={title} page={page} description={description}>
@@ -340,7 +272,14 @@ const newsPosts = ja
               <p>{block.body}</p>
             </div>
             <div class="feature-block-visual">
-              <AppScreen screen={block.screen} size="md" lang={lang} />
+              {"appearance" in block ? (
+                <div class="appearance-screens">
+                  <AppScreen screen="today" size="md" lang={lang} class="appearance-screen appearance-screen--light" />
+                  <AppScreen screen="today-dark" size="md" lang={lang} class="appearance-screen appearance-screen--dark" />
+                </div>
+              ) : (
+                <AppScreen screen={block.screen} size="md" lang={lang} />
+              )}
             </div>
           </article>
         ))}
@@ -348,17 +287,40 @@ const newsPosts = ja
     )}
 
     {page === "how-to" && (
-      <ol class="how-steps">
-        {howSteps.map((step) => (
-          <li>
-            <span class="how-n">{step.n}</span>
-            <div>
-              <h2>{step.title}</h2>
-              <p>{step.body}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <div class="how-guide-page">
+        <section class="how-welcome">
+          <div>
+            <p class="how-welcome-kicker">{ja ? "はじめてのYohaku" : "Your first space"}</p>
+            <h2>{ja ? "10分の余白から、始めてみましょう。" : "Start with ten quiet minutes."}</h2>
+          </div>
+          <p>{ja
+            ? "Yohakuは、毎日きちんと続けるためのアプリではありません。余白がほしいと感じた日に、ひとつ置くだけ。実際の画面を見ながら、ゆっくり使い方をご案内します。"
+            : "Yohaku is not a habit you have to perfect. Leave one space on the day you need it. Here is a gentle, screen-by-screen guide."}</p>
+        </section>
+        <ol class="how-guides">
+          {howSteps.map((step, index) => (
+            <li class:list={["how-guide", index % 2 === 1 && "is-reverse"]}>
+              <div class="how-guide-copy">
+                <div class="how-guide-number"><span>{step.n}</span><i aria-hidden="true"></i></div>
+                <h2>{step.title}</h2>
+                <p>{step.body}</p>
+                <aside><span aria-hidden="true">○</span><p>{step.note}</p></aside>
+              </div>
+              <div class="how-guide-visual">
+                <AppScreen screen={step.screen} size="md" lang={lang} />
+              </div>
+            </li>
+          ))}
+        </ol>
+        <section class="how-closing">
+          <span aria-hidden="true">◇</span>
+          <h2>{ja ? "うまく使うより、ふと思い出せれば十分です。" : "You do not need to use it perfectly."}</h2>
+          <p>{ja
+            ? "わからないことがあれば、よくある質問もご覧ください。"
+            : "If anything still feels unclear, the FAQ is here to help."}</p>
+          <a href={`${ja ? "/ja" : ""}/faq`}>{ja ? "よくある質問を見る" : "Read the FAQ"}<span aria-hidden="true">→</span></a>
+        </section>
+      </div>
     )}
 
     {page === "screenshots" && (
@@ -386,55 +348,52 @@ const newsPosts = ja
 
     {page === "pricing" && (
       <div class="pricing-page">
-        <div class="pricing-card">
-          <p class="pricing-kicker">v1</p>
-          <h2>{ja ? "基本機能は、すべて無料です。" : "Every core feature is free."}</h2>
-          <div class="pricing-copy">
-            {ja ? (
-              <>
-                <p>Yohakuの基本機能は、すべて無料で利用できます。</p>
-                <p>無料版では、Today・Week・Monthなどの画面に、操作を妨げない控えめなアンカー型バナー広告が表示されます。</p>
-                <p>一度きりの「広告を永久に削除」を購入すると、開発への応援のお礼として広告が表示されなくなります。</p>
-                <p>追加機能を解放する課金や、サブスクリプションではありません。</p>
-              </>
-            ) : (
-              <>
-                <p>Every core feature in Yohaku is available for free.</p>
-                <p>The free version shows an unobtrusive anchored banner ad on screens such as Today, Week and Month.</p>
-                <p>A one-time “Remove ads permanently” purchase removes ads as a thank-you for supporting development.</p>
-                <p>It does not unlock additional core features and is not a subscription.</p>
-              </>
-            )}
-          </div>
-          <ul class="pricing-list">
-            {(ja
-              ? ["余白の作成・編集・削除", "Today / Week / Month", "任意の通知と振り返り", "18言語", "端末内保存", "アカウント不要"]
-              : ["Create, edit and delete spaces", "Today / Week / Month", "Optional notices and check-ins", "18 languages", "On-device storage", "No account"]
-            ).map((item) => <li>{item}</li>)}
-          </ul>
-          <div class="pricing-iap">
-            <h3>{ja ? "広告を永久に削除" : "Remove ads permanently"}</h3>
-            <p class="pricing-price">
-              <span class="pricing-amount">¥300</span>
-              <span class="pricing-kind">{ja ? "買い切り（非消耗型）・税込" : "One-time (non-consumable), tax included"}</span>
-            </p>
+        <p class="pricing-lead">{ja
+          ? "余白を置くための機能に、制限はありません。広告なしを選ぶことで、個人開発を応援していただけます。"
+          : "Nothing you need to leave space is locked. Choosing ad-free is simply a way to support independent development."}</p>
+        <div class="pricing-columns">
+          <article class="pricing-plan pricing-plan--free">
+            <header>
+              <p class="pricing-kicker">{ja ? "すべての機能" : "Every feature"}</p>
+              <h2>{ja ? "無料で使えます" : "Free to use"}</h2>
+              <p class="pricing-price"><span class="pricing-amount">¥0</span><span class="pricing-kind">{ja ? "ずっと" : "forever"}</span></p>
+            </header>
+            <p class="pricing-plan-copy">{ja
+              ? "余白を作る、見渡す、振り返る。Yohakuの機能はすべてそのまま使えます。"
+              : "Create, review and reflect. Every Yohaku feature stays available."}</p>
+            <ul class="pricing-list">
+              {(ja
+                ? ["余白の作成・編集・削除", "Today / Week / Month", "通知と振り返り", "18言語・外観設定", "端末内保存・アカウント不要"]
+                : ["Create, edit and delete spaces", "Today / Week / Month", "Notices and check-ins", "18 languages and appearance", "On-device, no account"]
+              ).map((item) => <li><span aria-hidden="true">✓</span>{item}</li>)}
+            </ul>
+            <div class="pricing-ad-note">
+              <span aria-hidden="true">▭</span>
+              <p>{ja
+                ? "申し訳ありません。個人で開発と運営を続ける費用のため、無料利用時は画面下部に小さなバナー広告を表示します。機能が制限されることはありません。"
+                : "Sorry—free use includes a small banner at the bottom of the screen to help one independent developer keep Yohaku running. No features are limited."}</p>
+            </div>
+          </article>
+
+          <article class="pricing-plan pricing-plan--support">
+            <header>
+              <p class="pricing-kicker">{ja ? "開発者を応援" : "Support development"}</p>
+              <h2>{ja ? "広告を永久に削除" : "Remove ads forever"}</h2>
+              <p class="pricing-price"><span class="pricing-amount">¥400</span><span class="pricing-kind">{ja ? "買い切り・税込" : "one time, tax included"}</span></p>
+            </header>
+            <p class="pricing-plan-copy">{ja
+              ? "追加機能の購入ではなく、開発を応援してくださる方へのお礼です。"
+              : "Not a feature unlock—just our thank-you when you choose to support the app."}</p>
             <ul class="pricing-iap-list">
               {(ja
-                ? [
-                    "アプリ内のすべての広告が表示されなくなります",
-                    "購入後は広告SDKを起動せず、原則としてトラッキング許可も求めません",
-                    "同じApple Accountなら、設定画面から購入を復元できます",
-                    "有効期限や更新はありません",
-                  ]
-                : [
-                    "Every ad in the app stops appearing",
-                    "After purchase the ads SDK does not start and tracking permission is generally not requested",
-                    "Restore from Settings on the same Apple Account",
-                    "No expiry, no renewal",
-                  ]
+                ? ["アプリ内の広告をすべて削除", "サブスクリプション・更新なし", "同じApple Accountで購入を復元", "全機能は無料版と同じ"]
+                : ["Remove every in-app ad", "No subscription or renewal", "Restore with the same Apple Account", "The same complete feature set"]
               ).map((item) => <li>{item}</li>)}
             </ul>
-          </div>
+            <span class="pricing-support-note">{ja ? "ありがとうございます。静かなアプリを、長く育てていきます。" : "Thank you. Your support helps this quiet app grow."}</span>
+          </article>
+        </div>
+        <div class="pricing-footer">
           <p class="pricing-note">
             {ja
               ? "価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。購入・復元・返金はAppleの条件に従います。"
@@ -452,18 +411,33 @@ const newsPosts = ja
 
     {page === "faq" && (
       <div class="faq-page">
-        <nav class="faq-tabs" aria-label={ja ? "カテゴリ" : "Categories"} data-faq-tabs>
-          {faqCats.map(([key, label], i) => (
-            <button type="button" data-cat={key} aria-current={i === 0 ? "true" : "false"}>{label}</button>
-          ))}
-        </nav>
-        <div class="faq-list" data-faq-list>
-          {faqs.map(([cat, q, a], i) => (
-            <details data-cat={cat} open={i === 0}>
-              <summary>{q}</summary>
-              <p>{a}</p>
-            </details>
-          ))}
+        <p class="faq-lead">{ja
+          ? "気になる項目を選び、質問をタップしてください。答えが見つからないときは、お問い合わせからご連絡いただけます。"
+          : "Choose a topic, then tap a question to reveal the answer. If it is not here, you can always contact us."}</p>
+        <div class="faq-layout">
+          <nav class="faq-tabs" aria-label={ja ? "質問のカテゴリ" : "Question categories"} data-faq-tabs>
+            {faqCats.map((cat, i) => (
+              <button type="button" data-cat={cat.key} data-heading={cat.description} aria-pressed={i === 0 ? "true" : "false"}>
+                <span class="faq-tab-mark" aria-hidden="true">{cat.mark}</span>
+                <span class="faq-tab-copy"><strong>{cat.label}</strong><small>{cat.description}</small></span>
+                <span class="faq-tab-count">{faqCount(cat.key)}</span>
+              </button>
+            ))}
+          </nav>
+          <div class="faq-results">
+            <div class="faq-results-header">
+              <p data-faq-heading>{ja ? "すべての質問" : "All questions"}</p>
+              <span data-faq-count>{faqs.length}{ja ? "件" : " questions"}</span>
+            </div>
+            <div class="faq-list" data-faq-list>
+              {faqs.map(([cat, q, a], i) => (
+                <details data-cat={cat} open={i === 0}>
+                  <summary><span class="faq-q">Q</span><span>{q}</span><i aria-hidden="true"></i></summary>
+                  <div class="faq-answer"><span>A</span><p>{a}</p></div>
+                </details>
+              ))}
+            </div>
+          </div>
         </div>
         <aside class="faq-contact">
           <h2>{ja ? "解決しない場合" : "Still need help?"}</h2>
@@ -473,7 +447,8 @@ const newsPosts = ja
       </div>
     )}
 
-    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "news" && <UpdatesPage lang={lang} />}
+    {page === "updates" && <AppUpdatesPage lang={lang} appName="Yohaku" newsHref={ja ? "/ja/news" : "/news"} />}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
@@ -502,6 +477,8 @@ const newsPosts = ja
     const bindFaq = () => {
       const tabs = document.querySelector("[data-faq-tabs]");
       const list = document.querySelector("[data-faq-list]");
+      const heading = document.querySelector("[data-faq-heading]");
+      const count = document.querySelector("[data-faq-count]");
       if (!tabs || !list || tabs.dataset.bound === "1") return;
       tabs.dataset.bound = "1";
       const items = Array.from(list.querySelectorAll("details"));
@@ -509,12 +486,17 @@ const newsPosts = ja
         const btn = e.target.closest("button[data-cat]");
         if (!btn) return;
         const cat = btn.getAttribute("data-cat");
+        let visible = 0;
         items.forEach((item) => {
-          item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+          const show = cat === "all" || item.getAttribute("data-cat") === cat;
+          item.hidden = !show;
+          if (show) visible += 1;
         });
         tabs.querySelectorAll("button").forEach((b) => {
-          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+          b.setAttribute("aria-pressed", String(b.getAttribute("data-cat") === cat));
         });
+        if (heading) heading.textContent = btn.getAttribute("data-heading") || btn.textContent.trim();
+        if (count) count.textContent = `${visible}${document.documentElement.lang === "ja" ? "件" : " questions"}`;
       });
     };
     document.addEventListener("astro:page-load", bindFaq);
