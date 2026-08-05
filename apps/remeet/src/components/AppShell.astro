@@ -18,24 +18,25 @@ const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const labels = ja
   ? { features: "機能", how: "使い方", pricing: "料金", faq: "よくある質問", news: "お知らせ" }
-  : { features: "Features", how: "How it works", pricing: "Pricing", faq: "FAQ", news: "Updates" };
+  : { features: "Features", how: "How it works", pricing: "Pricing", faq: "FAQ", news: "News" };
 const nav = [
   { slug: "features", label: labels.features, href: href("features") },
   { slug: "how-to", label: labels.how, href: href("how-to") },
   { slug: "pricing", label: labels.pricing, href: href("pricing") },
   { slug: "faq", label: labels.faq, href: href("faq") },
-  { slug: "updates", label: labels.news, href: href("updates") },
+  { slug: "news", label: labels.news, href: href("news") },
+  { slug: "updates", label: ja ? "アップデート情報" : "App updates", href: href("updates") },
 ];
 const footerColumns = ja
   ? [
-      { title: "プロダクト", links: [{ label: "機能", href: href("features") }, { label: "使い方", href: href("how-to") }, { label: "スクリーンショット", href: href("screenshots") }, { label: "ウィジェット", href: href("widgets") }, { label: "料金", href: href("pricing") }] },
-      { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("updates") }, { label: "お問い合わせ", href: supportHref("ja"), external: true }] },
+      { title: "プロダクト", links: [{ label: "機能", href: href("features") }, { label: "使い方", href: href("how-to") }, { label: "スクリーンショット", href: href("screenshots") }, { label: "料金", href: href("pricing") }] },
+      { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("news") }, { label: "アップデート情報", href: href("updates") }, { label: "お問い合わせ", href: supportHref("ja"), external: true }] },
       { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }, { label: "特定商取引法に基づく表記", href: href("commercial-transactions") }] },
       { title: "運営者情報", links: [{ label: "運営サイト", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
     ]
   : [
-      { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "How it works", href: href("how-to") }, { label: "Screenshots", href: href("screenshots") }, { label: "Widgets", href: href("widgets") }, { label: "Pricing", href: href("pricing") }] },
-      { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "Updates", href: href("updates") }, { label: "Contact", href: supportHref("en"), external: true }] },
+      { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "How it works", href: href("how-to") }, { label: "Screenshots", href: href("screenshots") }, { label: "Pricing", href: href("pricing") }] },
+      { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("news") }, { label: "App updates", href: href("updates") }, { label: "Contact", href: supportHref("en"), external: true }] },
       { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }, { label: "Commercial Transactions", href: href("commercial-transactions") }] },
       { title: "Operator", links: [{ label: "Operator site", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
     ];
@@ -55,8 +56,8 @@ const mobileFooterLinks = ja
       { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
     ];
 const metaDescription = description ?? (ja
-  ? "Remeetは、大切な人との次の再会までをカウントダウンし、待っている間の記録を端末に残すiPhoneアプリです。基本機能は無料（一部画面に広告）。現在App Store公開準備中。"
-  : "Remeet counts down to your next reunion and keeps waiting memories on your iPhone. Free core features with ads on some screens. Currently preparing for the App Store.");
+  ? "Remeetは、再会までをカウントダウンし、待っている日々を記録して、1人のパートナーとも共有できるiPhoneアプリです。個人利用と最初の共有は無料。"
+  : "Remeet counts down to your next reunion, keeps the waiting days, and can share one reunion with one partner. Personal use and the first shared reunion are free.");
 const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
 ---
 
@@ -91,7 +92,7 @@ const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Sto
     (() => {
       const initReveal = () => {
         const items = document.querySelectorAll(
-          ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro):not(.page-hero), .app-hero-notice, .guide-visual, .shot-gallery .app-phone-frame",
+          ".landing-sections section, .feature-grid article, .step-grid article, .subpage > :not(.page-intro):not(.page-hero), .app-hero-notice, .shot-gallery .app-phone-frame",
         );
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
           items.forEach((item) => {
@@ -108,7 +109,9 @@ const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Sto
               }
             });
           },
-          { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
+          // Long guides and legal documents can be taller than the viewport;
+          // a 12% threshold would make them mathematically impossible to reveal.
+          { threshold: 0.01, rootMargin: "0px 0px -7% 0px" },
         );
         items.forEach((item, index) => {
           if (item.classList.contains("is-visible")) return;

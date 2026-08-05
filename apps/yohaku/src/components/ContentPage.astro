@@ -1,5 +1,6 @@
 ---
 import { supportUrl } from "@tomokichi/app-site/urls";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import {
   descriptions,
   type Locale,
@@ -11,7 +12,6 @@ import {
 } from "../lib/content";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
-import AppUpdatesPage from "./AppUpdatesPage.astro";
 import UpdatesPage from "./UpdatesPage.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
@@ -448,7 +448,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
     )}
 
     {page === "news" && <UpdatesPage lang={lang} />}
-    {page === "updates" && <AppUpdatesPage lang={lang} />}
+    {page === "updates" && <AppUpdatesPage lang={lang} appName="Yohaku" newsHref={ja ? "/ja/news" : "/news"} />}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">

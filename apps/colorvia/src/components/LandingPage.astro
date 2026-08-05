@@ -84,6 +84,23 @@ const jsonLd = JSON.stringify({
   jsonLd={jsonLd}
 >
   <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="hero-orb hero-orb-a"></span>
+      <span class="hero-orb hero-orb-b"></span>
+      <span class="hero-orb hero-orb-c"></span>
+      <span class="hero-grid"></span>
+      <img
+        class="hero-world-map"
+        src="/assets/hero-world-map.svg?v=3"
+        alt=""
+        width="1000"
+        height="394"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="world-wash world-wash-back">WORLD</div>
+      <div class="world-wash">WORLD</div>
+    </div>
     <div class="hero-copy" data-reveal>
       <p class="eyebrow">{ja ? "世界を、シンプルに彩ろう。" : "Colour the world, simply."}</p>
       <h1>
@@ -110,8 +127,14 @@ const jsonLd = JSON.stringify({
         )}
       </p>
       <div class="hero-actions">
-        <span class="store-button store-soon" aria-disabled="true">● <span>{storeLabel}</span></span>
-        <a class="secondary-button" href={`${base}/features`}>{ja ? "機能を見る" : "Explore features"}</a>
+        <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+          <span class="hero-cta-dot" aria-hidden="true"></span>
+          <span>{storeLabel}</span>
+        </span>
+        <a class="hero-cta hero-cta-secondary" href={`${base}/features`}>
+          <span>{ja ? "機能を見る" : "Explore features"}</span>
+          <span class="hero-cta-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
       <small>{ja ? "iPhone・iOS 18以降向け。iPad専用レイアウトは未対応です。" : "Designed for iPhone on iOS 18+. No iPad-optimized layout yet."}</small>
     </div>
@@ -122,20 +145,19 @@ const jsonLd = JSON.stringify({
           <img
             src={homeImgPng}
             alt={ja ? "Colorviaのホーム画面。世界地図と訪問統計" : "Colorvia home screen with world map and visit stats"}
-            width="1170"
-            height="2532"
+            width="1206"
+            height="2622"
             fetchpriority="high"
             decoding="async"
           />
         </picture>
       </PhoneFrame>
     </div>
-    <div class="world-wash" aria-hidden="true">WORLD</div>
     <AppHeroChrome
       lang={lang}
       date="2026-08-01"
       news={ja ? "Colorvia公式ブランドサイトを公開しました" : "The official Colorvia brand site is now live"}
-      newsHref={`${base}/updates`}
+      newsHref={`${base}/news`}
     />
   </section>
 
@@ -166,15 +188,19 @@ const jsonLd = JSON.stringify({
             : "In supported countries, record states, prefectures, provinces, federal territories and travel areas. Search by city or place name to find the right region."}
         </p>
       </header>
-      <div class="region-scroll" data-reveal>
-        {regions.map((r) => (
-          <article class="region-card">
-            <span class="region-flag" aria-hidden="true">{r.flag}</span>
-            <h3>{ja ? r.nameJa : r.nameEn}</h3>
-            <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
-            <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
-          </article>
-        ))}
+      <div class="region-slideshow" data-reveal data-region-slideshow>
+        <div class="region-slideshow-fade region-slideshow-fade-left" aria-hidden="true"></div>
+        <div class="region-slideshow-fade region-slideshow-fade-right" aria-hidden="true"></div>
+        <div class="region-slideshow-track" data-region-track>
+          {[...regions, ...regions].map((r, i) => (
+            <article class="region-card region-slide-card" aria-hidden={i >= regions.length ? "true" : undefined}>
+              <span class="region-flag" aria-hidden="true">{r.flag}</span>
+              <h3>{ja ? r.nameJa : r.nameEn}</h3>
+              <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
+              <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
+            </article>
+          ))}
+        </div>
       </div>
       <p class="region-disclaimer" data-reveal>
         {ja
@@ -191,7 +217,7 @@ const jsonLd = JSON.stringify({
       <div class="step-grid">
         {steps.map(([n, title, body]) => (
           <article data-reveal>
-            <b>{n}</b>
+            <span class="step-number" aria-hidden="true">{n}</span>
             <h3>{title}</h3>
             <p>{body}</p>
           </article>
@@ -206,35 +232,35 @@ const jsonLd = JSON.stringify({
         <p>{ja ? "実際のアプリ画面です。" : "Real screens from the app."}</p>
       </header>
       <div class="screen-grid real-shots">
-        <div data-reveal>
+        <div class="shot-item" data-reveal>
           <PhoneFrame size="md" label={ja ? "世界地図と訪問統計" : "World map and visit stats"}>
             <picture>
               <source srcset="/assets/colorvia-home.webp" type="image/webp" />
-              <img src="/assets/colorvia-home.png" alt={ja ? "世界地図ホーム画面" : "World map home screen"} width="1170" height="2532" loading="lazy" decoding="async" />
+              <img src="/assets/colorvia-home.png" alt={ja ? "世界地図ホーム画面" : "World map home screen"} width="1206" height="2622" loading="lazy" decoding="async" />
             </picture>
           </PhoneFrame>
         </div>
-        <div data-reveal>
+        <div class="shot-item" data-reveal>
           <PhoneFrame size="md" label={ja ? "訪問数と地域別の内訳" : "Counts and regional breakdown"}>
             <picture>
               <source srcset="/assets/colorvia-home-bottom-sheet.webp" type="image/webp" />
-              <img src="/assets/colorvia-home-bottom-sheet.png" alt={ja ? "統計ボトムシート" : "Statistics bottom sheet"} width="1170" height="2532" loading="lazy" decoding="async" />
+              <img src="/assets/colorvia-home-bottom-sheet.png" alt={ja ? "統計ボトムシート" : "Statistics bottom sheet"} width="1206" height="2622" loading="lazy" decoding="async" />
             </picture>
           </PhoneFrame>
         </div>
-        <div data-reveal>
+        <div class="shot-item" data-reveal>
           <PhoneFrame size="md" label={ja ? "地図色の変更" : "Custom map colours"}>
             <picture>
               <source srcset="/assets/colorvia-map-coral.webp" type="image/webp" />
-              <img src="/assets/colorvia-map-coral.png" alt={ja ? "地図色を変えた画面" : "Map with custom colour"} width="1170" height="2532" loading="lazy" decoding="async" />
+              <img src="/assets/colorvia-map-coral.png" alt={ja ? "地図色を変えた画面" : "Map with custom colour"} width="1206" height="2622" loading="lazy" decoding="async" />
             </picture>
           </PhoneFrame>
         </div>
-        <div data-reveal>
+        <div class="shot-item" data-reveal>
           <PhoneFrame size="md" label={ja ? "ダークテーマ" : "Dark theme"}>
             <picture>
               <source srcset="/assets/colorvia-home-dark.webp" type="image/webp" />
-              <img src="/assets/colorvia-home-dark.png" alt={ja ? "ダークテーマのホーム" : "Home in dark theme"} width="1170" height="2532" loading="lazy" decoding="async" />
+              <img src="/assets/colorvia-home-dark.png" alt={ja ? "ダークテーマのホーム" : "Home in dark theme"} width="1206" height="2622" loading="lazy" decoding="async" />
             </picture>
           </PhoneFrame>
         </div>
@@ -274,9 +300,28 @@ const jsonLd = JSON.stringify({
       <div class="cta-phone">
         <picture>
           <source srcset={homeImg} type="image/webp" />
-          <img src={homeImgPng} alt="" width="1170" height="2532" loading="lazy" decoding="async" />
+          <img src={homeImgPng} alt="" width="1206" height="2622" loading="lazy" decoding="async" />
         </picture>
       </div>
     </section>
   </div>
 </AppShell>
+
+<script is:inline>
+  (() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const bindRegionSlideshow = () => {
+      document.querySelectorAll("[data-region-slideshow]").forEach((root) => {
+        if (!(root instanceof HTMLElement) || root.dataset.bound === "1") return;
+        root.dataset.bound = "1";
+        if (reduce) {
+          root.classList.add("is-static");
+          return;
+        }
+        root.classList.add("is-animated");
+      });
+    };
+    document.addEventListener("astro:page-load", bindRegionSlideshow);
+    bindRegionSlideshow();
+  })();
+</script>

@@ -1,5 +1,6 @@
 ---
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import {
   descriptions,
@@ -469,22 +470,97 @@ const shots = [
     )}
 
     {page === "regions" && (
-      <div class="regions-page">
+      <div class="regions-page" data-regions-page>
         <p class="lead">
           {ja
-            ? "対応している国では、都道府県、州、県、連邦直轄領、旅行エリアなど、国の中で訪れた地域まで記録できます。都市名や地名から該当する地域を検索することもできます。"
-            : "In supported countries, record states, prefectures, provinces, federal territories and travel areas. Search by city or place name to find the matching region."}
+            ? "11か国で、都道府県・州・県・旅行エリアなど国の中まで記録できます。国名や区分名で検索し、タップすると分け方の詳細を開けます。"
+            : "In 11 countries, record prefectures, states, provinces and travel areas. Search by country or unit name, then open a card for how it is divided."}
         </p>
-        <div class="region-grid">
-          {regions.map((r) => (
-            <article class="region-card">
-              <span class="region-flag" aria-hidden="true">{r.flag}</span>
-              <h2>{ja ? r.nameJa : r.nameEn}</h2>
-              <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
-              <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
-            </article>
-          ))}
+
+        <div class="region-toolbar" data-reveal>
+          <label class="region-search">
+            <span class="visually-hidden">{ja ? "地域マップを検索" : "Search regional maps"}</span>
+            <svg class="region-search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+              <path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <input
+              type="search"
+              data-region-search
+              placeholder={ja ? "国名・区分・地名で検索（例: 日本、州、バンコク）" : "Search country, unit or place (e.g. Japan, state, Bangkok)"}
+              autocomplete="off"
+              enterkeyhint="search"
+            />
+          </label>
+          <p class="region-result-meta" data-region-meta aria-live="polite">
+            {ja ? `全 ${regions.length} か国` : `All ${regions.length} countries`}
+          </p>
         </div>
+
+        <div class="region-directory" data-region-directory>
+          {regions.map((r) => {
+            const searchBlob = [
+              r.code,
+              r.nameJa,
+              r.nameEn,
+              r.unitJa,
+              r.unitEn,
+              r.schemeJa,
+              r.schemeEn,
+              ...r.samplesJa,
+              ...r.samplesEn,
+            ]
+              .join(" ")
+              .toLowerCase();
+            return (
+              <details
+                class="region-item"
+                id={`region-${r.code.toLowerCase()}`}
+                data-region-item
+                data-search={searchBlob}
+              >
+                <summary>
+                  <span class="region-flag" aria-hidden="true">{r.flag}</span>
+                  <span class="region-item-main">
+                    <span class="region-item-name">{ja ? r.nameJa : r.nameEn}</span>
+                    <span class="region-item-unit">{ja ? r.unitJa : r.unitEn}</span>
+                  </span>
+                  <span class="region-item-meta">
+                    <span class="region-item-count">{r.count}</span>
+                    <span class="region-item-count-label">{ja ? "地域" : "units"}</span>
+                  </span>
+                  <span class="region-item-chevron" aria-hidden="true"></span>
+                </summary>
+                <div class="region-item-body">
+                  <p class="region-scheme">{ja ? r.schemeJa : r.schemeEn}</p>
+                  <div class="region-samples">
+                    <p class="region-samples-label">{ja ? "区分の例" : "Sample units"}</p>
+                    <ul>
+                      {(ja ? r.samplesJa : r.samplesEn).map((name) => (
+                        <li>{name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </details>
+            );
+          })}
+        </div>
+
+        <p class="region-empty" data-region-empty hidden>
+          {ja ? "一致する国が見つかりませんでした。" : "No matching countries."}
+        </p>
+
+        <aside class="region-how-note" data-reveal>
+          <h2>{ja ? "アプリでの記録の流れ" : "How recording works in the app"}</h2>
+          <ol>
+            <li>{ja ? "ホームの＋から訪問国を追加する" : "Add visited countries from Home’s + button"}</li>
+            <li>{ja ? "対応国を開き、地域マップまたは一覧へ進む" : "Open a supported country and its regional map or list"}</li>
+            <li>{ja ? "都道府県・州などにチェックを付ける（地名検索も可）" : "Check prefectures, states and more—or search by place name"}</li>
+            <li>{ja ? "訪問数・割合・フィルター・共有画像で振り返る" : "Review counts, rates, filters and share images"}</li>
+          </ol>
+        </aside>
+
         <p class="region-disclaimer">
           {ja
             ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
@@ -545,7 +621,8 @@ const shots = [
       </div>
     )}
 
-    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "updates" && <AppUpdatesPage lang={lang} appName="Colorvia" newsHref={ja ? "/ja/news" : "/news"} />}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
@@ -588,7 +665,62 @@ const shots = [
         });
       });
     };
-    document.addEventListener("astro:page-load", bindFaq);
+
+    const bindRegionSearch = () => {
+      const root = document.querySelector("[data-regions-page]");
+      if (!(root instanceof HTMLElement) || root.dataset.bound === "1") return;
+      root.dataset.bound = "1";
+      const input = root.querySelector("[data-region-search]");
+      const items = Array.from(root.querySelectorAll("[data-region-item]"));
+      const empty = root.querySelector("[data-region-empty]");
+      const meta = root.querySelector("[data-region-meta]");
+      if (!(input instanceof HTMLInputElement)) return;
+      const total = items.length;
+      const isJa =
+        document.documentElement.lang === "ja" ||
+        location.pathname === "/ja" ||
+        location.pathname.startsWith("/ja/");
+      const renderMeta = (shown) => {
+        if (!(meta instanceof HTMLElement)) return;
+        if (shown === total) {
+          meta.textContent = isJa ? `全 ${total} か国` : `All ${total} countries`;
+        } else {
+          meta.textContent = isJa ? `${shown} / ${total} か国` : `${shown} / ${total} countries`;
+        }
+      };
+      const apply = () => {
+        const q = input.value.trim().toLowerCase();
+        let shown = 0;
+        items.forEach((item) => {
+          if (!(item instanceof HTMLElement)) return;
+          const blob = item.getAttribute("data-search") || "";
+          const match = !q || blob.includes(q);
+          item.hidden = !match;
+          if (match) shown += 1;
+          if (!match && item instanceof HTMLDetailsElement) item.open = false;
+        });
+        if (empty instanceof HTMLElement) empty.hidden = shown !== 0;
+        renderMeta(shown);
+      };
+      input.addEventListener("input", apply);
+      apply();
+
+      // Open hash target if present (e.g. /regions#region-jp)
+      const hash = window.location.hash.replace("#", "");
+      if (hash) {
+        const target = root.querySelector(`#${CSS.escape(hash)}`);
+        if (target instanceof HTMLDetailsElement) {
+          target.open = true;
+          target.scrollIntoView({ block: "nearest" });
+        }
+      }
+    };
+
+    document.addEventListener("astro:page-load", () => {
+      bindFaq();
+      bindRegionSearch();
+    });
     bindFaq();
+    bindRegionSearch();
   })();
 </script>

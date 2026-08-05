@@ -3,11 +3,11 @@ export type Page =
   | "features"
   | "how-to"
   | "screenshots"
-  | "widgets"
   | "pricing"
   | "faq"
   | "privacy"
   | "terms"
+  | "news"
   | "updates";
 
 export const icons: Record<string, string> = {
@@ -41,12 +41,12 @@ export const titleMap: Record<Page, [string, string]> = {
   features: ["Remeetの機能", "Remeet features"],
   "how-to": ["使い方", "How to use"],
   screenshots: ["スクリーンショット", "Screenshots"],
-  widgets: ["ウィジェットでもいつでも確認", "Stay close with widgets"],
   pricing: ["料金", "Pricing"],
   faq: ["よくある質問", "Frequently asked questions"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "Updates"],
+  news: ["お知らせ", "News"],
+  updates: ["アップデート情報", "App updates"],
 };
 
 export const subtitleMap: Partial<Record<Page, [string, string]>> = {
@@ -59,16 +59,13 @@ export const subtitleMap: Partial<Record<Page, [string, string]>> = {
     "From first setup to data management,\nfollow the flow of the real app screens.",
   ],
   screenshots: ["美しく、シンプルで、使いやすいデザイン。", "Beautiful, simple, and easy to use."],
-  widgets: [
-    "ホーム画面やロック画面から、再会までの時間をすぐにチェック。",
-    "Check your countdown from the Home Screen or Lock Screen.",
-  ],
-  pricing: ["Remeetは無料で利用できます。", "Remeet is free to use."],
+  pricing: ["ひとりでも、ふたりでも。\n必要なときだけ選べる料金です。", "Use it on your own or wait together.\nPay only when you need another shared reunion."],
   faq: [
     "よくいただくご質問をまとめました。\n解決しないときは、お気軽にご連絡ください。",
     "Answers to the questions we hear most.\nIf something is still unclear, just reach out.",
   ],
-  updates: ["Remeetからのお知らせ。", "Updates from Remeet."],
+  news: ["Remeetからのお知らせと、待つ時間についての読みもの。", "News from Remeet and notes about the time between reunions."],
+  updates: ["バージョンごとの新機能、改善、修正を記録します。", "Version-by-version features, improvements, and fixes."],
 };
 
 export const pageDescriptions: Partial<Record<Page, [string, string]>> = {
@@ -84,29 +81,29 @@ export const pageDescriptions: Partial<Record<Page, [string, string]>> = {
     "Remeetのホーム、記録、ウィジェットなどの画面イメージです。",
     "Screen previews of Remeet’s home, records, and widgets.",
   ],
-  widgets: [
-    "ホーム画面とロック画面のウィジェットで、再会までの日数をいつでも確認できます。",
-    "See your reunion countdown from Home Screen and Lock Screen widgets.",
-  ],
   pricing: [
-    "Remeetは無料で利用できます。一部画面に広告が表示されます。有料プランや広告削除は提供していません。",
-    "Remeet is free to use. Ads may appear on some screens. Paid plans and ad removal are not available.",
+    "Remeetの個人利用と最初の再会の共有は無料。2回目以降の共有に使うShare Passについてご案内します。",
+    "Personal use and your first shared reunion are free. Learn about Share Pass for each additional shared reunion.",
   ],
   faq: [
     "アカウント不要、端末内保存、広告、ウィジェット、機種変更など、Remeetのよくある質問。",
     "FAQ about Remeet: no account, on-device storage, ads, widgets, device changes, and more.",
   ],
   privacy: [
-    "Remeetのプライバシーポリシー。端末内保存、Google Mobile Ads、外部通信について説明します。",
-    "Remeet Privacy Policy covering on-device storage, Google Mobile Ads, and external communications.",
+    "Remeetのプライバシーポリシー。端末内保存、iCloud共有、Share Pass、広告、外部通信について説明します。",
+    "Remeet Privacy Policy covering on-device storage, iCloud sharing, Share Pass, advertising, and external communications.",
   ],
   terms: [
-    "Remeetの利用規約。無料提供、広告表示、端末内データの管理について定めます。",
-    "Remeet Terms of Service covering free use, advertising, and on-device data responsibility.",
+    "Remeetの利用規約。無料利用、iCloud共有、Share Pass、広告、データ管理について定めます。",
+    "Remeet Terms of Service covering free use, iCloud sharing, Share Pass, advertising, and data responsibility.",
   ],
-  updates: [
+  news: [
     "Remeet公式ブランドサイト公開のお知らせ。",
     "Updates from Remeet, including product notes and columns.",
+  ],
+  updates: [
+    "Remeetアプリのバージョンごとの変更内容。",
+    "Version-by-version release notes for the Remeet app.",
   ],
 };
 
@@ -131,7 +128,7 @@ export function features(ja: boolean) {
         [
           "wish",
           "会ったらやりたいことリスト",
-          "一緒にしたいことをリストに残せます。データ共有ではなく、自分の端末での記録です。1項目につき写真は1枚です。",
+          "一緒にしたいことをリストに残せます。共有した再会では、招待したパートナーと一緒に編集できます。1項目につき写真は1枚です。",
         ],
         [
           "plans",
@@ -167,7 +164,7 @@ export function features(ja: boolean) {
         [
           "phone",
           "端末内保存",
-          "予定・写真・メモは原則として端末内に保存されます。iCloud同期はありません。",
+          "個人利用の予定・写真・メモは端末内に保存されます。共有を有効にした再会はAppleのiCloudを通じて指定したパートナーと同期されます。",
         ],
         ["shield", "アカウント登録不要", "登録やログインなしですぐに使い始められます。"],
       ] as const)
@@ -230,7 +227,7 @@ export function features(ja: boolean) {
         [
           "phone",
           "On-device storage",
-          "Plans, photos and notes stay on your device. There is no iCloud sync in v1.0.0.",
+          "Personal plans, photos, and notes stay on your device. Shared reunions sync with the invited partner through Apple iCloud.",
         ],
         ["shield", "No account required", "Start immediately — no sign-up, no login."],
       ] as const);
@@ -584,7 +581,7 @@ export function faqs(ja: boolean) {
         [
           "start",
           "無料で利用できますか？",
-          "はい。基本機能は無料です。一部の画面には広告が表示されます。現在、有料プランや広告削除機能は提供していません。",
+          "はい。個人利用の基本機能と最初の再会の共有は無料です。一部画面には広告が表示されます。2回目以降の再会を共有する場合は、1つの再会に1枚のShare Pass（¥500）が必要です。サブスクリプションではありません。",
         ],
         [
           "start",
@@ -599,7 +596,7 @@ export function faqs(ja: boolean) {
         [
           "feature",
           "二人の端末でデータを共有できますか？",
-          "v1.0.0ではできません。予定と記録は自分の端末だけで管理します。相手のiPhoneへの同期、招待、Share Passなどの共有機能はありません。",
+          "できます。最初の再会は無料で1人のパートナーと共有できます。2回目以降は1つの再会につきShare Passを1枚使い、AppleのiCloud経由で予定・記録・やりたいことを同期します。",
         ],
         [
           "feature",
@@ -629,12 +626,12 @@ export function faqs(ja: boolean) {
         [
           "feature",
           "広告は表示されますか？",
-          "はい。ホームや、件数が増えたやりたいこと・記録の一覧など、一部の画面にネイティブ広告が表示されます。アルバム画面には広告を出しません。",
+          "はい。個人利用ではホームや、件数が増えたやりたいこと・記録の一覧など、一部の画面にネイティブ広告が表示されます。Share Passを使って共有した再会では、参加者双方に広告を表示しません。",
         ],
         [
           "data",
           "データはどこに保存されますか？",
-          "予定・写真・メモはこの端末内に保存されます。v1.0.0ではiCloudや外部サーバーへ同期しません。",
+          "個人利用の予定・写真・メモは端末内に保存されます。共有を有効にした再会の内容と、初回無料共有の利用状態・Share Pass台帳はAppleのiCloud / CloudKitにも保存されます。運営者は記録内容を収集する独自サーバーを保有していません。",
         ],
         [
           "data",
@@ -697,7 +694,7 @@ export function faqs(ja: boolean) {
         [
           "start",
           "Is it free?",
-          "Yes. Core features are free. Ads may appear on some screens. Paid plans and ad removal are not currently available.",
+          "Yes. Personal use and your first shared reunion are free. Ads may appear on some screens. Each additional shared reunion uses one ¥500 Share Pass. There is no subscription.",
         ],
         [
           "start",
@@ -712,7 +709,7 @@ export function faqs(ja: boolean) {
         [
           "feature",
           "Can two phones share the same data?",
-          "Not in v1.0.0. Plans and records stay on your device only. There is no two-device sync, invitation flow or Share Pass.",
+          "Yes. Share your first reunion with one partner for free. Each additional shared reunion uses one Share Pass and syncs plans, records and wishes through Apple iCloud.",
         ],
         [
           "feature",
@@ -742,12 +739,12 @@ export function faqs(ja: boolean) {
         [
           "feature",
           "Are there ads?",
-          "Yes. Native ads may appear on Home and on longer wish or memory lists. The album screen stays free of ads.",
+          "Yes. Native ads may appear during personal use on Home and longer wish or memory lists. A reunion shared with a Share Pass is ad-free for both participants.",
         ],
         [
           "data",
           "Where is my data stored?",
-          "Plans, photos and notes stay on this device. v1.0.0 does not sync to iCloud or a Remeet server.",
+          "Personal plans, photos and notes stay on this device. Shared reunion content, first-free-sharing state and the Share Pass ledger also use Apple iCloud / CloudKit. The operator does not run a proprietary server that collects your records.",
         ],
         [
           "data",
@@ -819,15 +816,15 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "4. 基本方針",
-          "本アプリはアカウント登録を必要としません。利用者が入力・撮影した再会予定、写真、メモ等は原則として利用者の端末内に保存されます。運営者は、通常のアプリ利用だけではこれらの記録内容を収集・閲覧できるサーバーを運用していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用します。問い合わせフォームを明示的に送信した場合に限り、利用者が入力した情報と技術情報を送信します。",
+          "本アプリは独自のアカウント登録を必要としません。共有を有効にしていない再会の予定、写真、メモ等は端末内に保存されます。共有を有効にした再会は、AppleのiCloudおよびCloudKitを通じて指定された1人のパートナーと同期されます。運営者は記録内容を収集・閲覧する独自サーバーを保有していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用しますが、アプリ内記録を広告配信事業者へ送信しません。",
         ],
         [
           "5. 端末内に保存する情報",
-          "本アプリは、利用者が入力または選択した次の情報を、端末内のデータベース（Core Data）およびApp Group領域に保存します。\n\n・再会予定の名称、離れ始めた日時、再会日時、メモ\n・自分・相手・待ち合わせ場所の地名、緯度経度、タイムゾーン\n・「会ったらやりたいこと」の項目と完了状態\n・待っている間の記録および再会記録の写真、日付、メモ、感想、5段階評価\n・通知のオン／オフなどのアプリ設定\n\nこれらはウィジェット表示のため同一開発者のApp Group内で共有されますが、その保存自体は端末外へ送信されません。",
+          "本アプリは、利用者が入力または選択した次の情報を、端末内のデータベース（Core Data）およびApp Group領域に保存します。共有を有効にした再会では、対象となる情報をiCloudにも保存します。\n\n・再会予定の名称、離れ始めた日時、再会日時、メモ\n・自分・相手・待ち合わせ場所の地名、緯度経度、タイムゾーン\n・「会ったらやりたいこと」の項目と完了状態\n・待っている間の記録および再会記録の写真、日付、メモ、感想、5段階評価\n・共有状態、Share Passの購入Transaction ID、未使用・予約・使用済みの状態および対象再会ID\n・通知のオン／オフなどのアプリ設定\n\n端末内の一部情報は、ウィジェット表示のため同一開発者のApp Group内でも共有されます。",
         ],
         [
           "6. 外部サービスへ送信される情報",
-          "本アプリが外部と通信を行うのは、次の場合に限られます。\n\n(1) Open-Meteo：天気取得のため、登録地点の緯度経度を open-meteo.com へ送信します。氏名や写真等は送信しません。\n\n(2) Appleの地名検索・ジオコーディング：入力した検索語または取得した座標を、Appleの機能へ送信します。取扱いはAppleのプライバシー方針に従います。\n\n(3) 法務文書：最新のプライバシーポリシー・利用規約を表示するため、本ウェブサイトへ通信します。\n\n(4) 問い合わせ：利用者がフォームを明示的に送信した場合に限り、名前（任意）、メールアドレス、問い合わせカテゴリ、本文、アプリバージョン、ビルド番号、iOSバージョン、表示言語、問い合わせ識別子、送信日時、不正利用防止・レート制限に必要な情報等を送信することがあります。写真、再会予定、現在地、アルバム、メモ、やりたいことの内容は問い合わせ時に自動送信しません。\n\n(5) 広告配信：次条を参照してください。",
+          "本アプリが外部と通信を行うのは、次の場合です。\n\n(1) iCloud共有とShare Pass台帳：共有を有効にした再会の予定、写真、メモ等、および初回無料共有の利用状態とShare Pass台帳をAppleのiCloud / CloudKitへ送信します。共有内容は、招待を承認した1人のパートナーからも閲覧・編集できます。\n\n(2) App内課金：Share Passの購入、Transactionの検証および購入情報の同期のためAppleのStoreKitと通信します。\n\n(3) Open-Meteo：天気取得のため、登録地点の緯度経度を open-meteo.com へ送信します。氏名や写真等は送信しません。\n\n(4) Appleの地名検索・ジオコーディング：入力した検索語または取得した座標をAppleの機能へ送信します。\n\n(5) 広告配信と同意管理：Google Mobile Ads SDKおよびUser Messaging Platformが、IPアドレス、端末・広告識別子、技術情報、同意状況等を送信する場合があります。記録内容は送信しません。\n\n(6) 法務文書：最新版を表示するため本ウェブサイトへ通信します。\n\n(7) 問い合わせ：フォームを明示的に送信した場合に限り、入力内容、アプリ・OS情報、表示言語、送信日時、問い合わせ識別子等をサポートAPIおよびメール配信事業者へ送信します。記録内容は自動送信しません。",
         ],
         [
           "7. 端末機能へのアクセス",
@@ -839,11 +836,11 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "9. 外部サービス・第三者提供",
-          "運営者は、利用者のアプリ内記録を販売または貸与しません。本ポリシーに記載した範囲で、次の外部サービスを利用します。\n\n・Google（広告配信・同意管理）\n・Apple（ジオコーディング等のシステム機能）\n・Open-Meteo（天気）\n・Cloudflare Workers（問い合わせAPI基盤）\n・Resend（問い合わせメール配送）\n\n法令に基づく開示請求があった場合を除き、無関係な第三者へ提供しません。",
+          "運営者は、利用者のアプリ内記録を販売または貸与しません。本ポリシーに記載した範囲で、Apple（iCloud / CloudKit、StoreKit、ジオコーディング等）、Google（広告配信・同意管理）、Open-Meteo（天気）、Cloudflare Workers（問い合わせAPI）、Resend（問い合わせメール配送）を利用します。法令に基づく場合を除き、無関係な第三者へ提供しません。",
         ],
         [
           "10. 保存期間と削除",
-          "端末内の情報は、利用者が削除するまで保存されます。個々の記録は各画面から、すべてのデータは「設定 → データ管理 → すべてのデータを削除」から削除できます。本アプリをアンインストールした場合、端末内に保存された情報は削除され、運営者が復旧することはできません。お問い合わせは専用データベースへ保存せず、メールとして受信します。",
+          "端末内およびiCloudの情報は、利用者が削除するまで保存されます。個々の記録は各画面から、すべてのデータは「設定 → データ管理 → すべてのデータを削除」から削除できます。共有中の再会を削除すると共有参加者からも閲覧できなくなります。アンインストールすると端末内情報は削除されますが、iCloud上の共有状態やShare Pass台帳は再インストール後の同期に必要な範囲で残る場合があります。",
         ],
         [
           "11. データ概要の書き出し",
@@ -851,7 +848,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "12. 安全管理措置",
-          "本アプリはアカウント登録を必要としないため、パスワードなどの認証情報を取り扱いません。端末内の情報は、iOSの標準的なセキュリティ機構のもとで保護されます。",
+          "本アプリは独自アカウントを必要とせず、パスワードを取り扱いません。端末内情報はiOSの標準的なセキュリティ機構で、共有データはAppleのiCloud / CloudKitの仕組みで保護されます。",
         ],
         [
           "13. 未成年者の利用",
@@ -878,15 +875,15 @@ export function privacySections(ja: boolean): [string, string][] {
         ["3. Scope", "This policy applies to use of the app and browsing of this website."],
         [
           "4. Basic policy",
-          "The app does not require an account. Reunion plans, photos, notes and similar content are stored on your device in principle. The operator does not run a server that can collect or view those records from ordinary app use alone. The app uses the Google Mobile Ads SDK to show ads. Support details and technical information are sent only when you explicitly submit the support form.",
+          "The app does not require a proprietary account. Reunion plans, photos, and notes that you do not share stay on your device. A shared reunion syncs with the one partner you invite through Apple iCloud and CloudKit. The operator does not run a proprietary server that collects or views those records. Google Mobile Ads is used for advertising, but your in-app records are not sent to advertising partners.",
         ],
         [
           "5. Information stored on your device",
-          "The app stores the following in an on-device database (Core Data) and an App Group container:\n\n・Reunion plan names, the date you started being apart, the reunion date, and notes\n・Place names, coordinates and time zones for you, your partner and the meeting place\n・Wish-list items and completion state\n・Photos, dates, notes, impressions and a 5-star rating for waiting and reunion records\n・App settings such as notification preferences\n\nThis data is shared within the developer’s App Group for widgets, but that storage itself is not sent off-device.",
+          "The app stores the following in an on-device database (Core Data) and an App Group container. For a shared reunion, the relevant information is also stored in iCloud:\n\n・Reunion plan names, dates, and notes\n・Place names, coordinates, and time zones\n・Wish-list items and completion state\n・Photos, dates, notes, impressions, and ratings\n・Sharing state, Share Pass transaction ID, pass state, and reunion ID\n・App settings such as notification preferences\n\nSome on-device information is shared within the developer’s App Group for widgets.",
         ],
         [
           "6. Information sent externally",
-          "The app communicates externally only in these cases:\n\n(1) Open-Meteo: coordinates of a saved place are sent to open-meteo.com for weather. Names and photos are not sent.\n\n(2) Apple place search / geocoding: a search term or coordinates are sent to Apple. Handling follows Apple’s privacy policy.\n\n(3) Legal documents: the app loads the latest Privacy Policy and Terms from this website.\n\n(4) Support: only when you submit the form — optional name, email, category, message, app version, build number, iOS version, display language, enquiry id, submission time, and details needed for abuse prevention / rate limiting. Photos, reunion plans, location, albums, notes and wish content are not attached automatically.\n\n(5) Advertising: see the next section.",
+          "The app communicates externally in these cases:\n\n(1) iCloud sharing and the Share Pass ledger: shared reunion content, first-free-sharing state, and the Share Pass ledger are sent to Apple iCloud / CloudKit. The partner who accepts your invitation can view and edit that reunion.\n\n(2) In-app purchase: Apple StoreKit is used to buy and verify Share Pass transactions and synchronize purchase information.\n\n(3) Weather: saved coordinates are sent to Open-Meteo; names are not sent.\n\n(4) Place search / geocoding: search terms or coordinates are sent to Apple.\n\n(5) Ads and consent: Google Mobile Ads and User Messaging Platform may send IP address, device or advertising identifiers, technical information, and consent status. Reunion content is not sent.\n\n(6) Legal documents: the latest copy is loaded from this website.\n\n(7) Support: only when you submit the form, your entries and related app, OS, language, time, and enquiry identifiers are sent to the support API and email provider. Records are not attached automatically.",
         ],
         [
           "7. Device permissions",
@@ -898,11 +895,11 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "9. Service providers and disclosure",
-          "The operator does not sell or lend your in-app records. Within the scope of this policy, the Service uses:\n\n・Google (ads and consent)\n・Apple (system features such as geocoding)\n・Open-Meteo (weather)\n・Cloudflare Workers (support API)\n・Resend (support email delivery)\n\nInformation is not otherwise disclosed to unrelated third parties except where required by law.",
+          "The operator does not sell or lend your in-app records. The Service uses Apple (iCloud / CloudKit, StoreKit, and system features), Google (ads and consent), Open-Meteo (weather), Cloudflare Workers (support API), and Resend (support email). Information is not otherwise disclosed to unrelated third parties except where required by law.",
         ],
         [
           "10. Retention and deletion",
-          "On-device data is kept until you delete it. Delete individual records on their screens, or all data from Settings → Data management → Delete all data. Uninstalling removes on-device data; the operator cannot recover it. Support enquiries are received by email and not stored in a dedicated support database.",
+          "On-device and iCloud information is kept until you delete it. Delete individual records on their screens, or all data from Settings → Data management → Delete all data. Deleting a shared reunion also removes access for its participant. Uninstalling removes on-device data, but sharing state and the Share Pass ledger in iCloud may remain as needed for synchronization after reinstalling.",
         ],
         [
           "11. Data summary export",
@@ -910,7 +907,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "12. Security",
-          "Because the app has no account, it does not handle passwords. On-device data is protected by iOS security mechanisms.",
+          "The app has no proprietary account and does not handle passwords. On-device data is protected by iOS security mechanisms; shared data is protected through Apple iCloud / CloudKit.",
         ],
         [
           "13. Minors",
@@ -936,11 +933,11 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第2条（本サービスの内容）",
-          "本アプリは、再会予定の作成、カウントダウン、写真・メモ、会ったらやりたいこと、再会記録、アルバム、ウィジェット、通知、カレンダー追加などの機能を、利用者の端末上で提供します。データは原則として端末内に保存されます。本アプリはアカウント登録を必要とせず、利用者間でデータを共有する機能は提供していません。",
+          "本アプリは、大切な人との再会予定、会ったらやりたいこと、写真やメモ、再会の記録を作成・保存・閲覧する機能と、利用者が選んだ1人のパートナーと再会単位でこれらをiCloud共有する機能を提供します。共有への参加にはApple AccountおよびiCloudを利用できる環境が必要です。",
         ],
         [
-          "第3条（利用料金および広告）",
-          "本アプリは無料で提供されます。一部の画面には広告が表示されます。現在、有料プラン、広告削除機能およびアプリ内課金は提供していません。通信に必要な費用は利用者の負担とします。",
+          "第3条（利用料金、Share Passおよび広告）",
+          "本アプリの個人利用と最初の再会の共有は無料です。一部の画面には広告が表示されます。2回目以降の再会を共有するには、App内課金で提供する消費型商品「Share Pass」（1枚¥500）を1枚使用します。Share Passに有効期限はなく、1枚につき1つの再会を1人のパートナーと共有できます。Share Passを適用した再会では参加者双方に広告を表示しません。購入処理、価格表示、返金その他の取扱いにはAppleの条件が適用されます。通信費は利用者の負担とします。",
         ],
         [
           "第4条（利用者の責任）",
@@ -956,7 +953,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第7条（データの管理）",
-          "本アプリのデータは原則として利用者の端末内に保存され、アカウントによる同期はありません。機種変更時の自動移行は保証しません。端末の故障・紛失、本アプリの削除、OSのアップデートその他の事由によりデータが失われる可能性があり、運営者は失われたローカルデータを復旧できません。「設定 → データ管理」のJSON書き出しはデータ概要であり、写真やメモの完全な内容は含まれず、アプリへ復元することはできません。大切な写真は写真アプリ等にも保存してください。",
+          "個人利用中のデータは端末内に保存され、共有を有効にした再会のデータ、初回無料共有の利用状態およびShare Pass台帳はiCloudにも保存されます。共有参加者は共有された再会の内容を閲覧・編集できます。「設定 → データ管理」のJSON書き出しはデータ概要であり、写真やメモのバックアップまたは復元には使用できません。端末、iCloudまたは通信の障害等によるデータ消失について、運営者は責任を負いません。",
         ],
         [
           "第8条（保証の否認・免責事項）",
@@ -986,11 +983,11 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 2 — The Service",
-          "The App provides reunion plans, countdown, photos and notes, things to do, reunion records, albums, widgets, notifications and calendar export on your device. Data is stored on-device in principle. The App does not require an account and does not offer sharing between users’ devices.",
+          "The App lets you create and keep reunion plans, things to do together, photos, notes, and reunion records, and share one reunion at a time with one partner through iCloud. Joining a shared reunion requires an Apple Account and access to iCloud.",
         ],
         [
-          "Article 3 — Fees and advertising",
-          "The App is provided free of charge. Ads may appear on some screens. Paid plans, ad removal and in-app purchases are not currently offered. You are responsible for data and communication charges.",
+          "Article 3 — Fees, Share Pass, and advertising",
+          "Personal use and the first shared reunion are free. Ads may appear on some screens. Each additional shared reunion uses one consumable Share Pass (¥500). A pass has no expiry and shares one reunion with one partner. A reunion using a Share Pass is ad-free for both participants. Apple’s terms govern purchase, price, and refunds. You are responsible for data charges.",
         ],
         [
           "Article 4 — User responsibility",
@@ -1006,7 +1003,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 7 — Data management",
-          "App data is stored on your device in principle; there is no account-based sync. Automatic migration when changing phones is not guaranteed. Data may be lost through device failure or loss, uninstalling the App, OS updates or similar events, and the operator cannot recover lost local data. The JSON export under Settings → Data management is a data summary only; it does not include full photos or notes and cannot be restored into the App. Keep important photos in the Photos app as well.",
+          "Personal-use data stays on your device. Shared reunion data, first-free-sharing state, and the Share Pass ledger also use iCloud. A participant can view and edit a shared reunion. The JSON export under Settings → Data management is a summary only and cannot back up or restore photos or notes. The operator is not responsible for loss caused by device, iCloud, or network failure.",
         ],
         [
           "Article 8 — Disclaimer",

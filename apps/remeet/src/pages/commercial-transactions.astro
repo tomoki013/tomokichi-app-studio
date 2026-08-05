@@ -5,5 +5,12 @@ import "../styles/global.css";
 ---
 
 <AppShell lang="en" title="Commercial Transactions Disclosure" page="commercial-transactions">
-  <CommercialTransactionsPage lang="en" appName="Remeet" appSlug="remeet" adSupported />
+  <CommercialTransactionsPage
+    lang="en"
+    appName="Remeet"
+    appSlug="remeet"
+    adSupported
+    purchases={[{ name: ["Share Pass（1枚）", "Share Pass (one)"], price: "¥500", consumable: true }]}
+    lastUpdated={["2026年8月5日", "August 5, 2026"]}
+  />
 </AppShell>

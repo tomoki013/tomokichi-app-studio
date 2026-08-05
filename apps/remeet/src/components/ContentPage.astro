@@ -1,5 +1,6 @@
 ---
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import {
   faqs as faqList,
   features as featureList,
@@ -32,8 +33,8 @@ const guides = guideList(ja);
 const faqs = faqList(ja);
 const legalSections = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
 const legalDate = ja
-  ? "制定日：2026年7月24日／最終更新日：2026年8月1日"
-  : "Effective date: July 24, 2026 / Last updated: August 1, 2026";
+  ? "制定日：2026年7月24日／最終更新日：2026年8月5日"
+  : "Effective date: July 24, 2026 / Last updated: August 5, 2026";
 
 const faqCategories = ja
   ? [["all", "すべて"], ["start", "はじめての方へ"], ["feature", "機能について"], ["data", "データについて"], ["other", "その他"]]
@@ -41,7 +42,7 @@ const faqCategories = ja
 
 const planIncludes = ja
   ? [
-      "再会予定の作成（数の制限はありません）",
+      "再会予定の作成（個人利用の数に制限はありません）",
       "待っている間の記録（写真・メモ）",
       "会ったらやりたいことリスト",
       "再会のアルバムと振り返り",
@@ -50,9 +51,10 @@ const planIncludes = ja
       "6言語対応",
       "アカウント登録不要",
       "端末内保存",
+      "最初の再会を1人のパートナーと無料で共有",
     ]
   : [
-      "Create reunion plans (no limit)",
+      "Create reunion plans (no limit for personal use)",
       "Waiting memories (photos and notes)",
       "List of things you want to do together",
       "Reunion albums and reflections",
@@ -61,6 +63,7 @@ const planIncludes = ja
       "Six languages",
       "No account required",
       "On-device storage",
+      "Share your first reunion with one partner for free",
     ];
 
 const screenshots = (
@@ -86,9 +89,9 @@ const heroEyebrow: Partial<Record<Page, string>> = {
   "how-to": "HOW TO USE",
   pricing: "PRICING",
   faq: "FAQ",
+  news: "NEWS",
   updates: "UPDATES",
   screenshots: "SCREENSHOTS",
-  widgets: "WIDGETS",
 };
 
 const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
@@ -109,7 +112,7 @@ const newsPosts = ja
         body: [
           "Remeetの公式ブランドサイトを公開しました。大切な人との次の再会までのカウントダウンと、待っている間の記録というアプリの位置づけを、公開準備中の段階からそのままお伝えしています。",
           "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
-          "v1.0.0はアカウント不要で、データは端末内に保存されます。相手との共有機能は含みません。詳細はプライバシーポリシーと利用規約をご確認ください。",
+          "Remeetは独自アカウント不要です。最初の再会は無料で共有でき、2回目以降はShare Passを使って1人のパートナーとiCloud共有できます。詳細は料金・プライバシーポリシー・利用規約をご確認ください。",
         ],
       },
       {
@@ -122,7 +125,7 @@ const newsPosts = ja
         summary: "Remeetは再会の日までの日数を見える化し、そのあいだのメモや思い出を端末に残せます。",
         body: [
           "次に会う日が決まっていると、日常の中でその日までの距離を測りたくなることがあります。Remeetはそのカウントダウンを中心に、待っている間に残したい記録を手元に置いておくためのアプリです。",
-          "ホーム画面やロック画面のウィジェットも、その待ち時間をそっと思い出させるためのものです。共有やサブスクリプションは v1 の範囲外です。",
+          "ホーム画面やロック画面のウィジェットも、その待ち時間をそっと思い出させるためのものです。最初の再会は無料で共有でき、その後は必要な再会にだけShare Passを使えます。サブスクリプションではありません。",
         ],
       },
       {
@@ -132,9 +135,9 @@ const newsPosts = ja
         badge: "準備中",
         badgeTone: "note" as const,
         title: "App Store公開に向けて",
-        summary: "基本機能は無料。一部画面に広告があります。iPhone向けに準備中です。",
+        summary: "個人利用と最初の再会の共有は無料。追加の共有にはShare Passを使います。",
         body: [
-          "Remeetは現在App Store公開準備中です。基本機能は無料で利用でき、一部画面に広告が表示されます。価格や対応環境の最終表示はApp Store上の記載が正しいものとします。",
+          "Remeetは現在App Store公開準備中です。個人利用と最初の再会の共有は無料で、一部画面に広告が表示されます。2回目以降の共有にはShare Pass（1枚¥500）を使います。価格と提供内容はApp Storeおよび購入画面の表示が正しいものとします。",
         ],
       },
     ]
@@ -149,7 +152,7 @@ const newsPosts = ja
         body: [
           "The official Remeet brand site is live. It explains the countdown to a reunion and the on-device records you keep while waiting—while the app is still preparing for release.",
           "There is no App Store link yet. When distribution is ready, we will share it here as well.",
-          "v1.0.0 needs no account; data stays on your device. Partner sharing is not included. See the Privacy Policy and Terms for details.",
+          "Remeet needs no proprietary account. Share your first reunion for free, then use a Share Pass for each additional reunion shared with one partner through iCloud. See Pricing, Privacy, and Terms for details.",
         ],
       },
       {
@@ -162,7 +165,7 @@ const newsPosts = ja
         summary: "Remeet surfaces the days until you meet again and keeps notes and memories on your iPhone.",
         body: [
           "When the next meeting is set, the distance to that day becomes something you notice. Remeet centers that countdown and keeps the records you want nearby while you wait.",
-          "Home and Lock Screen widgets are there as gentle reminders. Sharing and subscriptions are outside v1.",
+          "Home and Lock Screen widgets are there as gentle reminders. Your first shared reunion is free; after that, use a Share Pass only for the reunion you want to share. There is no subscription.",
         ],
       },
       {
@@ -172,9 +175,9 @@ const newsPosts = ja
         badge: "Coming soon",
         badgeTone: "note" as const,
         title: "Preparing for the App Store",
-        summary: "Core features free, with ads on some screens. Designed for iPhone.",
+        summary: "Personal use and the first shared reunion are free. Share Pass is available for additional shared reunions.",
         body: [
-          "Remeet is being prepared for the App Store. Core features are free; some screens may show ads. The App Store listing will be the source of truth for pricing and requirements.",
+          "Remeet is being prepared for the App Store. Personal use and the first shared reunion are free; some screens may show ads. Each additional shared reunion uses one ¥500 Share Pass. The App Store listing and purchase screen are the source of truth.",
         ],
       },
     ];
@@ -194,9 +197,8 @@ const newsPosts = ja
           <span class="blob blob-b"></span>
           {page === "features" && <AppScreen screen="home" size="sm" lang={lang} class="hero-art-screen" />}
           {page === "how-to" && <AppScreen screen="wishes" size="sm" lang={lang} class="hero-art-screen" />}
-          {page === "updates" && <img src="/assets/update-showcase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
+          {(page === "news" || page === "updates") && <span class="release-orbit"><b>R</b><i></i><em></em></span>}
           {page === "screenshots" && <AppScreen screen="album" size="sm" lang={lang} class="hero-art-screen" />}
-          {page === "widgets" && <img src="/assets/widget-showcase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
           {page === "faq" && <span class="hero-marks"><b>?</b><i>?</i></span>}
           {page === "pricing" && <img src="/assets/sky-vase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
         </figure>
@@ -242,7 +244,7 @@ const newsPosts = ja
           <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.bulb} /></span>
           <div>
             <h2>{ja ? "はじめての方へ" : "New to Remeet?"}</h2>
-            <p>{ja ? "アカウント登録は必要ありません。データは端末内に保存され、相手との共有機能は v1.0.0 にはありません。" : "No account is needed. Data stays on your device; partner sharing is not part of v1.0.0."}</p>
+            <p>{ja ? "独自アカウントは必要ありません。個人利用のデータは端末内に保存され、共有した再会だけがAppleのiCloudを通じて招待した相手と同期されます。" : "No proprietary account is needed. Personal data stays on your device; only a shared reunion syncs with the invited partner through Apple iCloud."}</p>
           </div>
         </aside>
         <section class="guide-block">
@@ -256,13 +258,13 @@ const newsPosts = ja
                   <ol>{guide.steps.map((item) => <li>{item}</li>)}</ol>
                   {guide.note && <p class="guide-note">{guide.note}</p>}
                 </div>
-                <figure>
+                <div class="guide-visual-media">
                   {guide.screen ? (
                     <AppScreen screen={guide.screen} size="sm" lang={lang} />
                   ) : (
                     <img src={guide.image} alt={guide.imageAlt} width="1448" height="1086" loading="lazy" decoding="async" />
                   )}
-                </figure>
+                </div>
               </article>
             ))}
           </div>
@@ -276,56 +278,58 @@ const newsPosts = ja
     )}
 
     {page === "screenshots" && (
-      <div class="shot-gallery">
-        {screenshots.map(([screen, label]) => (
-          <AppScreen screen={screen} size="md" lang={lang} label={label} />
-        ))}
-      </div>
-    )}
-
-    {page === "widgets" && (
-      <div class="single-showcase">
-        <img
-          src="/assets/widget-showcase.png"
-          alt={ja ? "Remeetのホーム画面とロック画面ウィジェット" : "Remeet Home Screen and Lock Screen widgets"}
-          width="1122"
-          height="1402"
-          loading="lazy"
-          decoding="async"
-        />
-        <p class="showcase-note">
-          {ja
-            ? "Small / Medium / Large とロック画面に対応。表示内容はウィジェットのサイズによって異なります。"
-            : "Supports Small, Medium, Large and Lock Screen families. What’s shown depends on the widget size."}
-        </p>
-      </div>
+      <>
+        <div class="shot-gallery">
+          {screenshots.map(([screen, label]) => (
+            <AppScreen screen={screen} size="md" lang={lang} label={label} />
+          ))}
+        </div>
+        <section class="widget-gallery-card">
+          <div>
+            <p class="eyebrow">WIDGETS</p>
+            <h2>{ja ? "再会までを、いつもの画面に。" : "Keep the reunion on the screen you already see."}</h2>
+            <p>{ja
+              ? "ホーム画面のSmall / Medium / Largeと、ロック画面のインライン・円形・長方形に対応しています。サイズに応じて日数、進捗、ルート、最近の記録などを表示します。"
+              : "Use Small, Medium, or Large on the Home Screen, plus inline, circular, and rectangular Lock Screen widgets. Each size shows the countdown, progress, route, or recent records differently."}</p>
+          </div>
+          <img src="/assets/widget-showcase.png" alt={ja ? "Remeetのホーム画面とロック画面ウィジェット" : "Remeet Home Screen and Lock Screen widgets"} width="1122" height="1402" loading="lazy" decoding="async" />
+        </section>
+      </>
     )}
 
     {page === "pricing" && (
-      <div class="plan-card">
-          <p class="plan-label">v1.0.0</p>
-          <strong class="plan-price">{ja ? "無料" : "Free"}</strong>
+      <div class="pricing-story">
+        <section class="personal-plan">
+          <header><p>{ja ? "ひとりで使う" : "USE IT YOURSELF"}</p><strong>{ja ? "無料" : "Free"}</strong></header>
           <div class="plan-message">
-            {ja ? (
-              <>
-                <p>Remeetは無料で利用できます。</p>
-                <p>アカウント登録やログインは必要ありません。<br />一部の画面には広告が表示されます。<br />現在、有料プランや広告削除機能は提供していません。</p>
-              </>
-            ) : (
-              <>
-                <p>Remeet is free to use.</p>
-                <p>No account or sign-in is required.<br />Ads may appear on some screens.<br />Paid plans and ad removal are not currently available.</p>
-              </>
-            )}
+            <p>{ja ? "予定や思い出を自分の端末で残す基本機能は、すべて無料です。" : "Every core feature for keeping plans and memories on your own device is free."}</p>
+            <p>{ja ? "アカウント登録は不要。一部画面には広告が表示されます。" : "No account is needed. Ads may appear on some screens."}</p>
           </div>
           <ul class="plan-list">{planIncludes.map((item) => <li>{item}</li>)}</ul>
-          <p class="plan-ad-note">
-            {ja
-              ? "広告はホームや、件数が増えたやりたいこと・記録の一覧など、待つ体験の一部画面に表示されます。アルバム画面には広告を出しません。"
-              : "Ads may appear on Home and on longer wish or memory lists. The album screen is kept free of ads."}
-          </p>
-          <p class="env-note"><strong>{envLine}</strong><br />{envNote}</p>
-          <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+        </section>
+        <section class="share-pass-plan">
+          <div class="pass-ticket" aria-hidden="true"><span>SHARE PASS</span><b>1</b><small>ONE REUNION</small></div>
+          <div class="share-pass-copy">
+            <p class="plan-label">{ja ? "2回目以降の共有" : "ADDITIONAL SHARED REUNIONS"}</p>
+            <h2>{ja ? "Share Pass 1枚" : "One Share Pass"}</h2>
+            <strong class="plan-price">¥500</strong>
+            <p>{ja
+              ? "1枚で、1つの再会を1人のパートナーと共有できます。予定、待っている間の記録、やりたいことをふたりで残せて、その再会では双方に広告が表示されません。"
+              : "One pass shares one reunion with one partner. Keep the plan, memories, and wish list together, and that reunion is ad-free for both people."}</p>
+            <ul>
+              <li>{ja ? "最初の再会の共有は無料" : "Your first shared reunion is free"}</li>
+              <li>{ja ? "有効期限なし・必要な再会にだけ使用" : "No expiry; use it only when you need it"}</li>
+              <li>{ja ? "買い切りの消費型商品・サブスクリプションなし" : "One-time consumable; no subscription"}</li>
+              <li>{ja ? "相手が参加するまでPassは消費されません" : "The pass is not spent until your partner joins"}</li>
+            </ul>
+            <small>{ja ? "価格と提供内容はApp Storeおよびアプリ内購入画面の表示が正しいものとします。" : "The App Store and in-app purchase screen are the source of truth for price and availability."}</small>
+          </div>
+        </section>
+        <p class="plan-ad-note">{ja
+          ? "個人利用では一部画面に広告が表示されます。Share Passを適用して共有した再会は、参加者双方が広告なしで利用できます。"
+          : "Personal use may include ads on some screens. A reunion shared with a Share Pass is ad-free for both participants."}</p>
+        <p class="env-note"><strong>{envLine}</strong><br />{envNote}</p>
+        <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
       </div>
     )}
 
@@ -369,7 +373,8 @@ const newsPosts = ja
       </article>
     )}
 
-    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "updates" && <AppUpdatesPage lang={lang} appName="Remeet" newsHref={ja ? "/ja/news" : "/news"} />}
   </section>
 </AppShell>
 

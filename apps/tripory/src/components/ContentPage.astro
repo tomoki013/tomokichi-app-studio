@@ -1,10 +1,11 @@
 ---
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import Shell from "./Shell.astro";
 
 type Locale = "ja" | "en";
-type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "updates";
+type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "news" | "updates";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
 const titleMap: Record<Page, [string, string]> = {
@@ -14,14 +15,16 @@ const titleMap: Record<Page, [string, string]> = {
   faq: ["よくある質問", "Frequently asked questions"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "Updates"],
+  news: ["お知らせ", "News"],
+  updates: ["アップデート情報", "App updates"],
 };
 const subtitleMap: Partial<Record<Page, [string, string]>> = {
   features: ["旅のすべてを、ひとつのアプリに。", "Everything about your travels, in one app."],
   principles: ["デザインも、体験も、美しく。", "Beautiful in both design and experience."],
   screenshots: ["美しい旅の記録体験を。", "A beautiful way to remember every journey."],
   faq: ["よくいただくご質問をまとめました。", "Everything you may want to know."],
-  updates: ["新機能や改善内容をお知らせします。", "See new features and improvements."],
+  news: ["Triporyからのお知らせと旅のコラム。", "News from Tripory and stories about keeping journeys."],
+  updates: ["新機能や改善内容をバージョンごとに記録します。", "Version-by-version features, improvements, and fixes."],
 };
 const title = titleMap[page][ja ? 0 : 1];
 const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
@@ -229,7 +232,22 @@ const legal = {
 
     {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2>{body.split("\n\n").map((para) => <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>)}</section>)}</article>}
 
-    {page === "updates" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "updates" && (
+      <AppUpdatesPage
+        lang={lang}
+        appName="Tripory"
+        newsHref={ja ? "/ja/news" : "/news"}
+        releases={[{
+          version: "1.0.0",
+          date: "2026.07.24",
+          datetime: "2026-07-24",
+          label: ["最初のリリース", "First release"],
+          summary: ["旅で集めた場所と思い出を、自分だけの世界として残せる最初のバージョンです。", "The first version of Tripory, made to keep the places and memories gathered through travel."],
+          changes: [["訪れた国を世界地図に記録", "旅ごとの日付・写真・メモをタイムラインに保存", "訪問した国・都市・日数の統計", "アカウント不要・端末内保存"], ["Mark visited countries on a world map", "Keep dates, photos, and notes in a travel timeline", "See statistics for countries, cities, and days", "No account; records stay on your device"]],
+        }]}
+      />
+    )}
 
   </section>
 </Shell>

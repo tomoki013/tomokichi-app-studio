@@ -6,6 +6,8 @@ type Purchase = {
   name: [string, string];
   /** Tax-inclusive price as shown on the App Store, e.g. "¥300". */
   price: string;
+  /** Consumables cannot be restored after they have been used. */
+  consumable?: boolean;
 };
 
 const {
@@ -38,10 +40,10 @@ const freeCopyEn = adSupported
   : `Downloading ${appName} and using its core features is free.`;
 
 const purchaseListJa = purchases
-  .map((purchase) => `「${purchase.name[0]}」${purchase.price}（税込・買い切り）`)
+  .map((purchase) => `「${purchase.name[0]}」${purchase.price}（税込・${purchase.consumable ? "消費型" : "買い切り"}）`)
   .join("、");
 const purchaseListEn = purchases
-  .map((purchase) => `“${purchase.name[1]}” ${purchase.price} (tax included, one-time)`)
+  .map((purchase) => `“${purchase.name[1]}” ${purchase.price} (tax included, ${purchase.consumable ? "consumable" : "one-time"})`)
   .join(", ");
 
 const priceJa = hasPurchases
@@ -59,10 +61,14 @@ const paymentEn = hasPurchases
   : "If paid products are introduced, payment will be charged at confirmation using the payment method registered to your Apple Account.";
 
 const deliveryJa = hasPurchases
-  ? "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。アプリ内課金は、購入手続きの完了後、ただちに反映されます。同じApple Accountであれば、設定画面から購入を復元できます。"
+  ? purchases.some((purchase) => purchase.consumable)
+    ? "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。アプリ内課金は購入完了後、ただちに残高へ反映されます。消費型商品は使用後に復元できません。未使用分の同期範囲はアプリ内の案内に従います。"
+    : "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。アプリ内課金は、購入手続きの完了後、ただちに反映されます。同じApple Accountであれば、設定画面から購入を復元できます。"
   : "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。有料機能を提供する場合は、購入手続き完了後に利用できます。";
 const deliveryEn = hasPurchases
-  ? "The app is available immediately after its App Store download completes. In-app purchases take effect as soon as the purchase completes, and can be restored from Settings on the same Apple Account."
+  ? purchases.some((purchase) => purchase.consumable)
+    ? "The app is available immediately after download. An in-app purchase is added to the balance after completion. A consumable cannot be restored after use; synchronization of unused items follows the in-app guidance."
+    : "The app is available immediately after its App Store download completes. In-app purchases take effect as soon as the purchase completes, and can be restored from Settings on the same Apple Account."
   : "The app is available immediately after its App Store download completes. Any future paid feature will become available after purchase is completed.";
 
 const returnsJa = hasPurchases

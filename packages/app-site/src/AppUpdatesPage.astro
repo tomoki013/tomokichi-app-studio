@@ -1,0 +1,111 @@
+---
+export type AppRelease = {
+  version: string;
+  date: string;
+  datetime: string;
+  label?: [string, string];
+  summary: [string, string];
+  changes: [string[], string[]];
+};
+
+const {
+  lang,
+  appName,
+  releases = [],
+  newsHref = "",
+} = Astro.props as {
+  lang: "ja" | "en";
+  appName: string;
+  releases?: AppRelease[];
+  /** Optional link to a separate editorial/news page. */
+  newsHref?: string;
+};
+const ja = lang === "ja";
+---
+
+<div class="app-release-ledger">
+  <div class="app-release-intro">
+    <p class="app-release-kicker">RELEASE LEDGER</p>
+    <p>{ja
+      ? `${appName}の変更を、バージョンごとに記録しています。新機能だけでなく、小さな改善や修正もここで確認できます。`
+      : `A version-by-version record of ${appName}. New features, small refinements, and fixes all live here.`}</p>
+    {newsHref && (
+      <a href={newsHref}>{ja ? "プロダクトからのお知らせを見る" : "Read product news"}<span aria-hidden="true">↗</span></a>
+    )}
+  </div>
+
+  {releases.length ? (
+    <ol class="app-release-list">
+      {releases.map((release, index) => (
+        <li>
+          <span class="app-release-node" aria-hidden="true"><i></i></span>
+          <article>
+            <header>
+              <div>
+                <p>{release.label?.[ja ? 0 : 1] ?? (index === 0 ? (ja ? "最新" : "Latest") : (ja ? "過去のバージョン" : "Earlier release"))}</p>
+                <h2>Version {release.version}</h2>
+              </div>
+              <time datetime={release.datetime}>{release.date}</time>
+            </header>
+            <p class="app-release-summary">{release.summary[ja ? 0 : 1]}</p>
+            <ul>{release.changes[ja ? 0 : 1].map((change) => <li>{change}</li>)}</ul>
+          </article>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <section class="app-release-empty" aria-labelledby="app-release-empty-title">
+      <div class="app-release-empty-mark" aria-hidden="true"><span>1.0</span><i></i></div>
+      <div>
+        <p>{ja ? "最初のページ" : "THE FIRST PAGE"}</p>
+        <h2 id="app-release-empty-title">{ja ? "最初のリリースを準備しています。" : "The first release is being prepared."}</h2>
+        <p>{ja
+          ? "App Storeでの公開後、バージョン番号・公開日・変更内容がここから積み重なっていきます。"
+          : "After the App Store release, version numbers, dates, and every change will begin accumulating here."}</p>
+      </div>
+    </section>
+  )}
+</div>
+
+<style>
+  .app-release-ledger { --ledger-accent: var(--app-site-accent, #557a70); width: min(900px, 100%); margin: 0 auto; }
+  .app-release-intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px 36px; align-items: end; padding: 0 0 clamp(34px, 5vw, 56px); border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
+  .app-release-intro > p:not(.app-release-kicker) { max-width: 620px; margin: 0; font-size: clamp(14px, 1.6vw, 17px); line-height: 1.9; opacity: .68; }
+  .app-release-kicker { grid-column: 1 / -1; margin: 0 0 -4px; color: var(--ledger-accent); font-size: 10px; font-weight: 750; letter-spacing: .2em; }
+  .app-release-intro a { display: inline-flex; gap: 8px; align-items: center; padding-bottom: 3px; border-bottom: 1px solid currentColor; font-size: 12px; font-weight: 650; white-space: nowrap; }
+  .app-release-list { margin: 0; padding: clamp(40px, 6vw, 68px) 0 0; list-style: none; }
+  .app-release-list > li { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: clamp(16px, 3vw, 34px); padding-bottom: clamp(34px, 5vw, 56px); }
+  .app-release-list > li:not(:last-child)::before { content: ""; position: absolute; top: 16px; bottom: -4px; left: 15px; width: 1px; background: color-mix(in srgb, var(--ledger-accent) 28%, transparent); }
+  .app-release-node { position: relative; z-index: 1; width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--ledger-accent) 50%, transparent); border-radius: 50%; background: var(--app-site-page-background, #fff); }
+  .app-release-node i { width: 7px; height: 7px; border-radius: 50%; background: var(--ledger-accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--ledger-accent) 12%, transparent); }
+  .app-release-list article { padding: clamp(22px, 3vw, 34px); border: 1px solid color-mix(in srgb, currentColor 10%, transparent); border-radius: 24px; background: color-mix(in srgb, var(--app-site-page-background, #fff) 84%, white); box-shadow: 0 18px 50px color-mix(in srgb, currentColor 7%, transparent); }
+  .app-release-list header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; }
+  .app-release-list header p { margin: 0 0 8px; color: var(--ledger-accent); font-size: 9px; font-weight: 750; letter-spacing: .18em; text-transform: uppercase; }
+  .app-release-list h2 { margin: 0; font-size: clamp(22px, 3vw, 32px); font-weight: 560; letter-spacing: -.025em; }
+  .app-release-list time { padding: 7px 11px; border-radius: 999px; background: color-mix(in srgb, var(--ledger-accent) 10%, transparent); font-size: 11px; white-space: nowrap; opacity: .68; }
+  .app-release-summary { margin: 22px 0 0; font-size: clamp(14px, 1.6vw, 17px); line-height: 1.75; }
+  .app-release-list article ul { margin: 20px 0 0; padding: 18px 0 0; display: grid; gap: 10px; border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent); list-style: none; }
+  .app-release-list article li { position: relative; padding-left: 20px; font-size: 13px; line-height: 1.75; opacity: .72; }
+  .app-release-list article li::before { content: ""; position: absolute; top: .72em; left: 1px; width: 8px; height: 1px; background: var(--ledger-accent); }
+  .app-release-empty { margin-top: clamp(38px, 7vw, 76px); padding: clamp(28px, 6vw, 58px); display: grid; grid-template-columns: minmax(120px, .42fr) minmax(0, 1fr); gap: clamp(28px, 6vw, 72px); align-items: center; border: 1px solid color-mix(in srgb, currentColor 11%, transparent); border-radius: 30px; background: linear-gradient(135deg, color-mix(in srgb, var(--ledger-accent) 9%, transparent), color-mix(in srgb, var(--app-site-page-background, #fff) 85%, white)); overflow: hidden; }
+  .app-release-empty-mark { aspect-ratio: 1; display: grid; place-items: center; position: relative; border: 1px solid color-mix(in srgb, var(--ledger-accent) 32%, transparent); border-radius: 50%; color: var(--ledger-accent); }
+  .app-release-empty-mark::before, .app-release-empty-mark::after { content: ""; position: absolute; background: color-mix(in srgb, var(--ledger-accent) 26%, transparent); }
+  .app-release-empty-mark::before { width: 145%; height: 1px; transform: rotate(-18deg); }
+  .app-release-empty-mark::after { width: 1px; height: 145%; transform: rotate(18deg); }
+  .app-release-empty-mark span { position: relative; z-index: 1; padding: 8px; background: color-mix(in srgb, var(--app-site-page-background, #fff) 88%, white); font-family: Georgia, serif; font-size: clamp(26px, 4vw, 44px); }
+  .app-release-empty > div:last-child > p:first-child { margin: 0 0 12px; color: var(--ledger-accent); font-size: 9px; font-weight: 750; letter-spacing: .18em; }
+  .app-release-empty h2 { margin: 0; font-size: clamp(23px, 3.6vw, 38px); font-weight: 520; line-height: 1.4; letter-spacing: -.03em; }
+  .app-release-empty > div:last-child > p:last-child { margin: 18px 0 0; font-size: 13px; line-height: 1.9; opacity: .66; }
+  @media (max-width: 620px) {
+    .app-release-intro { grid-template-columns: 1fr; align-items: start; }
+    .app-release-intro a { justify-self: start; }
+    .app-release-list > li { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; }
+    .app-release-list > li:not(:last-child)::before { left: 11px; }
+    .app-release-node { width: 23px; height: 23px; }
+    .app-release-node i { width: 5px; height: 5px; }
+    .app-release-list header { display: grid; gap: 12px; }
+    .app-release-list time { justify-self: start; }
+    .app-release-empty { grid-template-columns: 1fr; }
+    .app-release-empty-mark { width: min(170px, 58vw); margin: 0 auto; }
+  }
+</style>
