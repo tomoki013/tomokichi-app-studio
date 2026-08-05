@@ -22,8 +22,10 @@ import AppShell from "./AppShell.astro";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
 const title = pick(ja, titleMap[page]);
-const subtitle = subtitleMap[page] ? pick(ja, subtitleMap[page]!) : undefined;
-const description = pageDescriptions[page] ? pick(ja, pageDescriptions[page]!) : undefined;
+const subtitlePair = subtitleMap[page];
+const descriptionPair = pageDescriptions[page];
+const subtitle = subtitlePair ? pick(ja, subtitlePair) : undefined;
+const description = descriptionPair ? pick(ja, descriptionPair) : undefined;
 const features = featureList(ja);
 const steps = stepList(ja);
 const guides = guideList(ja);
@@ -84,7 +86,7 @@ const heroEyebrow: Partial<Record<Page, string>> = {
   "how-to": "HOW TO USE",
   pricing: "PRICING",
   faq: "FAQ",
-  updates: "NEWS",
+  updates: "UPDATES",
   screenshots: "SCREENSHOTS",
   widgets: "WIDGETS",
 };
@@ -141,7 +143,7 @@ const newsPosts = ja
         id: "site-launch",
         date: "2026.08.01",
         datetime: "2026-08-01",
-        badge: "News",
+        badge: "Update",
         title: "The official Remeet brand site is now live",
         summary: "Features, how-to, widgets, pricing, FAQ, Privacy Policy, and Terms—in one place.",
         body: [
@@ -300,8 +302,7 @@ const newsPosts = ja
     )}
 
     {page === "pricing" && (
-      <>
-        <div class="plan-card">
+      <div class="plan-card">
           <p class="plan-label">v1.0.0</p>
           <strong class="plan-price">{ja ? "無料" : "Free"}</strong>
           <div class="plan-message">
@@ -325,8 +326,7 @@ const newsPosts = ja
           </p>
           <p class="env-note"><strong>{envLine}</strong><br />{envNote}</p>
           <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
-        </div>
-      </>
+      </div>
     )}
 
     {page === "faq" && (

@@ -18,17 +18,17 @@ export const titles: Record<Page, [string, string]> = {
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "News"],
-  regions: ["国内地域マップ", "Regional maps"],
+  updates: ["お知らせ", "Updates"],
+  regions: ["地域マップ", "Regional maps"],
 };
 
 export const descriptions: Record<Page, [string, string]> = {
   features: [
-    "世界地図、訪問統計、11か国の国内地域マップ、JSONバックアップなどColorviaの機能。",
+    "世界地図、訪問統計、11か国の地域マップ、JSONバックアップなどColorviaの機能。",
     "Colorvia features: world map, visit stats, regional maps for 11 countries, and JSON backup.",
   ],
   "how-to": [
-    "国の追加から国内地域の記録、データ移行まで、Colorviaの使い方。",
+    "国の追加から地域の記録、データ移行まで、Colorviaの使い方。",
     "How to add countries, record regional visits, and move data with Colorvia.",
   ],
   screenshots: [
@@ -36,7 +36,7 @@ export const descriptions: Record<Page, [string, string]> = {
     "Screens of Colorvia’s world map and statistics.",
   ],
   faq: [
-    "国の記録、国内地域、JSONバックアップ、広告についてのFAQ。",
+    "国の記録、地域、JSONバックアップ、広告についてのFAQ。",
     "FAQ about visit tracking, regional maps, JSON backup, and ads.",
   ],
   privacy: [
@@ -49,10 +49,10 @@ export const descriptions: Record<Page, [string, string]> = {
   ],
   updates: [
     "Colorvia公式ブランドサイト公開のお知らせ。",
-    "News about the official Colorvia brand site launch.",
+    "Updates from Colorvia, including product notes and travel columns.",
   ],
   regions: [
-    "日本・フランスなど11か国で、都道府県や州など国内地域まで記録できます。",
+    "日本・フランスなど11か国で、都道府県や州など国の中の地域まで記録できます。",
     "Record prefectures, states and provinces in 11 supported countries.",
   ],
 };
@@ -192,15 +192,15 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "4. 基本方針",
-          "本アプリはアカウント登録を必要としません。訪問国および国内地域の記録は原則として利用者の端末内に保存されます。運営者は、通常のアプリ利用だけではこれらの記録内容を閲覧できるサーバーを運用していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用します。問い合わせフォームを明示的に送信した場合に限り、利用者が入力した情報と技術情報を送信します。",
+          "本アプリはアカウント登録を必要としません。訪問国および地域の記録は原則として利用者の端末内に保存されます。運営者は、通常のアプリ利用だけではこれらの記録内容を閲覧できるサーバーを運用していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用します。問い合わせフォームを明示的に送信した場合に限り、利用者が入力した情報と技術情報を送信します。",
         ],
         [
           "5. 端末内に保存する情報",
-          "本アプリは、次の情報を端末内に保存します。\n\n・訪問国の状態および更新日時\n・国内地域の訪問状態および更新日時\n・オンボーディング完了状態\n・表示テーマ（システム／ライト／ダーク）\n・地図色\n・広告同意に関する状態（OSおよび広告SDKが端末上で保持する情報を含む）\n・問い合わせ用のランダムなクライアント識別子\n・その他、アプリの動作に必要なローカル設定",
+          "本アプリは、次の情報を端末内に保存します。\n\n・訪問国の状態および更新日時\n・地域の訪問状態および更新日時\n・オンボーディング完了状態\n・表示テーマ（システム／ライト／ダーク）\n・地図色\n・広告同意に関する状態（OSおよび広告SDKが端末上で保持する情報を含む）\n・問い合わせ用のランダムなクライアント識別子\n・その他、アプリの動作に必要なローカル設定",
         ],
         [
           "6. データの書き出し・読み込み",
-          "利用者は、設定の「データ管理」から、訪問国および国内地域の記録をJSON形式で書き出し、別の端末または再インストール後のColorviaへ読み込むことができます。\n\n書き出したファイルは利用者自身が管理し、第三者への共有、紛失、改変等について運営者は管理できません。不正または破損したJSON、将来の仕様変更後の互換性を完全には保証しません。",
+          "利用者は、設定の「データ管理」から、訪問国および地域の記録をJSON形式で書き出し、別の端末または再インストール後のColorviaへ読み込むことができます。\n\n書き出したファイルは利用者自身が管理し、第三者への共有、紛失、改変等について運営者は管理できません。不正または破損したJSON、将来の仕様変更後の互換性を完全には保証しません。",
         ],
         [
           "7. 広告配信",
@@ -208,7 +208,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "8. お問い合わせ",
-          "アプリ内または公式サポートフォームを明示的に送信した場合に限り、次の情報がサポートAPIおよびメール配信事業者へ送信されることがあります。\n\n・問い合わせID、ランダムなクライアントID、送信元、対象アプリ\n・カテゴリ、名前、メールアドレス、本文\n・アプリバージョン、ビルド番号、OS名、OSバージョン、ロケール、送信日時\n・不正利用防止に必要な情報\n\n訪問国や国内地域の記録は自動添付されません。",
+          "アプリ内または公式サポートフォームを明示的に送信した場合に限り、次の情報がサポートAPIおよびメール配信事業者へ送信されることがあります。\n\n・問い合わせID、ランダムなクライアントID、送信元、対象アプリ\n・カテゴリ、名前、メールアドレス、本文\n・アプリバージョン、ビルド番号、OS名、OSバージョン、ロケール、送信日時\n・不正利用防止に必要な情報\n\n訪問国や地域の記録は自動添付されません。",
         ],
         [
           "9. 法務文書の取得",
@@ -216,7 +216,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "10. 外部サービス",
-          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads（広告配信）\n・Google User Messaging Platform（同意管理）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・Apple（システム機能）\n・公式Webサイトの配信基盤\n\n世界地図および国内地域の地理データは、Natural Earth等のオープンデータを基にアプリ内へ同梱しています。これらの同梱データ自体は、利用者情報を外部へ送信しません。",
+          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads（広告配信）\n・Google User Messaging Platform（同意管理）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・Apple（システム機能）\n・公式Webサイトの配信基盤\n\n世界地図および地域の地理データは、Natural Earth等のオープンデータを基にアプリ内へ同梱しています。これらの同梱データ自体は、利用者情報を外部へ送信しません。",
         ],
         [
           "11. 第三者提供",
@@ -317,7 +317,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第2条（サービス内容）",
-          "Colorviaは、訪れた国の記録、世界地図の表示、訪問統計、対応国における国内地域マップ、地名検索、訪問記録の共有、テーマ・地図色、JSONによる書き出し・読み込み、データ削除、アプリ内問い合わせなどの機能を提供します。アカウント登録は不要です。",
+          "Colorviaは、訪れた国の記録、世界地図の表示、訪問統計、対応国における地域マップ、地名検索、訪問記録の共有、テーマ・地図色、JSONによる書き出し・読み込み、データ削除、アプリ内問い合わせなどの機能を提供します。アカウント登録は不要です。",
         ],
         [
           "第3条（利用料金および広告）",

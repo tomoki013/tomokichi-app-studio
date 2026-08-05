@@ -18,46 +18,86 @@ const { posts, lang = "en", heading = "" } = Astro.props as {
   heading?: string;
 };
 
-const featured = posts[0];
-const rest = posts.slice(1);
+const ja = lang === "ja";
+const count = (kind: "all" | "updates" | "column") =>
+  kind === "all"
+    ? posts.length
+    : posts.filter((post) => (post.badgeTone === "column" ? "column" : "updates") === kind).length;
+const filters = [
+  { key: "all", label: ja ? "すべて" : "All" },
+  { key: "updates", label: ja ? "お知らせ" : "Updates" },
+  { key: "column", label: ja ? "コラム" : "Columns" },
+] as const;
 ---
 
-<section class="app-news" aria-label={heading || (lang === "ja" ? "ニュース" : "News")}>
+<section class="app-news" data-app-news aria-label={heading || (ja ? "お知らせ" : "Updates")}>
   {heading && <h2 class="app-news-heading">{heading}</h2>}
 
-  {featured && (
-    <article class="app-news-featured" id={featured.id}>
-      <header class="app-news-meta">
-        <time datetime={featured.datetime}>{featured.date}</time>
-        <span class:list={["app-news-badge", featured.badgeTone && `is-${featured.badgeTone}`]}>
-          {featured.badge}
-        </span>
-      </header>
-      <h3 class="app-news-title">{featured.title}</h3>
-      <p class="app-news-summary">{featured.summary}</p>
-      <div class="app-news-body">
-        {featured.body.map((para) => <p>{para}</p>)}
-      </div>
-    </article>
-  )}
+  <nav class="app-news-tabs" aria-label={ja ? "記事の種類" : "Post type"}>
+    {filters.map((filter, index) => (
+      <button
+        type="button"
+        data-news-filter={filter.key}
+        aria-pressed={index === 0 ? "true" : "false"}
+      >
+        <span>{filter.label}</span><small>{count(filter.key)}</small>
+      </button>
+    ))}
+  </nav>
 
-  {rest.length > 0 && (
-    <div class="app-news-list">
-      {rest.map((post) => (
-        <article class="app-news-card" id={post.id}>
-          <header class="app-news-meta">
-            <time datetime={post.datetime}>{post.date}</time>
-            <span class:list={["app-news-badge", post.badgeTone && `is-${post.badgeTone}`]}>
-              {post.badge}
+  <div class="app-news-grid" data-news-grid>
+    {posts.map((post, index) => {
+      const kind = post.badgeTone === "column" ? "column" : "updates";
+      return (
+        <details
+          class:list={["app-news-card", index === 0 && "is-featured"]}
+          id={post.id}
+          data-news-kind={kind}
+        >
+          <summary>
+            <span class="app-news-meta">
+              <span class:list={["app-news-badge", post.badgeTone && `is-${post.badgeTone}`]}>{post.badge}</span>
+              <time datetime={post.datetime}>{post.date}</time>
             </span>
-          </header>
-          <h3 class="app-news-title">{post.title}</h3>
-          <p class="app-news-summary">{post.summary}</p>
+            <span class="app-news-title">{post.title}</span>
+            <span class="app-news-summary">{post.summary}</span>
+            <span class="app-news-read">
+              <span class="when-closed">{ja ? "読む" : "Read"}</span>
+              <span class="when-open">{ja ? "閉じる" : "Close"}</span>
+              <i aria-hidden="true">↗</i>
+            </span>
+          </summary>
           <div class="app-news-body">
             {post.body.map((para) => <p>{para}</p>)}
           </div>
-        </article>
-      ))}
-    </div>
-  )}
+        </details>
+      );
+    })}
+  </div>
 </section>
+
+<script is:inline>
+  (() => {
+    const bindNews = () => {
+      document.querySelectorAll("[data-app-news]").forEach((root) => {
+        if (root.dataset.bound === "1") return;
+        root.dataset.bound = "1";
+        const cards = Array.from(root.querySelectorAll("[data-news-kind]"));
+        root.querySelector(".app-news-tabs")?.addEventListener("click", (event) => {
+          const button = event.target.closest("button[data-news-filter]");
+          if (!button) return;
+          const filter = button.dataset.newsFilter;
+          root.querySelectorAll("button[data-news-filter]").forEach((item) => {
+            item.setAttribute("aria-pressed", String(item === button));
+          });
+          cards.forEach((card) => {
+            card.hidden = !(filter === "all" || card.dataset.newsKind === filter);
+            if (card.hidden) card.open = false;
+          });
+        });
+      });
+    };
+    document.addEventListener("astro:page-load", bindNews);
+    bindNews();
+  })();
+</script>

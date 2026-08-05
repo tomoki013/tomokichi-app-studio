@@ -1950,7 +1950,7 @@ body:has(.remeet-page) {
   font-size: 10px;
   line-height: 2;
 }
-/* News feed: date, kind badge and headline on a quiet ruled list. */
+/* Updates feed: date, kind badge and headline on a quiet ruled list. */
 .news-list {
   list-style: none;
   padding: 0;

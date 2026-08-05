@@ -1,0 +1,66 @@
+---
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+
+type Screen = "home" | "stats" | "controls" | "coral" | "dark" | "english";
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
+
+const {
+  screen,
+  lang,
+  size = "md",
+  label = "",
+  priority = false,
+  class: className = "",
+} = Astro.props as {
+  screen: Screen;
+  lang: "ja" | "en";
+  size?: Size;
+  label?: string;
+  priority?: boolean;
+  class?: string;
+};
+
+const assets: Record<Screen, { file: string; alt: [string, string] }> = {
+  home: {
+    file: "colorvia-home",
+    alt: ["Colorviaの世界地図ホーム。訪問した国が青緑色で塗られている", "Colorvia world map home with visited countries coloured teal"],
+  },
+  stats: {
+    file: "colorvia-home-bottom-sheet",
+    alt: ["Colorviaの訪問統計。訪問国数や大陸ごとの記録を表示", "Colorvia visit statistics with country totals and continent breakdowns"],
+  },
+  controls: {
+    file: "colorvia-home-localized-map-controls",
+    alt: ["Colorviaの地図操作。拡大・縮小と位置リセットのボタン", "Colorvia map controls for zooming and resetting the view"],
+  },
+  coral: {
+    file: "colorvia-map-coral",
+    alt: ["地図色をコーラルに変更したColorviaの世界地図", "Colorvia world map using the coral colour theme"],
+  },
+  dark: {
+    file: "colorvia-home-dark",
+    alt: ["ダークテーマで表示したColorviaの世界地図", "Colorvia world map in dark appearance"],
+  },
+  english: {
+    file: "colorvia-home-en",
+    alt: ["英語表示のColorviaホーム画面", "Colorvia home screen in English"],
+  },
+};
+
+const asset = assets[screen];
+---
+
+<PhoneFrame size={size} label={label} class={className}>
+  <picture>
+    <source srcset={`/assets/${asset.file}.webp`} type="image/webp" />
+    <img
+      src={`/assets/${asset.file}.png`}
+      alt={asset.alt[lang === "ja" ? 0 : 1]}
+      width="1170"
+      height="2532"
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      fetchpriority={priority ? "high" : undefined}
+    />
+  </picture>
+</PhoneFrame>

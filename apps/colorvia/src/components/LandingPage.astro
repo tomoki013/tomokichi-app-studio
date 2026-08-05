@@ -14,7 +14,7 @@ const homeImg = ja ? "/assets/colorvia-home.webp" : "/assets/colorvia-home-en.we
 const homeImgPng = ja ? "/assets/colorvia-home.png" : "/assets/colorvia-home-en.png";
 
 const description = ja
-  ? "Colorviaは、訪れた国や地域を選ぶだけで世界地図が色づく旅の記録アプリです。対応国では国内地域まで残せます。現在App Store公開準備中。"
+  ? "Colorviaは、訪れた国や地域を選ぶだけで世界地図が色づく旅の記録アプリです。対応国では都道府県や州まで残せます。現在App Store公開準備中。"
   : "Colorvia turns the countries and regions you have visited into a personal map of the world. Currently preparing for the App Store.";
 
 const features = ja
@@ -39,7 +39,7 @@ const steps = ja
   ? [
       ["1", "＋から国を追加", "ホーム右下の＋を開き、検索または一覧から訪れた国にチェックを付けて確定します。"],
       ["2", "地図と統計を見る", "世界地図が色づき、訪問国数や割合をシートで確認できます。"],
-      ["3", "国内地域まで残す", "対応国では、地名検索や一覧から都道府県・州などを記録できます。"],
+      ["3", "地域まで残す", "対応国では、地名検索や一覧から都道府県・州などを記録できます。"],
     ]
   : [
       ["1", "Add countries with +", "Open +, search or browse, check countries you visited, then confirm."],
@@ -181,7 +181,7 @@ const jsonLd = JSON.stringify({
           ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
           : "Maps and regional divisions in Colorvia are simplified for travel logging and do not express a political position."}
       </p>
-      <a class="section-link" href={`${base}/regions`}>{ja ? "国内地域マップの詳細" : "Regional maps in detail"} →</a>
+      <a class="section-link" href={`${base}/regions`}>{ja ? "地域マップの詳細" : "Regional maps in detail"} →</a>
     </section>
 
     <section class="landing-pad how" id="how">

@@ -25,6 +25,11 @@
   --app-news-badge-column-bg: #17383d;
   --app-news-badge-note-bg: #e7f3f1;
   --app-news-badge-note-fg: #1f5c52;
+  --app-news-active-bg: var(--teal-dark);
+  --app-news-focus: var(--teal);
+  --app-news-featured-tint: rgb(85 167 167 / 9%);
+  --app-news-featured-dot: rgb(85 167 167 / 24%);
+  --app-news-title-font: Georgia, "Yu Mincho", serif;
   --app-site-footer-border: rgb(255 255 255 / 10%);
   --app-site-footer-meta: #85a0a2;
   --app-site-hero-muted: var(--muted);
@@ -32,6 +37,10 @@
   background: #fafdfc;
   font-family: Inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
   font-synthesis: none;
+}
+
+.colorvia-page .app-site-logo-image {
+  border-radius: 28%;
 }
 * {
   box-sizing: border-box;
@@ -1004,6 +1013,180 @@ button {
   }
 }
 
+/* ——— Screenshot-led feature and how-to stories ——— */
+.feature-showcase,
+.how-showcase {
+  display: grid;
+  gap: clamp(52px, 9vw, 104px);
+}
+
+.feature-showcase-intro,
+.how-showcase-intro {
+  max-width: 700px;
+  padding: clamp(26px, 5vw, 46px);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 90% 20%, rgb(85 167 167 / 12%) 0 5px, transparent 6px),
+    linear-gradient(135deg, rgb(85 167 167 / 8%), transparent 60%), #fff;
+}
+
+.feature-showcase-intro p,
+.how-showcase-intro p {
+  margin: 0 0 12px;
+  color: var(--teal-dark);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.feature-showcase-intro h2,
+.how-showcase-intro h2 {
+  margin: 0;
+  font-family: Georgia, "Yu Mincho", serif;
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.feature-story,
+.how-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
+  gap: clamp(36px, 8vw, 90px);
+  align-items: center;
+}
+
+.feature-story-copy,
+.how-story-copy {
+  max-width: 520px;
+}
+
+.feature-story.is-reverse .feature-story-copy,
+.how-story.is-reverse .how-story-copy {
+  order: 2;
+}
+
+.feature-story .feature-story-copy > span,
+.how-story-number {
+  margin: 0 0 20px;
+  display: inline-flex;
+  color: var(--teal-dark);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+}
+
+.feature-story h2,
+.how-story h2 {
+  margin: 0 0 22px;
+  font-family: Georgia, "Yu Mincho", serif;
+  font-size: clamp(25px, 4vw, 38px);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.feature-story ul,
+.how-story ol {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  list-style: none;
+}
+
+.feature-story li,
+.how-story li {
+  padding: 13px 0 13px 25px;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.75;
+}
+
+.feature-story li::before,
+.how-story li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  top: 21px;
+  left: 2px;
+  border: 1px solid var(--teal);
+  border-radius: 50%;
+}
+
+.feature-story-screen,
+.how-story-screen {
+  min-height: 480px;
+  padding: 36px 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 38px;
+  background:
+    radial-gradient(circle at 86% 18%, rgb(85 167 167 / 20%) 0 5px, transparent 6px),
+    radial-gradient(circle at 80% 25%, rgb(85 167 167 / 8%) 0 14px, transparent 15px),
+    linear-gradient(145deg, #edf8f6, #f9fcfb);
+}
+
+.feature-story-screen .app-phone-frame,
+.how-story-screen .app-phone-frame {
+  --phone-w: min(210px, 100%);
+}
+
+.how-story aside {
+  margin-top: 24px;
+  padding: 16px 18px;
+  display: flex;
+  gap: 12px;
+  border-radius: 16px;
+  background: var(--pale);
+}
+
+.how-story aside span {
+  color: var(--teal-dark);
+  line-height: 1.7;
+}
+
+.how-story aside p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+@media (max-width: 720px) {
+  .feature-showcase,
+  .how-showcase {
+    gap: 58px;
+  }
+
+  .feature-story,
+  .how-story {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .feature-story.is-reverse .feature-story-copy,
+  .how-story.is-reverse .how-story-copy {
+    order: 0;
+  }
+
+  .feature-story-screen,
+  .how-story-screen {
+    min-height: 390px;
+    padding: 28px 18px;
+    border-radius: 28px;
+  }
+
+  .feature-story-screen .app-phone-frame,
+  .how-story-screen .app-phone-frame {
+    --phone-w: min(180px, 72vw);
+  }
+}
+
 /* ——— Coming soon + content rewrite ——— */
 .store-soon {
   opacity: 0.78;
@@ -1129,6 +1312,11 @@ button {
   font-size: clamp(30px, 5vw, 44px);
   font-weight: 500;
   line-height: 1.3;
+}
+.content-page.content-updates .content-hero {
+  max-width: 650px;
+  margin-inline: auto;
+  text-align: center;
 }
 .legal-dates {
   margin-top: 16px;

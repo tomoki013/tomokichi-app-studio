@@ -46,7 +46,7 @@ export const titleMap: Record<Page, [string, string]> = {
   faq: ["よくある質問", "Frequently asked questions"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "News"],
+  updates: ["お知らせ", "Updates"],
 };
 
 export const subtitleMap: Partial<Record<Page, [string, string]>> = {
@@ -68,7 +68,7 @@ export const subtitleMap: Partial<Record<Page, [string, string]>> = {
     "よくいただくご質問をまとめました。\n解決しないときは、お気軽にご連絡ください。",
     "Answers to the questions we hear most.\nIf something is still unclear, just reach out.",
   ],
-  updates: ["Remeetからのお知らせ。", "News from Remeet."],
+  updates: ["Remeetからのお知らせ。", "Updates from Remeet."],
 };
 
 export const pageDescriptions: Partial<Record<Page, [string, string]>> = {
@@ -106,7 +106,7 @@ export const pageDescriptions: Partial<Record<Page, [string, string]>> = {
   ],
   updates: [
     "Remeet公式ブランドサイト公開のお知らせ。",
-    "News about the official Remeet brand site launch.",
+    "Updates from Remeet, including product notes and columns.",
   ],
 };
 
