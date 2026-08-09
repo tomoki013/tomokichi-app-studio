@@ -264,6 +264,25 @@ importers:
         specifier: ^4.113.0
         version: 4.113.0
 
+  apps/doodle:
+    dependencies:
+      '@tomokichi/app-site':
+        specifier: workspace:*
+        version: link:../../packages/app-site
+      astro:
+        specifier: ^7.1.3
+        version: 7.1.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(jiti@2.7.0)(yaml@2.9.0)
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.9
+        version: 0.9.9(prettier@3.9.6)(typescript@6.0.3)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      wrangler:
+        specifier: ^4.113.0
+        version: 4.113.0
+
   apps/main:
     dependencies:
       '@tomokichi/app-site':
@@ -295,6 +314,25 @@ importers:
         specifier: ^4.113.0
         version: 4.113.0
 
+  apps/quiet-solitaire:
+    dependencies:
+      '@tomokichi/app-site':
+        specifier: workspace:*
+        version: link:../../packages/app-site
+      astro:
+        specifier: ^7.1.3
+        version: 7.1.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(jiti@2.7.0)(yaml@2.9.0)
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.9
+        version: 0.9.9(prettier@3.9.6)(typescript@6.0.3)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      wrangler:
+        specifier: ^4.113.0
+        version: 4.113.0
+
   apps/remeet:
     dependencies:
       '@tomokichi/app-site':
@@ -322,6 +360,63 @@ importers:
       vitest:
         specifier: ^4.1.10
         version: 4.1.10(vite@8.1.5(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      wrangler:
+        specifier: ^4.113.0
+        version: 4.113.0
+
+  apps/rough-board:
+    dependencies:
+      '@tomokichi/app-site':
+        specifier: workspace:*
+        version: link:../../packages/app-site
+      astro:
+        specifier: ^7.1.3
+        version: 7.1.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(jiti@2.7.0)(yaml@2.9.0)
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.9
+        version: 0.9.9(prettier@3.9.6)(typescript@6.0.3)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      wrangler:
+        specifier: ^4.113.0
+        version: 4.113.0
+
+  apps/soonish:
+    dependencies:
+      '@tomokichi/app-site':
+        specifier: workspace:*
+        version: link:../../packages/app-site
+      astro:
+        specifier: ^7.1.3
+        version: 7.1.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(jiti@2.7.0)(yaml@2.9.0)
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.9
+        version: 0.9.9(prettier@3.9.6)(typescript@6.0.3)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      wrangler:
+        specifier: ^4.113.0
+        version: 4.113.0
+
+  apps/tana:
+    dependencies:
+      '@tomokichi/app-site':
+        specifier: workspace:*
+        version: link:../../packages/app-site
+      astro:
+        specifier: ^7.1.3
+        version: 7.1.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(jiti@2.7.0)(yaml@2.9.0)
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.9
+        version: 0.9.9(prettier@3.9.6)(typescript@6.0.3)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
       wrangler:
         specifier: ^4.113.0
         version: 4.113.0

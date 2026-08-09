@@ -1,0 +1,167 @@
+---
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+---
+
+<div class="mock-db">
+  <header class="mock-db-hero">
+    <div class="mock-db-hero-copy">
+      <span class="mock-db-wiggle" aria-hidden="true">〜</span>
+      <h1 class="mock-db-h1">
+        <span class="mock-du-underline">{ja ? "ブログ / お知らせ" : "Blog / News"}</span>
+      </h1>
+      <p class="mock-db-lead">
+        {ja
+          ? "Doodle Series の最新情報や、開発の裏側、使い方のヒントをお届けします。毎日がちょっと楽しくなるアイデアを、一緒に見つけていきましょう。"
+          : "Latest notes from Doodle Series — product news, behind the scenes, and tips that make everyday tools a little more fun."}
+        <span class="mock-du-heart" aria-hidden="true">♡</span>
+      </p>
+    </div>
+    <div class="mock-db-hero-art">
+      <img class="mock-db-hero-img" src="/assets/blog-hero.jpg" alt="" width="720" height="480" loading="eager" />
+      <div class="mock-db-hero-phone">
+        <div class="mock-db-hero-screen">
+          <span class="mock-db-hero-nav">‹ Timer</span>
+          <div class="mock-db-ring">
+            <strong>25:00</strong>
+            <em>Focus time</em>
+          </div>
+          <span class="mock-db-start">Start</span>
+          <div class="mock-db-tabs">
+            <span class="on">Timer</span><span>Calculator</span><span>Counter</span><span>Stopwatch</span>
+          </div>
+        </div>
+      </div>
+      <div class="mock-db-desk">
+        <span class="mock-db-cup"></span>
+        <span class="mock-db-steam"></span>
+        <span class="mock-db-note">Good ideas ★</span>
+        <span class="mock-db-pen"></span>
+      </div>
+      <span class="mock-du-star mock-du-star-a">★</span>
+      <span class="mock-du-cloud mock-du-cloud-a"></span>
+      <span class="mock-du-cloud mock-du-cloud-b"></span>
+    </div>
+  </header>
+
+  <!-- Featured -->
+  <article class="mock-db-featured">
+    <div class="mock-db-featured-art" aria-hidden="true">
+      <span class="mock-du-new">NEW</span>
+      <div class="mock-db-stopwatch">
+        <i></i>
+        <strong>00:12.34</strong>
+      </div>
+      <span class="mock-db-leaf">🍃</span>
+      <span class="mock-db-cloud-face">☁</span>
+      <span class="mock-du-star">★</span>
+    </div>
+    <div class="mock-db-featured-copy">
+      <p class="mock-db-kicker">{ja ? "注目のお知らせ" : "Featured"}</p>
+      <h2>{ja ? "Stopwatch に新しいラップ機能を追加しました！" : "Stopwatch now has a new lap feature!"}</h2>
+      <p>
+        {ja
+          ? "ラップタイムの記録や一覧表示ができるようになり、記録をもっと楽しく、見やすくなりました。"
+          : "Record and list lap times more easily — keeping track just got clearer and more fun."}
+      </p>
+      <div class="mock-db-featured-meta">
+        <time>2024.05.10</time>
+        <a class="mock-du-link" href={`${base}/updates`}>{ja ? "詳しく見る →" : "Read more →"}</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Cards -->
+  <div class="mock-db-cards">
+    <article class="mock-db-card">
+      <div class="mock-db-card-art mock-db-art-calc" aria-hidden="true">
+        <span class="mock-db-badge mock-db-badge-blue">{ja ? "アップデート" : "Update"}</span>
+        <div class="mock-db-mini-calc">
+          <span>1,234</span>
+          <div></div>
+        </div>
+      </div>
+      <h3>{ja ? "Calculator のデザインをリニューアルしました" : "Calculator design refreshed"}</h3>
+      <div class="mock-db-card-meta"><time>2024.05.08</time><span>→</span></div>
+    </article>
+    <article class="mock-db-card">
+      <div class="mock-db-card-art mock-db-art-timer" aria-hidden="true">
+        <span class="mock-db-badge mock-db-badge-green">{ja ? "使い方ヒント" : "Tips"}</span>
+        <div class="mock-db-mini-timer">
+          <strong>25:00</strong>
+          <em>Focus time</em>
+        </div>
+      </div>
+      <h3>{ja ? "25分タイマーをもっと効果的に使う3つのコツ" : "3 tips for a better 25-minute timer"}</h3>
+      <div class="mock-db-card-meta"><time>2024.05.06</time><span>→</span></div>
+    </article>
+    <article class="mock-db-card">
+      <div class="mock-db-card-art mock-db-art-plane" aria-hidden="true">
+        <span class="mock-db-badge mock-db-badge-purple">{ja ? "開発メモ" : "Dev notes"}</span>
+        <div class="mock-db-mini-plane">✈</div>
+      </div>
+      <h3>{ja ? "オフライン設計へのこだわり" : "Why we stay offline-first"}</h3>
+      <div class="mock-db-card-meta"><time>2024.05.02</time><span>→</span></div>
+    </article>
+    <article class="mock-db-card">
+      <div class="mock-db-card-art mock-db-art-party" aria-hidden="true">
+        <span class="mock-db-badge mock-db-badge-coral">{ja ? "お知らせ" : "News"}</span>
+        <div class="mock-db-mini-party">🎉</div>
+      </div>
+      <h3>{ja ? "Doodle Series が1周年を迎えました！" : "Doodle Series turns one!"}</h3>
+      <div class="mock-db-card-meta"><time>2024.04.28</time><span>→</span></div>
+    </article>
+  </div>
+
+  <!-- Columns -->
+  <div class="mock-db-cols">
+    <section>
+      <h2><span aria-hidden="true">★</span>{ja ? "最新アップデート" : "Latest updates"}</h2>
+      <ul>
+        <li><time>05.10</time><span>{ja ? "Stopwatch にラップ機能を追加" : "Laps added to Stopwatch"}</span></li>
+        <li><time>05.08</time><span>{ja ? "Calculator のデザインを刷新" : "Calculator design refresh"}</span></li>
+        <li><time>04.25</time><span>{ja ? "プライバシー設定を改善" : "Privacy settings polish"}</span></li>
+      </ul>
+      <a class="mock-du-link" href={`${base}/updates`}>{ja ? "すべて見る →" : "See all →"}</a>
+    </section>
+    <section>
+      <h2><span aria-hidden="true">♡</span>{ja ? "開発メモ" : "Dev notes"}</h2>
+      <ul>
+        <li><time>05.02</time><span>{ja ? "オフライン設計へのこだわり" : "Staying offline-first"}</span></li>
+        <li><time>04.18</time><span>{ja ? "小さな改善の積み重ね" : "Small improvements add up"}</span></li>
+        <li><time>04.05</time><span>{ja ? "使いやすさを支える設計" : "Design that supports ease"}</span></li>
+      </ul>
+      <a class="mock-du-link" href={`${base}/news`}>{ja ? "すべて見る →" : "See all →"}</a>
+    </section>
+    <section>
+      <h2><span aria-hidden="true">☆</span>{ja ? "使い方ヒント" : "Tips"}</h2>
+      <ul>
+        <li><time>05.06</time><span>{ja ? "25分タイマーを効果的に使う" : "Make a 25-min timer work"}</span></li>
+        <li><time>04.22</time><span>{ja ? "通知に頼りすぎない時間管理" : "Time without noisy alerts"}</span></li>
+        <li><time>04.10</time><span>{ja ? "シンプル操作の活用術" : "Getting more from simple UI"}</span></li>
+      </ul>
+      <a class="mock-du-link" href={`${base}/how-to`}>{ja ? "すべて見る →" : "See all →"}</a>
+    </section>
+    <section>
+      <h2><span aria-hidden="true">💡</span>{ja ? "今後のアプリ ideas" : "App ideas ahead"}</h2>
+      <ul class="mock-db-ideas">
+        <li><span>→</span><span>{ja ? "ToDo リスト（シンプル版）" : "Simple to-do list"}</span></li>
+        <li><span>→</span><span>{ja ? "習慣トラッカー" : "Habit tracker"}</span></li>
+        <li><span>→</span><span>{ja ? "メモ（クイックメモ）" : "Quick memo"}</span></li>
+      </ul>
+      <a class="mock-du-link" href={`${base}/news`}>{ja ? "もっと見る →" : "More →"}</a>
+    </section>
+  </div>
+
+  <section class="mock-du-cta">
+    <span class="mock-du-cta-cloud mock-du-cta-cloud-l" aria-hidden="true"></span>
+    <span class="mock-du-cta-cloud mock-du-cta-cloud-r" aria-hidden="true"></span>
+    <span class="mock-du-cta-plane" aria-hidden="true">✈</span>
+    <p class="mock-du-cta-title">{ja ? "シンプルなデザインで、毎日をもっと心地よく。" : "Simple design for a calmer everyday."}</p>
+    <p class="mock-du-cta-sub">{ja ? "Doodle Series を今すぐダウンロード" : "Download Doodle Series"}</p>
+    <span class="mock-du-store" aria-disabled="true">
+      {ja ? "App Store でダウンロード" : "Download on the App Store"}
+    </span>
+  </section>
+</div>

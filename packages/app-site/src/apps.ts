@@ -49,6 +49,47 @@ export const APP_BRANDS = [
     support: true,
     footer: true,
   },
+  // Unpublished brand sites: available for support forms, not linked from the main footer yet.
+  {
+    slug: "soonish",
+    name: "Soonish",
+    publicUrl: appSiteUrl("soonish"),
+    workersUrl: appSiteWorkersUrl("soonish"),
+    support: true,
+    footer: false,
+  },
+  {
+    slug: "tana",
+    name: "Tana",
+    publicUrl: appSiteUrl("tana"),
+    workersUrl: appSiteWorkersUrl("tana"),
+    support: true,
+    footer: false,
+  },
+  {
+    slug: "quiet-solitaire",
+    name: "Quiet Solitaire",
+    publicUrl: appSiteUrl("quiet-solitaire"),
+    workersUrl: appSiteWorkersUrl("quiet-solitaire"),
+    support: true,
+    footer: false,
+  },
+  {
+    slug: "rough-board",
+    name: "Rough Board",
+    publicUrl: appSiteUrl("rough-board"),
+    workersUrl: appSiteWorkersUrl("rough-board"),
+    support: true,
+    footer: false,
+  },
+  {
+    slug: "doodle",
+    name: "Doodle Series",
+    publicUrl: appSiteUrl("doodle"),
+    workersUrl: appSiteWorkersUrl("doodle"),
+    support: true,
+    footer: false,
+  },
 ] as const satisfies readonly AppBrandRegistration[];
 
 export const supportAppBrands = APP_BRANDS.filter((app) => app.support);

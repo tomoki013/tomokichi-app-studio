@@ -1,0 +1,16 @@
+---
+import CommercialTransactionsPage from "@tomokichi/app-site/CommercialTransactionsPage.astro";
+import AppShell from "../components/AppShell.astro";
+import "../styles/global.css";
+---
+
+<AppShell lang="en" title="Commercial Transactions Disclosure" page="commercial-transactions">
+  <CommercialTransactionsPage
+    lang="en"
+    appName="Tana"
+    appSlug="tana"
+    adSupported
+    purchases={[{ name: ["広告を永久に削除", "Remove ads permanently"], price: "¥400" }]}
+    lastUpdated={["2026年8月8日", "August 8, 2026"]}
+  />
+</AppShell>

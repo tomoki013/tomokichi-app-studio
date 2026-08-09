@@ -221,28 +221,6 @@ export const apps: AppItem[] = [
     order: 3,
   },
   {
-    slug: "soonish",
-    name: "Soonish",
-    tagline: {
-      ja: "いつかやりたいことを、忘れずに残す。",
-      en: "Keep the things you want to do someday.",
-    },
-    description: {
-      ja: "今すぐではないけれど、いつか叶えたいことを集めるアプリです。",
-      en: "An app for collecting the things you hope to do — just not right now.",
-    },
-    origin: {
-      ja: "「いつかやりたい」と思ったことは、その場では覚えているつもりでも、翌週には思い出せない。",
-      en: "Things I thought I’d do someday felt unforgettable at the time, and were gone by the following week.",
-    },
-    status: "concept",
-    platform: ["iPhone"],
-    iconClass: "soonish",
-    accent: "#E2A0C4",
-    featured: true,
-    order: 4,
-  },
-  {
     slug: "yohaku",
     name: "Yohaku",
     tagline: {
@@ -298,29 +276,284 @@ export const apps: AppItem[] = [
       },
     },
     featured: true,
+    order: 4,
+  },
+  {
+    slug: "soonish",
+    name: "Soonish",
+    tagline: {
+      ja: "保存しておく。あとで、相談できる。",
+      en: "Save it now. Consult later.",
+    },
+    description: {
+      ja: "旅のメモを保存・整理し、いつものAIに文脈ごと渡して相談できるアプリです。",
+      en: "Save and organise travel notes, then hand your context to the AI you already use.",
+    },
+    origin: {
+      ja: "行きたい場所や気になる店のリンクは増えるのに、いざ計画すると文脈が散らばっていてAIにも渡せなかった。",
+      en: "Links to places and cafés piled up, but when it was time to plan, the context was too scattered to give any AI.",
+    },
+    status: "developing",
+    platform: ["iPhone"],
+    iconClass: "soonish",
+    // Brand site exists in-repo; subdomain not published yet.
+    accent: "#3D6B4F",
+    detail: {
+      highlights: {
+        ja: [
+          "リンク・メモ・画像・タスクをひとつに保存",
+          "タグとコレクションで旅の文脈を整理",
+          "アプリ内AI相談、またはいつものChatGPT / Geminiへ渡す",
+          "旅行計画・カフェ選び・買い物比較など毎日の相談シーン",
+          "Free / Plus / Team（準備中）のプラン",
+          "エクスポートとリマインド連携（Plus）",
+        ],
+        en: [
+          "Save links, notes, images, and tasks in one place",
+          "Tags and collections that keep trip context together",
+          "In-app AI consult, or hand off to ChatGPT / Gemini",
+          "Everyday scenes: trips, cafés, shopping, and more",
+          "Free / Plus / Team (coming soon) plans",
+          "Export and reminder links on Plus",
+        ],
+      },
+      pricing: {
+        ja: "Free ¥0／Plus ¥480（税込¥528）／月。Teamは近日公開予定。",
+        en: "Free ¥0 / Plus ¥480 (¥528 tax incl.) per month. Team coming soon.",
+      },
+      requirements: {
+        ja: "iPhone・iOS 17以降",
+        en: "iPhone, iOS 17 or later",
+      },
+      privacy: {
+        ja: "保存は端末中心。AI相談時は明示的に渡した内容のみ。",
+        en: "Device-first storage. Only what you explicitly send is used for AI consults.",
+      },
+      languages: {
+        ja: "10言語",
+        en: "10 languages",
+      },
+    },
+    featured: true,
     order: 5,
   },
   {
     slug: "tana",
     name: "Tana",
     tagline: {
-      ja: "本棚にある本を、静かに整理する。",
-      en: "Quietly organise the books on your shelf.",
+      ja: "本との時間を、もっと豊かに。",
+      en: "Make more of the time you spend with books.",
     },
     description: {
-      ja: "持っている巻数や、読みたい本を記録できるアプリです。",
-      en: "An app for recording the volumes you own and the books you want to read.",
+      ja: "本棚・読書記録・統計まで。読書体験に寄り添う3つのプランを用意した読書アプリです。",
+      en: "Shelves, reading logs, and stats — a reading app with three plans that stay close to how you read.",
     },
     origin: {
       ja: "同じ巻をもう一度買った。持っている本が、本棚を見ないと分からない状態だった。",
       en: "I bought the same volume twice. What I already owned was only knowable by standing in front of the shelf.",
     },
-    status: "concept",
+    status: "developing",
     platform: ["iPhone"],
     iconClass: "tana",
     accent: "#C48E67",
+    detail: {
+      highlights: {
+        ja: [
+          "本棚・読書記録・コレクション・統計",
+          "Free / Standard / Premium の月額プラン",
+          "目標・バックアップ・高度な分析（上位プラン）",
+          "CSV / PDF エクスポート",
+          "読書のヒントを届ける読みものブログ",
+          "11言語対応",
+        ],
+        en: [
+          "Shelves, reading logs, collections, and stats",
+          "Free / Standard / Premium monthly plans",
+          "Goals, backup, and deeper analysis on higher tiers",
+          "CSV / PDF export",
+          "Editorial reading blog",
+          "11 languages",
+        ],
+      },
+      pricing: {
+        ja: "Free ¥0／Standard ¥600（税込¥660）／Premium ¥1,200（税込¥1,320）／月。",
+        en: "Free ¥0 / Standard ¥600 (¥660 tax incl.) / Premium ¥1,200 (¥1,320 tax incl.) per month.",
+      },
+      requirements: {
+        ja: "iPhone・iOS 17以降",
+        en: "iPhone, iOS 17 or later",
+      },
+      privacy: {
+        ja: "端末内保存を基本とし、上位プランではクラウドバックアップに対応。",
+        en: "On-device first; higher plans add cloud backup.",
+      },
+      languages: {
+        ja: "11言語",
+        en: "11 languages",
+      },
+    },
     featured: true,
     order: 6,
+  },
+  {
+    slug: "quiet-solitaire",
+    name: "Quiet Solitaire",
+    tagline: {
+      ja: "自分のペースに合う、静かなカスタマイズ。",
+      en: "Quiet customisation at your own pace.",
+    },
+    description: {
+      ja: "カード裏・テーブル・左利き・ヒント・サウンドまで整えられる、落ち着いたクロンダイクです。",
+      en: "A calm Klondike with card backs, felt colours, left-handed layout, hints, and soft feedback.",
+    },
+    origin: {
+      ja: "暇つぶしのカードが、いつも騒がしすぎた。音も光も控えめなテーブルが欲しかった。",
+      en: "Every solitaire I tried felt too loud. I wanted a quieter table.",
+    },
+    status: "developing",
+    platform: ["iPhone"],
+    iconClass: "quiet-solitaire",
+    accent: "#2F6B4F",
+    detail: {
+      highlights: {
+        ja: [
+          "クラシックなクロンダイク・ルール",
+          "カード裏テーマとテーブルカラー",
+          "左利きレイアウト、ヒント表示、サウンド／ハプティクス",
+          "カードサイズ・余白・縦画面レイアウトの調整",
+          "アンドゥ、統計、進行中ゲームの端末内保存",
+        ],
+        en: [
+          "Classic Klondike rules",
+          "Card-back themes and table colours",
+          "Left-handed layout, hints, sound and haptics",
+          "Card size, margins, and portrait layout options",
+          "Undo, stats, and in-progress games kept on device",
+        ],
+      },
+      pricing: {
+        ja: "無料。バナー広告が表示される場合があります。",
+        en: "Free. A banner ad may appear.",
+      },
+      requirements: {
+        ja: "iPhone・iOS 26以降",
+        en: "iPhone, iOS 26 or later",
+      },
+      privacy: {
+        ja: "ゲームデータは端末内。アカウント登録は不要です。",
+        en: "Game data stays on your device. No account required.",
+      },
+    },
+    featured: true,
+    order: 7,
+  },
+  {
+    slug: "rough-board",
+    name: "Rough Board",
+    tagline: {
+      ja: "雑な思考を、書いて、置いて、あとでつなぐ。",
+      en: "Write fast. Place thoughts. Connect later.",
+    },
+    description: {
+      ja: "下書きを素早く残し、白いボードの上でノードとしてつなげる、ローカルファーストの思考アプリです。",
+      en: "A local-first thinking app: capture drafts quickly, then place and link them on a white board.",
+    },
+    origin: {
+      ja: "メモは増えるのに、関係が見えない。整理する前に、まず置いてつなぎたかった。",
+      en: "Notes piled up without showing how they related. I wanted to place them first, and connect them later.",
+    },
+    status: "developing",
+    platform: ["iPhone"],
+    iconClass: "rough-board",
+    accent: "#2A2A2A",
+    detail: {
+      highlights: {
+        ja: [
+          "フルスクリーンの書き込みと自動保存下書き",
+          "パン・ピンチ・ドラッグできる白いボード",
+          "ノードの配置、分岐、リンク、スリープ／アーカイブ",
+          "検索からノードを中央に表示",
+          "端末内保存のみ（アカウント・iCloud・広告なし）",
+        ],
+        en: [
+          "Full-screen writing with an autosaving draft",
+          "A white board you can pan, pinch and drag",
+          "Place, branch, link, sleep or archive nodes",
+          "Search and center a node on the board",
+          "On-device only — no account, iCloud or ads",
+        ],
+      },
+      pricing: {
+        ja: "無料。広告やアプリ内課金はありません。",
+        en: "Free. No ads or in-app purchases.",
+      },
+      requirements: {
+        ja: "iPhone・iOS 17以降",
+        en: "iPhone, iOS 17 or later",
+      },
+      privacy: {
+        ja: "端末内に保存。アカウント登録は不要です。",
+        en: "Stored on your device. No account required.",
+      },
+      languages: {
+        ja: "7言語（英語・日本語・簡体字中国語・韓国語・スペイン語・フランス語・ドイツ語）",
+        en: "7 languages (English, Japanese, Simplified Chinese, Korean, Spanish, French, German)",
+      },
+    },
+    featured: true,
+    order: 8,
+  },
+  {
+    slug: "doodle",
+    name: "Doodle Series",
+    tagline: {
+      ja: "シンプルなデザインで、毎日をもっと心地よく。",
+      en: "Simple design for a calmer everyday.",
+    },
+    description: {
+      ja: "Timer・Calculator・Counter・Stopwatchなど、手描きUIの小さな道具シリーズです。",
+      en: "A hand-drawn utility series — Timer, Calculator, Counter, Stopwatch, and friends.",
+    },
+    origin: {
+      ja: "道具の画面がどれも同じ顔をして見えた。自分の線で数字を書いて、それで動かしたかった。",
+      en: "Every utility looked the same. I wanted to write the digits myself, then let them run the tool.",
+    },
+    status: "developing",
+    platform: ["iPhone"],
+    iconClass: "doodle",
+    accent: "#E86A5C",
+    detail: {
+      highlights: {
+        ja: [
+          "Timer / Calculator / Counter / Stopwatch などの独立アプリ",
+          "手描きの数字・記号を各アプリで利用",
+          "シリーズ共通のアップデート情報とブログ",
+          "App Groupで手描きアセットを共有",
+          "端末内保存・アカウント不要",
+        ],
+        en: [
+          "Independent apps: Timer, Calculator, Counter, Stopwatch, and more",
+          "Hand-drawn digits and symbols across the series",
+          "Shared update notes and blog for the series",
+          "Doodle assets shared via App Group",
+          "On-device storage, no account",
+        ],
+      },
+      pricing: {
+        ja: "無料（公開時のApp Store表記を正とします）。",
+        en: "Free (the App Store listing will be authoritative at release).",
+      },
+      requirements: {
+        ja: "iPhone・iOS 26以降",
+        en: "iPhone, iOS 26 or later",
+      },
+      privacy: {
+        ja: "端末内保存。アカウント登録は不要です。",
+        en: "Stored on your device. No account required.",
+      },
+    },
+    featured: true,
+    order: 9,
   },
 ];
 

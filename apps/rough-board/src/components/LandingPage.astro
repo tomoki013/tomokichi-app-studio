@@ -1,0 +1,202 @@
+---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import { appSiteUrl } from "@tomokichi/app-site/urls";
+import { featureCards, howSteps, languagesEn, languagesJa } from "../lib/content";
+import AppShell from "./AppShell.astro";
+
+type Locale = "ja" | "en";
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const features = featureCards(ja);
+const steps = howSteps(ja);
+
+const description = ja
+  ? "Rough Boardは、ざっくりした思考を素早く書き、白いボードに置き、あとからつなぐローカルファーストなiPhoneアプリです。広告なし・端末内保存。現在App Store公開準備中。"
+  : "Rough Board is a local-first iPhone app for rough thoughts: write fast, place ideas on a white board, and connect them later. On-device only, no ads. Preparing for the App Store.";
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Rough Board",
+  applicationCategory: "ProductivityApplication",
+  operatingSystem: "iOS 17.0 or later",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+    availability: "https://schema.org/PreOrder",
+  },
+  description,
+  url: `${appSiteUrl("rough-board")}${base || ""}` || appSiteUrl("rough-board"),
+});
+---
+
+<AppShell
+  lang={lang}
+  title={ja ? "書いて、置いて、あとでつなぐ。" : "Write fast. Place thoughts. Connect later."}
+  description={description}
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="hero-grain"></span>
+      <span class="hero-soft-a"></span>
+      <span class="hero-soft-b"></span>
+    </div>
+
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow">{ja ? "ローカルファーストの思考ボード" : "Local-first thinking board"}</p>
+      <h1>
+        {ja ? (
+          <>書いて、置いて、<br />あとでつなぐ。</>
+        ) : (
+          <>Write fast.<br />Place thoughts.<br />Connect later.</>
+        )}
+      </h1>
+      <p class="hero-lead">
+        {ja ? (
+          <>
+            ざっくりした考えを、止まる前に捕まえる。
+            <br />
+            Rough Boardは、フルスクリーンで書き、白いキャンバスに置き、
+            <br />
+            関係はあとから結べるiPhoneアプリです。
+          </>
+        ) : (
+          <>
+            Catch rough thoughts before they slip away.
+            <br />
+            Write full-screen, place soft nodes on a quiet white board,
+            <br />
+            and draw the links when you are ready.
+          </>
+        )}
+      </p>
+      <div class="hero-actions">
+        <span class="store-soon" aria-disabled="true">{storeLabel}</span>
+        <a class="ghost-link" href={`${base}/features`}>
+          {ja ? "機能を見る" : "Explore features"}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <small class="env-note">
+        {ja
+          ? `iPhone・iOS 17以降。広告・課金・iCloudなし。${languagesJa}。`
+          : `iPhone · iOS 17+. No ads, purchases, or iCloud. ${languagesEn}.`}
+      </small>
+    </div>
+
+    <div class="hero-visual" data-reveal>
+      <div class="board-stage" role="img" aria-label={ja ? "Rough Boardのコンセプトボード" : "Rough Board concept board"}>
+        <svg class="board-edges" viewBox="0 0 320 520" fill="none" aria-hidden="true">
+          <path d="M78 148 C120 170, 150 210, 168 248" stroke="currentColor" stroke-width="1.2" />
+          <path d="M168 248 C210 236, 240 200, 258 168" stroke="currentColor" stroke-width="1.2" />
+          <path d="M168 248 C150 300, 120 340, 96 372" stroke="currentColor" stroke-width="1.2" />
+          <path d="M168 248 C210 290, 230 330, 242 380" stroke="currentColor" stroke-width="1.2" />
+        </svg>
+        <article class="board-node n1">
+          <p>{ja ? "朝のメモ" : "Morning note"}</p>
+          <span>{ja ? "あとで整理" : "tidy later"}</span>
+        </article>
+        <article class="board-node n2">
+          <p>{ja ? "プロジェクトの芯" : "Core idea"}</p>
+          <span>{ja ? "まだ粗い" : "still rough"}</span>
+        </article>
+        <article class="board-node n3">
+          <p>{ja ? "聞きたいこと" : "Ask later"}</p>
+          <span>link</span>
+        </article>
+        <article class="board-node n4">
+          <p>{ja ? "分岐A" : "Branch A"}</p>
+          <span>branch</span>
+        </article>
+        <article class="board-node n5">
+          <p>{ja ? "分岐B" : "Branch B"}</p>
+          <span>sleep</span>
+        </article>
+        <div class="board-chrome">
+          <span>Write</span>
+          <span>Board</span>
+          <span>Account</span>
+        </div>
+      </div>
+    </div>
+
+    <AppHeroChrome
+      lang={lang}
+      date="2026-08-08"
+      news={ja ? "Rough Board公式ブランドサイトを公開しました" : "The official Rough Board brand site is now live"}
+      newsHref={`${base}/news`}
+    />
+  </section>
+
+  <div class="landing-sections">
+    <section class="landing-pad" id="features">
+      <header class="section-title" data-reveal>
+        <p class="eyebrow">Features</p>
+        <h2>{ja ? "静かな空間に、思考を置く。" : "A quiet space for rough thoughts."}</h2>
+        <p>
+          {ja
+            ? "書く・置く・つなぐ。必要な操作だけを、白いキャンバスのまわりに。"
+            : "Write, place, connect—only the gestures you need around a white canvas."}
+        </p>
+      </header>
+      <div class="feature-grid">
+        {features.map(([icon, title, body]) => (
+          <article data-reveal>
+            <i aria-hidden="true">{icon}</i>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      <a class="section-link" href={`${base}/features`}>{ja ? "すべての機能を見る" : "View all features"} →</a>
+    </section>
+
+    <section class="landing-pad band" id="how">
+      <header class="section-title" data-reveal>
+        <p class="eyebrow">How it works</p>
+        <h2>{ja ? "4ステップで、考えが居場所を持つ。" : "Four steps until a thought has a place."}</h2>
+      </header>
+      <ol class="step-grid">
+        {steps.map((s) => (
+          <li data-reveal>
+            <span>{s.n}</span>
+            <h3>{s.t}</h3>
+            <p>{s.body}</p>
+          </li>
+        ))}
+      </ol>
+      <a class="section-link" href={`${base}/how-to`}>{ja ? "使い方を詳しく" : "See the full guide"} →</a>
+    </section>
+
+    <section class="landing-pad principles" id="principles">
+      <div class="principle-card" data-reveal>
+        <p class="eyebrow">{ja ? "設計の前提" : "Principles"}</p>
+        <h2>{ja ? "端末の中だけ。広告なし。" : "On-device only. No ads."}</h2>
+        <ul>
+          <li>{ja ? "SwiftUI + SwiftData、iOS 17以降" : "SwiftUI + SwiftData, iOS 17+"}</li>
+          <li>{ja ? "サードパーティ依存なし" : "No third-party dependencies"}</li>
+          <li>{ja ? "StoreKit・広告・iCloud・AIなし（MVP）" : "No StoreKit, ads, iCloud, or AI in the MVP"}</li>
+          <li>{ja ? "下書きはUserDefaults、ボードは端末内SwiftData" : "Drafts in UserDefaults; board data in on-device SwiftData"}</li>
+        </ul>
+        <div class="principle-links">
+          <a href={`${base}/privacy`}>{ja ? "プライバシー" : "Privacy"} →</a>
+          <a href={`${base}/screenshots`}>{ja ? "コンセプトボード" : "Concept board"} →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-pad cta-band" data-reveal>
+      <h2>{ja ? "思考のための、静かなホワイトボード。" : "A quiet whiteboard for thinking."}</h2>
+      <p>
+        {ja
+          ? "App Storeでの公開準備が進み次第、ここからダウンロードできるようになります。"
+          : "When the App Store listing is ready, you will be able to download from here."}
+      </p>
+      <span class="store-soon" aria-disabled="true">{storeLabel}</span>
+    </section>
+  </div>
+</AppShell>

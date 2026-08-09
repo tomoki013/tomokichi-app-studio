@@ -1,0 +1,192 @@
+---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import { appSiteUrl } from "@tomokichi/app-site/urls";
+import { features as featureList, steps as stepList } from "../lib/content";
+import AppShell from "./AppShell.astro";
+
+type Locale = "ja" | "en";
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const features = featureList(ja).slice(0, 6);
+const steps = stepList(ja);
+
+const description = ja
+  ? "Quiet Solitaireは、iPhone向けの静かなクロンダイク・ソリティアです。アンドゥ、統計、左利きレイアウトなどの設定を備え、ゲームデータは端末内に保存。現在App Store公開準備中。"
+  : "Quiet Solitaire is a calm Klondike solitaire for iPhone—with undo, statistics, left-handed layout, and on-device saves. Currently preparing for the App Store.";
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Quiet Solitaire",
+  applicationCategory: "GameApplication",
+  operatingSystem: "iOS 26.0 or later",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+    availability: "https://schema.org/PreOrder",
+  },
+  description,
+  url: `${appSiteUrl("quiet-solitaire")}${base || ""}` || appSiteUrl("quiet-solitaire"),
+});
+---
+
+<AppShell
+  lang={lang}
+  title={ja ? "静かなテーブルで、一巡だけ。" : "One quiet deal at the table."}
+  description={description}
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="hero-orb hero-orb-a"></span>
+      <span class="hero-orb hero-orb-b"></span>
+      <span class="hero-felt-glow"></span>
+    </div>
+
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow">{ja ? "静かなテーブルで、一巡だけ。" : "One quiet deal at the table."}</p>
+      <h1>
+        {ja ? (
+          <>夜の卓で、<br />カードと向き合う。</>
+        ) : (
+          <>Sit with the cards<br />on a quiet evening.</>
+        )}
+      </h1>
+      <p>
+        {ja ? (
+          <>
+            Quiet Solitaireは、iPhone向けのクロンダイク・ソリティアです。<br />
+            アンドゥ、統計、左利きレイアウト。データは端末の中だけに。
+          </>
+        ) : (
+          <>
+            Quiet Solitaire is Klondike for iPhone—undo, stats, and a left-handed layout.
+            <br />
+            Games and settings stay on your device. No account.
+          </>
+        )}
+      </p>
+      <div class="hero-actions">
+        <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+          <span class="hero-cta-dot" aria-hidden="true"></span>
+          <span>{storeLabel}</span>
+        </span>
+        <a class="hero-cta hero-cta-secondary" href={`${base}/features`}>
+          <span>{ja ? "機能を見る" : "Explore features"}</span>
+          <span class="hero-cta-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <small>{ja ? "iPhone・iOS 26.0以降向け。現在App Store公開準備中。" : "iPhone · iOS 26.0+. Preparing for the App Store."}</small>
+    </div>
+
+    <div class="hero-visual" data-reveal role="img" aria-label={ja ? "クリームのカードがフェルト卓に扇状に並ぶコンセプトビジュアル" : "Concept visual of cream cards fanned on a green felt table"}>
+      <div class="card-table">
+        <div class="table-rim"></div>
+        <div class="table-felt">
+          <div class="card-fan" aria-hidden="true">
+            <span class="playing-card card-1"><i>A</i><b>♠</b></span>
+            <span class="playing-card card-2"><i>K</i><b class="red">♥</b></span>
+            <span class="playing-card card-3"><i>Q</i><b>♣</b></span>
+            <span class="playing-card card-4"><i>J</i><b class="red">♦</b></span>
+            <span class="playing-card card-5"><i>10</i><b>♠</b></span>
+          </div>
+          <div class="foundation-row" aria-hidden="true">
+            <span class="mini-pile"></span>
+            <span class="mini-pile"></span>
+            <span class="mini-pile filled"><i>A</i><b class="red">♥</b></span>
+            <span class="mini-pile filled"><i>A</i><b>♠</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <AppHeroChrome
+      lang={lang}
+      date="2026-08-08"
+      news={ja ? "Quiet Solitaire公式ブランドサイトを公開しました" : "The official Quiet Solitaire brand site is now live"}
+      newsHref={`${base}/news`}
+    />
+  </section>
+
+  <div class="landing-sections">
+    <section class="landing-pad features" id="features">
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "静かに続けるための機能" : "Features that keep the table quiet"}</h2>
+        <p>{ja ? "ルールはクロンダイク。手触りは、夜のテーブル。" : "Klondike rules. An evening-table feel."}</p>
+      </header>
+      <div class="feature-grid">
+        {features.map(([icon, title, body]) => (
+          <article data-reveal>
+            <i aria-hidden="true">{icon}</i>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      <a class="section-link" href={`${base}/features`}>{ja ? "すべての機能を見る" : "View all features"} →</a>
+    </section>
+
+    <section class="landing-pad how" id="how">
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "遊び方は、シンプル" : "Simple to sit down and play"}</h2>
+      </header>
+      <div class="step-grid">
+        {steps.map(([n, title, body]) => (
+          <article data-reveal>
+            <span class="step-number" aria-hidden="true">{n}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      <a class="section-link" href={`${base}/how-to`}>{ja ? "詳しい使い方" : "Full how-to"} →</a>
+    </section>
+
+    <section class="landing-pad mood" id="mood">
+      <div class="mood-card" data-reveal>
+        <div class="mood-copy">
+          <p class="eyebrow">WORLDVIEW</p>
+          <h2>{ja ? "深いフェルト、クリームのカード。" : "Deep felt. Cream cards."}</h2>
+          <p>
+            {ja
+              ? "派手な演出より、卓の静けさ。ソフトな影と金のアクセントで、夜のカードテーブルをそのままUIにしています。"
+              : "Less spectacle, more table calm—soft shadows and ivory-gold accents, so the UI feels like an evening card table."}
+          </p>
+          <a class="section-link inline" href={`${base}/screenshots`}>{ja ? "コンセプト画面を見る" : "See concept screens"} →</a>
+        </div>
+        <div class="mood-swatches" aria-hidden="true">
+          <span class="swatch felt"></span>
+          <span class="swatch cream"></span>
+          <span class="swatch gold"></span>
+          <span class="swatch forest"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-pad start-card" id="download">
+      <div class="start-copy" data-reveal>
+        <p class="eyebrow">COMING SOON</p>
+        <h2>{ja ? "卓を、ポケットに。" : "Carry the table with you."}</h2>
+        <p>
+          {ja
+            ? "アカウント不要。ゲーム・設定・統計は端末内。広告が有効なときはバナーが表示される場合があります。"
+            : "No account. Games, settings, and stats on device. A banner may appear when ads are enabled."}
+        </p>
+      </div>
+      <div class="start-details" data-reveal>
+        <p class="env-note">
+          <strong>{ja ? "iPhone・iOS 26.0以降" : "iPhone · iOS 26.0+"}</strong>
+          <br />
+          {ja ? "現在App Store公開準備中です。" : "Currently preparing for the App Store."}
+        </p>
+        <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+          <span class="hero-cta-dot" aria-hidden="true"></span>
+          <span>{storeLabel}</span>
+        </span>
+      </div>
+    </section>
+  </div>
+</AppShell>

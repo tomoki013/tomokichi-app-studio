@@ -1,0 +1,247 @@
+---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
+import { supportUrl } from "@tomokichi/app-site/urls";
+import {
+  descriptions,
+  faqCats,
+  faqs as faqList,
+  featureGroups,
+  howGuides,
+  languagesEn,
+  languagesJa,
+  type Locale,
+  newsPosts,
+  type Page,
+  pick,
+  privacySections,
+  termsSections,
+  titles,
+} from "../lib/content";
+import AppShell from "./AppShell.astro";
+
+const { lang, page } = Astro.props as { lang: Locale; page: Page };
+const ja = lang === "ja";
+const supportHref = supportUrl("rough-board", lang);
+const title = pick(ja, titles[page]);
+const description = pick(ja, descriptions[page]);
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+const groups = featureGroups(ja);
+const guides = howGuides(ja);
+const faqs = faqList(ja);
+const cats = ja ? faqCats.ja : faqCats.en;
+const news = newsPosts(ja);
+
+const conceptNodes = ja
+  ? [
+      { t: "書きかけの一文", s: "draft", x: "12%", y: "18%" },
+      { t: "ミーティングの核", s: "link", x: "42%", y: "34%" },
+      { t: "気になる引用", s: "sleep", x: "68%", y: "16%" },
+      { t: "次に試すこと", s: "branch", x: "22%", y: "58%" },
+      { t: "長く残すメモ", s: "archive", x: "58%", y: "62%" },
+      { t: "名前のない考え", s: "soft", x: "78%", y: "48%" },
+    ]
+  : [
+      { t: "Half-written line", s: "draft", x: "12%", y: "18%" },
+      { t: "Meeting core", s: "link", x: "42%", y: "34%" },
+      { t: "A quote to keep", s: "sleep", x: "68%", y: "16%" },
+      { t: "Try next", s: "branch", x: "22%", y: "58%" },
+      { t: "Long-term note", s: "archive", x: "58%", y: "62%" },
+      { t: "Nameless thought", s: "soft", x: "78%", y: "48%" },
+    ];
+---
+
+<AppShell lang={lang} title={title} page={page} description={description}>
+  <section class:list={["content-page", `content-${page}`]}>
+    <header class="content-hero" data-reveal>
+      <p class="content-eyebrow">{page.replace("-", " ").toUpperCase()}</p>
+      <h1>{title}</h1>
+      {(page === "privacy" || page === "terms") && (
+        <div class="legal-dates">
+          <p>{ja ? "制定日：2026年8月8日" : "Effective date: August 8, 2026"}</p>
+          <p>{ja ? "最終更新日：2026年8月8日" : "Last updated: August 8, 2026"}</p>
+        </div>
+      )}
+      {page === "screenshots" && (
+        <p class="content-lead">
+          {ja
+            ? "App Store提出用の実機キャプチャは準備中です。以下は白いキャンバスとやわらかいノードを示すコンセプトボードです。"
+            : "Real device captures for the App Store are still being prepared. Below is a concept board of the white canvas and soft nodes."}
+        </p>
+      )}
+    </header>
+
+    {page === "features" && (
+      <div class="feature-showcase">
+        <header class="feature-showcase-intro" data-reveal>
+          <p>{ja ? "思考の速度に合わせた道具。" : "Tools that keep up with rough thinking."}</p>
+          <h2>
+            {ja
+              ? "書いて、置いて、つなぎ、探し、片付ける。"
+              : "Write, place, connect, find, and tidy."}
+          </h2>
+        </header>
+        {groups.map((g, index) => (
+          <article class:list={["feature-story", index % 2 === 1 && "is-reverse"]} data-reveal>
+            <div class="feature-story-copy">
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h2>{g.h}</h2>
+              <ul>{g.items.map((item) => <li>{item}</li>)}</ul>
+            </div>
+            <div class="feature-story-visual" aria-hidden="true">
+              <div class:list={["mini-board", `theme-${index % 3}`]}>
+                <span class="dot a"></span>
+                <span class="dot b"></span>
+                <span class="dot c"></span>
+                <i></i>
+              </div>
+            </div>
+          </article>
+        ))}
+        <p class="env-line" data-reveal>
+          {ja ? `7言語対応：${languagesJa}` : `Seven languages: ${languagesEn}`}
+        </p>
+      </div>
+    )}
+
+    {page === "how-to" && (
+      <div class="how-showcase">
+        <header class="how-showcase-intro" data-reveal>
+          <p>{ja ? "はじめてのRough Board" : "Your first board"}</p>
+          <h2>{ja ? "一文を書いて、白い余白に置いてみましょう。" : "Write one line, then give it a place on the white canvas."}</h2>
+        </header>
+        {guides.map((g, i) => (
+          <article class:list={["how-story", i % 2 === 1 && "is-reverse"]} data-reveal>
+            <div class="how-story-copy">
+              <p class="how-story-number">STEP {String(i + 1).padStart(2, "0")}</p>
+              <h2>{g.t}</h2>
+              <ol>{g.steps.map((s) => <li>{s}</li>)}</ol>
+              <aside><span aria-hidden="true">○</span><p>{g.note}</p></aside>
+            </div>
+            <div class="how-story-visual" aria-hidden="true">
+              <div class="how-card">
+                <strong>{g.t}</strong>
+                <em>{String(i + 1).padStart(2, "0")}</em>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+
+    {page === "screenshots" && (
+      <div class="shot-gallery">
+        <figure class="concept-board" data-reveal>
+          <div class="concept-canvas">
+            <svg class="concept-edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M18 24 C34 30, 40 38, 48 42" />
+              <path d="M48 42 C62 36, 70 28, 78 22" />
+              <path d="M48 42 C40 54, 32 62, 28 70" />
+              <path d="M48 42 C58 55, 64 64, 70 74" />
+              <path d="M78 22 C82 40, 84 50, 86 58" />
+            </svg>
+            {conceptNodes.map((n) => (
+              <div class="concept-node" style={`left:${n.x};top:${n.y}`}>
+                <p>{n.t}</p>
+                <span>{n.s}</span>
+              </div>
+            ))}
+          </div>
+          <figcaption>
+            {ja
+              ? "コンセプトボード：白いキャンバス、ソフトグレーのノード、細い曲線エッジ。"
+              : "Concept board: white canvas, soft gray nodes, thin curved edges."}
+          </figcaption>
+        </figure>
+
+        <div class="concept-grid" data-reveal>
+          <article>
+            <h3>Write</h3>
+            <p>{ja ? "フルスクリーンで素早く入力。下書きは自動保存。" : "Full-screen capture with an autosaving draft."}</p>
+          </article>
+          <article>
+            <h3>Board</h3>
+            <p>{ja ? "パン・ピンチとドラッグで、空間を静かに整える。" : "Pan, pinch, and drag until the space feels quiet."}</p>
+          </article>
+          <article>
+            <h3>Connect</h3>
+            <p>{ja ? "リンクとブランチで、関係はあとから。" : "Links and branches—structure when you are ready."}</p>
+          </article>
+        </div>
+      </div>
+    )}
+
+    {page === "faq" && (
+      <div class="faq-page">
+        <nav class="faq-tabs" data-faq-tabs aria-label={ja ? "カテゴリ" : "Categories"}>
+          {cats.map(([key, label], i) => (
+            <button type="button" data-cat={key} aria-current={i === 0 ? "true" : "false"}>{label}</button>
+          ))}
+        </nav>
+        <div class="faq-list" data-faq-list>
+          {faqs.map(([cat, q, a], i) => (
+            <details data-cat={cat} open={i === 0}>
+              <summary>{q}</summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
+        <aside class="faq-contact" data-reveal>
+          <h2>{ja ? "解決しない場合" : "Still need help?"}</h2>
+          <a href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact"} →</a>
+        </aside>
+      </div>
+    )}
+
+    {page === "news" && <NewsFeed lang={lang} posts={news} />}
+    {page === "updates" && (
+      <AppUpdatesPage lang={lang} appName="Rough Board" newsHref={ja ? "/ja/news" : "/news"} />
+    )}
+
+    {(page === "privacy" || page === "terms") && (
+      <article class="legal-copy">
+        {legal.map(([heading, body]) => (
+          <section data-reveal>
+            <h2>{heading}</h2>
+            {body.split("\n\n").map((para) => (
+              <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>
+            ))}
+          </section>
+        ))}
+      </article>
+    )}
+
+    {(page === "features" || page === "how-to" || page === "screenshots") && (
+      <div class="content-cta" data-reveal>
+        <span class="store-soon" aria-disabled="true">{storeLabel}</span>
+      </div>
+    )}
+  </section>
+</AppShell>
+
+<script is:inline>
+  (() => {
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        items.forEach((item) => {
+          item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
+      });
+    };
+
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
+  })();
+</script>

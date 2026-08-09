@@ -1,0 +1,108 @@
+---
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+---
+
+<div class="mock-ss">
+  <header class="mock-ss-hero">
+    <div class="mock-ss-hero-copy">
+      <h1>
+        {ja ? "こんな相談が、" : "Consultations that feel"}
+        <br />
+        {ja ? "Soonishでもっと自然に。" : "natural with Soonish."}
+      </h1>
+      <p>
+        {ja
+          ? "保存した文脈をそっとAIに渡すだけ。あなたの「考えかけ」や「迷いごと」を、やさしく整理します。"
+          : "Hand your saved context to AI. Half-formed thoughts and open questions, gently organised."}
+      </p>
+      <span class="mock-ss-chip">{ja ? "Soonish に保存している内容を、AI に相談 →" : "Consult AI with what you saved →"}</span>
+    </div>
+    <aside class="mock-ss-chat" aria-hidden="true">
+      <p class="title">{ja ? "あなたのAIチャット" : "Your AI chat"}</p>
+      <div class="bubble bot">{ja ? "Soonish の旅行メモをもとに、週末ぴったりのプランを提案して！" : "Using Soonish notes, suggest a weekend plan!"}</div>
+      <div class="bubble ai">
+        {ja
+          ? "了解しました！保存されている旅行の候補をもとに、季節や移動時間も考慮したプランをご提案しますね。"
+          : "Got it — I’ll propose a plan from your saved options, including season and travel time."}
+      </div>
+      <div class="composer"><span>{ja ? "メッセージを入力…" : "Message…"}</span><i>↑</i></div>
+    </aside>
+    <span class="mock-ss-leaf" aria-hidden="true"></span>
+  </header>
+
+  <section class="mock-ss-sec">
+    <h2>{ja ? "Soonishで広がる、毎日の相談シーン" : "Everyday consult scenes"}</h2>
+    <div class="mock-ss-grid">
+      {(ja
+        ? [
+            ["/assets/scene-travel.jpg", "旅行の計画", "旅の計画", "Soonish に保存している旅行候補からおすすめを考えて"],
+            ["/assets/scene-cafe.jpg", "カフェ選び", "カフェ", "最近保存したカフェの中から、気分に合うお店を提案して"],
+            ["/assets/scene-shop.jpg", "買い物の比較", "買い物リスト", "気になっているリュック3つを、用途に合わせて比較して"],
+            ["/assets/scene-article.jpg", "記事の整理", "読みたい記事", "保存した記事の要点をまとめて、わかりやすく整理して"],
+            ["/assets/scene-move.jpg", "引っ越し準備", "引っ越しメモ", "引っ越しのやることを、時系列でリストにして"],
+            ["/assets/scene-gift.jpg", "ギフト探し", "ギフト候補", "予算1万円で、喜ばれそうなギフトを提案して"],
+          ]
+        : [
+            ["/assets/scene-travel.jpg", "Trip planning", "Trips", "Suggest options from trip candidates I saved."],
+            ["/assets/scene-cafe.jpg", "Café pick", "Cafés", "From recently saved cafés, match the mood."],
+            ["/assets/scene-shop.jpg", "Shopping compare", "Shopping", "Compare three backpacks by how I’ll use them."],
+            ["/assets/scene-article.jpg", "Article tidy-up", "To read", "Summarise saved articles into clear points."],
+            ["/assets/scene-move.jpg", "Moving prep", "Moving", "Turn moving tasks into a timeline list."],
+            ["/assets/scene-gift.jpg", "Gift ideas", "Gifts", "Gift ideas under ¥10,000 that feel thoughtful."],
+          ]
+      ).map(([img, title, folder, body]) => (
+        <article>
+          <div class="art">
+            <img src={img} alt="" width="480" height="300" loading="lazy" />
+          </div>
+          <div class="body">
+            <div class="meta"><strong>{title}</strong><span>{folder}</span></div>
+            <p>{body}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="note">{ja ? "※ これはほんの一例です。保存した文脈が多いほど、提案精度が高まります。" : "Just examples — more context usually means sharper suggestions."}</p>
+  </section>
+
+  <section class="mock-ss-sec">
+    <h2>{ja ? "文脈がそろうと、AIの提案はここまで変わる" : "When context gathers, AI suggestions change"}</h2>
+    <p class="lead">{ja ? "リンクやメモ、タグやコレクションが、あなたの「いまの気持ち」をAIに届けます。" : "Links, notes, tags, and collections carry how you feel right now to the AI."}</p>
+    <ol class="mock-ss-flow">
+      {(ja
+        ? [
+            ["リンク", "気になる記事やホテル、レシピなどを保存"],
+            ["メモ", "思いついたことや条件をメモに記録"],
+            ["タグ", "「行きたい」「予算重視」などキーワードで整理"],
+            ["コレクション", "テーマごとにまとめて、相談しやすく"],
+            ["AIに相談", "そろった文脈をもとに、ぴったりな提案が届く"],
+          ]
+        : [
+            ["Links", "Save articles, hotels, recipes…"],
+            ["Notes", "Capture conditions and thoughts"],
+            ["Tags", "want-to-go, budget-first, and more"],
+            ["Collections", "Group by theme for easier consults"],
+            ["Ask AI", "Context ready — better suggestions arrive"],
+          ]
+      ).map(([t, b], i) => (
+        <li>
+          <span class="n">{i + 1}</span>
+          <h3>{t}</h3>
+          <p>{b}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mock-sh-cta">
+    <div class="mock-sh-cta-photo">
+      <img src="/assets/cta-desk.jpg" alt="" width="800" height="500" loading="lazy" />
+    </div>
+    <div class="mock-sh-cta-copy">
+      <h2>{ja ? "保存から、AIとの相談まで。ひとつで完結。" : "From save to AI consult — one place."}</h2>
+      <span class="mock-sh-cta-btn" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+      <div class="stores" aria-hidden="true"><span>App Store</span><span>Google Play</span></div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,106 @@
+---
+import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
+import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
+
+type Locale = "ja" | "en";
+const { lang, title, page = "", routePath = page, description, jsonLd = "" } = Astro.props as {
+  lang: Locale;
+  title: string;
+  page?: string;
+  routePath?: string;
+  description?: string;
+  jsonLd?: string;
+};
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const jaPageHref = (`/ja/${routePath}`.replace(/\/$/, "")) || "/ja";
+const enPageHref = `/${routePath}`.replace(/\/$/, "") || "/";
+const supportHref = supportUrl("tana", lang);
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+
+const nav = [
+  { slug: "", label: ja ? "ホーム" : "Home", href: ja ? "/ja" : "/" },
+  { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
+  { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
+  { slug: "pricing", label: ja ? "料金" : "Pricing", href: href("pricing") },
+  { slug: "news", label: ja ? "ブログ" : "Blog", href: href("news") },
+  { slug: "faq", label: ja ? "お問い合わせ" : "Contact", href: href("faq") },
+];
+
+const footerColumns = [
+  {
+    title: ja ? "プロダクト" : "Product",
+    links: [
+      { label: ja ? "コンセプト" : "Concept", href: href("screenshots") },
+      { label: ja ? "機能" : "Features", href: href("features") },
+      { label: ja ? "使い方" : "How to", href: href("how-to") },
+      { label: ja ? "料金" : "Pricing", href: href("pricing") },
+    ],
+  },
+  {
+    title: ja ? "サポート" : "Support",
+    links: [
+      { label: "FAQ", href: href("faq") },
+      { label: ja ? "お知らせ" : "News", href: href("news") },
+      { label: ja ? "アップデート情報" : "App updates", href: href("updates") },
+      { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
+    ],
+  },
+  {
+    title: ja ? "規約" : "Legal",
+    links: [
+      { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
+      { label: ja ? "利用規約" : "Terms of Use", href: href("terms") },
+      { label: ja ? "特定商取引法に基づく表記" : "Commercial Transactions", href: href("commercial-transactions") },
+    ],
+  },
+  {
+    title: ja ? "運営者情報" : "Operator",
+    links: [
+      { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
+      { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+    ],
+  },
+];
+
+const mobileFooterLinks = [
+  { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
+  { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
+  { label: ja ? "利用規約" : "Terms of Use", href: href("terms") },
+  { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+];
+
+const metaDescription =
+  description ??
+  (ja
+    ? "Tanaは、本棚にある本を静かに整理するローカルファーストの読書管理アプリです。現在App Store公開準備中。"
+    : "Tana is a local-first reading and bookshelf app for quietly organising the books you own. Currently preparing for the App Store.");
+---
+
+<AppSiteShell
+  lang={lang}
+  title={title}
+  description={metaDescription}
+  page={page}
+  brand="Tana"
+  tagline={ja ? "本棚にある本を、静かに整理する。" : "Quietly organise the books on your shelf."}
+  siteUrl={appSiteUrl("tana")}
+  homeHref={ja ? "/ja" : "/"}
+  jaPageHref={jaPageHref}
+  enPageHref={enPageHref}
+  nav={nav}
+  footerColumns={footerColumns}
+  mobileFooterLinks={mobileFooterLinks}
+  appStoreLabel={storeLabel}
+  appStoreHref=""
+  appStoreComingSoon
+  menuLabel={ja ? "メニュー" : "Menu"}
+  menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
+  themeColor="#f7f1e8"
+  pageClass="tana-page"
+  jsonLd={jsonLd}
+>
+  <slot />
+</AppSiteShell>

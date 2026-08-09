@@ -1,0 +1,135 @@
+---
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+
+const cats = ja
+  ? ["すべて", "読書習慣", "本棚づくり", "おすすめ本・ジャンル別", "読書記録のコツ", "Tanaの使い方", "インタビュー", "お知らせ"]
+  : ["All", "Habits", "Bookshelf", "Picks", "Logging", "Using Tana", "Interviews", "News"];
+
+const posts = ja
+  ? [
+      { tag: "本棚づくり", title: "居心地のいい本棚をつくる7つのポイント", body: "お気に入りの本に囲まれる空間は、日々の読書時間をもっと特別にします。", date: "2024/05/15", img: "/assets/card-a.jpg" },
+      { tag: "おすすめ本・ジャンル別", title: "【2024年5月】心に残る小説おすすめ5選", body: "今読みたい小説を編集部がセレクト。物語の世界にひたる時間を。", date: "2024/05/12", img: "/assets/card-b.jpg" },
+      { tag: "読書記録のコツ", title: "読書記録を続けるコツと、振り返りの楽しみ方", body: "記録することで、読書体験はもっと深くなる。Tanaを使った記録の活用法もご紹介。", date: "2024/05/10", img: "/assets/card-c.jpg" },
+      { tag: "読書習慣", title: "朝読書のすすめ｜1日を整える10分の読書時間", body: "朝の静かな時間に本を開くと、心がすっと整い、1日が変わります。", date: "2024/05/08", img: "/assets/card-d.jpg" },
+      { tag: "本棚づくり", title: "ジャンルで整える本棚のつくり方 実例とアイデア", body: "ジャンル分けやテーマ別に、見やすく、探しやすい本棚づくりの工夫。", date: "2024/05/05", img: "/assets/card-e.jpg" },
+      { tag: "Tanaの使い方", title: "Tanaの検索・メモ機能で読書体験をもっと快適に", body: "探す・記録する・振り返るをスムーズに。Tanaの便利な使い方を解説します。", date: "2024/05/01", img: "/assets/card-f.jpg" },
+    ]
+  : [
+      { tag: "Bookshelf", title: "Seven ways to build a shelf you enjoy", body: "A room of favourite books makes everyday reading feel special.", date: "2024/05/15", img: "/assets/card-a.jpg" },
+      { tag: "Picks", title: "Five novels that stayed with us — May 2024", body: "Editor picks for stories worth settling into.", date: "2024/05/12", img: "/assets/card-b.jpg" },
+      { tag: "Logging", title: "How to keep a reading log you’ll revisit", body: "Logging deepens the experience — plus Tana tips.", date: "2024/05/10", img: "/assets/card-c.jpg" },
+      { tag: "Habits", title: "Morning reading: ten quiet minutes", body: "Open a book early and the day settles.", date: "2024/05/08", img: "/assets/card-d.jpg" },
+      { tag: "Bookshelf", title: "Organising by genre — examples", body: "Theme layouts that stay easy to scan.", date: "2024/05/05", img: "/assets/card-e.jpg" },
+      { tag: "Using Tana", title: "Search and memos that smooth reading", body: "Find, record, look back with less friction.", date: "2024/05/01", img: "/assets/card-f.jpg" },
+    ];
+---
+
+<div class="mock-tb">
+  <div class="mock-tb-stage">
+    <div class="mock-tb-hero-deco" aria-hidden="true">
+      <div class="mock-tb-plant"></div>
+      <div class="mock-tb-mug"></div>
+      <div class="mock-tb-books-left"></div>
+      <div class="mock-tb-shelf-right"></div>
+      <div class="mock-tb-lamp"></div>
+    </div>
+
+    <header class="mock-tb-hero">
+      <h1>{ja ? "読みもの / ブログ" : "Reading / Blog"}</h1>
+      <p>
+        {ja
+          ? "本との時間を、もっと豊かにするヒントをお届けします。読み方や記録の工夫、本棚のつくり方まで、日々の読書が楽しくなるアイデアが見つかります。"
+          : "Hints for richer time with books — habits, logging, shelves, and ideas that make everyday reading lighter."}
+      </p>
+      <div class="mock-tb-ornament" aria-hidden="true">❧</div>
+    </header>
+
+    <nav class="mock-tb-cats" aria-label={ja ? "カテゴリ" : "Categories"}>
+      {cats.map((c, i) => (
+        <button type="button" class:list={[{ "is-on": i === 0 }]}>{c}</button>
+      ))}
+    </nav>
+
+    <article class="mock-tb-featured">
+      <div class="mock-tb-featured-media">
+        <div class="mock-tb-photo mock-tb-photo-featured">
+          <img src="/assets/hero-shelf.jpg" alt="" width="720" height="480" loading="eager" />
+          <span class="mock-tb-app-badge" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="mock-tb-featured-body">
+        <span class="mock-tb-tag">{ja ? "読書習慣" : "Habits"}</span>
+        <h2>{ja ? "読書が続く人の毎日の習慣とは？" : "What daily habits keep people reading?"}</h2>
+        <p>
+          {ja
+            ? "忙しい毎日の中でも、読書を無理なく続けるための5つの習慣をご紹介します。小さな工夫が、読書時間をぐっと豊かにします。"
+            : "Five gentle habits for staying with books in a busy week — small shifts that make reading time feel richer."}
+        </p>
+        <div class="mock-tb-meta">
+          <span class="mock-tb-avatar" aria-hidden="true"></span>
+          <span>{ja ? "Tana編集部" : "Tana editorial"}</span>
+          <time>2024/05/18</time>
+        </div>
+        <a class="mock-tb-more" href={`${base}/news`}>{ja ? "続きを読む →" : "Continue →"}</a>
+      </div>
+    </article>
+
+    <div class="mock-tb-grid">
+      {posts.map((p) => (
+        <article class="mock-tb-card">
+          <div class="mock-tb-photo">
+            <img src={p.img} alt="" width="480" height="300" loading="lazy" />
+          </div>
+          <div class="mock-tb-card-body">
+            <span class="mock-tb-tag">{p.tag}</span>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+            <div class="mock-tb-meta">
+              <span class="mock-tb-avatar" aria-hidden="true"></span>
+              <span>{ja ? "Tana編集部" : "Tana editorial"}</span>
+              <time>{p.date}</time>
+              <span class="mock-tb-mark" aria-hidden="true">bookmark</span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <p class="mock-tb-loadmore">
+      <a href={`${base}/news`}>{ja ? "もっと記事を読む →" : "More articles →"}</a>
+    </p>
+
+    <section class="mock-tb-nl">
+      <div class="mock-tb-nl-copy">
+        <span class="mock-tb-nl-ic" aria-hidden="true">✉</span>
+        <div>
+          <h2>{ja ? "新着記事や、読書が楽しくなるヒントをお届けします。" : "New posts and gentle reading tips."}</h2>
+          <p>{ja ? "メールマガジンに登録して、Tanaと読書の時間をもっと豊かに。" : "Subscribe to keep Tana close to your reading time."}</p>
+        </div>
+      </div>
+      <form class="mock-tb-form" action="#" method="post" onsubmit="return false;">
+        <label class="sr-only" for="tb-email">{ja ? "メール" : "Email"}</label>
+        <input id="tb-email" type="email" placeholder={ja ? "メールアドレスを入力" : "Enter your email"} />
+        <button type="submit">{ja ? "登録する" : "Subscribe"}</button>
+      </form>
+    </section>
+  </div>
+
+  <section class="mock-tb-cta">
+    <div class="mock-tb-cta-inner">
+      <div class="mock-tb-cta-copy">
+        <span class="mock-tb-cta-mark" aria-hidden="true">📕</span>
+        <div>
+          <h2>{ja ? "Tanaで、もっと豊かな読書体験を。" : "A richer reading life with Tana."}</h2>
+          <p>{ja ? "今すぐ始めて、あなたの本棚と読書記録を整えましょう。" : "Start now — organise your shelf and reading log."}</p>
+        </div>
+      </div>
+      <div class="mock-tb-cta-actions">
+        <span class="mock-tb-btn-solid" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+        <a class="mock-tb-btn-ghost" href={`${base}/features`}>{ja ? "アプリをダウンロード" : "Get the app"}</a>
+      </div>
+    </div>
+  </section>
+</div>

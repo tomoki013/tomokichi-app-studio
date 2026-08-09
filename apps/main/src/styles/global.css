@@ -245,10 +245,11 @@ img {
   background: rgb(48 126 128 / 55%);
 }
 .app-icon.soonish {
-  background: linear-gradient(145deg, #c747df, #ff9a9f 62%, #ffd05c);
+  background: linear-gradient(145deg, #d8ebe0, #3d6b4f 68%, #2a4d38);
 }
 .app-icon.soonish span {
   filter: blur(4px);
+  background: rgb(247 251 248 / 70%);
 }
 .app-icon.yohaku {
   background: #0d0d0d;
@@ -263,6 +264,39 @@ img {
 .app-icon.tana span {
   border-radius: 2px 2px 30% 30%;
   background: linear-gradient(90deg, #799b78 47%, #c48e67 48%);
+}
+.app-icon.quiet-solitaire {
+  background:
+    radial-gradient(circle at 30% 28%, #f4efe4 0 16%, transparent 17%),
+    linear-gradient(145deg, #1f4d38, #3f8a62);
+}
+.app-icon.quiet-solitaire span {
+  inset: 30% 28%;
+  border-radius: 10%;
+  background: linear-gradient(180deg, #f7f1e6, #e3d6c2);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 12%);
+}
+.app-icon.rough-board {
+  background: linear-gradient(160deg, #f7f7f5, #e8e8e4 55%, #d6d6d0);
+}
+.app-icon.rough-board span {
+  inset: 26%;
+  border-radius: 18%;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 8%),
+    6px 8px 0 -2px rgb(0 0 0 / 6%);
+}
+.app-icon.doodle {
+  background:
+    radial-gradient(circle at 70% 28%, #ffe08a 0 14%, transparent 15%),
+    linear-gradient(135deg, #ff8b6a, #6ec8ff 70%);
+}
+.app-icon.doodle span {
+  inset: 28%;
+  border-radius: 40% 60% 55% 45%;
+  background: rgb(255 255 255 / 82%);
+  transform: rotate(-8deg);
 }
 
 /* App card — compact (home) ---------------------------------------------- */

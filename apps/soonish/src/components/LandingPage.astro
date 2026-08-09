@@ -1,0 +1,310 @@
+---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import { appSiteUrl } from "@tomokichi/app-site/urls";
+import {
+  homeDescription,
+  landingFaqs,
+  landingFeatures,
+  landingSteps,
+  languagesEn,
+  languagesJa,
+  tagline,
+} from "../lib/content";
+import AppShell from "./AppShell.astro";
+
+type Locale = "ja" | "en";
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const storeLabel = ja ? "近日公開" : "Coming soon";
+const description = ja ? homeDescription[0] : homeDescription[1];
+const features = landingFeatures(ja);
+const steps = landingSteps(ja);
+const faqs = landingFaqs(ja);
+
+const shelfItems = ja
+  ? [
+      { tone: "lavender", chip: "旅", title: "サントリーニ 3泊", why: "絶景スポット候補" },
+      { tone: "coral", chip: "カフェ", title: "静かな朝の店", why: "窓際が空いてそう" },
+      { tone: "gold", chip: "買い物", title: "リュック比較", why: "通勤と旅の両立" },
+      { tone: "mist", chip: "メモ", title: "移動時間メモ", why: "AIに渡す用" },
+    ]
+  : [
+      { tone: "lavender", chip: "Trip", title: "Santorini 3 nights", why: "Scenic candidates" },
+      { tone: "coral", chip: "Café", title: "Quiet morning spot", why: "Window seat hope" },
+      { tone: "gold", chip: "Shop", title: "Backpack compare", why: "Commute + travel" },
+      { tone: "mist", chip: "Note", title: "Transit times", why: "For AI context" },
+    ];
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Soonish",
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "iOS 17.0 or later",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+    availability: "https://schema.org/PreOrder",
+  },
+  description,
+  url: `${appSiteUrl("soonish")}${base || ""}` || appSiteUrl("soonish"),
+});
+---
+
+<AppShell
+  lang={lang}
+  title={ja ? "保存しておく。あとで、相談できる。" : "Save it now. Consult later."}
+  description={description}
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="hero-orb hero-orb-a"></span>
+      <span class="hero-orb hero-orb-b"></span>
+      <span class="hero-orb hero-orb-c"></span>
+      <span class="hero-moon"></span>
+      <span class="hero-spark hero-spark-a">✧</span>
+      <span class="hero-spark hero-spark-b">✦</span>
+      <span class="hero-spark hero-spark-c">·</span>
+      <span class="hero-spark hero-spark-d">✧</span>
+      <div class="world-wash world-wash-back">CONTEXT</div>
+      <div class="world-wash">SOONISH</div>
+    </div>
+
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow">{ja ? tagline[0] : tagline[1]}</p>
+      <h1>
+        {ja ? (
+          <>あなたの旅とメモを、<br />AI相談までひとつに。</>
+        ) : (
+          <>Your trips and notes —<br />through to AI consult.</>
+        )}
+      </h1>
+      <p>
+        {ja ? (
+          <>
+            Soonishは、保存・整理・AI相談をひとつにした旅行メモアプリ。<br />
+            リンクやメモを残し、いつものAIに文脈ごと渡して相談できます。
+          </>
+        ) : (
+          <>
+            Soonish unifies save, organise, and AI consult for travel notes.
+            <br />
+            Keep links and memos, then hand your context to the AI you already use.
+          </>
+        )}
+      </p>
+      <div class="hero-actions">
+        <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+          <span class="hero-cta-dot" aria-hidden="true"></span>
+          <span>{storeLabel}</span>
+        </span>
+        <a class="hero-cta hero-cta-secondary" href={`${base}/features`}>
+          <span>{ja ? "活用シーンを見る" : "See use cases"}</span>
+          <span class="hero-cta-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <small>
+        {ja
+          ? "iPhone・iOS 17以降向け。Free から始められます。"
+          : "iPhone on iOS 17+. Start on Free."}
+      </small>
+    </div>
+
+    <div class="hero-visual" data-reveal>
+      <div class="product-stage" role="img" aria-label={ja ? "Soonishの保存とAI相談をイメージしたコンセプトビジュアル" : "Concept visual of Soonish save and AI consult"}>
+        <div class="product-phone">
+          <div class="product-phone-chrome">
+            <span class="product-notch"></span>
+            <header class="product-header">
+              <span class="product-moon" aria-hidden="true">🌿</span>
+              <div>
+                <p class="product-kicker">{ja ? "あなたのメモ" : "Your notes"}</p>
+                <p class="product-title">{ja ? "旅の文脈" : "Trip context"}</p>
+              </div>
+            </header>
+            <div class="product-pick">
+              <span class="product-pick-label">{ja ? "AIに相談する" : "Consult AI"}</span>
+              <strong>{ja ? "3泊4日のプランを考えて" : "Suggest a 3-night plan"}</strong>
+              <em>{ja ? "保存した候補をもとに" : "From what you saved"}</em>
+            </div>
+            <ul class="product-tiles">
+              {shelfItems.map((item) => (
+                <li class={`tile tone-${item.tone}`}>
+                  <span class="tile-chip">{item.chip}</span>
+                  <span class="tile-title">{item.title}</span>
+                  <span class="tile-why">{item.why}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="product-shelf-rail" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="product-float product-float-a" aria-hidden="true">save</div>
+        <div class="product-float product-float-b" aria-hidden="true">✧</div>
+        <div class="product-float product-float-c" aria-hidden="true">consult</div>
+      </div>
+    </div>
+
+    <AppHeroChrome
+      lang={lang}
+      date="2026-08-08"
+      news={ja ? "Soonish公式ブランドサイトを公開しました" : "The official Soonish brand site is now live"}
+      newsHref={`${base}/news`}
+    />
+  </section>
+
+  <div class="landing-sections">
+    <section class="landing-pad features" id="features">
+      <header class="section-title" data-reveal>
+        <p class="section-kicker">{ja ? "Soonishの考え方" : "The Soonish idea"}</p>
+        <h2>{ja ? "文脈がそろうと、AIの提案は変わる。" : "When context gathers, AI suggestions change."}</h2>
+        <p>
+          {ja
+            ? "リンクやメモ、タグやコレクションが、あなたの「いまの気持ち」をAIに届けます。"
+            : "Links, notes, tags, and collections carry how you feel right now to the AI."}
+        </p>
+      </header>
+      <div class="feature-grid">
+        {features.map(([icon, title, body]) => (
+          <article data-reveal>
+            <i aria-hidden="true">{icon}</i>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      <a class="section-link" href={`${base}/features`}>{ja ? "活用シーンを見る" : "See use cases"} →</a>
+    </section>
+
+    <section class="landing-pad how" id="how">
+      <header class="section-title" data-reveal>
+        <p class="section-kicker">{ja ? "3ステップ" : "Three steps"}</p>
+        <h2>{ja ? "保存する。相談する。次が決まる。" : "Save. Consult. Decide what’s next."}</h2>
+      </header>
+      <div class="step-grid">
+        {steps.map(([n, title, body]) => (
+          <article data-reveal>
+            <span class="step-number" aria-hidden="true">{n}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      <a class="section-link" href={`${base}/how-to`}>{ja ? "詳しい使い方" : "Full how-to"} →</a>
+    </section>
+
+    <section class="landing-pad concept" id="concept">
+      <header class="section-title" data-reveal>
+        <p class="section-kicker">{ja ? "コンセプト" : "Concept"}</p>
+        <h2>{ja ? "月明かりのシェルフ" : "A moonlit shelf"}</h2>
+        <p>
+          {ja
+            ? "実機のスクリーンショットはまだありません。世界観を伝えるコンセプトイラストです。"
+            : "No real device screenshots yet — concept illustrations of the Soonish world."}
+        </p>
+      </header>
+      <div class="concept-grid">
+        <article class="concept-card concept-shelf" data-reveal>
+          <div class="concept-art" aria-hidden="true">
+            <span class="c-tile c1"></span>
+            <span class="c-tile c2"></span>
+            <span class="c-tile c3"></span>
+            <span class="c-rail"></span>
+          </div>
+          <h3>{ja ? "色のついた棚" : "Coloured shelves"}</h3>
+          <p>{ja ? "ラベンダー、コーラル、ゴールド。眺めやすい置き場。" : "Lavender, coral, gold — a place you like to open."}</p>
+        </article>
+        <article class="concept-card concept-spark" data-reveal>
+          <div class="concept-art" aria-hidden="true">
+            <span class="c-moon"></span>
+            <span class="c-spark">✧</span>
+          </div>
+          <h3>{ja ? "今日、これどう？" : "How about this?"}</h3>
+          <p>{ja ? "日々のピックで、興味がふと戻ってくる。" : "Daily picks bring an interest gently back."}</p>
+        </article>
+        <article class="concept-card concept-chips" data-reveal>
+          <div class="concept-art concept-chip-row" aria-hidden="true">
+            <span>curious</span>
+            <span>soft</span>
+            <span>later</span>
+          </div>
+          <h3>{ja ? "理由チップ" : "Reason chips"}</h3>
+          <p>{ja ? "なぜ目に止まったかを、しおりのように。" : "Why it caught your eye — like a bookmark."}</p>
+        </article>
+      </div>
+      <a class="section-link" href={`${base}/screenshots`}>{ja ? "コンセプトを見る" : "See the concept"} →</a>
+    </section>
+
+    <section class="landing-pad faq" id="faq">
+      <header class="section-title" data-reveal>
+        <h2>{ja ? "よくある質問" : "Frequently asked questions"}</h2>
+      </header>
+      <div class="faq-list">
+        {faqs.map(([q, a], i) => (
+          <details open={i === 0} data-reveal>
+            <summary>{q}<span>⌄</span></summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </div>
+      <a class="section-link" href={`${base}/faq`}>{ja ? "すべての質問を見る" : "View all questions"} →</a>
+    </section>
+
+    <section class="landing-pad lang-note" data-reveal>
+      <h2>{ja ? "10言語に対応" : "Ten languages"}</h2>
+      <p>{ja ? languagesJa : languagesEn}</p>
+    </section>
+
+    <section class="download-cta" id="download" data-reveal>
+      <div>
+        <h2>{ja ? "いつかの興味を、しまっておこう。" : "Keep a place for someday."}</h2>
+        <p>
+          {ja
+            ? "Soonishは現在、App Storeでの公開に向けて準備を進めています。無料・アカウント不要・広告なし・端末内保存。"
+            : "Soonish is being prepared for the App Store. Free, no account, no ads, on-device storage."}
+        </p>
+        <span class="store-button light store-soon" aria-disabled="true">● <span>{storeLabel}</span></span>
+      </div>
+      <div class="cta-moon" aria-hidden="true">
+        <span class="cta-moon-disc"></span>
+        <span class="cta-spark">✧</span>
+      </div>
+    </section>
+  </div>
+</AppShell>
+
+<script is:inline>
+  (() => {
+    const initReveal = () => {
+      const items = document.querySelectorAll(
+        "[data-reveal], .landing-sections section, .feature-grid article, .step-grid article, .concept-card, .faq-list details",
+      );
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+        items.forEach((item) => item.classList.add("is-visible"));
+        return;
+      }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.01, rootMargin: "0px 0px -7% 0px" },
+      );
+      items.forEach((item, index) => {
+        if (item.classList.contains("is-visible")) return;
+        item.classList.add("reveal-item");
+        item.style.setProperty("--reveal-delay", `${(index % 6) * 45}ms`);
+        observer.observe(item);
+      });
+    };
+    document.addEventListener("astro:page-load", initReveal);
+    initReveal();
+  })();
+</script>
