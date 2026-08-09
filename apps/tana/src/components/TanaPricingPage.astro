@@ -1,0 +1,138 @@
+---
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+
+const rows = ja
+  ? [
+      ["本棚管理", "最大3棚", "無制限", "無制限"],
+      ["読書記録", "読了本の記録", "読了本の記録・メモ", "読了本の記録・メモ・詳細メモ"],
+      ["コレクション", "最大3コレクション", "無制限", "無制限 + テーマ作成"],
+      ["統計・可視化", "基本的な統計", "詳細な統計・グラフ", "高度な分析・カスタムレポート"],
+      ["バックアップ", "—", "クラウドバックアップ（30日）", "クラウドバックアップ（無制限）"],
+      ["読書目標", "—", "目標設定・進捗管理", "目標設定・進捗管理・リマインダー"],
+      ["高度な分析", "—", "—", "読書傾向分析・ジャンル分析・読書時間分析"],
+      ["データエクスポート", "—", "CSVエクスポート", "CSV / PDF エクスポート"],
+      ["サポート", "—", "メールサポート", "優先サポート"],
+    ]
+  : [
+      ["Shelves", "Up to 3", "Unlimited", "Unlimited"],
+      ["Reading log", "Finished books", "Finished + notes", "Finished + notes + detail"],
+      ["Collections", "Up to 3", "Unlimited", "Unlimited + themes"],
+      ["Stats", "Basics", "Detailed charts", "Advanced + custom reports"],
+      ["Backup", "—", "Cloud (30 days)", "Cloud (unlimited)"],
+      ["Goals", "—", "Goals & progress", "Goals, progress, reminders"],
+      ["Deep analysis", "—", "—", "Trends, genres, time"],
+      ["Export", "—", "CSV", "CSV / PDF"],
+      ["Support", "—", "Email", "Priority"],
+    ];
+---
+
+<div class="mock-tp">
+  <div class="mock-tb-hero-deco mock-tp-deco" aria-hidden="true">
+    <div class="mock-tb-plant"></div>
+    <div class="mock-tb-mug"></div>
+    <div class="mock-tb-books-left"></div>
+    <div class="mock-tb-shelf-right"></div>
+    <div class="mock-tb-lamp"></div>
+  </div>
+
+  <header class="mock-tp-hero">
+    <h1>{ja ? "料金プラン" : "Pricing"}</h1>
+    <p>
+      {ja
+        ? "あなたの読書体験に寄り添う、3つのプランをご用意しました。すべてのプランで、読書の時間をもっと豊かに。"
+        : "Three plans that stay close to how you read. Every tier makes reading time richer."}
+    </p>
+    <div class="mock-tb-ornament" aria-hidden="true">❧</div>
+  </header>
+
+  <div class="mock-tp-plans">
+    <article class="mock-tp-plan">
+      <p class="mock-tp-kicker">{ja ? "フリー" : "Free"}</p>
+      <h2>Free</h2>
+      <p class="mock-tp-price"><strong>¥0</strong><span>/{ja ? "月" : "mo"}</span></p>
+      <p class="mock-tp-forever">{ja ? "ずっと無料" : "Free forever"}</p>
+      <p class="mock-tp-body">{ja ? "読書記録を始めたい方に。基本機能を無料でご利用いただけます。" : "Core features free — perfect for getting started."}</p>
+      <span class="mock-tp-btn mock-tp-btn-outline" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+    </article>
+
+    <article class="mock-tp-plan">
+      <p class="mock-tp-kicker">{ja ? "スタンダード" : "Standard"}</p>
+      <h2>Standard</h2>
+      <p class="mock-tp-price"><strong>¥600</strong><span>/{ja ? "月" : "mo"}</span></p>
+      <p class="mock-tp-tax">{ja ? "（税込 ¥660）" : "(¥660 tax incl.)"}</p>
+      <p class="mock-tp-body">{ja ? "読書を習慣にしたい方へ。記録から振り返りまで、しっかりサポート。" : "For building a habit — logs through reflection."}</p>
+      <span class="mock-tp-btn mock-tp-btn-solid" aria-disabled="true">{ja ? "スタンダードに登録" : "Choose Standard"}</span>
+    </article>
+
+    <article class="mock-tp-plan is-featured">
+      <span class="mock-tp-ribbon">{ja ? "おすすめ" : "Best"}</span>
+      <p class="mock-tp-kicker">{ja ? "プレミアム" : "Premium"}</p>
+      <h2>Premium</h2>
+      <p class="mock-tp-price"><strong>¥1,200</strong><span>/{ja ? "月" : "mo"}</span></p>
+      <p class="mock-tp-tax">{ja ? "（税込 ¥1,320）" : "(¥1,320 tax incl.)"}</p>
+      <p class="mock-tp-body">{ja ? "読書を深く楽しみたい方へ。より高度な分析と管理を。" : "For deeper analysis and richer control."}</p>
+      <span class="mock-tp-btn mock-tp-btn-gold" aria-disabled="true">{ja ? "プレミアムに登録" : "Choose Premium"}</span>
+    </article>
+  </div>
+
+  <section class="mock-tp-audience">
+    <h2>{ja ? "このプランはこんな方におすすめ" : "Who each plan is for"}</h2>
+    <div class="mock-tp-audience-grid">
+      <article>
+        <span class="mock-tp-a-ic" aria-hidden="true">📖</span>
+        <h3>{ja ? "まずは気軽に始めたい方" : "Trying things out"}</h3>
+        <p>{ja ? "読書記録をつけてみたい方や、Tanaを試してみたい方に。" : "Curious about logging, or simply trying Tana."}</p>
+      </article>
+      <article>
+        <span class="mock-tp-a-ic" aria-hidden="true">🔖</span>
+        <h3>{ja ? "読書を習慣化したい方" : "Building a habit"}</h3>
+        <p>{ja ? "読書量を増やしたい方や、振り返りを大切にしたい方に。" : "Want more reading — and meaningful look-backs."}</p>
+      </article>
+      <article>
+        <span class="mock-tp-a-ic" aria-hidden="true">📊</span>
+        <h3>{ja ? "読書を深く楽しみたい方" : "Going deeper"}</h3>
+        <p>{ja ? "多くの本を読まれる方や、データをもとに深く楽しみたい方に。" : "Read a lot, and enjoy insight from the data."}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="mock-tp-compare">
+    <h2>{ja ? "機能比較" : "Compare features"}</h2>
+    <div class="mock-tp-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>{ja ? "機能" : "Feature"}</th>
+            <th>Free</th>
+            <th>Standard</th>
+            <th>Premium</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([f, a, b, c]) => (
+            <tr>
+              <th scope="row">{f}</th>
+              <td>{a}</td>
+              <td>{b}</td>
+              <td class="is-prem">{c}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mock-tp-bottom">
+    <img class="mock-tp-bottom-photo" src="/assets/cta-book-coffee.jpg" alt="" width="1200" height="600" loading="lazy" />
+    <div class="mock-tp-bottom-copy">
+      <h2>{ja ? "あなたの読書時間を、もっと豊かに。" : "Make more of the time you read."}</h2>
+      <p>{ja ? "Tanaで、日々の読書を一歩先へ。" : "Take everyday reading one step further with Tana."}</p>
+      <div class="mock-tb-cta-actions">
+        <span class="mock-tb-btn-solid" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+        <a class="mock-tb-btn-ghost dark" href={`${base}/faq`}>{ja ? "プランに関するFAQを見る" : "Pricing FAQ"}</a>
+      </div>
+    </div>
+  </section>
+</div>

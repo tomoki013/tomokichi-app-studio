@@ -1,0 +1,137 @@
+---
+import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
+import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
+import { homeDescription, tagline } from "../lib/content";
+
+type Locale = "ja" | "en";
+const { lang, title, page = "", description, jsonLd = "" } = Astro.props as {
+  lang: Locale;
+  title: string;
+  page?: string;
+  description?: string;
+  jsonLd?: string;
+};
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
+const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
+const supportHref = supportUrl("soonish", lang);
+const storeLabel = ja ? "近日公開" : "Coming soon";
+
+const nav = [
+  { slug: "screenshots", label: ja ? "機能" : "Features", href: href("screenshots") },
+  { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
+  { slug: "features", label: ja ? "活用シーン" : "Use cases", href: href("features") },
+  { slug: "pricing", label: ja ? "料金" : "Pricing", href: href("pricing") },
+  { slug: "faq", label: ja ? "よくある質問" : "FAQ", href: href("faq") },
+];
+
+const footerColumns = ja
+  ? [
+      {
+        title: "プロダクト",
+        links: [
+          { label: "活用シーン", href: href("features") },
+          { label: "使い方", href: href("how-to") },
+          { label: "料金", href: href("pricing") },
+          { label: "コンセプト", href: href("screenshots") },
+        ],
+      },
+      {
+        title: "サポート",
+        links: [
+          { label: "よくある質問", href: href("faq") },
+          { label: "お知らせ", href: href("news") },
+          { label: "アップデート情報", href: href("updates") },
+        ],
+      },
+      {
+        title: "規約",
+        links: [
+          { label: "プライバシーポリシー", href: href("privacy") },
+          { label: "利用規約", href: href("terms") },
+          { label: "特定商取引法に基づく表記", href: href("commercial-transactions") },
+        ],
+      },
+      {
+        title: "運営者情報",
+        links: [
+          { label: "運営サイト", href: mainSiteUrl("ja"), external: true },
+          { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
+          { label: "お問い合わせ", href: supportHref, external: true },
+        ],
+      },
+    ]
+  : [
+      {
+        title: "Product",
+        links: [
+          { label: "Use cases", href: href("features") },
+          { label: "How to", href: href("how-to") },
+          { label: "Pricing", href: href("pricing") },
+          { label: "Concept", href: href("screenshots") },
+        ],
+      },
+      {
+        title: "Support",
+        links: [
+          { label: "FAQ", href: href("faq") },
+          { label: "News", href: href("news") },
+          { label: "App updates", href: href("updates") },
+        ],
+      },
+      {
+        title: "Legal",
+        links: [
+          { label: "Privacy Policy", href: href("privacy") },
+          { label: "Terms of Service", href: href("terms") },
+          { label: "Commercial Transactions", href: href("commercial-transactions") },
+        ],
+      },
+      {
+        title: "Operator",
+        links: [
+          { label: "Operator site", href: mainSiteUrl("en"), external: true },
+          { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
+          { label: "Contact", href: supportHref, external: true },
+        ],
+      },
+    ];
+
+const mobileFooterLinks = [
+  { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
+  { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
+  { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
+  { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+];
+
+const metaDescription = description ?? (ja ? homeDescription[0] : homeDescription[1]);
+---
+
+<AppSiteShell
+  lang={lang}
+  title={title}
+  description={metaDescription}
+  page={page}
+  brand="Soonish"
+  tagline={ja ? tagline[0] : tagline[1]}
+  siteUrl={appSiteUrl("soonish")}
+  homeHref={ja ? "/ja" : "/"}
+  jaPageHref={jaPageHref}
+  enPageHref={enPageHref}
+  nav={nav}
+  footerColumns={footerColumns}
+  mobileFooterLinks={mobileFooterLinks}
+  appStoreLabel={storeLabel}
+  appStoreHref=""
+  appStoreComingSoon
+  menuLabel={ja ? "メニュー" : "Menu"}
+  menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
+  themeColor="#faf6f8"
+  pageClass="soonish-page"
+  jsonLd={jsonLd}
+>
+  <slot />
+</AppSiteShell>

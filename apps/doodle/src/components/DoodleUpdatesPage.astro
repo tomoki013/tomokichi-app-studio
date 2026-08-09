@@ -1,0 +1,286 @@
+---
+import { supportUrl } from "@tomokichi/app-site/urls";
+
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const supportHref = supportUrl("doodle", lang);
+
+const history = ja
+  ? [
+      { v: "v2.4.0", d: "2024.05.20", new: true, items: ["各アプリの機能追加と改善", "パフォーマンスの向上"], color: "#5a9ee0" },
+      { v: "v2.3.0", d: "2024.03.10", items: ["デザインのリフレッシュ", "テーマカラーを追加"], color: "#5a9ee0" },
+      { v: "v2.2.0", d: "2024.01.15", items: ["iOS 17 に最適化", "軽微なバグ修正"], color: "#7bc47f" },
+      { v: "v2.1.0", d: "2023.11.20", items: ["ウィジェットの改善", "通知の安定性向上"], color: "#7bc47f" },
+      { v: "v2.0.0", d: "2023.09.01", items: ["大幅なUI刷新", "新しいアイコンと体験"], color: "#b08ad4" },
+    ]
+  : [
+      { v: "v2.4.0", d: "2024.05.20", new: true, items: ["Feature additions across apps", "Performance upgrades"], color: "#5a9ee0" },
+      { v: "v2.3.0", d: "2024.03.10", items: ["Design refresh", "New theme colours"], color: "#5a9ee0" },
+      { v: "v2.2.0", d: "2024.01.15", items: ["iOS 17 optimisations", "Minor bug fixes"], color: "#7bc47f" },
+      { v: "v2.1.0", d: "2023.11.20", items: ["Widget improvements", "More reliable notifications"], color: "#7bc47f" },
+      { v: "v2.0.0", d: "2023.09.01", items: ["Major UI refresh", "New icons and experience"], color: "#b08ad4" },
+    ];
+---
+
+<div class="mock-du">
+  <!-- HERO -->
+  <header class="mock-du-hero">
+    <div class="mock-du-hero-copy">
+      <span class="mock-du-scribble" aria-hidden="true"></span>
+      <h1 class="mock-du-h1">
+        <span class="mock-du-underline">{ja ? "アップデート情報" : "App updates"}</span>
+      </h1>
+      <p class="mock-du-lead">
+        {ja
+          ? "Doodle Series の最新アップデートや機能改善、今後の予定をお届けします。"
+          : "The latest Doodle Series updates, refinements, and what’s coming next."}
+        <span class="mock-du-heart" aria-hidden="true">♡</span>
+      </p>
+    </div>
+
+    <aside class="mock-du-latest">
+      <div class="mock-du-latest-inner">
+        <div class="mock-du-latest-text">
+          <span class="mock-du-pill">{ja ? "最新バージョン" : "Latest"}</span>
+          <p class="mock-du-ver">v2.4.0</p>
+          <p class="mock-du-date">{ja ? "2024年5月20日リリース" : "Released May 20, 2024"}</p>
+          <p class="mock-du-sum">
+            {ja
+              ? "パフォーマンスの向上と、日々の使いやすさを高める改善を行いました。"
+              : "Performance upgrades and everyday usability improvements."}
+          </p>
+          <a class="mock-du-link" href="#history">{ja ? "詳しく見る →" : "Details →"}</a>
+        </div>
+        <div class="mock-du-phone">
+          <img class="mock-du-phone-photo" src="/assets/updates-hero.jpg" alt="" width="280" height="360" loading="eager" />
+          <div class="mock-du-phone-bezel">
+            <div class="mock-du-phone-screen">
+              <p class="mock-du-phone-brand">Doodle Series</p>
+              <div class="mock-du-phone-apps">
+                <div class="mock-du-mini mock-du-mini-timer"><i></i><span>Timer</span></div>
+                <div class="mock-du-mini mock-du-mini-calc"><i></i><span>Calculator</span></div>
+                <div class="mock-du-mini mock-du-mini-count"><i></i><span>Counter</span></div>
+                <div class="mock-du-mini mock-du-mini-sw"><i></i><span>Stopwatch</span></div>
+              </div>
+            </div>
+          </div>
+          <span class="mock-du-star mock-du-star-a">★</span>
+          <span class="mock-du-cloud mock-du-cloud-a"></span>
+        </div>
+      </div>
+    </aside>
+  </header>
+
+  <!-- NEW UPDATES + HISTORY (side by side like mock) -->
+  <section class="mock-du-mid">
+    <div class="mock-du-apps-col">
+      <div class="mock-du-row-head">
+        <h2>{ja ? "新着アップデート" : "Fresh updates"}</h2>
+        <a class="mock-du-link" href="#history">{ja ? "すべてのアップデート →" : "All updates →"}</a>
+      </div>
+      <div class="mock-du-app-grid">
+        <!-- Timer -->
+        <article class="mock-du-card">
+          <div class="mock-du-card-top">
+            <span class="mock-du-app-ic mock-du-ic-timer" aria-hidden="true"></span>
+            <strong>Timer</strong>
+            <span class="mock-du-new">NEW</span>
+          </div>
+          <div class="mock-du-device mock-du-device-timer" aria-hidden="true">
+            <div class="mock-du-device-screen">
+              <span class="mock-du-dev-title">Timer</span>
+              <strong class="mock-du-dev-big">25:00</strong>
+              <span class="mock-du-dev-sub">Focus time</span>
+              <span class="mock-du-dev-btn">Start</span>
+            </div>
+          </div>
+          <ul>
+            <li>{ja ? "インターバルトレーニングに対応" : "Interval training"}</li>
+            <li>{ja ? "終了時の通知音を複数追加" : "More end sounds"}</li>
+            <li>{ja ? "バイブレーションのON/OFF設定" : "Vibration on/off"}</li>
+          </ul>
+          <a class="mock-du-link" href={`${base}/features`}>{ja ? "詳細を見る →" : "Details →"}</a>
+        </article>
+
+        <!-- Calculator -->
+        <article class="mock-du-card">
+          <div class="mock-du-card-top">
+            <span class="mock-du-app-ic mock-du-ic-calc" aria-hidden="true"></span>
+            <strong>Calculator</strong>
+            <span class="mock-du-new">NEW</span>
+          </div>
+          <div class="mock-du-device mock-du-device-calc" aria-hidden="true">
+            <div class="mock-du-device-screen mock-du-calc-ui">
+              <span class="mock-du-calc-display">1,234</span>
+              <div class="mock-du-keys">
+                {["C","±","%","÷","7","8","9","×","4","5","6","−","1","2","3","+","0","0",".","="].map((k) => (
+                  <span class:list={[{ op: ["÷","×","−","+","="].includes(k) }]}>{k}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <ul>
+            <li>{ja ? "計算履歴が見やすく" : "Clearer history"}</li>
+            <li>{ja ? "%ボタンの動作を改善" : "Improved % button"}</li>
+            <li>{ja ? "バグ修正と安定性の向上" : "Stability fixes"}</li>
+          </ul>
+          <a class="mock-du-link" href={`${base}/features`}>{ja ? "詳細を見る →" : "Details →"}</a>
+        </article>
+
+        <!-- Counter -->
+        <article class="mock-du-card">
+          <div class="mock-du-card-top">
+            <span class="mock-du-app-ic mock-du-ic-count" aria-hidden="true"></span>
+            <strong>Counter</strong>
+            <span class="mock-du-new">NEW</span>
+          </div>
+          <div class="mock-du-device mock-du-device-count" aria-hidden="true">
+            <div class="mock-du-device-screen mock-du-count-ui">
+              <span class="mock-du-dev-title">Counter</span>
+              <strong class="mock-du-dev-big mock-du-count-num">123</strong>
+              <div class="mock-du-count-btns">
+                <span>−</span><span class="plus">＋</span>
+              </div>
+              <span class="mock-du-reset">{ja ? "リセット" : "Reset"}</span>
+            </div>
+          </div>
+          <ul>
+            <li>{ja ? "ラベルの編集・保存に対応" : "Edit & save labels"}</li>
+            <li>{ja ? "カウント履歴を追加（プレミアム）" : "Count history (premium)"}</li>
+            <li>{ja ? "デザインを微調整" : "Design polish"}</li>
+          </ul>
+          <a class="mock-du-link" href={`${base}/features`}>{ja ? "詳細を見る →" : "Details →"}</a>
+        </article>
+
+        <!-- Stopwatch -->
+        <article class="mock-du-card">
+          <div class="mock-du-card-top">
+            <span class="mock-du-app-ic mock-du-ic-sw" aria-hidden="true"></span>
+            <strong>Stopwatch</strong>
+            <span class="mock-du-new">NEW</span>
+          </div>
+          <div class="mock-du-device mock-du-device-sw" aria-hidden="true">
+            <div class="mock-du-device-screen mock-du-sw-ui">
+              <span class="mock-du-dev-title">Stopwatch</span>
+              <div class="mock-du-sw-ring">
+                <strong>00:12.34</strong>
+              </div>
+              <div class="mock-du-sw-btns">
+                <span>Lap</span><span class="stop">Stop</span>
+              </div>
+            </div>
+          </div>
+          <ul>
+            <li>{ja ? "ラップの並び替えに対応" : "Reorder laps"}</li>
+            <li>{ja ? "ミリ秒表示の精度を向上" : "Better ms display"}</li>
+            <li>{ja ? "その他の軽微な修正" : "Other minor fixes"}</li>
+          </ul>
+          <a class="mock-du-link" href={`${base}/features`}>{ja ? "詳細を見る →" : "Details →"}</a>
+        </article>
+      </div>
+    </div>
+
+    <aside class="mock-du-history" id="history">
+      <h2>{ja ? "更新履歴" : "History"}</h2>
+      <ol>
+        {history.map((h) => (
+          <li>
+            <span class="mock-du-node" style={`--node:${h.color}`} aria-hidden="true"></span>
+            <div>
+              <div class="mock-du-h-meta">
+                <time>{h.d}</time>
+                <strong>{h.v}</strong>
+                {h.new ? <span class="mock-du-new">NEW</span> : null}
+              </div>
+              <ul>
+                {h.items.map((it) => <li>{it}</li>)}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <a class="mock-du-link mock-du-history-more" href={`${base}/news`}>{ja ? "すべての更新履歴を見る →" : "See all →"}</a>
+    </aside>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="mock-du-section">
+    <div class="mock-du-row-head mock-du-row-head-left">
+      <h2>{ja ? "これからの予定" : "What’s ahead"}</h2>
+      <p class="mock-du-note">{ja ? "開発中の機能を少しだけご紹介します！" : "A peek at what’s in progress."}</p>
+    </div>
+    <div class="mock-du-roadmap">
+      <article class="mock-du-rm mock-du-rm-a">
+        <div class="mock-du-rm-ic" aria-hidden="true">☾</div>
+        <h3>{ja ? "ダークモード" : "Dark mode"}</h3>
+        <span class="mock-du-when mock-du-when-soon">{ja ? "まもなく" : "Soon"}</span>
+        <p>{ja ? "すべてのアプリでダークモードに対応予定！" : "Coming to every app in the series."}</p>
+      </article>
+      <article class="mock-du-rm mock-du-rm-b">
+        <div class="mock-du-rm-ic mock-du-rm-widget" aria-hidden="true">
+          <span>25:00</span>
+        </div>
+        <h3>{ja ? "ウィジェット強化" : "Stronger widgets"}</h3>
+        <span class="mock-du-when">{ja ? "6月予定" : "June"}</span>
+        <p>{ja ? "ホーム画面でさらに便利に使えるように。" : "More useful on the Home Screen."}</p>
+      </article>
+      <article class="mock-du-rm mock-du-rm-c">
+        <div class="mock-du-rm-ic" aria-hidden="true">☁</div>
+        <h3>{ja ? "データのバックアップ" : "Data backup"}</h3>
+        <span class="mock-du-when">{ja ? "7月予定" : "July"}</span>
+        <p>{ja ? "iCloudでデータを安全にバックアップ。" : "Safe iCloud backup for your data."}</p>
+      </article>
+      <article class="mock-du-rm mock-du-rm-d">
+        <div class="mock-du-rm-ic" aria-hidden="true">🎨</div>
+        <h3>{ja ? "カスタムテーマ" : "Custom themes"}</h3>
+        <span class="mock-du-when mock-du-when-later">{ja ? "今後検討中" : "Exploring"}</span>
+        <p>{ja ? "色やアイコンを自分好みにカスタマイズ！" : "Colours and icons your way."}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- HELP -->
+  <section class="mock-du-section">
+    <h2 class="mock-du-section-title">{ja ? "お困りのときは" : "Need a hand?"}</h2>
+    <div class="mock-du-help">
+      <article class="mock-du-help-card">
+        <div class="mock-du-help-ic" aria-hidden="true">?</div>
+        <h3>{ja ? "よくある質問" : "FAQ"}</h3>
+        <p>{ja ? "使い方やトラブルの解決方法をまとめています。" : "How-tos and troubleshooting."}</p>
+        <a class="mock-du-link" href={`${base}/faq`}>{ja ? "FAQを見る →" : "Open FAQ →"}</a>
+      </article>
+      <article class="mock-du-help-card">
+        <div class="mock-du-help-ic" aria-hidden="true">✉</div>
+        <h3>{ja ? "お問い合わせ" : "Contact"}</h3>
+        <p>{ja ? "ご意見・ご要望はこちらからどうぞ。" : "Ideas and feedback welcome."}</p>
+        <a class="mock-du-link" href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ →" : "Contact →"}</a>
+      </article>
+      <article class="mock-du-help-card">
+        <div class="mock-du-help-ic" aria-hidden="true">＋</div>
+        <h3>{ja ? "不具合を報告する" : "Report a bug"}</h3>
+        <p>{ja ? "見つけた不具合のご報告にご協力ください。" : "Help us fix issues you find."}</p>
+        <a class="mock-du-link" href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "報告フォームへ →" : "Report →"}</a>
+      </article>
+      <article class="mock-du-help-card">
+        <div class="mock-du-help-ic" aria-hidden="true">💡</div>
+        <h3>{ja ? "使い方のヒント" : "Tips"}</h3>
+        <p>{ja ? "より便利に使うためのヒントを紹介。" : "Small tips for everyday use."}</p>
+        <a class="mock-du-link" href={`${base}/how-to`}>{ja ? "ヒントを見る →" : "See tips →"}</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mock-du-cta">
+    <span class="mock-du-cta-cloud mock-du-cta-cloud-l" aria-hidden="true"></span>
+    <span class="mock-du-cta-cloud mock-du-cta-cloud-r" aria-hidden="true"></span>
+    <span class="mock-du-cta-plane" aria-hidden="true">✈</span>
+    <p class="mock-du-cta-title">{ja ? "シンプルなデザインで、毎日をもっと心地よく。" : "Simple design for a calmer everyday."}</p>
+    <p class="mock-du-cta-sub">{ja ? "Doodle Series を今すぐダウンロード" : "Download Doodle Series"}</p>
+    <span class="mock-du-store" aria-disabled="true">
+      <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path fill="currentColor" d="M11.5 8.2c0-1.7 1.4-2.5 1.5-2.6-0.8-1.2-2.1-1.3-2.5-1.4-1.1-0.1-2 .6-2.6.6s-1.3-0.6-2.2-0.6c-1.1 0-2.2.7-2.8 1.7-1.2 2.1-0.3 5.1 0.8 6.8.6.8 1.2 1.7 2.1 1.7s1.2-0.5 2.3-0.5 1.4.5 2.3.5 1.5-0.8 2.1-1.7c.6-0.9 0.9-1.8 0.9-1.8s-1.7-0.7-1.7-2.7zM9.5 3.3c.6-0.7 1-1.7.9-2.7-0.9 0-1.9.6-2.5 1.3-0.5.6-1 1.6-0.9 2.5 1 .1 1.9-0.5 2.5-1.1z"/></svg>
+      {ja ? "App Store でダウンロード" : "Download on the App Store"}
+    </span>
+  </section>
+</div>

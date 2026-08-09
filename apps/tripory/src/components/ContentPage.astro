@@ -1,9 +1,11 @@
 ---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import Shell from "./Shell.astro";
 
 type Locale = "ja" | "en";
-type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "updates";
+type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "news" | "updates";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
 const titleMap: Record<Page, [string, string]> = {
@@ -13,14 +15,16 @@ const titleMap: Record<Page, [string, string]> = {
   faq: ["よくある質問", "Frequently asked questions"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "News"],
+  news: ["お知らせ", "News"],
+  updates: ["アップデート情報", "App updates"],
 };
 const subtitleMap: Partial<Record<Page, [string, string]>> = {
   features: ["旅のすべてを、ひとつのアプリに。", "Everything about your travels, in one app."],
   principles: ["デザインも、体験も、美しく。", "Beautiful in both design and experience."],
   screenshots: ["美しい旅の記録体験を。", "A beautiful way to remember every journey."],
   faq: ["よくいただくご質問をまとめました。", "Everything you may want to know."],
-  updates: ["新機能や改善内容をお知らせします。", "See new features and improvements."],
+  news: ["Triporyからのお知らせと旅のコラム。", "News from Tripory and stories about keeping journeys."],
+  updates: ["新機能や改善内容をバージョンごとに記録します。", "Version-by-version features, improvements, and fixes."],
 };
 const title = titleMap[page][ja ? 0 : 1];
 const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
@@ -66,6 +70,84 @@ const faqs = ja
       ["Can I use Tripory offline?", "Aside from loading map tiles, core features such as viewing and editing records work offline."],
       ["Can I sync across devices?", "There is currently no sync between devices. Each device keeps its own data, so please back up before switching phones."],
       ["How do I delete my data?", "Use \"Delete all data\" in Settings at any time. Uninstalling the app also removes the data stored on your device."],
+    ];
+
+const newsPosts = ja
+  ? [
+      {
+        id: "version-1",
+        date: "2026.07.24",
+        datetime: "2026-07-24",
+        badge: "お知らせ",
+        title: "Tripory 1.0.0を公開しました",
+        summary: "世界地図、旅のタイムライン、写真と思い出、旅の統計をひとつのアプリにまとめました。",
+        body: [
+          "訪れた国を世界地図に残し、旅ごとの日付・写真・メモをタイムラインで振り返れるTriporyを公開しました。",
+          "記録は端末内に保存され、アカウント登録は必要ありません。",
+        ],
+      },
+      {
+        id: "column-memory",
+        date: "2026.07.24",
+        datetime: "2026-07-24",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "旅の記録を、行程ではなく物語として残す",
+        summary: "いつ、どこへ行ったか。その間に何を見て、どう感じたか。",
+        body: [
+          "旅は移動先の一覧だけではありません。写真や短い言葉を時間の流れに沿って置くことで、その日の空気まで思い出しやすくなります。",
+          "Triporyは、効率よく予定を管理するためではなく、自分だけの旅の物語をあとから読み返すための場所です。",
+        ],
+      },
+      {
+        id: "privacy-first",
+        date: "2026.07.24",
+        datetime: "2026-07-24",
+        badge: "お知らせ",
+        badgeTone: "note" as const,
+        title: "旅の記録は端末の中に保存されます",
+        summary: "アカウント不要。写真ライブラリ全体へアクセスすることもありません。",
+        body: [
+          "Triporyの旅や写真の記録は端末内に保存されます。写真はiOSの標準選択画面から選んだものだけを扱います。",
+        ],
+      },
+    ]
+  : [
+      {
+        id: "version-1",
+        date: "2026.07.24",
+        datetime: "2026-07-24",
+        badge: "Update",
+        title: "Tripory 1.0.0 is here",
+        summary: "A world map, travel timeline, photos, memories, and statistics in one app.",
+        body: [
+          "Tripory lets you mark visited countries, keep photos and notes by trip, and revisit everything as a timeline.",
+          "Records stay on your device and no account is required.",
+        ],
+      },
+      {
+        id: "column-memory",
+        date: "2026.07.24",
+        datetime: "2026-07-24",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "Keep a journey as a story, not an itinerary",
+        summary: "Where you went matters. So does what you saw and how it felt.",
+        body: [
+          "A journey is more than a list of destinations. Photos and short notes placed along a timeline can bring back the atmosphere of a day.",
+          "Tripory is a place to reread your own travel story, not another tool for optimizing a schedule.",
+        ],
+      },
+      {
+        id: "privacy-first",
+        date: "2026.07.24",
+        datetime: "2026-07-24",
+        badge: "Update",
+        badgeTone: "note" as const,
+        title: "Your travel records stay on your device",
+        summary: "No account, and no access to your full photo library.",
+        body: ["Tripory stores trips and selected photos on your device. It only receives the photos you explicitly choose with the iOS picker."],
+      },
     ];
 
 const legal = {
@@ -150,9 +232,22 @@ const legal = {
 
     {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2>{body.split("\n\n").map((para) => <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>)}</section>)}</article>}
 
-    {page === "updates" && <div class="updates-list">{[
-      ["1.0.0", ja ? "2026年7月24日" : "July 24, 2026", ja ? "新機能" : "New", ja ? ["Triporyがリリースしました", "訪れた国を記録する世界地図", "旅の記録とタイムライン", "旅の統計"] : ["Tripory is now available", "A world map of the countries you visit", "Trip records and timeline", "Travel statistics"]],
-    ].map(([version, date, badge, items]) => <article><div><h2>{version}</h2><p>{date}</p><ul>{(items as string[]).map(item => <li>{item}</li>)}</ul></div><span>{badge}</span></article>)}</div>}
+    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "updates" && (
+      <AppUpdatesPage
+        lang={lang}
+        appName="Tripory"
+        newsHref={ja ? "/ja/news" : "/news"}
+        releases={[{
+          version: "1.0.0",
+          date: "2026.07.24",
+          datetime: "2026-07-24",
+          label: ["最初のリリース", "First release"],
+          summary: ["旅で集めた場所と思い出を、自分だけの世界として残せる最初のバージョンです。", "The first version of Tripory, made to keep the places and memories gathered through travel."],
+          changes: [["訪れた国を世界地図に記録", "旅ごとの日付・写真・メモをタイムラインに保存", "訪問した国・都市・日数の統計", "アカウント不要・端末内保存"], ["Mark visited countries on a world map", "Keep dates, photos, and notes in a travel timeline", "See statistics for countries, cities, and days", "No account; records stay on your device"]],
+        }]}
+      />
+    )}
 
   </section>
 </Shell>

@@ -1,0 +1,112 @@
+---
+import { supportUrl } from "@tomokichi/app-site/urls";
+
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const supportHref = supportUrl("soonish", lang);
+const base = ja ? "/ja" : "";
+
+const faqs = ja
+  ? [
+      ["どうやってAIに相談するの？", "いつものAIに、すぐ相談できます。Soonish に保存した旅行情報やメモを、あなたの使っているAIにそのまま渡して相談できます。", true],
+      ["MCPって必要？", "いいえ。MCPなどの専門知識は不要です。自然な言葉で相談するだけで、AIが文脈を理解します。", false],
+      ["どのAIで使える？", "ChatGPT や Gemini など、普段お使いのAIサービスと連携して相談できます。アプリ内の「相談する」からも渡せます。", false],
+      ["保存したメモも渡せる？", "はい。リンクやメモ、画像、コレクション単位で渡すことができます。", false],
+      ["コレクション単位で相談できる？", "はい。テーマごとにまとめたコレクションを、まとめてAIに渡せます。", false],
+      ["データはどう扱われる？", "保存データは端末中心で扱います。AI相談時は、あなたが明示的に渡した内容だけが対象です。詳細はプライバシーポリシーをご確認ください。", false],
+    ]
+  : [
+      ["How do I consult AI?", "Talk to the AI you already use. Pass travel notes and memos saved in Soonish as context.", true],
+      ["Do I need MCP?", "No specialised MCP setup. Natural language is enough.", false],
+      ["Which AI works?", "ChatGPT, Gemini, and other tools — or hand off from the in-app Consult button.", false],
+      ["Can I include saved memos?", "Yes — links, notes, images, and whole collections.", false],
+      ["Can I consult by collection?", "Yes. Hand a themed collection to AI in one go.", false],
+      ["How is data handled?", "Device-first storage. Only what you explicitly send is used for a consult.", false],
+    ];
+---
+
+<div class="mock-sf">
+  <div class="mock-sf-leaves" aria-hidden="true"></div>
+  <p class="mock-sh-crumb">{ja ? "ホーム  ›  よくある質問 / サポート" : "Home  ›  FAQ / Support"}</p>
+  <header class="mock-sf-hero">
+    <h1>{ja ? "よくある質問 / サポート" : "FAQ / Support"}</h1>
+    <p>{ja ? "Soonish の使い方やご利用に関する疑問にお答えします。" : "Answers about using Soonish and how the service works."}</p>
+    <label class="mock-sf-search">
+      <span aria-hidden="true">⌕</span>
+      <input type="search" placeholder={ja ? "質問を検索する（例：AIに相談する方法）" : "Search questions (e.g. how to consult AI)"} />
+    </label>
+  </header>
+
+  <nav class="mock-sf-cats" aria-label={ja ? "カテゴリ" : "Categories"}>
+    {(ja
+      ? [["💬", "AIに相談する方法"], ["📁", "保存・整理について"], ["🔒", "データの取り扱い"], ["¥", "料金・プラン"], ["⚙", "その他のご質問"]]
+      : [["💬", "Consulting AI"], ["📁", "Saving & organising"], ["🔒", "Data handling"], ["¥", "Pricing"], ["⚙", "Other"]]
+    ).map(([ic, label]) => (
+      <button type="button"><span aria-hidden="true">{ic}</span>{label}</button>
+    ))}
+  </nav>
+
+  <section class="mock-sf-main">
+    <h2 class="mock-sh-sec-title"><span>✦</span>{ja ? "よくある質問" : "FAQ"}<span>✦</span></h2>
+    <div class="mock-sf-layout">
+      <div class="mock-sf-list">
+        {faqs.map(([q, a, open], i) => (
+          <details open={Boolean(open) && i === 0}>
+            <summary>{q}</summary>
+            <div class="ans">
+              <p>{a}</p>
+              {open ? (
+                <div class="detail">
+                  <div>
+                    <p class="dk">{ja ? "方法1  普段使っているAIにそのまま聞く" : "Method 1 · Your usual AI"}</p>
+                    <div class="mini-card">{ja ? "サントリーニのおすすめホテルを3泊4日のプランを考えて" : "Suggest a 3-night Santorini hotel plan"}</div>
+                    <div class="ai-row" aria-hidden="true"><i class="gpt"></i><i class="gem"></i><i class="spark"></i></div>
+                  </div>
+                  <div>
+                    <p class="dk">{ja ? "方法2  アプリ内の「相談する」から渡す" : "Method 2 · In-app Consult"}</p>
+                    <div class="mini-phone" aria-hidden="true"><span class="btn">{ja ? "相談する" : "Consult"}</span></div>
+                    <p class="note">{ja ? "画像やメモも一緒に渡せます" : "Images and notes can go along"}</p>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mock-sf-support">
+    <h2 class="mock-sh-sec-title"><span>✦</span>{ja ? "サポート窓口" : "Support desk"}<span>✦</span></h2>
+    <p class="lead">{ja ? "お困りの際は、以下の方法でお気軽にご連絡ください。" : "When you need a hand, reach us any of these ways."}</p>
+    <div class="mock-sf-support-grid">
+      <article>
+        <h3>{ja ? "メールでのお問い合わせ" : "Email"}</h3>
+        <p>{ja ? "ご返信までにお時間をいただく場合がございます。" : "Replies may take a little time."}</p>
+        <a href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "メールを送る →" : "Send email →"}</a>
+      </article>
+      <article>
+        <h3>{ja ? "お問い合わせフォーム" : "Support form"}</h3>
+        <p>{ja ? "24時間受付しています。通常1〜2営業日以内に返信します。" : "Open 24/7. Usually 1–2 business days."}</p>
+        <a href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "フォームを開く →" : "Open form →"}</a>
+      </article>
+      <article>
+        <h3>{ja ? "使い方ガイド" : "Usage guide"}</h3>
+        <p>{ja ? "基本的な使い方や活用のヒントをご紹介しています。" : "Basics and tips for getting more from Soonish."}</p>
+        <a href={`${base}/how-to`}>{ja ? "ガイドを見る →" : "Open guide →"}</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="mock-sf-banner">
+    <div class="copy">
+      <h2>{ja ? "もっと自由に、もっと深く。" : "Freer, and a little deeper."}</h2>
+      <p>{ja ? "Soonishで、あなたの旅とメモをつなげよう。" : "Connect your trips and notes with Soonish."}</p>
+      <span class="mock-sh-cta-btn" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+    </div>
+    <div class="phones">
+      <img src="/assets/scene-travel.jpg" alt="" width="320" height="400" loading="lazy" />
+      <img src="/assets/scene-cafe.jpg" alt="" width="320" height="400" loading="lazy" />
+    </div>
+  </section>
+</div>

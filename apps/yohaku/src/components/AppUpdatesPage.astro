@@ -1,0 +1,22 @@
+---
+import type { Locale } from "../lib/content";
+
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+---
+
+<div class="app-updates-page">
+  <div class="app-updates-intro">
+    <p>{ja
+      ? "ここには、Yohakuアプリのバージョンごとの変更内容だけを掲載します。サイトからのお知らせやコラムは、お知らせページでご覧いただけます。"
+      : "This page is reserved for version-by-version changes to the Yohaku app. Site news and columns live on the News page."}</p>
+  </div>
+  <section class="app-updates-empty" aria-labelledby="app-updates-empty-title">
+    <span aria-hidden="true">□</span>
+    <p>RELEASE NOTES</p>
+    <h2 id="app-updates-empty-title">{ja ? "最初のアップデートを準備中です。" : "The first app update is still ahead."}</h2>
+    <p>{ja
+      ? "App Storeでの公開後、バージョン番号・公開日・変更内容をここに追加します。"
+      : "After the App Store release, each version number, release date and change list will appear here."}</p>
+  </section>
+</div>

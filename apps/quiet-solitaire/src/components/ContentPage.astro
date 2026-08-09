@@ -1,0 +1,210 @@
+---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
+import { supportUrl } from "@tomokichi/app-site/urls";
+import {
+  conceptScreens,
+  descriptions,
+  faqCategories,
+  faqs as faqList,
+  howGuides,
+  newsPosts,
+  type Page,
+  pick,
+  privacySections,
+  steps as stepList,
+  subtitles,
+  termsSections,
+  titles,
+} from "../lib/content";
+import AppShell from "./AppShell.astro";
+import QuietFeaturesPage from "./QuietFeaturesPage.astro";
+import QuietReviewsPage from "./QuietReviewsPage.astro";
+
+const { lang, page } = Astro.props as { lang: "ja" | "en"; page: Page };
+const ja = lang === "ja";
+const supportHref = supportUrl("quiet-solitaire", lang);
+const title = pick(ja, titles[page]);
+const description = pick(ja, descriptions[page]);
+const subtitle = subtitles[page] ? pick(ja, subtitles[page]!) : undefined;
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+const steps = stepList(ja);
+const guides = howGuides(ja);
+const faqs = faqList(ja);
+const faqCats = ja ? faqCategories.ja : faqCategories.en;
+const concepts = conceptScreens(ja);
+const posts = newsPosts(ja);
+---
+
+<AppShell lang={lang} title={title} page={page} description={description}>
+  <section class:list={["content-page", `content-${page}`]}>
+    {page !== "features" && page !== "reviews" && (
+    <header class="content-hero">
+      <p class="content-eyebrow">{page.toUpperCase()}</p>
+      <h1>{title}</h1>
+      {subtitle && <p class="content-lead">{subtitle}</p>}
+      {(page === "privacy" || page === "terms") && (
+        <div class="legal-dates">
+          <p>{ja ? "制定日：2026年8月8日" : "Effective date: August 8, 2026"}</p>
+          <p>{ja ? "最終更新日：2026年8月8日" : "Last updated: August 8, 2026"}</p>
+        </div>
+      )}
+    </header>
+    )}
+
+    {page === "features" && <QuietFeaturesPage lang={lang} />}
+
+    {page === "reviews" && <QuietReviewsPage lang={lang} />}
+
+    {page === "how-to" && (
+      <div class="how-page">
+        <ol class="step-row">
+          {steps.map(([n, heading, body]) => (
+            <li data-reveal>
+              <span class="step-number">{n}</span>
+              <article>
+                <h2>{heading}</h2>
+                <p>{body}</p>
+              </article>
+            </li>
+          ))}
+        </ol>
+        <div class="guide-list">
+          {guides.map((guide) => (
+            <article data-reveal>
+              <h2>{guide.title}</h2>
+              <ol>
+                {guide.steps.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ol>
+              <aside>{guide.note}</aside>
+            </article>
+          ))}
+        </div>
+        <aside class="how-help" data-reveal>
+          <p>{ja ? "わからないことがあれば、FAQもご覧ください。" : "If anything is still unclear, the FAQ may help."}</p>
+          <a href={ja ? "/ja/faq" : "/faq"}>{ja ? "よくある質問へ" : "Go to the FAQ"} →</a>
+        </aside>
+      </div>
+    )}
+
+    {page === "screenshots" && (
+      <div class="concept-page">
+        <p class="concept-disclaimer" data-reveal>
+          {ja
+            ? "以下は実機のスクリーンショットではありません。Quiet Solitaireの雰囲気を伝えるためのコンセプトカードです。"
+            : "These are not real device screenshots. They are stylized concept cards that convey Quiet Solitaire’s atmosphere."}
+        </p>
+        <div class="concept-grid">
+          {concepts.map((card) => (
+            <article class:list={["concept-card", `concept-${card.id}`]} data-reveal>
+              <div class="concept-art" aria-hidden="true">
+                {card.id === "table" && (
+                  <div class="mini-table">
+                    <span class="mc c1"></span>
+                    <span class="mc c2"></span>
+                    <span class="mc c3"></span>
+                  </div>
+                )}
+                {card.id === "deal" && (
+                  <div class="mini-deal">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                )}
+                {card.id === "undo" && (
+                  <div class="mini-undo">
+                    <span class="undo-ring">↶</span>
+                    <span class="mc"></span>
+                  </div>
+                )}
+                {card.id === "settings" && (
+                  <div class="mini-settings">
+                    <span></span><span></span><span></span>
+                  </div>
+                )}
+              </div>
+              <h2>{card.title}</h2>
+              <p>{card.caption}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {page === "faq" && (
+      <div class="faq-page">
+        <nav class="faq-tabs" data-faq-tabs aria-label={ja ? "カテゴリ" : "Categories"}>
+          {faqCats.map(([key, label], i) => (
+            <button type="button" data-cat={key} aria-current={i === 0 ? "true" : "false"}>{label}</button>
+          ))}
+        </nav>
+        <div class="faq-list" data-faq-list>
+          {faqs.map(([cat, q, a], i) => (
+            <details data-cat={cat} open={i === 0}>
+              <summary>{q}</summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
+        <aside class="faq-contact" data-reveal>
+          <h2>{ja ? "解決しない場合" : "Still need help?"}</h2>
+          <a href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact"} →</a>
+        </aside>
+      </div>
+    )}
+
+    {page === "news" && <NewsFeed lang={lang} posts={posts} />}
+    {page === "updates" && (
+      <AppUpdatesPage lang={lang} appName="Quiet Solitaire" newsHref={ja ? "/ja/news" : "/news"} />
+    )}
+
+    {(page === "privacy" || page === "terms") && (
+      <article class="legal-copy">
+        {legal.map(([heading, body]) => (
+          <section data-reveal>
+            <h2>{heading}</h2>
+            {body.split("\n\n").map((para) => (
+              <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>
+            ))}
+          </section>
+        ))}
+      </article>
+    )}
+
+    {(page === "features" || page === "how-to") && (
+      <div class="content-cta" data-reveal>
+        <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+          <span class="hero-cta-dot" aria-hidden="true"></span>
+          <span>{storeLabel}</span>
+        </span>
+      </div>
+    )}
+  </section>
+</AppShell>
+
+<script is:inline>
+  (() => {
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        items.forEach((item) => {
+          item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
+      });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
+  })();
+</script>

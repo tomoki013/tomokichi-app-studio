@@ -1,0 +1,169 @@
+---
+import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
+import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
+
+type Locale = "ja" | "en";
+const { lang, title, page = "", description, jsonLd = "" } = Astro.props as {
+  lang: Locale;
+  title: string;
+  page?: string;
+  description?: string;
+  jsonLd?: string;
+};
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
+const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
+const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
+const supportHref = supportUrl("quiet-solitaire", lang);
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+
+const nav = [
+  { slug: "features", label: ja ? "特徴" : "Features", href: href("features") },
+  { slug: "screenshots", label: ja ? "スクリーンショット" : "Screenshots", href: href("screenshots") },
+  { slug: "reviews", label: ja ? "レビュー" : "Reviews", href: href("reviews") },
+  { slug: "faq", label: ja ? "よくある質問" : "FAQ", href: href("faq") },
+];
+
+const footerColumns = ja
+  ? [
+      {
+        title: "プロダクト",
+        links: [
+          { label: "機能", href: href("features") },
+          { label: "使い方", href: href("how-to") },
+          { label: "画面イメージ", href: href("screenshots") },
+        ],
+      },
+      {
+        title: "サポート",
+        links: [
+          { label: "よくある質問", href: href("faq") },
+          { label: "お知らせ", href: href("news") },
+          { label: "アップデート情報", href: href("updates") },
+          { label: "お問い合わせ", href: supportHref, external: true },
+        ],
+      },
+      {
+        title: "規約",
+        links: [
+          { label: "プライバシーポリシー", href: href("privacy") },
+          { label: "利用規約", href: href("terms") },
+          { label: "特定商取引法に基づく表記", href: href("commercial-transactions") },
+        ],
+      },
+      {
+        title: "運営者情報",
+        links: [
+          { label: "運営サイト", href: mainSiteUrl("ja"), external: true },
+          { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
+        ],
+      },
+    ]
+  : [
+      {
+        title: "Product",
+        links: [
+          { label: "Features", href: href("features") },
+          { label: "How to play", href: href("how-to") },
+          { label: "Concept screens", href: href("screenshots") },
+        ],
+      },
+      {
+        title: "Support",
+        links: [
+          { label: "FAQ", href: href("faq") },
+          { label: "News", href: href("news") },
+          { label: "App updates", href: href("updates") },
+          { label: "Contact", href: supportHref, external: true },
+        ],
+      },
+      {
+        title: "Legal",
+        links: [
+          { label: "Privacy Policy", href: href("privacy") },
+          { label: "Terms of Service", href: href("terms") },
+          { label: "Commercial Transactions", href: href("commercial-transactions") },
+        ],
+      },
+      {
+        title: "Operator",
+        links: [
+          { label: "Operator site", href: mainSiteUrl("en"), external: true },
+          { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
+        ],
+      },
+    ];
+
+const mobileFooterLinks = [
+  { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true },
+  { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
+  { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
+  { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+];
+
+const metaDescription =
+  description ??
+  (ja
+    ? "Quiet Solitaireは、iPhone向けの静かなクロンダイク・ソリティアです。アンドゥ、統計、設定を備え、データは端末内に保存。現在App Store公開準備中。"
+    : "Quiet Solitaire is a calm Klondike solitaire for iPhone—with undo, stats, and on-device saves. Currently preparing for the App Store.");
+---
+
+<AppSiteShell
+  lang={lang}
+  title={title}
+  description={metaDescription}
+  page={page}
+  brand="Quiet Solitaire"
+  tagline={ja ? "静かなテーブルで、一巡だけ。" : "One quiet deal at the table."}
+  siteUrl={appSiteUrl("quiet-solitaire")}
+  homeHref={ja ? "/ja" : "/"}
+  jaPageHref={jaPageHref}
+  enPageHref={enPageHref}
+  nav={nav}
+  footerColumns={footerColumns}
+  mobileFooterLinks={mobileFooterLinks}
+  appStoreLabel={storeLabel}
+  appStoreHref=""
+  appStoreComingSoon
+  menuLabel={ja ? "メニュー" : "Menu"}
+  menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
+  themeColor="#f4f0e6"
+  pageClass="quiet-solitaire-page"
+  jsonLd={jsonLd}
+>
+  <slot />
+  <script is:inline>
+    (() => {
+      const initReveal = () => {
+        const items = document.querySelectorAll(
+          "[data-reveal], .landing-sections section, .feature-grid article, .step-grid article, .concept-grid article, .content-page > :not(.content-hero)",
+        );
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+          items.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.01, rootMargin: "0px 0px -7% 0px" },
+        );
+        items.forEach((item, index) => {
+          if (item.classList.contains("is-visible")) return;
+          item.classList.add("reveal-item");
+          item.style.setProperty("--reveal-delay", `${(index % 6) * 45}ms`);
+          observer.observe(item);
+        });
+      };
+      document.addEventListener("astro:page-load", initReveal);
+      initReveal();
+    })();
+  </script>
+</AppSiteShell>

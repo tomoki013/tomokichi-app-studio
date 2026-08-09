@@ -1,0 +1,205 @@
+---
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
+import {
+  conceptShots,
+  descriptions,
+  type Locale,
+  newsPosts,
+  type Page,
+  pick,
+  privacySections,
+  subtitles,
+  termsSections,
+  titles,
+} from "../lib/content";
+import AppShell from "./AppShell.astro";
+import SoonishFaqPage from "./SoonishFaqPage.astro";
+import SoonishHowToPage from "./SoonishHowToPage.astro";
+import SoonishPricingPage from "./SoonishPricingPage.astro";
+import SoonishScenariosPage from "./SoonishScenariosPage.astro";
+
+const { lang, page } = Astro.props as { lang: Locale; page: Page };
+const ja = lang === "ja";
+const title = pick(ja, titles[page]);
+const description = pick(ja, descriptions[page]);
+const subtitle = subtitles[page] ? pick(ja, subtitles[page]!) : undefined;
+const storeLabel = ja ? "近日公開" : "Coming soon";
+const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+const concepts = conceptShots(ja);
+const posts = newsPosts(ja);
+---
+
+<AppShell lang={lang} title={title} page={page} description={description}>
+  <section class:list={["content-page", `content-${page}`]}>
+    {!["features","how-to","faq","pricing"].includes(page) && (
+    <header class="content-hero">
+      <p class="content-eyebrow">{page === "screenshots" ? "CONCEPT" : page.toUpperCase()}</p>
+      <h1>{title}</h1>
+      {subtitle && (
+        <p class="content-subtitle">
+          {subtitle.split("\n").map((line) => (
+            <>
+              {line}
+              <br />
+            </>
+          ))}
+        </p>
+      )}
+      {(page === "privacy" || page === "terms") && (
+        <div class="legal-dates">
+          <p>{ja ? "制定日：2026年8月8日" : "Effective date: August 8, 2026"}</p>
+          <p>{ja ? "最終更新日：2026年8月8日" : "Last updated: August 8, 2026"}</p>
+        </div>
+      )}
+    </header>
+    )}
+
+    {page === "features" && <SoonishScenariosPage lang={lang} />}
+
+    {page === "pricing" && <SoonishPricingPage lang={lang} />}
+
+    {page === "how-to" && <SoonishHowToPage lang={lang} />}
+
+    {page === "screenshots" && (
+      <div class="concept-page">
+        <p class="concept-disclaimer" data-reveal>
+          {ja
+            ? "以下は実機のスクリーンショットではありません。Soonishの世界観を伝えるためのコンセプトイラストです。App Store公開後に、実際の画面キャプチャへ差し替えます。"
+            : "These are not real device screenshots. They are concept illustrations of Soonish’s world. Real captures will replace them after App Store release."}
+        </p>
+        <div class="concept-shot-grid">
+          {concepts.map((c) => (
+            <article class:list={["concept-shot", `concept-shot-${c.id}`]} data-reveal>
+              <div class="concept-shot-frame" aria-hidden="true">
+                {c.id === "shelf" && (
+                  <div class="shot-shelf">
+                    <span class="shot-row"></span>
+                    <span class="shot-row shot-row-b"></span>
+                    <span class="shot-row shot-row-c"></span>
+                  </div>
+                )}
+                {c.id === "spark" && (
+                  <div class="shot-spark">
+                    <span class="shot-moon"></span>
+                    <span class="shot-star">✧</span>
+                    <span class="shot-card"></span>
+                  </div>
+                )}
+                {c.id === "chips" && (
+                  <div class="shot-chips">
+                    <span>curious</span>
+                    <span>soft</span>
+                    <span>later</span>
+                    <span>map</span>
+                  </div>
+                )}
+                {c.id === "timing" && (
+                  <div class="shot-timing">
+                    <span>soon</span>
+                    <span class="is-active">someday</span>
+                    <span>seasonal</span>
+                  </div>
+                )}
+              </div>
+              <h2>{c.title}</h2>
+              <p>{c.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {page === "faq" && <SoonishFaqPage lang={lang} />}
+
+    {page === "news" && <NewsFeed lang={lang} posts={posts} />}
+    {page === "updates" && (
+      <AppUpdatesPage lang={lang} appName="Soonish" newsHref={ja ? "/ja/news" : "/news"} />
+    )}
+
+    {(page === "privacy" || page === "terms") && (
+      <article class="legal-copy">
+        {legal.map(([heading, body]) => (
+          <section>
+            <h2>{heading}</h2>
+            {body.split("\n\n").map((para) => (
+              <p>
+                {para.split("\n").map((line) => (
+                  <>
+                    {line}
+                    <br />
+                  </>
+                ))}
+              </p>
+            ))}
+          </section>
+        ))}
+      </article>
+    )}
+
+    {(page === "features" || page === "how-to" || page === "screenshots") && (
+      <div class="content-cta">
+        <span class="store-button store-soon" aria-disabled="true">
+          ● <span>{storeLabel}</span>
+        </span>
+      </div>
+    )}
+  </section>
+</AppShell>
+
+<script is:inline>
+  (() => {
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        items.forEach((item) => {
+          item.hidden = !(cat === "all" || item.getAttribute("data-cat") === cat);
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-current", String(b.getAttribute("data-cat") === cat));
+        });
+      });
+    };
+
+    const initReveal = () => {
+      const items = document.querySelectorAll(
+        "[data-reveal], .feature-card, .how-story, .concept-shot, .subpage > :not(.page-intro):not(.page-hero)",
+      );
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+        items.forEach((item) => item.classList.add("is-visible"));
+        return;
+      }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.01, rootMargin: "0px 0px -7% 0px" },
+      );
+      items.forEach((item, index) => {
+        if (item.classList.contains("is-visible")) return;
+        item.classList.add("reveal-item");
+        item.style.setProperty("--reveal-delay", `${(index % 6) * 45}ms`);
+        observer.observe(item);
+      });
+    };
+
+    document.addEventListener("astro:page-load", () => {
+      bindFaq();
+      initReveal();
+    });
+    bindFaq();
+    initReveal();
+  })();
+</script>

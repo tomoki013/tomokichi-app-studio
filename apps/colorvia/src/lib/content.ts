@@ -6,6 +6,7 @@ export type Page =
   | "faq"
   | "privacy"
   | "terms"
+  | "news"
   | "updates"
   | "regions";
 
@@ -18,17 +19,18 @@ export const titles: Record<Page, [string, string]> = {
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  updates: ["お知らせ", "News"],
-  regions: ["国内地域マップ", "Regional maps"],
+  news: ["お知らせ", "News"],
+  updates: ["アップデート情報", "App updates"],
+  regions: ["地域マップ", "Regional maps"],
 };
 
 export const descriptions: Record<Page, [string, string]> = {
   features: [
-    "世界地図、訪問統計、11か国の国内地域マップ、JSONバックアップなどColorviaの機能。",
+    "世界地図、訪問統計、11か国の地域マップ、JSONバックアップなどColorviaの機能。",
     "Colorvia features: world map, visit stats, regional maps for 11 countries, and JSON backup.",
   ],
   "how-to": [
-    "国の追加から国内地域の記録、データ移行まで、Colorviaの使い方。",
+    "国の追加から地域の記録、データ移行まで、Colorviaの使い方。",
     "How to add countries, record regional visits, and move data with Colorvia.",
   ],
   screenshots: [
@@ -36,7 +38,7 @@ export const descriptions: Record<Page, [string, string]> = {
     "Screens of Colorvia’s world map and statistics.",
   ],
   faq: [
-    "国の記録、国内地域、JSONバックアップ、広告についてのFAQ。",
+    "国の記録、地域、JSONバックアップ、広告についてのFAQ。",
     "FAQ about visit tracking, regional maps, JSON backup, and ads.",
   ],
   privacy: [
@@ -47,13 +49,17 @@ export const descriptions: Record<Page, [string, string]> = {
     "Colorviaの利用規約。無料提供、広告、データ管理について。",
     "Colorvia Terms of Service covering free use, ads, and data management.",
   ],
-  updates: [
+  news: [
     "Colorvia公式ブランドサイト公開のお知らせ。",
-    "News about the official Colorvia brand site launch.",
+    "Updates from Colorvia, including product notes and travel columns.",
+  ],
+  updates: [
+    "Colorviaアプリのバージョンごとの変更内容をお知らせします。",
+    "Version-by-version release notes for the Colorvia app.",
   ],
   regions: [
-    "日本・フランスなど11か国で、都道府県や州など国内地域まで記録できます。",
-    "Record prefectures, states and provinces in 11 supported countries.",
+    "日本・フランスなど11か国の地域区分。都道府県・州・県・旅行エリアなど、国ごとの分け方の詳細。",
+    "How Colorvia divides 11 countries into prefectures, states, provinces and travel areas.",
   ],
 };
 
@@ -65,6 +71,12 @@ export type RegionCard = {
   unitEn: string;
   count: number;
   flag: string;
+  /** Short note on how the country is divided for travel logging. */
+  schemeJa: string;
+  schemeEn: string;
+  /** Representative region names shown on the detail page. */
+  samplesJa: string[];
+  samplesEn: string[];
 };
 
 /** Matches CountryRegionSchemeRegistry expectedRegionCount values. */
@@ -77,15 +89,23 @@ export const regions: RegionCard[] = [
     unitEn: "Prefectures",
     count: 47,
     flag: "🇯🇵",
+    schemeJa: "北海道から沖縄まで、47の都道府県をそのまま塗り分けます。都市名検索では「渋谷」→東京都のように、該当する都道府県へ導きます。",
+    schemeEn: "All 47 prefectures from Hokkaido to Okinawa. Place search maps cities (e.g. Shibuya) to the matching prefecture.",
+    samplesJa: ["東京都", "大阪府", "北海道", "沖縄県", "京都府"],
+    samplesEn: ["Tokyo", "Osaka", "Hokkaido", "Okinawa", "Kyoto"],
   },
   {
     code: "FR",
     nameJa: "フランス",
     nameEn: "France",
-    unitJa: "県",
+    unitJa: "県（département）",
     unitEn: "Departments",
     count: 101,
     flag: "🇫🇷",
+    schemeJa: "メトロポールと海外県を含む県（département）単位。大都市圏や海外領土も旅の記録として残せます。",
+    schemeEn: "French departments including overseas departments—handy for both métropole and overseas travel.",
+    samplesJa: ["パリ", "ブーシュ＝デュ＝ローヌ", "ローヌ", "アルプ＝マリティーム", "バス＝ラン"],
+    samplesEn: ["Paris", "Bouches-du-Rhône", "Rhône", "Alpes-Maritimes", "Bas-Rhin"],
   },
   {
     code: "ES",
@@ -95,24 +115,36 @@ export const regions: RegionCard[] = [
     unitEn: "Provinces & autonomous cities",
     count: 52,
     flag: "🇪🇸",
+    schemeJa: "50の県に、セウタとメリリャの自治市を加えた52区画。自治州より細かい単位で旅を残せます。",
+    schemeEn: "50 provinces plus the autonomous cities of Ceuta and Melilla—finer than autonomous communities.",
+    samplesJa: ["マドリード", "バルセロナ", "セビリア", "バレンシア", "マラガ"],
+    samplesEn: ["Madrid", "Barcelona", "Seville", "Valencia", "Málaga"],
   },
   {
     code: "KR",
     nameJa: "韓国",
     nameEn: "South Korea",
     unitJa: "特別市・広域市・道など",
-    unitEn: "Regions",
+    unitEn: "Special / metro cities & provinces",
     count: 17,
     flag: "🇰🇷",
+    schemeJa: "特別市・広域市・特別自治市・道・特別自治道など、行政区分に沿った17区画です。",
+    schemeEn: "Seventeen first-level units: special city, metropolitan cities, special self-governing city/province, and provinces.",
+    samplesJa: ["ソウル特別市", "釜山広域市", "済州特別自治道", "京畿道", "仁川広域市"],
+    samplesEn: ["Seoul", "Busan", "Jeju", "Gyeonggi", "Incheon"],
   },
   {
     code: "EG",
     nameJa: "エジプト",
     nameEn: "Egypt",
-    unitJa: "県",
+    unitJa: "県（governorate）",
     unitEn: "Governorates",
     count: 27,
     flag: "🇪🇬",
+    schemeJa: "27の県（muhafazah）。カイロ周辺や紅海沿岸など、旅先の県単位で記録できます。",
+    schemeEn: "Twenty-seven governorates covering Nile cities, Red Sea coasts, and desert oases.",
+    samplesJa: ["カイロ", "ギザ", "アレクサンドリア", "南シナイ", "ルクソール"],
+    samplesEn: ["Cairo", "Giza", "Alexandria", "South Sinai", "Luxor"],
   },
   {
     code: "TH",
@@ -122,15 +154,23 @@ export const regions: RegionCard[] = [
     unitEn: "Provinces & Bangkok",
     count: 77,
     flag: "🇹🇭",
+    schemeJa: "76の県（changwat）にバンコクを加えた77区画。島や北部の県も個別に残せます。",
+    schemeEn: "Seventy-six provinces plus Bangkok as its own unit—islands and northern provinces stay separate.",
+    samplesJa: ["バンコク", "チェンマイ", "プーケット", "クラビ", "アユタヤ"],
+    samplesEn: ["Bangkok", "Chiang Mai", "Phuket", "Krabi", "Ayutthaya"],
   },
   {
     code: "TR",
     nameJa: "トルコ",
     nameEn: "Türkiye",
-    unitJa: "県",
+    unitJa: "県（il）",
     unitEn: "Provinces",
     count: 81,
     flag: "🇹🇷",
+    schemeJa: "81の県（il）。イスタンブールからカッパドキア、エーゲ海沿岸まで県単位で塗り分けます。",
+    schemeEn: "Eighty-one provinces (il)—from Istanbul to Cappadocia and the Aegean coast.",
+    samplesJa: ["イスタンブール", "アンカラ", "イズミル", "アンタルヤ", "ネヴシェヒル"],
+    samplesEn: ["Istanbul", "Ankara", "İzmir", "Antalya", "Nevşehir"],
   },
   {
     code: "US",
@@ -140,6 +180,10 @@ export const regions: RegionCard[] = [
     unitEn: "States, D.C. & territories",
     count: 56,
     flag: "🇺🇸",
+    schemeJa: "50州にワシントンD.C.と主要な自治領・領域を加えた56区画。本土以外の旅も残せます。",
+    schemeEn: "Fifty states plus D.C. and major territories—mainland trips and island journeys alike.",
+    samplesJa: ["カリフォルニア", "ニューヨーク", "ハワイ", "テキサス", "ワシントンD.C."],
+    samplesEn: ["California", "New York", "Hawaii", "Texas", "Washington, D.C."],
   },
   {
     code: "MY",
@@ -149,6 +193,10 @@ export const regions: RegionCard[] = [
     unitEn: "States & federal territories",
     count: 16,
     flag: "🇲🇾",
+    schemeJa: "13の州と3つの連邦直轄領（クアラルンプール、ラブアン、プトラジャヤ）の16区画です。",
+    schemeEn: "Thirteen states and three federal territories (Kuala Lumpur, Labuan, Putrajaya).",
+    samplesJa: ["クアラルンプール", "サラワク", "サバ", "ペナン", "ジョホール"],
+    samplesEn: ["Kuala Lumpur", "Sarawak", "Sabah", "Penang", "Johor"],
   },
   {
     code: "BE",
@@ -158,6 +206,10 @@ export const regions: RegionCard[] = [
     unitEn: "Provinces & Brussels",
     count: 11,
     flag: "🇧🇪",
+    schemeJa: "10の州にブリュッセル首都圏地域を加えた11区画。フランダースとワロンをまたぐ旅を整理しやすい単位です。",
+    schemeEn: "Ten provinces plus the Brussels-Capital Region—clear units across Flanders and Wallonia.",
+    samplesJa: ["ブリュッセル", "アントウェルペン", "西フランデレン", "リエージュ", "エノー"],
+    samplesEn: ["Brussels", "Antwerp", "West Flanders", "Liège", "Hainaut"],
   },
   {
     code: "SG",
@@ -167,6 +219,10 @@ export const regions: RegionCard[] = [
     unitEn: "Travel areas",
     count: 8,
     flag: "🇸🇬",
+    schemeJa: "行政区画ではなく、旅でよく回る8つのエリア（中心部、オーチャード、リトル・インディアなど）に整理しています。",
+    schemeEn: "Not formal admin districts—eight travel areas such as the Civic District, Orchard, and Little India.",
+    samplesJa: ["中心部", "オーチャード", "チャイナタウン", "リトル・インディア", "マリーナベイ"],
+    samplesEn: ["Civic District", "Orchard", "Chinatown", "Little India", "Marina Bay"],
   },
 ];
 
@@ -192,15 +248,15 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "4. 基本方針",
-          "本アプリはアカウント登録を必要としません。訪問国および国内地域の記録は原則として利用者の端末内に保存されます。運営者は、通常のアプリ利用だけではこれらの記録内容を閲覧できるサーバーを運用していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用します。問い合わせフォームを明示的に送信した場合に限り、利用者が入力した情報と技術情報を送信します。",
+          "本アプリはアカウント登録を必要としません。訪問国および地域の記録は原則として利用者の端末内に保存されます。運営者は、通常のアプリ利用だけではこれらの記録内容を閲覧できるサーバーを運用していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用します。問い合わせフォームを明示的に送信した場合に限り、利用者が入力した情報と技術情報を送信します。",
         ],
         [
           "5. 端末内に保存する情報",
-          "本アプリは、次の情報を端末内に保存します。\n\n・訪問国の状態および更新日時\n・国内地域の訪問状態および更新日時\n・オンボーディング完了状態\n・表示テーマ（システム／ライト／ダーク）\n・地図色\n・広告同意に関する状態（OSおよび広告SDKが端末上で保持する情報を含む）\n・問い合わせ用のランダムなクライアント識別子\n・その他、アプリの動作に必要なローカル設定",
+          "本アプリは、次の情報を端末内に保存します。\n\n・訪問国の状態および更新日時\n・地域の訪問状態および更新日時\n・オンボーディング完了状態\n・表示テーマ（システム／ライト／ダーク）\n・地図色\n・広告同意に関する状態（OSおよび広告SDKが端末上で保持する情報を含む）\n・問い合わせ用のランダムなクライアント識別子\n・その他、アプリの動作に必要なローカル設定",
         ],
         [
           "6. データの書き出し・読み込み",
-          "利用者は、設定の「データ管理」から、訪問国および国内地域の記録をJSON形式で書き出し、別の端末または再インストール後のColorviaへ読み込むことができます。\n\n書き出したファイルは利用者自身が管理し、第三者への共有、紛失、改変等について運営者は管理できません。不正または破損したJSON、将来の仕様変更後の互換性を完全には保証しません。",
+          "利用者は、設定の「データ管理」から、訪問国および地域の記録をJSON形式で書き出し、別の端末または再インストール後のColorviaへ読み込むことができます。\n\n書き出したファイルは利用者自身が管理し、第三者への共有、紛失、改変等について運営者は管理できません。不正または破損したJSON、将来の仕様変更後の互換性を完全には保証しません。",
         ],
         [
           "7. 広告配信",
@@ -208,7 +264,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "8. お問い合わせ",
-          "アプリ内または公式サポートフォームを明示的に送信した場合に限り、次の情報がサポートAPIおよびメール配信事業者へ送信されることがあります。\n\n・問い合わせID、ランダムなクライアントID、送信元、対象アプリ\n・カテゴリ、名前、メールアドレス、本文\n・アプリバージョン、ビルド番号、OS名、OSバージョン、ロケール、送信日時\n・不正利用防止に必要な情報\n\n訪問国や国内地域の記録は自動添付されません。",
+          "アプリ内または公式サポートフォームを明示的に送信した場合に限り、次の情報がサポートAPIおよびメール配信事業者へ送信されることがあります。\n\n・問い合わせID、ランダムなクライアントID、送信元、対象アプリ\n・カテゴリ、名前、メールアドレス、本文\n・アプリバージョン、ビルド番号、OS名、OSバージョン、ロケール、送信日時\n・不正利用防止に必要な情報\n\n訪問国や地域の記録は自動添付されません。",
         ],
         [
           "9. 法務文書の取得",
@@ -216,7 +272,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "10. 外部サービス",
-          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads（広告配信）\n・Google User Messaging Platform（同意管理）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・Apple（システム機能）\n・公式Webサイトの配信基盤\n\n世界地図および国内地域の地理データは、Natural Earth等のオープンデータを基にアプリ内へ同梱しています。これらの同梱データ自体は、利用者情報を外部へ送信しません。",
+          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads（広告配信）\n・Google User Messaging Platform（同意管理）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・Apple（システム機能）\n・公式Webサイトの配信基盤\n\n世界地図および地域の地理データは、Natural Earth等のオープンデータを基にアプリ内へ同梱しています。これらの同梱データ自体は、利用者情報を外部へ送信しません。",
         ],
         [
           "11. 第三者提供",
@@ -317,7 +373,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第2条（サービス内容）",
-          "Colorviaは、訪れた国の記録、世界地図の表示、訪問統計、対応国における国内地域マップ、地名検索、訪問記録の共有、テーマ・地図色、JSONによる書き出し・読み込み、データ削除、アプリ内問い合わせなどの機能を提供します。アカウント登録は不要です。",
+          "Colorviaは、訪れた国の記録、世界地図の表示、訪問統計、対応国における地域マップ、地名検索、訪問記録の共有、テーマ・地図色、JSONによる書き出し・読み込み、データ削除、アプリ内問い合わせなどの機能を提供します。アカウント登録は不要です。",
         ],
         [
           "第3条（利用料金および広告）",

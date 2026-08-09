@@ -1,0 +1,587 @@
+---
+import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
+import { supportUrl } from "@tomokichi/app-site/urls";
+import {
+  descriptions,
+  EFFECTIVE_DATE,
+  LAST_UPDATED,
+  languagesEn,
+  languagesJa,
+  type Locale,
+  type Page,
+  pick,
+  privacySections,
+  termsSections,
+  titles,
+} from "../lib/content";
+import AppShell from "./AppShell.astro";
+import TanaBlogPage from "./TanaBlogPage.astro";
+import TanaPricingPage from "./TanaPricingPage.astro";
+
+const { lang, page } = Astro.props as { lang: Locale; page: Page };
+const ja = lang === "ja";
+const supportHref = supportUrl("tana", lang);
+const title = pick(ja, titles[page]);
+const description = pick(ja, descriptions[page]);
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
+
+const featureBlocks = ja
+  ? [
+      {
+        mark: "書",
+        heading: "本とシリーズを、自分の棚に。",
+        body: "タイトル、著者、巻数などを登録。評価・タグ・メモで、あとから探しやすい本棚をつくれます。カバーは写真でも、自動生成でも。",
+      },
+      {
+        mark: "頁",
+        heading: "ページでも、巻でも、進捗を。",
+        body: "読み進めたページ数、または巻単位の進捗を残せます。シリーズものでも、いまどこまでかが分かります。",
+      },
+      {
+        mark: "記",
+        heading: "読書ログとストリーク。",
+        body: "いつ読んだかを記録し、連続した日々がストリークとして残ります。無理のないリズムを、静かに眺められます。",
+      },
+      {
+        mark: "集",
+        heading: "コレクションで、別の眺めを。",
+        body: "テーマや気分ごとに本をまとめられます。本棚とは違う切り口で、手元の本を並べ替えられます。",
+      },
+      {
+        mark: "冊",
+        heading: "所持状態と欠巻。",
+        body: "紙／電子／両方／読むだけ／未所持。欠けている巻の検知や、巻の一括入力で、シリーズ管理の手間を減らせます。",
+      },
+      {
+        mark: "統",
+        heading: "期間の統計と月次チャート。",
+        body: "読んだ量やペースを、期間ごとの統計と月次チャートで振り返れます。",
+      },
+      {
+        mark: "鈴",
+        heading: "毎日の読書リマインダー。",
+        body: "許可すると、端末上のローカル通知で読書をそっと思い出します。内容は外部へ送られません。",
+      },
+      {
+        mark: "機",
+        heading: "端末の中だけに。JSONバックアップ。",
+        body: "SwiftDataで端末内保存。アカウント不要。JSONで書き出し・読み込みができ、機種変更の手動移行に使えます。",
+      },
+      {
+        mark: "言",
+        heading: "11言語。iOS 17以降。",
+        body: `${languagesJa}に対応。表示言語はiPhoneの設定に従います。`,
+      },
+    ]
+  : [
+      {
+        mark: "Shelf",
+        heading: "Books and series on your shelf.",
+        body: "Register titles, authors, volumes, and more. Ratings, tags, and notes make books easy to find later. Covers can be photos or auto-generated.",
+      },
+      {
+        mark: "Page",
+        heading: "Progress by page or volume.",
+        body: "Track pages read or volume progress so series never leave you guessing where you stopped.",
+      },
+      {
+        mark: "Log",
+        heading: "Reading logs and streaks.",
+        body: "Record when you read; consecutive days become a streak. A quiet view of your rhythm.",
+      },
+      {
+        mark: "Set",
+        heading: "Collections for another view.",
+        body: "Group books by theme or mood—another way to arrange what you already own.",
+      },
+      {
+        mark: "Own",
+        heading: "Ownership and missing volumes.",
+        body: "Paper, digital, both, read-only, or unowned. Missing-volume detection and bulk volume entry ease series upkeep.",
+      },
+      {
+        mark: "Stats",
+        heading: "Period stats and monthly charts.",
+        body: "Look back at how much and how often you read, with period statistics and monthly charts.",
+      },
+      {
+        mark: "Bell",
+        heading: "A daily reading reminder.",
+        body: "With permission, a local notification gently reminds you. Contents never leave the device for the reminder.",
+      },
+      {
+        mark: "Local",
+        heading: "On-device only. JSON backup.",
+        body: "SwiftData stores everything on your iPhone. No account. Export and import JSON for manual moves.",
+      },
+      {
+        mark: "Lang",
+        heading: "Eleven languages. iOS 17+.",
+        body: `Supports ${languagesEn}. Display language follows your iPhone settings.`,
+      },
+    ];
+
+const howSteps = ja
+  ? [
+      { n: "1", title: "本やシリーズを登録する", body: "探すタブなどから、タイトルや巻数を登録します。シリーズものは巻をまとめて入力できます。", note: "カバーは写真でも、自動生成でも大丈夫です。" },
+      { n: "2", title: "本棚で眺める", body: "登録した本は本棚に並びます。タグや評価、所持状態で整理できます。", note: "紙・電子・両方・読むだけ・未所持を切り替えられます。" },
+      { n: "3", title: "進捗を更新する", body: "ページ単位または巻単位で、いまどこまで読んだかを残せます。", note: "途中でやめても、続きから再開しやすくなります。" },
+      { n: "4", title: "読書を記録する", body: "記録タブでログを残し、連続日数（ストリーク）も確認できます。", note: "毎日完璧でなくて大丈夫。残った日が、静かな印になります。" },
+      { n: "5", title: "コレクションと統計", body: "テーマごとに本を集め、マイページで期間統計や月次チャートを見られます。", note: "自分の読書のリズムが、少しずつ見えてきます。" },
+      { n: "6", title: "リマインダーとバックアップ", body: "毎日の読書リマインダーをオンにできます。データはJSONでバックアップできます。", note: "アカウントは不要。データは端末内（SwiftData）に保存されます。" },
+    ]
+  : [
+      { n: "1", title: "Register a book or series", body: "From Discover and related flows, add titles and volumes. Series support bulk volume entry.", note: "Covers can be photos or auto-generated." },
+      { n: "2", title: "Browse your shelf", body: "Registered books appear on Shelf. Organise with tags, ratings, and ownership.", note: "Paper, digital, both, read-only, or unowned." },
+      { n: "3", title: "Update progress", body: "Track by page or by volume so you always know where you left off.", note: "Easy to resume after a pause." },
+      { n: "4", title: "Log your reading", body: "On Log, keep reading records and see your streak.", note: "No need for a perfect every day—days you logged become quiet marks." },
+      { n: "5", title: "Collections and stats", body: "Group books into collections; review period stats and monthly charts on My Page.", note: "The rhythm of your reading becomes a little clearer." },
+      { n: "6", title: "Reminders and backup", body: "Enable a daily reading reminder. Back up data as JSON anytime.", note: "No account. Data stays on-device via SwiftData." },
+    ];
+
+const conceptIdeas = ja
+  ? [
+      { title: "棚の前に立たなくても", body: "同じ巻をもう一度買わないために。所持と欠巻が、手元で分かります。" },
+      { title: "読むことだけを、邪魔しない", body: "進捗・記録・コレクションは、読書のリズムを支えるための道具です。" },
+      { title: "端末の中の本棚", body: "アカウントなし。データはSwiftDataで端末内。JSONで自分の手でバックアップできます。" },
+    ]
+  : [
+      { title: "Without standing at the shelf", body: "So you don’t buy the same volume twice. Ownership and gaps stay clear in hand." },
+      { title: "Don’t interrupt reading", body: "Progress, logs, and collections exist to support your rhythm—not to score it." },
+      { title: "A shelf on your device", body: "No account. SwiftData on-device. JSON backup when you need it." },
+    ];
+
+const conceptPanels = ja
+  ? [
+      { label: "本棚", note: "本とシリーズの棚" },
+      { label: "探す", note: "登録と検索" },
+      { label: "記録", note: "ログとストリーク" },
+      { label: "コレクション", note: "テーマごとの集まり" },
+      { label: "マイページ", note: "統計と設定" },
+      { label: "所持", note: "紙・電子・欠巻" },
+    ]
+  : [
+      { label: "Shelf", note: "Books and series" },
+      { label: "Discover", note: "Register and search" },
+      { label: "Log", note: "Logs and streaks" },
+      { label: "Collections", note: "Themed groups" },
+      { label: "My Page", note: "Stats and settings" },
+      { label: "Ownership", note: "Paper, digital, gaps" },
+    ];
+
+const faqs: [string, string, string][] = ja
+  ? [
+      ["base", "Tanaは何をするアプリですか？", "本棚にある本やシリーズを登録し、進捗・読書ログ・コレクション・所持状態・統計で読書を整理するiPhoneアプリです。"],
+      ["base", "無料で使えますか？", "はい。すべての基本機能を無料で利用できます。無料版にはバナー広告と、操作後のインタースティシャルが表示される場合があります。"],
+      ["base", "サブスクリプションですか？", "いいえ。サブスクリプションはありません。"],
+      ["base", "広告を削除できますか？", "はい。一度きりの「広告を永久に削除」（¥400・税込予定）を購入すると、広告が表示されなくなります。価格はApp Storeの表示が正しいものとします。基本機能が追加される課金ではありません。"],
+      ["base", "購入を復元できますか？", "はい。同じApple Accountを利用している場合、設定画面から購入を復元できます。"],
+      ["base", "アカウント登録は必要ですか？", "いいえ。アカウント登録は必要ありません。"],
+      ["base", "対応環境は？", "iOS 17以降を搭載したiPhoneに対応しています。11言語に対応しています。"],
+      ["base", "Android版はありますか？", "現在、Android版は提供していません。"],
+      ["shelf", "どんな情報を登録できますか？", "本・シリーズの情報に加え、評価、タグ、メモ、カバー、ページまたは巻の進捗、所持状態などを登録できます。"],
+      ["shelf", "シリーズの巻をまとめて入れられますか？", "はい。巻の一括入力に対応しています。"],
+      ["shelf", "欠巻は分かりますか？", "はい。所持状態をもとに、欠けている巻に気づけます。"],
+      ["shelf", "所持状態には何がありますか？", "紙／電子／両方／読むだけ／未所持などがあります。"],
+      ["shelf", "カバー画像は？", "写真を使うことも、自動生成カバーを使うこともできます。"],
+      ["log", "読書ログとは？", "いつ読んだかを残す記録です。連続した日々はストリークとして確認できます。"],
+      ["log", "進捗はページと巻のどちらですか？", "ページ単位と巻単位のどちらにも対応しています。"],
+      ["log", "コレクションとは？", "テーマや気分ごとに本をまとめる機能です。本棚とは別の眺めをつくれます。"],
+      ["log", "統計は見られますか？", "はい。期間の統計や月次チャートをマイページなどで確認できます。"],
+      ["notice", "読書リマインダーはありますか？", "はい。許可すると、端末上のローカル通知で毎日の読書を思い出せます。"],
+      ["notice", "通知の内容はサーバーに送られますか？", "いいえ。ローカル通知のため、本棚の内容を通知目的で外部へ送信しません。"],
+      ["data", "データはどこに保存されますか？", "SwiftDataなどにより、端末内に保存されます。"],
+      ["data", "運営者は本棚の内容を見られますか？", "いいえ。通常の利用では、本の内容・メモ・記録は運営者のサーバーへ送信されません。"],
+      ["data", "バックアップできますか？", "はい。JSON形式で書き出し・読み込みできます。"],
+      ["data", "端末間で自動同期できますか？", "Tana独自のクラウド同期や自動の端末間同期はありません。JSONで手動移行できます。"],
+      ["data", "アプリを削除するとどうなりますか？", "端末内のデータは削除され、運営者が復旧することはできません。必要なら削除前にJSONで書き出してください。"],
+      ["net", "オフラインでも使えますか？", "本の登録、進捗、ログ、コレクション、統計表示など主要な記録機能はオフラインでも利用できます。"],
+      ["net", "どの機能に通信が必要ですか？", "広告の取得、アプリ内課金、購入復元、お問い合わせ、最新の法務文書の表示などには通信が必要です。"],
+      ["net", "問い合わせ時に本棚の内容も送られますか？", "いいえ。本棚・読書記録は自動的に添付されません。"],
+    ]
+  : [
+      ["base", "What does Tana do?", "It is an iPhone app for registering books and series, then organising progress, reading logs, collections, ownership, and stats."],
+      ["base", "Is it free?", "Yes. Every core feature is free. The free version may show banner ads and occasional interstitials after actions."],
+      ["base", "Is there a subscription?", "No."],
+      ["base", "Can I remove ads?", "Yes. A one-time “Remove ads permanently” purchase (intended ¥400, tax included; App Store price is authoritative) removes ads. It does not unlock extra core features."],
+      ["base", "Can I restore a purchase?", "Yes. On the same Apple Account, restore from Settings."],
+      ["base", "Do I need an account?", "No."],
+      ["base", "What devices are supported?", "iPhone with iOS 17 or later. Eleven languages are supported."],
+      ["base", "Is there an Android version?", "Not currently."],
+      ["shelf", "What can I register?", "Book and series details plus ratings, tags, notes, covers, page or volume progress, and ownership."],
+      ["shelf", "Can I add series volumes in bulk?", "Yes. Bulk volume entry is supported."],
+      ["shelf", "Can I detect missing volumes?", "Yes. Ownership helps you notice gaps in a series."],
+      ["shelf", "What ownership states exist?", "Paper, digital, both, read-only, unowned, and similar."],
+      ["shelf", "What about covers?", "Use a photo or an auto-generated cover."],
+      ["log", "What is a reading log?", "A record of when you read. Consecutive days show as a streak."],
+      ["log", "Page or volume progress?", "Both are supported."],
+      ["log", "What are collections?", "Themed groups of books—another view beyond the main shelf."],
+      ["log", "Are there statistics?", "Yes. Period stats and monthly charts on My Page and related views."],
+      ["notice", "Is there a reading reminder?", "Yes. With permission, a local notification can remind you daily."],
+      ["notice", "Are notification contents sent to a server?", "No. Local notifications do not send shelf contents abroad for delivery."],
+      ["data", "Where is data stored?", "On your device via SwiftData and related local storage."],
+      ["data", "Can the operator see my shelf?", "No. During ordinary use, books, notes, and logs are not sent to the operator’s servers."],
+      ["data", "Can I back up?", "Yes. Export and import as JSON."],
+      ["data", "Can I sync between devices automatically?", "There is no Tana cloud sync. Use JSON for manual moves."],
+      ["data", "What if I delete the app?", "On-device data is removed and cannot be restored by the operator. Export JSON first if needed."],
+      ["net", "Does it work offline?", "Core recording features—registration, progress, logs, collections, stats—work offline."],
+      ["net", "What needs a network?", "Loading ads, in-app purchase, restore, support messages, and the latest legal documents."],
+      ["net", "Are shelf contents attached to support?", "No. Shelf and reading records are never attached automatically."],
+    ];
+
+const faqCats = ja
+  ? [
+      { key: "all", label: "すべて", mark: "□", description: "すべての質問" },
+      { key: "base", label: "基本", mark: "○", description: "料金・対応環境" },
+      { key: "shelf", label: "本棚", mark: "書", description: "登録・所持" },
+      { key: "log", label: "記録", mark: "記", description: "ログ・統計" },
+      { key: "notice", label: "通知", mark: "鈴", description: "リマインダー" },
+      { key: "data", label: "データ", mark: "機", description: "保存・移行" },
+      { key: "net", label: "通信", mark: "⌁", description: "オフライン・広告" },
+    ]
+  : [
+      { key: "all", label: "All", mark: "□", description: "Every question" },
+      { key: "base", label: "Basics", mark: "○", description: "Price and devices" },
+      { key: "shelf", label: "Shelf", mark: "S", description: "Register and own" },
+      { key: "log", label: "Logs", mark: "L", description: "Logs and stats" },
+      { key: "notice", label: "Notices", mark: "N", description: "Reminders" },
+      { key: "data", label: "Data", mark: "D", description: "Storage and moving" },
+      { key: "net", label: "Network", mark: "⌁", description: "Offline and ads" },
+    ];
+
+const faqCount = (key: string) => (key === "all" ? faqs.length : faqs.filter(([cat]) => cat === key).length);
+
+const newsPosts = ja
+  ? [
+      {
+        id: "site-launch",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "お知らせ",
+        title: "Tana公式ブランドサイトを公開しました",
+        summary: "コンセプト、機能、使い方、料金、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+        body: [
+          "Tanaの公式ブランドサイトを公開しました。本棚にある本を静かに整理する、ローカルファーストの読書管理アプリの考え方と機能を、App Store公開準備中の段階からお伝えしています。",
+          "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
+          "データはSwiftDataで端末内に保存され、JSONバックアップに対応します。詳細はプライバシーポリシーと利用規約をご確認ください。",
+        ],
+      },
+      {
+        id: "column-shelf",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "同じ巻を、二度買わないために",
+        summary: "所持状態と欠巻検知は、本棚の前に立たなくても手元で分かるための道具です。",
+        body: [
+          "シリーズものを集めていると、持っているつもりだった巻が手元にないことがあります。Tanaは紙・電子・両方・読むだけ・未所持といった所持状態と、欠巻への気づきを、端末の中の棚として残します。",
+          "完璧な蔵書管理より、次に買う一冊を迷わないための静かな整理を大切にしています。",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "準備中",
+        badgeTone: "note" as const,
+        title: "App Store公開に向けて",
+        summary: "iPhone・iOS 17以降向け。11言語。現在公開準備中です。",
+        body: [
+          "Tanaは現在App Store公開準備中です。対応環境や価格の最終表示は、公開時のApp Store上の記載が正しいものとします。広告削除の買い切り価格は¥400（税込）を予定していますが、App Storeの表示が正本です。",
+        ],
+      },
+    ]
+  : [
+      {
+        id: "site-launch",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "Update",
+        title: "The official Tana brand site is now live",
+        summary: "Concept, features, how-to, pricing, FAQ, Privacy Policy, and Terms—in one place.",
+        body: [
+          "The official Tana brand site is live. It explains the local-first bookshelf app for quietly organising books you own—while the app is still preparing for release.",
+          "There is no App Store link yet. When distribution is ready, we will share it here as well.",
+          "Data stays on-device via SwiftData, with JSON backup. See the Privacy Policy and Terms for details.",
+        ],
+      },
+      {
+        id: "column-shelf",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "So you don’t buy the same volume twice",
+        summary: "Ownership and missing volumes keep the shelf clear without standing in front of it.",
+        body: [
+          "Collecting a series often means thinking you own a volume that isn’t there. Tana keeps paper, digital, both, read-only, and unowned states—and helps you notice gaps—as a shelf on your device.",
+          "More than perfect cataloguing, we care about quiet organisation so the next purchase is never a duplicate by accident.",
+        ],
+      },
+      {
+        id: "prep-note",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "Coming soon",
+        badgeTone: "note" as const,
+        title: "Preparing for the App Store",
+        summary: "Designed for iPhone on iOS 17+. Eleven languages.",
+        body: [
+          "Tana is being prepared for the App Store. The listing will be the source of truth for requirements and pricing when it ships. The intended remove-ads price is ¥400 (tax included); the App Store display is authoritative.",
+        ],
+      },
+    ];
+---
+
+<AppShell lang={lang} title={title} page={page} description={description}>
+  <section class:list={["content-page", `content-${page}`]}>
+    {page !== "news" && page !== "pricing" && (
+    <header class:list={["content-hero", page !== "privacy" && page !== "terms" && "content-hero--center"]}>
+      <p class="content-eyebrow">{page.toUpperCase()}</p>
+      <h1>{title}</h1>
+      {(page === "privacy" || page === "terms") && (
+        <div class="legal-dates">
+          <p>{ja ? `制定日：${EFFECTIVE_DATE[0]}` : `Effective date: ${EFFECTIVE_DATE[1]}`}</p>
+          <p>{ja ? `最終更新日：${LAST_UPDATED[0]}` : `Last updated: ${LAST_UPDATED[1]}`}</p>
+        </div>
+      )}
+    </header>
+    )}
+
+    {page === "features" && (
+      <div class="feature-blocks">
+        {featureBlocks.map((block, i) => (
+          <article class:list={["feature-block", i % 2 === 1 && "is-reverse"]}>
+            <div class="feature-block-copy">
+              <span class="feature-block-mark" aria-hidden="true">{block.mark}</span>
+              <h2>{block.heading}</h2>
+              <p>{block.body}</p>
+            </div>
+            <div class="feature-block-visual" aria-hidden="true">
+              <div class="mini-shelf">
+                <i class="spine spine-a"></i>
+                <i class="spine spine-b"></i>
+                <i class="spine spine-c"></i>
+                <i class="spine spine-d"></i>
+                <i class="spine spine-e"></i>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+
+    {page === "how-to" && (
+      <div class="how-guide-page">
+        <section class="how-welcome">
+          <div>
+            <p class="how-welcome-kicker">{ja ? "はじめてのTana" : "Your first shelf"}</p>
+            <h2>{ja ? "一冊の登録から、始めてみましょう。" : "Start by adding one book."}</h2>
+          </div>
+          <p>
+            {ja
+              ? "Tanaは、完璧な蔵書管理を強いるアプリではありません。手元の本を、必要なときに静かに整理するための道具です。"
+              : "Tana does not demand a perfect catalogue. It is a quiet tool for organising the books you already have when you need to."}
+          </p>
+        </section>
+        <ol class="how-guides">
+          {howSteps.map((step, index) => (
+            <li class:list={["how-guide", index % 2 === 1 && "is-reverse"]}>
+              <div class="how-guide-copy">
+                <div class="how-guide-number">
+                  <span>{step.n}</span>
+                </div>
+                <h2>{step.title}</h2>
+                <p>{step.body}</p>
+                <aside>
+                  <span aria-hidden="true">○</span>
+                  <p>{step.note}</p>
+                </aside>
+              </div>
+              <div class="how-guide-visual" aria-hidden="true">
+                <div class="concept-step-card">
+                  <span class="concept-step-n">{step.n}</span>
+                  <div class="mini-shelf compact">
+                    <i class="spine spine-b"></i>
+                    <i class="spine spine-c"></i>
+                    <i class="spine spine-a"></i>
+                    <i class="spine spine-e"></i>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <section class="how-closing">
+          <span aria-hidden="true">書</span>
+          <h2>{ja ? "うまく使うより、手元の棚が分かれば十分です。" : "You do not need to use it perfectly."}</h2>
+          <p>
+            {ja ? "わからないことがあれば、よくある質問もご覧ください。" : "If anything still feels unclear, the FAQ is here to help."}
+          </p>
+          <a href={`${ja ? "/ja" : ""}/faq`}>
+            {ja ? "よくある質問を見る" : "Read the FAQ"}
+            <span aria-hidden="true">→</span>
+          </a>
+        </section>
+      </div>
+    )}
+
+    {page === "screenshots" && (
+      <div class="concept-page">
+        <p class="concept-lead">
+          {ja
+            ? "実機のスクリーンショットは、App Store公開準備が整い次第掲載します。ここではTanaの考え方と画面構成のコンセプトだけをご紹介します。"
+            : "Real device screenshots will appear once App Store preparation is ready. Here is the idea and screen structure only—concept visuals, not captures."}
+        </p>
+        <p class="concept-disclaimer">
+          {ja ? "※ 以下はコンセプト表現であり、実際のアプリ画面ではありません。" : "※ Concept illustrations only — not real app screenshots."}
+        </p>
+        <div class="concept-panels">
+          {conceptPanels.map((panel) => (
+            <article class="concept-panel">
+              <div class="concept-panel-art" aria-hidden="true">
+                <div class="mini-shelf">
+                  <i class="spine spine-a"></i>
+                  <i class="spine spine-c"></i>
+                  <i class="spine spine-e"></i>
+                  <i class="spine spine-b"></i>
+                </div>
+              </div>
+              <h2>{panel.label}</h2>
+              <p>{panel.note}</p>
+            </article>
+          ))}
+        </div>
+        <div class="concept-ideas">
+          {conceptIdeas.map((idea) => (
+            <article>
+              <h2>{idea.title}</h2>
+              <p>{idea.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {page === "pricing" && <TanaPricingPage lang={lang} />}
+
+    {page === "faq" && (
+      <div class="faq-page">
+        <p class="faq-lead">
+          {ja
+            ? "気になる項目を選び、質問をタップしてください。答えが見つからないときは、お問い合わせからご連絡いただけます。"
+            : "Choose a topic, then tap a question to reveal the answer. If it is not here, you can always contact us."}
+        </p>
+        <div class="faq-layout">
+          <nav class="faq-tabs" aria-label={ja ? "質問のカテゴリ" : "Question categories"} data-faq-tabs>
+            {faqCats.map((cat, i) => (
+              <button type="button" data-cat={cat.key} data-heading={cat.description} aria-pressed={i === 0 ? "true" : "false"}>
+                <span class="faq-tab-mark" aria-hidden="true">{cat.mark}</span>
+                <span class="faq-tab-copy">
+                  <strong>{cat.label}</strong>
+                  <small>{cat.description}</small>
+                </span>
+                <span class="faq-tab-count">{faqCount(cat.key)}</span>
+              </button>
+            ))}
+          </nav>
+          <div class="faq-results">
+            <div class="faq-results-header">
+              <p data-faq-heading>{ja ? "すべての質問" : "All questions"}</p>
+              <span data-faq-count>
+                {faqs.length}
+                {ja ? "件" : " questions"}
+              </span>
+            </div>
+            <div class="faq-list" data-faq-list>
+              {faqs.map(([cat, q, a], i) => (
+                <details data-cat={cat} open={i === 0}>
+                  <summary>
+                    <span class="faq-q">Q</span>
+                    <span>{q}</span>
+                    <i aria-hidden="true"></i>
+                  </summary>
+                  <div class="faq-answer">
+                    <span>A</span>
+                    <p>{a}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+        <aside class="faq-contact">
+          <h2>{ja ? "解決しない場合" : "Still need help?"}</h2>
+          <p>{ja ? "お気軽にお問い合わせください。" : "Feel free to get in touch."}</p>
+          <a href={supportHref} target="_blank" rel="noopener noreferrer">
+            {ja ? "お問い合わせ" : "Contact"} →
+          </a>
+        </aside>
+      </div>
+    )}
+
+    {page === "news" && <TanaBlogPage lang={lang} />}
+    {page === "updates" && <AppUpdatesPage lang={lang} appName="Tana" newsHref={ja ? "/ja/news" : "/news"} />}
+
+    {(page === "privacy" || page === "terms") && (
+      <article class="legal-copy">
+        {legal.map(([heading, body]) => (
+          <section>
+            <h2>{heading}</h2>
+            {body.split("\n\n").map((para) => (
+              <p>
+                {para.split("\n").map((line) => (
+                  <>
+                    {line}
+                    <br />
+                  </>
+                ))}
+              </p>
+            ))}
+          </section>
+        ))}
+      </article>
+    )}
+
+    {(page === "features" || page === "how-to" || page === "screenshots") && (
+      <section class="download-section download-section--inline">
+        <h2>{ja ? "本棚にある本を、静かに整理する。" : "Quietly organise the books on your shelf."}</h2>
+        <span class="store-button store-soon" aria-disabled="true">{storeLabel}</span>
+      </section>
+    )}
+  </section>
+</AppShell>
+
+<script is:inline>
+  (() => {
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      const heading = document.querySelector("[data-faq-heading]");
+      const count = document.querySelector("[data-faq-count]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cat]");
+        if (!btn) return;
+        const cat = btn.getAttribute("data-cat");
+        let visible = 0;
+        items.forEach((item) => {
+          const show = cat === "all" || item.getAttribute("data-cat") === cat;
+          item.hidden = !show;
+          if (show) visible += 1;
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b.getAttribute("data-cat") === cat));
+        });
+        if (heading) heading.textContent = btn.getAttribute("data-heading") || btn.textContent.trim();
+        if (count) count.textContent = `${visible}${document.documentElement.lang === "ja" ? "件" : " questions"}`;
+      });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
+  })();
+</script>

@@ -1,0 +1,156 @@
+---
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+---
+
+<div class="mock-sp">
+  <div class="mock-sp-leaves" aria-hidden="true"></div>
+  <header class="mock-sp-hero">
+    <p class="kicker">{ja ? "料金プラン" : "Pricing"}</p>
+    <div class="mock-sp-hero-row">
+      <div>
+        <h1>
+          {ja ? "あなたの旅を、もっと整理し、" : "Organise your travels —"}
+          <br />
+          {ja ? "もっと深く味わうために。" : "and savour them more deeply."}
+        </h1>
+        <p>
+          {ja
+            ? "Soonish は、保存・整理・AI相談までをひとつにした旅行メモアプリ。自分らしい旅の記録を、シンプルに続けられる料金プランをご用意しています。"
+            : "Soonish unifies save, organise, and AI consult for travel notes. Plans stay simple so your way of recording trips can continue."}
+        </p>
+      </div>
+      <div class="mock-sp-hero-visual">
+        <img class="desk" src="/assets/pricing-desk.jpg" alt="" width="640" height="400" loading="eager" />
+      </div>
+    </div>
+  </header>
+
+  <div class="mock-sp-plans">
+    <article class="plan free">
+      <h2>Free</h2>
+      <p class="lead">{ja ? "まずは気軽に始めたい方へ" : "For a light start"}</p>
+      <p class="price"><strong>¥0</strong><span>/{ja ? "月" : "mo"}</span></p>
+      <span class="btn outline" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+      <ul>
+        <li><span>{ja ? "保存" : "Saves"}</span><strong>{ja ? "最大200件まで" : "Up to 200"}</strong></li>
+        <li><span>{ja ? "コレクション" : "Collections"}</span><strong>{ja ? "最大10件まで" : "Up to 10"}</strong></li>
+        <li><span>{ja ? "メモ・タグ" : "Notes & tags"}</span><strong>{ja ? "基本機能" : "Core"}</strong></li>
+        <li><span>{ja ? "AIに相談する（アプリ内）" : "In-app AI"}</span><strong>{ja ? "1日5回まで" : "5 / day"}</strong></li>
+        <li><span>{ja ? "エクスポート" : "Export"}</span><strong>{ja ? "基本形式" : "Basic"}</strong></li>
+        <li><span>{ja ? "高度な連携・自動化" : "Automation"}</span><strong>—</strong></li>
+      </ul>
+      <p class="note">{ja ? "クレジットカード不要" : "No credit card"}</p>
+    </article>
+
+    <article class="plan plus">
+      <span class="badge">{ja ? "おすすめ" : "Recommended"}</span>
+      <h2>Plus</h2>
+      <p class="lead">{ja ? "もっと深く、もっと自由に使いたい方へ" : "For deeper, freer use"}</p>
+      <p class="price"><strong>¥480</strong><span>/{ja ? "月" : "mo"}</span></p>
+      <p class="tax">{ja ? "（税込 ¥528）" : "(¥528 tax incl.)"}</p>
+      <span class="btn solid" aria-disabled="true">{ja ? "Plusを選ぶ" : "Choose Plus"}</span>
+      <ul>
+        <li><span>{ja ? "保存" : "Saves"}</span><strong>{ja ? "無制限" : "Unlimited"}</strong></li>
+        <li><span>{ja ? "コレクション" : "Collections"}</span><strong>{ja ? "無制限" : "Unlimited"}</strong></li>
+        <li><span>{ja ? "メモ・タグ" : "Notes & tags"}</span><strong>{ja ? "カスタムタグ・検索強化" : "Custom tags · search"}</strong></li>
+        <li><span>{ja ? "AIに相談する（アプリ内）" : "In-app AI"}</span><strong>{ja ? "無制限※" : "Unlimited*"}</strong></li>
+        <li><span>{ja ? "エクスポート" : "Export"}</span><strong>PDF·CSV·{ja ? "画像" : "images"}</strong></li>
+        <li><span>{ja ? "高度な連携・自動化" : "Automation"}</span><strong>{ja ? "カレンダー・リマインド" : "Calendar · reminders"}</strong></li>
+      </ul>
+      <p class="note">※{ja ? "ご利用のAIモデルによっては外部サービスの制限が適用される場合があります。" : "External AI providers may apply their own limits."}</p>
+    </article>
+
+    <article class="plan team">
+      <span class="coming">Coming Soon</span>
+      <h2>Team</h2>
+      <p class="lead">{ja ? "チームや家族で旅を共有したい方へ" : "For teams and families sharing trips"}</p>
+      <p class="price muted">{ja ? "近日公開" : "Coming soon"}</p>
+      <span class="btn outline" aria-disabled="true">{ja ? "お知らせを受け取る" : "Get notified"}</span>
+      <ul class="bullets">
+        <li>{ja ? "メンバー共有・権限管理" : "Member sharing & roles"}</li>
+        <li>{ja ? "共同コレクション" : "Shared collections"}</li>
+        <li>{ja ? "チームのAI相談履歴" : "Team AI history"}</li>
+        <li>{ja ? "一括エクスポート・管理" : "Bulk export & admin"}</li>
+      </ul>
+      <p class="note">{ja ? "近日公開予定です。さまざまな共有・管理機能を準備中です。" : "Shared management features in progress."}</p>
+    </article>
+  </div>
+
+  <section class="mock-sp-ai">
+    <h2>{ja ? "AIに相談する、あなたのスタイルで。" : "Consult AI in your style."}</h2>
+    <p>
+      {ja
+        ? "アプリ内の「AIに相談する」ボタンから、Soonish のAIにいつでも相談できます。また、使い慣れた ChatGPT や Gemini など、お好みのAIサービスと連携して相談することも可能です。"
+        : "Use in-app AI consult anytime — or hand context to ChatGPT, Gemini, and the tools you already trust."}
+    </p>
+    <div class="ai-cards">
+      <article>
+        <h3>{ja ? "AIに相談する" : "Consult AI"}</h3>
+        <p>{ja ? "サントリーニ島のおすすめの絶景スポットを教えて！" : "Best scenic spots in Santorini?"}</p>
+        <span class="mini-btn">{ja ? "AIに相談する" : "Consult AI"}</span>
+      </article>
+      <article>
+        <h3>{ja ? "あなたのAIとチャット" : "Chat with your AI"}</h3>
+        <p>{ja ? "使い慣れたAIと連携して、旅の計画やアイデアを相談できます。" : "Connect the AI you know for trip plans and ideas."}</p>
+        <span class="mini-btn outline">{ja ? "外部のAIを使う" : "Use external AI"}</span>
+      </article>
+    </div>
+    <div class="ai-row center" aria-hidden="true"><i class="gpt"></i><i class="gem"></i><i class="spark"></i><em>{ja ? "いつものAIでOK" : "Your usual AI is fine"}</em></div>
+  </section>
+
+  <section class="mock-sp-pillars">
+    <h2>{ja ? "どのプランでも、保存からAI相談までスムーズに" : "Every plan covers save → AI consult"}</h2>
+    <div class="grid">
+      {(ja
+        ? [
+            ["保存しておく", "旅のアイデアや発見をすぐに残せる"],
+            ["メモ・タグで整理", "後から見直しやすく、気づきが深まる"],
+            ["AIに相談する", "迷ったときや計画時に、いつでも相談できる"],
+            ["振り返って活用", "旅の思い出や学びを、次の旅へつなげる"],
+          ]
+        : [
+            ["Save", "Capture trip ideas the moment they appear"],
+            ["Organise", "Notes and tags make revisiting easy"],
+            ["Consult AI", "Ask when planning or when you’re stuck"],
+            ["Look back", "Carry learnings into the next trip"],
+          ]
+      ).map(([t, b]) => (
+        <article><h3>{t}</h3><p>{b}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mock-sp-faq">
+    <div class="head">
+      <h2>{ja ? "よくあるご質問" : "FAQ"}</h2>
+      <a href={`${base}/faq`}>{ja ? "すべてのFAQを見る" : "All FAQs"}</a>
+    </div>
+    {(ja
+      ? [
+          ["無料プランでも十分使えますか？", "はい。まずは Free で保存と軽いAI相談から始められます。"],
+          ["AIに相談する機能は無料プランでも使えますか？", "アプリ内相談は1日5回まで。いつもの外部AIへは、保存内容をもとにご自身で相談できます。"],
+          ["解約やプラン変更はいつでもできますか？", "はい。App Store のサブスクリプション管理からいつでも変更・解約できます。"],
+        ]
+      : [
+          ["Is Free enough?", "Yes — start with saves and light in-app AI consults."],
+          ["Does Free include AI consult?", "In-app: 5/day. You can also ask your usual external AI using what you saved."],
+          ["Can I change or cancel anytime?", "Yes — manage subscriptions in the App Store."],
+        ]
+    ).map(([q, a]) => (
+      <details><summary>{q}</summary><p>{a}</p></details>
+    ))}
+  </section>
+
+  <section class="mock-sp-bottom">
+    <div class="photo">
+      <img src="/assets/cta-desk.jpg" alt="" width="640" height="400" loading="lazy" />
+    </div>
+    <div class="copy">
+      <h2>{ja ? "旅のアイデアを、今日からすっきり整理。" : "Tidy trip ideas starting today."}</h2>
+      <p>{ja ? "まずは無料で、Soonish の心地よさを体験してください。" : "Start free and feel how calm Soonish can be."}</p>
+      <span class="mock-sh-cta-btn" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+    </div>
+  </section>
+</div>

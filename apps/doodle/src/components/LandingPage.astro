@@ -1,0 +1,215 @@
+---
+import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import { appSiteUrl } from "@tomokichi/app-site/urls";
+import { suiteApps } from "../lib/content";
+import AppShell from "./AppShell.astro";
+
+type Locale = "ja" | "en";
+const { lang } = Astro.props as { lang: Locale };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+
+const description = ja
+  ? "Doodleは、手書きの数字と記号をユーティリティに使うiOSアプリシリーズです。TimerやCalculatorなど独立アプリが、DoodleKitとApp Groupで落書きを共有します。現在App Store公開準備中。"
+  : "Doodle is a series of iOS utility apps that run on hand-drawn digits and symbols. Independent apps share doodles through DoodleKit and an App Group. Currently preparing for the App Store.";
+
+const pillars = ja
+  ? [
+      { mark: "✎", title: "書いてから使う", body: "数字や記号をラフに描く。その線が、タイマーや電卓のUIそのものになります。" },
+      { mark: "⌘", title: "シリーズでつながる", body: "描いたアセットは App Group 経由で同一端末のシリーズアプリから再利用できます。" },
+      { mark: "◇", title: "端末の中に", body: "アカウント不要。作業データはアプリごとにローカル保存（local-first）です。" },
+    ]
+  : [
+      { mark: "✎", title: "Draw, then use", body: "Sketch rough digits and symbols. Those strokes become the UI of your utilities." },
+      { mark: "⌘", title: "Shared across the series", body: "Assets can be reused by other Doodle apps on the same device via an App Group." },
+      { mark: "◇", title: "On your device", body: "No account. Working data stays local-first, per app." },
+    ];
+
+const steps = ja
+  ? [
+      ["1", "落書きを描く", "数字や演算子、ラベルを、紙に書くようにラフにスケッチします。"],
+      ["2", "アプリを開く", "Timer、Calculator、Dice など、使いたいユーティリティを起動します。"],
+      ["3", "手描きで操作する", "描いた線が画面上の数字や記号になり、そのまま日常の道具になります。"],
+    ]
+  : [
+      ["1", "Sketch doodles", "Rough out digits, operators, and labels as if on paper."],
+      ["2", "Open a utility", "Launch Timer, Calculator, Dice, or another app in the series."],
+      ["3", "Use the ink", "Your strokes become on-screen numbers and symbols you work with every day."],
+    ];
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Doodle",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "iOS 26 or later",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+    availability: "https://schema.org/PreOrder",
+  },
+  description,
+  url: `${appSiteUrl("doodle")}${base || ""}` || appSiteUrl("doodle"),
+});
+---
+
+<AppShell
+  lang={lang}
+  title={ja ? "書いて、使って、遊ぶ。Doodleシリーズ。" : "Draw it. Use it. Play. The Doodle Series."}
+  description={description}
+  jsonLd={jsonLd}
+>
+  <section class="doodle-hero">
+    <div class="hero-sketch-bg" aria-hidden="true">
+      <span class="sketch-scribble sketch-scribble-a"></span>
+      <span class="sketch-scribble sketch-scribble-b"></span>
+      <span class="sketch-scribble sketch-scribble-c"></span>
+      <span class="crayon crayon-coral"></span>
+      <span class="crayon crayon-yellow"></span>
+      <span class="crayon crayon-blue"></span>
+    </div>
+
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow">{ja ? "Doodle Series" : "Doodle Series"}</p>
+      <h1>
+        {ja ? (
+          <>書いて、使って、<br />遊ぶ。</>
+        ) : (
+          <>Draw it.<br />Use it. Play.</>
+        )}
+      </h1>
+      <p class="hero-lead">
+        {ja
+          ? "手書きの数字と記号が、そのままユーティリティになる。独立した落書きアプリたちが、ひとつのシリーズとしてつながります。"
+          : "Hand-drawn digits and symbols become everyday utilities. Independent doodle apps, linked as one series."}
+      </p>
+      <div class="hero-actions">
+        <span class="store-button store-soon" aria-disabled="true">
+          <span class="store-dot" aria-hidden="true"></span>
+          {storeLabel}
+        </span>
+        <a class="secondary-button" href={`${base}/features`}>
+          {ja ? "機能を見る" : "Explore features"}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <small>{ja ? "iPhone・iOS 26以降向け。現在App Store公開準備中。" : "Designed for iPhone on iOS 26+. Preparing for the App Store."}</small>
+    </div>
+
+    <div class="hero-visual" data-reveal aria-hidden="true">
+      <div class="sketch-pad">
+        <div class="sketch-pad-ruled"></div>
+        <div class="sketch-glyphs">
+          <span class="glyph g-7">7</span>
+          <span class="glyph g-plus">+</span>
+          <span class="glyph g-3">3</span>
+          <span class="glyph g-eq">=</span>
+          <span class="glyph g-10">10</span>
+        </div>
+        <div class="sketch-stamp">{ja ? "手描き" : "HAND-DRAWN"}</div>
+      </div>
+      <div class="mini-apps">
+        <span>Timer</span>
+        <span>Calc</span>
+        <span>Dice</span>
+        <span>Bingo</span>
+      </div>
+    </div>
+
+    <AppHeroChrome
+      lang={lang}
+      date="2026-08-08"
+      news={ja ? "Doodle公式ブランドサイトを公開しました" : "The official Doodle brand site is now live"}
+      newsHref={`${base}/news`}
+    />
+  </section>
+
+  <section class="section-pad pillars" id="about">
+    <header class="section-heading" data-reveal>
+      <p class="section-kicker">{ja ? "コンセプト" : "Concept"}</p>
+      <h2>{ja ? "落書きが、道具になる。" : "A doodle becomes a tool."}</h2>
+      <p>
+        {ja
+          ? "紙に走り書きしたような数字と記号を描き、それをタイマーや電卓、サイコロといった日常のユーティリティで使います。見た目も操作感も、手描きのまま。"
+          : "Sketch digits and symbols the way you would on paper, then put them to work in timers, calculators, dice, and more. The look—and the feel—stays hand-drawn."}
+      </p>
+    </header>
+    <div class="pillar-grid">
+      {pillars.map((item) => (
+        <article data-reveal>
+          <span class="pillar-mark" aria-hidden="true">{item.mark}</span>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section-pad suite" id="suite">
+    <header class="section-heading" data-reveal>
+      <p class="section-kicker">{ja ? "シリーズ" : "The series"}</p>
+      <h2>{ja ? "Doodleシリーズのアプリたち" : "Apps in the Doodle Series"}</h2>
+      <p>
+        {ja
+          ? "それぞれ独立したユーティリティ。共通の DoodleKit と App Group で、描いた落書きを共有できます。"
+          : "Each app is independent. Shared DoodleKit and an App Group let doodles travel between them."}
+      </p>
+    </header>
+    <ul class="suite-grid">
+      {suiteApps.map((app) => (
+        <li data-reveal>
+          <span class="suite-mark" aria-hidden="true">{app.mark}</span>
+          <strong>{ja ? app.nameJa : app.nameEn}</strong>
+          <span>{ja ? app.blurbJa : app.blurbEn}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section-pad how-strip">
+    <header class="section-heading" data-reveal>
+      <p class="section-kicker">{ja ? "使い方" : "How it works"}</p>
+      <h2>{ja ? "3ステップで、手描きの道具に。" : "Three steps to a hand-drawn toolkit."}</h2>
+    </header>
+    <ol class="step-row">
+      {steps.map(([n, title, body]) => (
+        <li data-reveal>
+          <span class="step-n" aria-hidden="true">{n}</span>
+          <h3>{title}</h3>
+          <p>{body}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="section-more" data-reveal>
+      <a href={`${base}/how-to`}>{ja ? "詳しい使い方を見る" : "Read the full how-to"} →</a>
+    </p>
+  </section>
+
+  <section class="section-pad tech-note" data-reveal>
+    <div class="tech-card">
+      <p class="section-kicker">DoodleKit · App Group</p>
+      <h2>{ja ? "同じ落書きを、複数のアプリで。" : "The same doodles, across apps."}</h2>
+      <p>
+        {ja
+          ? "シリーズは DoodleKit を共有し、手描きアセットを App Group「group.io.tmkch.doodle」経由で同一端末上で受け渡せます。作業データは各アプリがローカルに持ち、クラウド同期を前提にしません。"
+          : "The series shares DoodleKit and can pass hand-drawn assets on-device through App Group “group.io.tmkch.doodle”. Working data stays local per app—no cloud sync assumed."}
+      </p>
+      <a class="text-link" href={`${base}/privacy`}>{ja ? "プライバシーの考え方" : "How privacy works"} →</a>
+    </div>
+  </section>
+
+  <section class="download-section" id="download" data-reveal>
+    <h2>{ja ? "書いて、使って、遊ぶ。" : "Draw it. Use it. Play."}</h2>
+    <p>
+      {ja
+        ? "iPhone・iOS 26以降に対応。現在はApp Store公開準備中です。"
+        : "Requires an iPhone with iOS 26 or later. Currently preparing for the App Store."}
+    </p>
+    <span class="store-button store-soon" aria-disabled="true">
+      <span class="store-dot" aria-hidden="true"></span>
+      {storeLabel}
+    </span>
+  </section>
+</AppShell>

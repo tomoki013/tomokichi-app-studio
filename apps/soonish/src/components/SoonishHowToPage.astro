@@ -1,0 +1,156 @@
+---
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+---
+
+<div class="mock-sh">
+  <p class="mock-sh-crumb">{ja ? "ホーム  ›  使い方" : "Home  ›  How to"}</p>
+  <header class="mock-sh-hero">
+    <h1>
+      {ja ? "どう使う？" : "How it works"}
+      <br />
+      {ja ? "保存から相談まで、3ステップ。" : "Save to consult in 3 steps."}
+    </h1>
+    <p>
+      {ja
+        ? "専門知識や難しい設定は不要。いつものAIに自然に相談するだけで、保存した旅行情報やメモ、アイデアをもとに、的確なアドバイスがもらえます。"
+        : "No specialised setup. Talk to the AI you already use — with saved travel notes and ideas as context."}
+    </p>
+  </header>
+
+  <ol class="mock-sh-steps">
+    <li>
+      <span class="n">1</span>
+      <h2>{ja ? "保存する" : "Save"}</h2>
+      <p>{ja ? "気になる旅行先やレシピ、メモやアイデアをSoonishに保存。" : "Save trips, recipes, notes, and sparks into Soonish."}</p>
+      <div class="mock-sh-step-ic" aria-hidden="true">📁</div>
+      <div class="tags"><span>{ja ? "リンク" : "Links"}</span><span>{ja ? "メモ" : "Notes"}</span><span>{ja ? "画像" : "Images"}</span><span>{ja ? "タスク" : "Tasks"}</span></div>
+    </li>
+    <li class="arrow" aria-hidden="true">→</li>
+    <li>
+      <span class="n">2</span>
+      <h2>{ja ? "相談する" : "Consult"}</h2>
+      <p>{ja ? "普段使っているAIに聞くか、アプリの「相談する」ボタンをタップ。" : "Ask your usual AI, or tap Consult in the app."}</p>
+      <div class="mock-sh-step-ic" aria-hidden="true">💬</div>
+      <div class="tags"><span>{ja ? "いつものAIで" : "Your AI"}</span><span>{ja ? "アプリで自動連携" : "In-app"}</span></div>
+    </li>
+    <li class="arrow" aria-hidden="true">→</li>
+    <li>
+      <span class="n">3</span>
+      <h2>{ja ? "次の行動が決まる" : "Decide next"}</h2>
+      <p>{ja ? "あなたの文脈をもとに、AIが最適な提案をしてくれるから、迷いなく進める。" : "With context ready, AI suggests a clear next step."}</p>
+      <div class="mock-sh-step-ic" aria-hidden="true">✓</div>
+      <div class="tags"><span>{ja ? "旅のプラン完成" : "Trip plan"}</span><span>{ja ? "買い物リスト" : "List"}</span><span>{ja ? "要点の整理" : "Summary"}</span></div>
+    </li>
+  </ol>
+
+  <section class="mock-sh-sec">
+    <h2 class="mock-sh-sec-title"><span>✦</span>{ja ? "AIへの相談は、2つのカンタンな方法で" : "Two easy ways to consult AI"}<span>✦</span></h2>
+    <div class="mock-sh-methods">
+      <article>
+        <p class="kicker">{ja ? "方法1" : "Method 1"}</p>
+        <h3>{ja ? "普段使っているAIに、そのまま聞く" : "Ask the AI you already use"}</h3>
+        <p>{ja ? "ChatGPT や Gemini など、いつものAIに「Soonish に保存した○○をもとに」と聞くだけ。" : "In ChatGPT or Gemini, simply say “based on what I saved in Soonish…”."}</p>
+        <div class="prompt-box">
+          <span>{ja ? "プロンプト例" : "Sample prompt"}</span>
+          <p>{ja ? "Soonish に保存している旅行候補からおすすめを教えて。" : "From my Soonish trip candidates, what do you recommend?"}</p>
+        </div>
+        <div class="ai-row" aria-hidden="true">
+          <i class="gpt"></i><i class="gem"></i><i class="spark"></i>
+          <em>{ja ? "など、あなたの普段のAIでOK" : "Any AI you already use"}</em>
+        </div>
+        <p class="note">{ja ? "MCPなどの専門知識は不要です。自然な言葉で相談するだけで、AIが文脈を理解します。" : "No MCP expertise — natural language is enough."}</p>
+      </article>
+      <article>
+        <p class="kicker">{ja ? "方法2" : "Method 2"}</p>
+        <h3>{ja ? "Soonish 内の「相談する」ボタンから自動で渡す" : "Hand off from the in-app Consult button"}</h3>
+        <p>{ja ? "タップするだけで、保存内容やコンテキストをAIに自動で渡せます。" : "One tap sends saved content and context automatically."}</p>
+        <div class="mock-sh-phone-row">
+          <div class="mock-sh-phone" aria-hidden="true">
+            <div class="screen">
+              <header>Soonish</header>
+              <div class="card-img"></div>
+              <div class="meta">
+                <strong>{ja ? "サントリーニの絶景スポット" : "Santorini spots"}</strong>
+                <small>{ja ? "メモ · 行きたい" : "Note · want to go"}</small>
+              </div>
+              <span class="btn">{ja ? "相談する" : "Consult"}</span>
+            </div>
+          </div>
+          <div class="handoff" aria-hidden="true">
+            <span class="bubble">{ja ? "Soonishからコンテキストを送信しました" : "Context sent from Soonish"}</span>
+            <span class="bubble user">{ja ? "この旅行候補から、おすすめのプランを考えて！" : "From these candidates, plan for me!"}</span>
+            <span class="ai-dot">AI ···</span>
+          </div>
+        </div>
+        <p class="note">{ja ? "面倒なコピーや貼り付けは不要。すぐに相談できます。" : "No copy-paste — consult right away."}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="mock-sh-sec">
+    <h2 class="mock-sh-sec-title"><span>✦</span>{ja ? "こんな相談が、もっとスムーズに" : "Consultations that get smoother"}<span>✦</span></h2>
+    <div class="mock-sh-examples">
+      {(ja
+        ? [
+            ["/assets/scene-travel.jpg", "旅行の計画を立てる", "「保存した旅行候補から、3泊4日のおすすめプランを考えて」"],
+            ["/assets/scene-cafe.jpg", "カフェやお店を選ぶ", "「保存したカフェの中から、雰囲気や予算でおすすめを教えて」"],
+            ["/assets/scene-shop.jpg", "買い物の比較・検討", "「保存した商品の違いを整理して、自分に合うものを選んで」"],
+            ["/assets/scene-article.jpg", "記事や情報を整理する", "「保存した記事の要点をまとめて、わかりやすく整理して」"],
+          ]
+        : [
+            ["/assets/scene-travel.jpg", "Plan a trip", "“From my saved candidates, suggest a 3-night plan.”"],
+            ["/assets/scene-cafe.jpg", "Pick a café", "“From saved cafés, recommend by mood and budget.”"],
+            ["/assets/scene-shop.jpg", "Compare purchases", "“Compare saved products and help me choose.”"],
+            ["/assets/scene-article.jpg", "Organise articles", "“Summarise the key points from what I saved.”"],
+          ]
+      ).map(([img, title, prompt]) => (
+        <article>
+          <div class="ex-art">
+            <img src={img} alt="" width="400" height="260" loading="lazy" />
+          </div>
+          <h3>{title}</h3>
+          <p>{prompt}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mock-sh-sec">
+    <h2 class="mock-sh-sec-title">{ja ? "リンクやメモ、タスクやコレクションが、AIの理解を深めるヒントに" : "Links, notes, tasks, and collections deepen AI understanding"}</h2>
+    <div class="mock-sh-bits">
+      {(ja
+        ? [
+            ["リンク・記事", "Web記事やニュースをまとめて保存"],
+            ["メモ・画像", "気づきやアイデアを自由に記録"],
+            ["タグ・ステータス", "「行きたい」「予算重視」などで自分の視点を整理"],
+            ["コレクション", "テーマごとにまとめて、文脈をつなげる"],
+            ["タスク", "「あとで読む」「買うもの」などより正確にAIが理解"],
+          ]
+        : [
+            ["Links & articles", "Save web articles and news together"],
+            ["Notes & images", "Capture sparks freely"],
+            ["Tags & status", "Shape your lens: want-to-go, budget-first…"],
+            ["Collections", "Group by theme so context connects"],
+            ["Tasks", "Read later / buy later — clearer for AI"],
+          ]
+      ).map(([t, b]) => (
+        <article><h3>{t}</h3><p>{b}</p></article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mock-sh-cta">
+    <div class="mock-sh-cta-photo">
+      <img src="/assets/cta-desk.jpg" alt="" width="800" height="500" loading="lazy" />
+    </div>
+    <div class="mock-sh-cta-copy">
+      <h2>{ja ? "保存から、AIとの相談まで。ひとつで完結。" : "From save to AI consult — one place."}</h2>
+      <span class="mock-sh-cta-btn" aria-disabled="true">{ja ? "無料で始める" : "Start free"}</span>
+      <div class="stores" aria-hidden="true">
+        <span>App Store</span><span>Google Play</span>
+      </div>
+      <p class="users">{ja ? "25,000人以上が愛用中" : "Loved by 25,000+"}</p>
+    </div>
+  </section>
+</div>
