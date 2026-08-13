@@ -103,8 +103,8 @@ describe("support request construction", () => {
   });
 
   it("uses one validated production API URL", () => {
-    expect(SUPPORT_API_URL).toBe("https://api.tmkch.io/api/support");
-    expect(SUPPORT_API_PUBLIC_URL).toBe("https://api.tmkch.io/api/support");
+    expect(SUPPORT_API_URL).toBe("https://api.tmkch.io/api/v1/support");
+    expect(SUPPORT_API_PUBLIC_URL).toBe("https://api.tmkch.io/api/v1/support");
   });
 });
 

@@ -22,11 +22,6 @@ const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Sto
 const nav = [
   { slug: "screenshots", label: ja ? "コンセプト" : "Concept", href: href("screenshots") },
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
-  { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
-  { slug: "pricing", label: ja ? "料金" : "Pricing", href: href("pricing") },
-  { slug: "faq", label: "FAQ", href: href("faq") },
-  { slug: "news", label: ja ? "お知らせ" : "News", href: href("news") },
-  { slug: "updates", label: ja ? "アップデート情報" : "App updates", href: href("updates") },
 ];
 
 const footerColumns = [
@@ -60,7 +55,7 @@ const footerColumns = [
     title: ja ? "運営者情報" : "Operator",
     links: [
       { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
-      { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+      { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/products"), external: true },
     ],
   },
 ];
@@ -70,7 +65,7 @@ const mobileFooterLinks = [
   { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
   { label: ja ? "利用規約" : "Terms of Use", href: href("terms") },
   { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
-  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/products"), external: true },
 ];
 ---
 

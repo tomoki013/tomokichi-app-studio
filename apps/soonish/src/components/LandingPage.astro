@@ -1,5 +1,6 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
 import {
   homeDescription,
@@ -8,7 +9,6 @@ import {
   landingSteps,
   languagesEn,
   languagesJa,
-  tagline,
 } from "../lib/content";
 import AppShell from "./AppShell.astro";
 
@@ -74,25 +74,25 @@ const jsonLd = JSON.stringify({
     </div>
 
     <div class="hero-copy" data-reveal>
-      <p class="eyebrow">{ja ? tagline[0] : tagline[1]}</p>
+      <p class="eyebrow">SAVE · CONSULT</p>
       <h1>
         {ja ? (
-          <>あなたの旅とメモを、<br />AI相談までひとつに。</>
+          <>保存しておく。<br />あとで、相談できる。</>
         ) : (
-          <>Your trips and notes —<br />through to AI consult.</>
+          <>Save it now.<br />Consult later.</>
         )}
       </h1>
       <p>
         {ja ? (
           <>
-            Soonishは、保存・整理・AI相談をひとつにした旅行メモアプリ。<br />
-            リンクやメモを残し、いつものAIに文脈ごと渡して相談できます。
+            散らばったリンクとメモを、ひとつの文脈にまとめる。<br />
+            準備ができたら、いつものAIにそのまま渡して相談する。
           </>
         ) : (
           <>
-            Soonish unifies save, organise, and AI consult for travel notes.
+            Gather scattered links and notes into one context.
             <br />
-            Keep links and memos, then hand your context to the AI you already use.
+            When ready, hand that context to the AI you already use.
           </>
         )}
       </p>
@@ -115,9 +115,8 @@ const jsonLd = JSON.stringify({
 
     <div class="hero-visual" data-reveal>
       <div class="product-stage" role="img" aria-label={ja ? "Soonishの保存とAI相談をイメージしたコンセプトビジュアル" : "Concept visual of Soonish save and AI consult"}>
-        <div class="product-phone">
+        <PhoneFrame size="lg" tone="graphite" glare={false} class="soonish-phone-frame">
           <div class="product-phone-chrome">
-            <span class="product-notch"></span>
             <header class="product-header">
               <span class="product-moon" aria-hidden="true">🌿</span>
               <div>
@@ -141,10 +140,17 @@ const jsonLd = JSON.stringify({
             </ul>
             <div class="product-shelf-rail" aria-hidden="true"></div>
           </div>
-        </div>
+        </PhoneFrame>
         <div class="product-float product-float-a" aria-hidden="true">save</div>
         <div class="product-float product-float-b" aria-hidden="true">✧</div>
         <div class="product-float product-float-c" aria-hidden="true">consult</div>
+        <div class="consult-flow" aria-hidden="true">
+          <span class="consult-chip">{ja ? "メモ" : "notes"}</span>
+          <span class="consult-chip">{ja ? "リンク" : "links"}</span>
+          <span class="consult-chip">{ja ? "候補" : "picks"}</span>
+          <span class="consult-arrow">→</span>
+          <span class="consult-bubble">{ja ? "AIに渡す" : "to AI"}</span>
+        </div>
       </div>
     </div>
 
@@ -283,7 +289,9 @@ const jsonLd = JSON.stringify({
         "[data-reveal], .landing-sections section, .feature-grid article, .step-grid article, .concept-card, .faq-list details",
       );
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-        items.forEach((item) => item.classList.add("is-visible"));
+        items.forEach((item) => {
+          item.classList.add("is-visible");
+        });
         return;
       }
       const observer = new IntersectionObserver(

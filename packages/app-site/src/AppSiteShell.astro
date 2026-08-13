@@ -132,6 +132,9 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
             {brand}
           </a>
           <nav class="app-site-primary-nav" aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
+            <a class:list={{ active: !page }} href={homeHref} aria-current={!page ? "page" : undefined} data-astro-prefetch>
+              {lang === "ja" ? "ホーム" : "Home"}
+            </a>
             {nav.map((item) => (
               <a class:list={{ active: page === item.slug }} href={item.href} aria-current={page === item.slug ? "page" : undefined} data-astro-prefetch>
                 {item.label}
@@ -176,11 +179,19 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
             </button>
           </div>
           <div class="app-site-mobile-nav-links">
+            <a
+              href={homeHref}
+              aria-current={!page ? "page" : undefined}
+              style="--item-i:0"
+              data-astro-prefetch
+            >
+              {lang === "ja" ? "ホーム" : "Home"}
+            </a>
             {nav.map((item, index) => (
               <a
                 href={item.href}
                 aria-current={page === item.slug ? "page" : undefined}
-                style={`--item-i:${index}`}
+                style={`--item-i:${index + 1}`}
                 data-astro-prefetch
               >
                 {item.label}

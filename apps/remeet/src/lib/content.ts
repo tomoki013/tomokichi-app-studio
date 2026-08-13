@@ -59,13 +59,22 @@ export const subtitleMap: Partial<Record<Page, [string, string]>> = {
     "From first setup to data management,\nfollow the flow of the real app screens.",
   ],
   screenshots: ["美しく、シンプルで、使いやすいデザイン。", "Beautiful, simple, and easy to use."],
-  pricing: ["ひとりでも、ふたりでも。\n必要なときだけ選べる料金です。", "Use it on your own or wait together.\nPay only when you need another shared reunion."],
+  pricing: [
+    "ひとりでも、ふたりでも。\n必要なときだけ選べる料金です。",
+    "Use it on your own or wait together.\nPay only when you need another shared reunion.",
+  ],
   faq: [
     "よくいただくご質問をまとめました。\n解決しないときは、お気軽にご連絡ください。",
     "Answers to the questions we hear most.\nIf something is still unclear, just reach out.",
   ],
-  news: ["Remeetからのお知らせと、待つ時間についての読みもの。", "News from Remeet and notes about the time between reunions."],
-  updates: ["バージョンごとの新機能、改善、修正を記録します。", "Version-by-version features, improvements, and fixes."],
+  news: [
+    "Remeetからのお知らせと、待つ時間についての読みもの。",
+    "News from Remeet and notes about the time between reunions.",
+  ],
+  updates: [
+    "バージョンごとの新機能、改善、修正を記録します。",
+    "Version-by-version features, improvements, and fixes.",
+  ],
 };
 
 export const pageDescriptions: Partial<Record<Page, [string, string]>> = {

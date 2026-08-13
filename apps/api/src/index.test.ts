@@ -4,15 +4,16 @@ import { createApp } from "./index";
 import { sendSupportEmail } from "./support/email";
 import type { SupportBindings, SupportEmail } from "./support/types";
 
-describe("GET /api/health", () => {
+describe("GET /api/v1/health", () => {
   it("returns the API status", async () => {
     const app = createApp();
-    const response = await app.request("https://tmkch.io/api/health");
+    const response = await app.request("https://tmkch.io/api/v1/health");
 
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({
       ok: true,
       service: "tomokichi-api",
+      version: "v1",
     });
   });
 });
@@ -62,13 +63,13 @@ function post(
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (options.origin) headers.Origin = options.origin;
   return app.request(
-    "https://api.example.com/api/support",
+    "https://api.example.com/api/v1/support",
     { method: "POST", headers, body: JSON.stringify(body) },
     env,
   );
 }
 
-describe("POST /api/support", () => {
+describe("POST /api/v1/support", () => {
   it("accepts a valid request", async () => {
     const response = await post(validRequest);
     expect(response.status).toBe(200);
@@ -107,7 +108,7 @@ describe("POST /api/support", () => {
   it("rejects malformed JSON", async () => {
     const app = createApp();
     const response = await app.request(
-      "https://api.example.com/api/support",
+      "https://api.example.com/api/v1/support",
       { method: "POST", headers: { "Content-Type": "application/json" }, body: "{" },
       env,
     );
@@ -190,7 +191,7 @@ describe("POST /api/support", () => {
   it("handles preflight for allowed origins", async () => {
     const app = createApp();
     const response = await app.request(
-      "https://api.example.com/api/support",
+      "https://api.example.com/api/v1/support",
       { method: "OPTIONS", headers: { Origin: "http://localhost:4321" } },
       env,
     );

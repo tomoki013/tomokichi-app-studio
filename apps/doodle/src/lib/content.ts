@@ -47,10 +47,7 @@ export const descriptions: Record<Page, [string, string]> = {
     "Doodleシリーズの利用規約。無料提供、ローカル保存、DoodleKitについて。",
     "Doodle Series Terms of Service covering free use, local storage, and DoodleKit.",
   ],
-  news: [
-    "Doodle公式ブランドサイト公開のお知らせ。",
-    "News from the Doodle Series brand site.",
-  ],
+  news: ["Doodle公式ブランドサイト公開のお知らせ。", "News from the Doodle Series brand site."],
   updates: [
     "Doodleシリーズ各アプリのバージョンごとの変更内容。",
     "Version-by-version release notes for Doodle Series apps.",
@@ -287,10 +284,7 @@ export function privacySections(ja: boolean): [string, string][] {
           "11. Security",
           "The Operator takes reasonable security measures. On-device data is protected by standard iOS security mechanisms.",
         ],
-        [
-          "12. Minors",
-          "If a minor uses an App, please do so with a parent or guardian’s consent.",
-        ],
+        ["12. Minors", "If a minor uses an App, please do so with a parent or guardian’s consent."],
         [
           "13. Changes",
           "This policy may change with law or product updates. Material changes update the last-updated date and may be announced on the website or in the Apps.",
@@ -407,9 +401,6 @@ export function termsSections(ja: boolean): [string, string][] {
           "Article 12 — Governing law and jurisdiction",
           "Japanese law applies. Unless mandatory consumer law provides otherwise, the Tokyo District Court has exclusive first-instance jurisdiction.",
         ],
-        [
-          "Article 13 — Contact",
-          "Shared support form (app: Doodle), or support@tmkch.io.",
-        ],
+        ["Article 13 — Contact", "Shared support form (app: Doodle), or support@tmkch.io."],
       ];
 }

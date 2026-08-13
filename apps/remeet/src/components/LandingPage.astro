@@ -1,6 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
+import onboardingCouple from "../assets/screens/onboarding-couple-clean.png";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 
@@ -18,6 +20,9 @@ const c = ja
       featureSub: "距離を、やさしくつなぐ機能たち。",
       howTitle: "使い方はかんたん、4ステップ",
       howLink: "使い方を見る",
+      screenTitle: "待つ時間が、ひとつの流れになる。",
+      screenBody: "カウントダウンから、思い出、やりたいこと、再会後のアルバムまで。実際のアプリ画面でRemeetの一連の体験をご覧ください。",
+      screenLink: "すべてのスクリーンショット",
       widgetTitle: "ウィジェットで、もっと身近に",
       widgetBody: "ホーム画面やロック画面から、再会までの日数をいつでも確認できます。",
       storyTitle: "距離があるから、\nつながりは、もっとやさしくなる。",
@@ -37,6 +42,9 @@ const c = ja
       featureSub: "Thoughtful ways to stay close across the distance.",
       howTitle: "Simple to use in four steps",
       howLink: "See how it works",
+      screenTitle: "The wait becomes one continuous story.",
+      screenBody: "From countdown to memories, wish lists, and the album after reunion. See the complete flow through screens captured from the real app.",
+      screenLink: "View all screenshots",
       widgetTitle: "Always close with widgets",
       widgetBody: "Check the days remaining at a glance from your Home Screen or Lock Screen.",
       storyTitle: "Distance can make\nyour connection feel even gentler.",
@@ -106,15 +114,32 @@ const jsonLd = JSON.stringify({
     <div class="home-stack">
       <AppHeroChrome lang={lang} date="2026-08-01" news={c.notice} newsHref={`${base}/news`} />
       <div class="home-copy">
+        <p class="hero-concept">DISTANCE · TIME · REUNION</p>
         <h1>{c.title}</h1>
         <p>{c.body.split("\n").map((line) => <>{line}<br /></>)}</p>
-        <div class="home-actions">
-          <span class="store-soon" aria-disabled="true">{c.store}</span>
-          <a class="secondary-link" href={`${base}/how-to`}>▷　{c.howLink}</a>
+        <div class="distance-panel" aria-hidden="true">
+          <div class="distance-city">
+            <span class="distance-pin"></span>
+            <strong>Tokyo</strong>
+          </div>
+          <div class="distance-mid">
+            <span class="distance-days">23</span>
+            <span class="distance-unit">{ja ? "日" : "DAYS"}</span>
+            <span class="distance-caption">{ja ? "また会えるまで" : "until we meet"}</span>
+          </div>
+          <div class="distance-city distance-city-end">
+            <span class="distance-pin"></span>
+            <strong>Paris</strong>
+          </div>
+          <span class="distance-line"></span>
         </div>
       </div>
       <div class="home-phone-picture">
         <AppScreen screen="home" size="lg" lang={lang} priority />
+      </div>
+      <div class="home-actions">
+        <span class="store-soon" aria-disabled="true">{c.store}</span>
+        <a class="secondary-link" href={`${base}/how-to`}>▷　{c.howLink}</a>
       </div>
     </div>
   </section>
@@ -169,6 +194,23 @@ const jsonLd = JSON.stringify({
       </div>
     </section>
 
+    <section class="screen-story landing-pad" id="screens">
+      <header class="screen-story-copy">
+        <p class="chapter-index">REAL APP / FOUR CHAPTERS</p>
+        <h2>{c.screenTitle}</h2>
+        <p>{c.screenBody}</p>
+        <a href={`${base}/screenshots`}>{c.screenLink} →</a>
+      </header>
+      <div class="screen-story-rail">
+        {(["home", "memories", "wishes", "album"] as const).map((screen, i) => (
+          <figure>
+            <AppScreen screen={screen} size={i === 1 || i === 2 ? "sm" : "md"} lang={lang} />
+            <figcaption><span>0{i + 1}</span>{ja ? ["再会まで", "思い出", "やりたいこと", "アルバム"][i] : ["Countdown", "Memories", "Wish list", "Album"][i]}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
     <section class="widgets landing-pad" id="widgets">
       <div><h2>{c.widgetTitle}</h2><p>{c.widgetBody}</p></div>
       <div class="widget-art">
@@ -183,17 +225,17 @@ const jsonLd = JSON.stringify({
       </div>
     </section>
 
-    <section class="closing-chapter landing-pad">
+    <section class="closing-chapter landing-pad" id="story">
       <div class="chapter-art">
-        <img
-          src="/assets/couple.png"
-          alt={ja ? "夕暮れの海を眺めるふたりを描いたRemeetの開始画面" : "Remeet onboarding art of two people at sunset"}
-          width="941"
-          height="1672"
+        <Image
+          src={onboardingCouple}
+          alt={ja ? "夕暮れの海を並んで眺めるふたりの後ろ姿" : "Two people seen from behind, sitting together by the sea at sunset"}
+          widths={[520, 760, 1040]}
+          sizes="(max-width: 760px) calc(100vw - 36px), 46vw"
+          quality={88}
           loading="lazy"
           decoding="async"
         />
-        <span aria-hidden="true">127</span>
       </div>
       <div class="chapter-copy">
         <p class="chapter-index">BETWEEN HERE &amp; THEN</p>

@@ -34,8 +34,8 @@ export const descriptions: Record<Page, [string, string]> = {
     "How to deal, move cards, and clear a Quiet Solitaire game.",
   ],
   screenshots: [
-    "Quiet Solitaireの雰囲気を伝えるコンセプト画面。実機キャプチャではありません。",
-    "Stylized concept screens that convey Quiet Solitaire’s mood—not real captures.",
+    "動作中のQuiet SolitaireをiPhone 17 Pro Maxシミュレータで撮影した実際のゲーム画面。",
+    "A real game screen captured from the running Quiet Solitaire app on an iPhone 17 Pro Max simulator.",
   ],
   faq: [
     "ルール、広告、データ保存、対応環境についてのFAQ。",
@@ -58,8 +58,8 @@ export const descriptions: Record<Page, [string, string]> = {
     "Version-by-version release notes for Quiet Solitaire.",
   ],
   reviews: [
-    "Quiet Solitaireを使うプレイヤーの声と評価ポイント。",
-    "Player voices and review highlights for Quiet Solitaire.",
+    "App Store公開前のQuiet Solitaireについて、実際の画面と設計意図をご紹介します。",
+    "The real screen and design intent of Quiet Solitaire before its App Store launch.",
   ],
 };
 
@@ -68,22 +68,13 @@ export const subtitles: Partial<Record<Page, [string, string]>> = {
     "静かなテーブルで、カードと向き合うために。",
     "Built for quiet evenings at the card table.",
   ],
-  "how-to": [
-    "クロンダイクの流れを、シンプルに。",
-    "Classic Klondike, explained simply.",
-  ],
+  "how-to": ["クロンダイクの流れを、シンプルに。", "Classic Klondike, explained simply."],
   screenshots: [
-    "実機の画面ではなく、雰囲気を伝えるコンセプトカードです。",
-    "Concept art that suggests the feel of the app—not product screenshots.",
+    "動作中のアプリから撮影した、実際のゲーム画面です。",
+    "A real game screen captured from the running app.",
   ],
-  faq: [
-    "よくいただくご質問をまとめました。",
-    "Answers to the questions we hear most.",
-  ],
-  news: [
-    "Quiet Solitaireからのお知らせ。",
-    "Notes from Quiet Solitaire.",
-  ],
+  faq: ["よくいただくご質問をまとめました。", "Answers to the questions we hear most."],
+  news: ["Quiet Solitaireからのお知らせ。", "Notes from Quiet Solitaire."],
   updates: [
     "バージョンごとの新機能、改善、修正を記録します。",
     "Features, refinements, and fixes by version.",
@@ -93,23 +84,51 @@ export const subtitles: Partial<Record<Page, [string, string]>> = {
 export function features(ja: boolean) {
   return ja
     ? ([
-        ["♠", "クロンダイク・ルール", "標準的なKlondikeソリティア。場札、山札、組札の流れで、静かにクリアを目指します。"],
+        [
+          "♠",
+          "クロンダイク・ルール",
+          "標準的なKlondikeソリティア。場札、山札、組札の流れで、静かにクリアを目指します。",
+        ],
         ["↶", "アンドゥ", "ひとつ前の手に戻せるので、じっくり考えながら進められます。"],
         ["◔", "統計", "プレイ回数やクリア数など、手元で続けた記録を振り返れます。"],
         ["✋", "左利きレイアウト", "操作しやすい側にレイアウトを寄せて、利き手に合わせられます。"],
-        ["◎", "触覚・サウンド", "ハプティクスと効果音を個別にオン／オフ。好みの静けさに調整できます。"],
+        [
+          "◎",
+          "触覚・サウンド",
+          "ハプティクスと効果音を個別にオン／オフ。好みの静けさに調整できます。",
+        ],
         ["✦", "回収アニメーション", "カードが集まる動きを有効／無効にでき、テンポを選べます。"],
         ["💾", "端末内に保存", "進行中のゲーム、設定、統計は端末内に保存。アカウントは不要です。"],
-        ["▦", "控えめなバナー広告", "広告が有効なとき、Google AdMobのバナーが表示される場合があります。"],
+        [
+          "▦",
+          "控えめなバナー広告",
+          "広告が有効なとき、Google AdMobのバナーが表示される場合があります。",
+        ],
       ] as const)
     : ([
-        ["♠", "Klondike rules", "Classic Klondike solitaire—tableau, stock, and foundations, at an unhurried pace."],
+        [
+          "♠",
+          "Klondike rules",
+          "Classic Klondike solitaire—tableau, stock, and foundations, at an unhurried pace.",
+        ],
         ["↶", "Undo", "Step back a move when you want more time to think."],
-        ["◔", "Statistics", "Look back at games played, wins, and other quiet tallies kept on your phone."],
-        ["✋", "Left-handed layout", "Shift the layout toward the side that feels natural in your hand."],
+        [
+          "◔",
+          "Statistics",
+          "Look back at games played, wins, and other quiet tallies kept on your phone.",
+        ],
+        [
+          "✋",
+          "Left-handed layout",
+          "Shift the layout toward the side that feels natural in your hand.",
+        ],
         ["◎", "Haptics & sound", "Toggle haptics and sound independently for the calm you prefer."],
         ["✦", "Collect animation", "Turn card-collect motion on or off to match your tempo."],
-        ["💾", "On-device storage", "In-progress games, settings, and stats stay on your device. No account."],
+        [
+          "💾",
+          "On-device storage",
+          "In-progress games, settings, and stats stay on your device. No account.",
+        ],
         ["▦", "Quiet banner ads", "When ads are enabled, a Google AdMob banner may appear."],
       ] as const);
 }
@@ -260,32 +279,100 @@ export function conceptScreens(ja: boolean) {
 export function faqs(ja: boolean): [string, string, string][] {
   return ja
     ? [
-        ["base", "Quiet Solitaireはどんなアプリですか？", "iPhone向けの、静かなクロンダイク・ソリティアです。SpriteKitとSwiftUIで構成され、ローカルにゲームと設定を保存します。"],
-        ["base", "無料で使えますか？", "はい。基本プレイは無料です。広告が有効な場合、Google AdMobのバナーが表示されることがあります。現時点でアプリ内課金はありません。"],
+        [
+          "base",
+          "Quiet Solitaireはどんなアプリですか？",
+          "iPhone向けの、静かなクロンダイク・ソリティアです。SpriteKitとSwiftUIで構成され、ローカルにゲームと設定を保存します。",
+        ],
+        [
+          "base",
+          "無料で使えますか？",
+          "はい。基本プレイは無料です。広告が有効な場合、Google AdMobのバナーが表示されることがあります。現時点でアプリ内課金はありません。",
+        ],
         ["base", "アカウントは必要ですか？", "いいえ。登録やログインなしですぐに遊べます。"],
         ["base", "対応環境は？", "iPhone・iOS 26.0以降向けです。"],
-        ["play", "ルールは何ですか？", "標準的なKlondike（クロンダイク）です。場札は色を交互に降順、組札はスートごとにAからKへ積みます。"],
+        [
+          "play",
+          "ルールは何ですか？",
+          "標準的なKlondike（クロンダイク）です。場札は色を交互に降順、組札はスートごとにAからKへ積みます。",
+        ],
         ["play", "アンドゥはありますか？", "はい。直前の手に戻せます。"],
-        ["play", "左利きに対応していますか？", "はい。設定で左利き向けレイアウトに切り替えられます。"],
-        ["play", "振動や音を消せますか？", "はい。ハプティクスとサウンドをそれぞれオフにできます。回収アニメーションも切り替えられます。"],
-        ["data", "データはどこに保存されますか？", "進行中のゲーム、設定、統計は端末内に保存されます。"],
-        ["data", "クラウド同期はありますか？", "ありません。機種変更時の自動引き継ぎはありません。"],
-        ["data", "広告は出ますか？", "広告が有効なとき、Google AdMobのバナーが表示される場合があります。このバージョンではApp Tracking Transparency（ATT）は要求しません。"],
-        ["data", "お問い合わせは？", "公式サイトの共通サポートフォームからQuiet Solitaireを選んで送信できます。"],
+        [
+          "play",
+          "左利きに対応していますか？",
+          "はい。設定で左利き向けレイアウトに切り替えられます。",
+        ],
+        [
+          "play",
+          "振動や音を消せますか？",
+          "はい。ハプティクスとサウンドをそれぞれオフにできます。回収アニメーションも切り替えられます。",
+        ],
+        [
+          "data",
+          "データはどこに保存されますか？",
+          "進行中のゲーム、設定、統計は端末内に保存されます。",
+        ],
+        [
+          "data",
+          "クラウド同期はありますか？",
+          "ありません。機種変更時の自動引き継ぎはありません。",
+        ],
+        [
+          "data",
+          "広告は出ますか？",
+          "広告が有効なとき、Google AdMobのバナーが表示される場合があります。このバージョンではApp Tracking Transparency（ATT）は要求しません。",
+        ],
+        [
+          "data",
+          "お問い合わせは？",
+          "公式サイトの共通サポートフォームからQuiet Solitaireを選んで送信できます。",
+        ],
       ]
     : [
-        ["base", "What is Quiet Solitaire?", "A calm Klondike solitaire for iPhone, built with SpriteKit and SwiftUI, with games and settings stored on device."],
-        ["base", "Is it free?", "Yes. Core play is free. When ads are enabled, a Google AdMob banner may appear. There are no in-app purchases at this time."],
+        [
+          "base",
+          "What is Quiet Solitaire?",
+          "A calm Klondike solitaire for iPhone, built with SpriteKit and SwiftUI, with games and settings stored on device.",
+        ],
+        [
+          "base",
+          "Is it free?",
+          "Yes. Core play is free. When ads are enabled, a Google AdMob banner may appear. There are no in-app purchases at this time.",
+        ],
         ["base", "Do I need an account?", "No. Play without signing up."],
         ["base", "What devices are supported?", "iPhone on iOS 26.0 or later."],
-        ["play", "What rules does it use?", "Classic Klondike: alternating colours descending on the tableau; Ace-to-King by suit on foundations."],
+        [
+          "play",
+          "What rules does it use?",
+          "Classic Klondike: alternating colours descending on the tableau; Ace-to-King by suit on foundations.",
+        ],
         ["play", "Is there undo?", "Yes—you can reverse the previous move."],
         ["play", "Is there a left-handed layout?", "Yes. Switch it in Settings."],
-        ["play", "Can I mute haptics and sound?", "Yes. Toggle haptics and sound independently, plus collect animation."],
-        ["data", "Where is data stored?", "In-progress games, settings, and statistics stay on your device."],
-        ["data", "Is there cloud sync?", "No. There is no automatic transfer when you change phones."],
-        ["data", "Are there ads?", "When ads are enabled, a Google AdMob banner may appear. This version does not request App Tracking Transparency (ATT)."],
-        ["data", "How do I contact support?", "Use the shared Tomokichi support form and select Quiet Solitaire."],
+        [
+          "play",
+          "Can I mute haptics and sound?",
+          "Yes. Toggle haptics and sound independently, plus collect animation.",
+        ],
+        [
+          "data",
+          "Where is data stored?",
+          "In-progress games, settings, and statistics stay on your device.",
+        ],
+        [
+          "data",
+          "Is there cloud sync?",
+          "No. There is no automatic transfer when you change phones.",
+        ],
+        [
+          "data",
+          "Are there ads?",
+          "When ads are enabled, a Google AdMob banner may appear. This version does not request App Tracking Transparency (ATT).",
+        ],
+        [
+          "data",
+          "How do I contact support?",
+          "Use the shared Tomokichi support form and select Quiet Solitaire.",
+        ],
       ];
 }
 
@@ -417,7 +504,10 @@ export function privacySections(ja: boolean): [string, string][] {
           "13. Changes",
           "This policy may change with law or product updates. Material changes update the last-updated date and may be announced on the site or in the App.",
         ],
-        ["14. Contact", "Questions: the shared support form (select Quiet Solitaire), or support@tmkch.io."],
+        [
+          "14. Contact",
+          "Questions: the shared support form (select Quiet Solitaire), or support@tmkch.io.",
+        ],
       ];
 }
 
@@ -536,7 +626,8 @@ export function newsPosts(ja: boolean) {
           datetime: "2026-08-08",
           badge: "お知らせ",
           title: "Quiet Solitaire公式ブランドサイトを公開しました",
-          summary: "機能、遊び方、コンセプト画面、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+          summary:
+            "機能、遊び方、コンセプト画面、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
           body: [
             "Quiet Solitaireの公式ブランドサイトを公開しました。iPhone向けの静かなクロンダイク・ソリティアという位置づけを、App Store公開準備中の段階からそのままお伝えしています。",
             "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
@@ -576,7 +667,8 @@ export function newsPosts(ja: boolean) {
           datetime: "2026-08-08",
           badge: "Update",
           title: "The official Quiet Solitaire brand site is now live",
-          summary: "Features, how to play, concept screens, FAQ, Privacy Policy, and Terms—in one place.",
+          summary:
+            "Features, how to play, concept screens, FAQ, Privacy Policy, and Terms—in one place.",
           body: [
             "The official Quiet Solitaire brand site is live. It introduces a calm Klondike solitaire for iPhone while the app prepares for the App Store.",
             "There is no App Store link yet. When distribution is ready, we will share it here as well.",

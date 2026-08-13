@@ -19,12 +19,8 @@ const supportHref = supportUrl("doodle", lang);
 const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
 
 const nav = [
-  { slug: "", label: ja ? "ホーム" : "Home", href: ja ? "/ja" : "/" },
-  { slug: "screenshots", label: ja ? "アプリ" : "Apps", href: href("screenshots") },
   { slug: "features", label: ja ? "特徴" : "Features", href: href("features") },
-  { slug: "faq", label: ja ? "サポート" : "Support", href: href("faq") },
-  { slug: "news", label: ja ? "ブログ" : "Blog", href: href("news") },
-  { slug: "updates", label: ja ? "アップデート情報" : "Updates", href: href("updates") },
+  { slug: "screenshots", label: ja ? "画面イメージ" : "Screens", href: href("screenshots") },
 ];
 
 const footerColumns = ja
@@ -58,7 +54,7 @@ const footerColumns = ja
         title: "運営者情報",
         links: [
           { label: "運営サイト", href: mainSiteUrl("ja"), external: true },
-          { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
+          { label: "ほかのアプリ", href: mainSiteUrl("ja", "/products"), external: true },
           { label: "お問い合わせ", href: supportHref, external: true },
         ],
       },
@@ -93,7 +89,7 @@ const footerColumns = ja
         title: "Operator",
         links: [
           { label: "Operator site", href: mainSiteUrl("en"), external: true },
-          { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
+          { label: "Other apps", href: mainSiteUrl("en", "/products"), external: true },
           { label: "Contact", href: supportHref, external: true },
         ],
       },
@@ -104,7 +100,7 @@ const mobileFooterLinks = [
   { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
   { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
   { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
-  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/products"), external: true },
 ];
 
 const metaDescription =

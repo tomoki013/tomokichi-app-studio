@@ -89,8 +89,10 @@ export const regions: RegionCard[] = [
     unitEn: "Prefectures",
     count: 47,
     flag: "🇯🇵",
-    schemeJa: "北海道から沖縄まで、47の都道府県をそのまま塗り分けます。都市名検索では「渋谷」→東京都のように、該当する都道府県へ導きます。",
-    schemeEn: "All 47 prefectures from Hokkaido to Okinawa. Place search maps cities (e.g. Shibuya) to the matching prefecture.",
+    schemeJa:
+      "北海道から沖縄まで、47の都道府県をそのまま塗り分けます。都市名検索では「渋谷」→東京都のように、該当する都道府県へ導きます。",
+    schemeEn:
+      "All 47 prefectures from Hokkaido to Okinawa. Place search maps cities (e.g. Shibuya) to the matching prefecture.",
     samplesJa: ["東京都", "大阪府", "北海道", "沖縄県", "京都府"],
     samplesEn: ["Tokyo", "Osaka", "Hokkaido", "Okinawa", "Kyoto"],
   },
@@ -102,8 +104,10 @@ export const regions: RegionCard[] = [
     unitEn: "Departments",
     count: 101,
     flag: "🇫🇷",
-    schemeJa: "メトロポールと海外県を含む県（département）単位。大都市圏や海外領土も旅の記録として残せます。",
-    schemeEn: "French departments including overseas departments—handy for both métropole and overseas travel.",
+    schemeJa:
+      "メトロポールと海外県を含む県（département）単位。大都市圏や海外領土も旅の記録として残せます。",
+    schemeEn:
+      "French departments including overseas departments—handy for both métropole and overseas travel.",
     samplesJa: ["パリ", "ブーシュ＝デュ＝ローヌ", "ローヌ", "アルプ＝マリティーム", "バス＝ラン"],
     samplesEn: ["Paris", "Bouches-du-Rhône", "Rhône", "Alpes-Maritimes", "Bas-Rhin"],
   },
@@ -115,8 +119,10 @@ export const regions: RegionCard[] = [
     unitEn: "Provinces & autonomous cities",
     count: 52,
     flag: "🇪🇸",
-    schemeJa: "50の県に、セウタとメリリャの自治市を加えた52区画。自治州より細かい単位で旅を残せます。",
-    schemeEn: "50 provinces plus the autonomous cities of Ceuta and Melilla—finer than autonomous communities.",
+    schemeJa:
+      "50の県に、セウタとメリリャの自治市を加えた52区画。自治州より細かい単位で旅を残せます。",
+    schemeEn:
+      "50 provinces plus the autonomous cities of Ceuta and Melilla—finer than autonomous communities.",
     samplesJa: ["マドリード", "バルセロナ", "セビリア", "バレンシア", "マラガ"],
     samplesEn: ["Madrid", "Barcelona", "Seville", "Valencia", "Málaga"],
   },
@@ -129,7 +135,8 @@ export const regions: RegionCard[] = [
     count: 17,
     flag: "🇰🇷",
     schemeJa: "特別市・広域市・特別自治市・道・特別自治道など、行政区分に沿った17区画です。",
-    schemeEn: "Seventeen first-level units: special city, metropolitan cities, special self-governing city/province, and provinces.",
+    schemeEn:
+      "Seventeen first-level units: special city, metropolitan cities, special self-governing city/province, and provinces.",
     samplesJa: ["ソウル特別市", "釜山広域市", "済州特別自治道", "京畿道", "仁川広域市"],
     samplesEn: ["Seoul", "Busan", "Jeju", "Gyeonggi", "Incheon"],
   },
@@ -155,7 +162,8 @@ export const regions: RegionCard[] = [
     count: 77,
     flag: "🇹🇭",
     schemeJa: "76の県（changwat）にバンコクを加えた77区画。島や北部の県も個別に残せます。",
-    schemeEn: "Seventy-six provinces plus Bangkok as its own unit—islands and northern provinces stay separate.",
+    schemeEn:
+      "Seventy-six provinces plus Bangkok as its own unit—islands and northern provinces stay separate.",
     samplesJa: ["バンコク", "チェンマイ", "プーケット", "クラビ", "アユタヤ"],
     samplesEn: ["Bangkok", "Chiang Mai", "Phuket", "Krabi", "Ayutthaya"],
   },
@@ -167,7 +175,8 @@ export const regions: RegionCard[] = [
     unitEn: "Provinces",
     count: 81,
     flag: "🇹🇷",
-    schemeJa: "81の県（il）。イスタンブールからカッパドキア、エーゲ海沿岸まで県単位で塗り分けます。",
+    schemeJa:
+      "81の県（il）。イスタンブールからカッパドキア、エーゲ海沿岸まで県単位で塗り分けます。",
     schemeEn: "Eighty-one provinces (il)—from Istanbul to Cappadocia and the Aegean coast.",
     samplesJa: ["イスタンブール", "アンカラ", "イズミル", "アンタルヤ", "ネヴシェヒル"],
     samplesEn: ["Istanbul", "Ankara", "İzmir", "Antalya", "Nevşehir"],
@@ -181,7 +190,8 @@ export const regions: RegionCard[] = [
     count: 56,
     flag: "🇺🇸",
     schemeJa: "50州にワシントンD.C.と主要な自治領・領域を加えた56区画。本土以外の旅も残せます。",
-    schemeEn: "Fifty states plus D.C. and major territories—mainland trips and island journeys alike.",
+    schemeEn:
+      "Fifty states plus D.C. and major territories—mainland trips and island journeys alike.",
     samplesJa: ["カリフォルニア", "ニューヨーク", "ハワイ", "テキサス", "ワシントンD.C."],
     samplesEn: ["California", "New York", "Hawaii", "Texas", "Washington, D.C."],
   },
@@ -206,8 +216,10 @@ export const regions: RegionCard[] = [
     unitEn: "Provinces & Brussels",
     count: 11,
     flag: "🇧🇪",
-    schemeJa: "10の州にブリュッセル首都圏地域を加えた11区画。フランダースとワロンをまたぐ旅を整理しやすい単位です。",
-    schemeEn: "Ten provinces plus the Brussels-Capital Region—clear units across Flanders and Wallonia.",
+    schemeJa:
+      "10の州にブリュッセル首都圏地域を加えた11区画。フランダースとワロンをまたぐ旅を整理しやすい単位です。",
+    schemeEn:
+      "Ten provinces plus the Brussels-Capital Region—clear units across Flanders and Wallonia.",
     samplesJa: ["ブリュッセル", "アントウェルペン", "西フランデレン", "リエージュ", "エノー"],
     samplesEn: ["Brussels", "Antwerp", "West Flanders", "Liège", "Hainaut"],
   },
@@ -219,8 +231,10 @@ export const regions: RegionCard[] = [
     unitEn: "Travel areas",
     count: 8,
     flag: "🇸🇬",
-    schemeJa: "行政区画ではなく、旅でよく回る8つのエリア（中心部、オーチャード、リトル・インディアなど）に整理しています。",
-    schemeEn: "Not formal admin districts—eight travel areas such as the Civic District, Orchard, and Little India.",
+    schemeJa:
+      "行政区画ではなく、旅でよく回る8つのエリア（中心部、オーチャード、リトル・インディアなど）に整理しています。",
+    schemeEn:
+      "Not formal admin districts—eight travel areas such as the Civic District, Orchard, and Little India.",
     samplesJa: ["中心部", "オーチャード", "チャイナタウン", "リトル・インディア", "マリーナベイ"],
     samplesEn: ["Civic District", "Orchard", "Chinatown", "Little India", "Marina Bay"],
   },

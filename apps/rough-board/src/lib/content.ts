@@ -58,25 +58,66 @@ export const descriptions: Record<Page, [string, string]> = {
 };
 
 export const languagesJa = "日本語、英語、簡体字中国語、韓国語、スペイン語、フランス語、ドイツ語";
-export const languagesEn = "Japanese, English, Simplified Chinese, Korean, Spanish, French, and German";
+export const languagesEn =
+  "Japanese, English, Simplified Chinese, Korean, Spanish, French, and German";
 
 export function featureCards(ja: boolean) {
   return ja
     ? ([
-        ["✍", "フルスクリーンの書く画面", "思考のスピードに合わせて、全画面で素早く書き込めます。下書きは自動保存されます。"],
-        ["◻", "静かなホワイトボード", "白いキャンバスをパン・ピンチ。ノードをドラッグして配置を整えます。"],
+        [
+          "✍",
+          "フルスクリーンの書く画面",
+          "思考のスピードに合わせて、全画面で素早く書き込めます。下書きは自動保存されます。",
+        ],
+        [
+          "◻",
+          "静かなホワイトボード",
+          "白いキャンバスをパン・ピンチ。ノードをドラッグして配置を整えます。",
+        ],
         ["⤷", "リンクと分岐", "リンクモードで考えをつなぎ、ブランチで枝分かれを残せます。"],
         ["⌕", "検索でノードへ", "キーワードで探し、該当ノードをボードの中央に寄せられます。"],
-        ["☾", "スリープとアーカイブ", "今は見なくていい考えを眠らせたり、アーカイブへ片付けたりできます。"],
-        ["◎", "アカウント設定", "外観、触覚フィードバック、アーカイブ、プライバシーまわりを端末内で調整します。"],
+        [
+          "☾",
+          "スリープとアーカイブ",
+          "今は見なくていい考えを眠らせたり、アーカイブへ片付けたりできます。",
+        ],
+        [
+          "◎",
+          "アカウント設定",
+          "外観、触覚フィードバック、アーカイブ、プライバシーまわりを端末内で調整します。",
+        ],
       ] as const)
     : ([
-        ["✍", "Full-screen Write", "Capture thoughts at speed on a full-screen canvas. Drafts autosave as you type."],
-        ["◻", "A quiet Board", "Pan and pinch a white canvas. Drag soft nodes until the layout feels right."],
-        ["⤷", "Links and branches", "Connect ideas in link mode, or branch a thought into related paths."],
-        ["⌕", "Search that centers", "Find a node by keyword and bring it into the center of the board."],
-        ["☾", "Sleep and archive", "Put ideas to sleep when they need rest, or archive what you no longer need in view."],
-        ["◎", "Account settings", "Appearance, haptics, archive, and privacy controls—kept on your device."],
+        [
+          "✍",
+          "Full-screen Write",
+          "Capture thoughts at speed on a full-screen canvas. Drafts autosave as you type.",
+        ],
+        [
+          "◻",
+          "A quiet Board",
+          "Pan and pinch a white canvas. Drag soft nodes until the layout feels right.",
+        ],
+        [
+          "⤷",
+          "Links and branches",
+          "Connect ideas in link mode, or branch a thought into related paths.",
+        ],
+        [
+          "⌕",
+          "Search that centers",
+          "Find a node by keyword and bring it into the center of the board.",
+        ],
+        [
+          "☾",
+          "Sleep and archive",
+          "Put ideas to sleep when they need rest, or archive what you no longer need in view.",
+        ],
+        [
+          "◎",
+          "Account settings",
+          "Appearance, haptics, archive, and privacy controls—kept on your device.",
+        ],
       ] as const);
 }
 
@@ -365,38 +406,118 @@ export function howGuides(ja: boolean) {
 export function faqs(ja: boolean) {
   return ja
     ? ([
-        ["base", "Rough Boardはどんなアプリですか？", "ざっくりした思考を素早く書き、白いボードに置き、あとからつなぐためのローカルファーストなiPhoneアプリです。"],
+        [
+          "base",
+          "Rough Boardはどんなアプリですか？",
+          "ざっくりした思考を素早く書き、白いボードに置き、あとからつなぐためのローカルファーストなiPhoneアプリです。",
+        ],
         ["base", "無料で使えますか？", "はい。MVPでは無料で、広告やアプリ内課金はありません。"],
         ["base", "アカウントは必要ですか？", "いいえ。登録やログインなしですぐに使えます。"],
         ["base", "対応環境は？", "iPhone・iOS 17以降です。SwiftUI + SwiftDataで作られています。"],
         ["base", "対応言語は？", `${languagesJa}に対応しています。`],
-        ["write", "下書きはどこに保存されますか？", "書きかけの下書きは端末内のUserDefaultsに自動保存されます。"],
-        ["write", "オフラインで使えますか？", "はい。主要な機能は端末内で完結し、ネットワークは不要です。"],
-        ["board", "ボードでは何ができますか？", "パン・ピンチ、ノードのドラッグ、リンクモード、ブランチ、検索による中央寄せなどができます。"],
-        ["board", "スリープとアーカイブの違いは？", "スリープは今は見なくてよい考えを一時的に休ませ、アーカイブはボードから長く片付けたいものを整理するための機能です。"],
-        ["data", "データはどこに保存されますか？", "ボード上のノードや接続などのデータは端末内（SwiftData）に保存されます。下書きはUserDefaultsです。"],
-        ["data", "iCloud同期はありますか？", "MVPではiCloud同期はありません。データは端末内のみです。"],
-        ["data", "広告やトラッキングはありますか？", "ありません。広告SDK、StoreKit、解析SDKは使用しません。"],
+        [
+          "write",
+          "下書きはどこに保存されますか？",
+          "書きかけの下書きは端末内のUserDefaultsに自動保存されます。",
+        ],
+        [
+          "write",
+          "オフラインで使えますか？",
+          "はい。主要な機能は端末内で完結し、ネットワークは不要です。",
+        ],
+        [
+          "board",
+          "ボードでは何ができますか？",
+          "パン・ピンチ、ノードのドラッグ、リンクモード、ブランチ、検索による中央寄せなどができます。",
+        ],
+        [
+          "board",
+          "スリープとアーカイブの違いは？",
+          "スリープは今は見なくてよい考えを一時的に休ませ、アーカイブはボードから長く片付けたいものを整理するための機能です。",
+        ],
+        [
+          "data",
+          "データはどこに保存されますか？",
+          "ボード上のノードや接続などのデータは端末内（SwiftData）に保存されます。下書きはUserDefaultsです。",
+        ],
+        [
+          "data",
+          "iCloud同期はありますか？",
+          "MVPではiCloud同期はありません。データは端末内のみです。",
+        ],
+        [
+          "data",
+          "広告やトラッキングはありますか？",
+          "ありません。広告SDK、StoreKit、解析SDKは使用しません。",
+        ],
         ["data", "AI機能はありますか？", "MVPにはAI機能はありません。"],
-        ["data", "サポートに連絡すると何が送られますか？", "共通サポートフォームを明示的に送信したときだけ、入力した内容と技術情報が送られます。ボード上の思考は自動添付されません。"],
-        ["data", "すべてのデータを削除できますか？", "アプリを削除すると端末内データは消えます。ソフトデリートやアーカイブで個別の整理もできます。"],
+        [
+          "data",
+          "サポートに連絡すると何が送られますか？",
+          "共通サポートフォームを明示的に送信したときだけ、入力した内容と技術情報が送られます。ボード上の思考は自動添付されません。",
+        ],
+        [
+          "data",
+          "すべてのデータを削除できますか？",
+          "アプリを削除すると端末内データは消えます。ソフトデリートやアーカイブで個別の整理もできます。",
+        ],
       ] as const)
     : ([
-        ["base", "What is Rough Board?", "A local-first iPhone app for rough thoughts: write fast, place ideas on a white board, and connect them later."],
+        [
+          "base",
+          "What is Rough Board?",
+          "A local-first iPhone app for rough thoughts: write fast, place ideas on a white board, and connect them later.",
+        ],
         ["base", "Is it free?", "Yes. The MVP is free, with no ads and no in-app purchases."],
         ["base", "Do I need an account?", "No. There is no sign-up or login."],
-        ["base", "What devices are supported?", "iPhone on iOS 17 or later. Built with SwiftUI and SwiftData."],
+        [
+          "base",
+          "What devices are supported?",
+          "iPhone on iOS 17 or later. Built with SwiftUI and SwiftData.",
+        ],
         ["base", "Which languages are supported?", languagesEn + "."],
-        ["write", "Where is the draft saved?", "In-progress drafts autosave to UserDefaults on your device."],
-        ["write", "Does it work offline?", "Yes. Core features run entirely on device and need no network."],
-        ["board", "What can I do on the Board?", "Pan and pinch, drag nodes, use link mode, branch, and center nodes via search."],
-        ["board", "Sleep vs archive?", "Sleep rests thoughts you do not want to see now; archive tidies items for longer-term cleanup."],
-        ["data", "Where is data stored?", "Board nodes and links live on device in SwiftData. Drafts use UserDefaults."],
+        [
+          "write",
+          "Where is the draft saved?",
+          "In-progress drafts autosave to UserDefaults on your device.",
+        ],
+        [
+          "write",
+          "Does it work offline?",
+          "Yes. Core features run entirely on device and need no network.",
+        ],
+        [
+          "board",
+          "What can I do on the Board?",
+          "Pan and pinch, drag nodes, use link mode, branch, and center nodes via search.",
+        ],
+        [
+          "board",
+          "Sleep vs archive?",
+          "Sleep rests thoughts you do not want to see now; archive tidies items for longer-term cleanup.",
+        ],
+        [
+          "data",
+          "Where is data stored?",
+          "Board nodes and links live on device in SwiftData. Drafts use UserDefaults.",
+        ],
         ["data", "Is there iCloud sync?", "Not in the MVP. Everything stays on the device."],
-        ["data", "Are there ads or tracking?", "No. There is no ads SDK, StoreKit, or analytics SDK."],
+        [
+          "data",
+          "Are there ads or tracking?",
+          "No. There is no ads SDK, StoreKit, or analytics SDK.",
+        ],
         ["data", "Is there AI?", "Not in the MVP."],
-        ["data", "What is sent when I contact support?", "Only when you explicitly submit the shared support form. Board thoughts are never attached automatically."],
-        ["data", "Can I delete everything?", "Uninstalling removes on-device data. Soft delete and archive help with everyday tidy-up."],
+        [
+          "data",
+          "What is sent when I contact support?",
+          "Only when you explicitly submit the shared support form. Board thoughts are never attached automatically.",
+        ],
+        [
+          "data",
+          "Can I delete everything?",
+          "Uninstalling removes on-device data. Soft delete and archive help with everyday tidy-up.",
+        ],
       ] as const);
 }
 
@@ -426,7 +547,8 @@ export function newsPosts(ja: boolean) {
           datetime: "2026-08-08",
           badge: "お知らせ",
           title: "Rough Board公式ブランドサイトを公開しました",
-          summary: "書いて、置いて、あとでつなぐ。ローカルファーストな思考ボードの考え方をまとめています。",
+          summary:
+            "書いて、置いて、あとでつなぐ。ローカルファーストな思考ボードの考え方をまとめています。",
           body: [
             "Rough Boardの公式ブランドサイトを公開しました。フルスクリーンの書く画面、白いボード、リンクと分岐、検索、スリープ／アーカイブなど、MVPで目指している体験をページに整理しています。",
             "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
@@ -466,7 +588,8 @@ export function newsPosts(ja: boolean) {
           datetime: "2026-08-08",
           badge: "Update",
           title: "The official Rough Board brand site is now live",
-          summary: "Write fast. Place thoughts. Connect later—local-first thinking, explained in one place.",
+          summary:
+            "Write fast. Place thoughts. Connect later—local-first thinking, explained in one place.",
           body: [
             "The official Rough Board brand site is live. It covers the full-screen Write tab, the white Board, links and branches, search, sleep/archive, and the rest of the MVP.",
             "There is no App Store link yet. When distribution is ready, we will share it here as well.",
@@ -633,7 +756,10 @@ export function termsSections(ja: boolean): [string, string][] {
           "第3条（利用料金）",
           "本アプリは無料で提供されます。広告は表示されません。通信に必要な費用は利用者の負担とします。将来、有料機能を提供する場合は、購入画面またはApp Storeの商品ページに税込価格を表示します。",
         ],
-        ["第4条（利用者の責任）", "利用者は、自己の責任において本サービスを利用します。入力した思考内容のバックアップや管理も利用者の責任に属します。"],
+        [
+          "第4条（利用者の責任）",
+          "利用者は、自己の責任において本サービスを利用します。入力した思考内容のバックアップや管理も利用者の責任に属します。",
+        ],
         [
           "第5条（禁止事項）",
           "法令違反、不正アクセス、運営妨害、違法な複製・再配布、サポートフォームの荒らし、その他運営者が不適切と合理的に判断する行為を禁止します。",

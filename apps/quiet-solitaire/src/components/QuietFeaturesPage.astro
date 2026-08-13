@@ -1,181 +1,36 @@
 ---
+import { features as featureList } from "../lib/content";
+import AppScreen from "./AppScreen.astro";
+
 const { lang } = Astro.props as { lang: "ja" | "en" };
 const ja = lang === "ja";
-
-const backs = [
-  ["クラシックグリーン", "Classic green", "g1"],
-  ["クラシックレッド", "Classic red", "r1"],
-  ["クラシックブルー", "Classic blue", "b1"],
-  ["アンティークゴールド", "Antique gold", "gold"],
-  ["フォレスト", "Forest", "forest"],
-  ["ミッドナイト", "Midnight", "mid"],
-  ["ウォールナット", "Walnut", "walnut"],
-  ["スレート", "Slate", "slate"],
-];
-const tables = [
-  ["グリーン", "Green", "green"],
-  ["ブルー", "Blue", "blue"],
-  ["ブラウン", "Brown", "brown"],
-  ["ダークグレー", "Dark grey", "dark"],
-  ["サンドベージュ", "Sand", "sand"],
-];
+const features = featureList(ja);
 ---
 
-<div class="mock-qf">
-  <header class="mock-qf-hero">
-    <div class="mock-qf-hero-bg" aria-hidden="true">
-      <img src="/assets/hero-mug.jpg" alt="" width="1400" height="800" loading="eager" />
+<div class="quiet-features-page">
+  <header class="quiet-feature-hero">
+    <div>
+      <p class="content-eyebrow">FEATURES / THE REAL TABLE</p>
+      <h1>{ja ? "静かに考えるための、必要十分な機能。" : "Everything needed for a quieter game."}</h1>
+      <p>{ja ? "派手な演出を足すのではなく、クロンダイクに集中できること。操作、記録、利き手への配慮を一つの静かな卓にまとめました。" : "Not more spectacle—more room to focus on Klondike. Controls, records and left-handed play meet at one calm table."}</p>
     </div>
-    <h1>
-      {ja ? "自分のペースに合う、静かなカスタマイズ。" : "Quiet customisation at your pace."}
-    </h1>
-    <p>{ja ? "見た目も操作感も、あなたらしく整えられます。" : "Look and feel, arranged the way you like to play."}</p>
+    <AppScreen lang={lang} size="xl" priority class="quiet-feature-phone" />
   </header>
 
-  <div class="mock-qf-body">
-    <!-- Card backs -->
-    <section class="mock-qf-block">
-      <div class="mock-qf-block-head">
-        <h2>{ja ? "カード裏のテーマ" : "Card-back themes"}</h2>
-        <p>{ja ? "気分に合わせて、カードデザインを選びましょう。" : "Pick a card design that matches the moment."}</p>
-      </div>
-      <div class="mock-qf-theme-row">
-        <div class="mock-qf-backs">
-          {backs.map(([jaL, enL, tone]) => (
-            <figure class:list={["mock-qf-back", `tone-${tone}`]}>
-              <div class="mock-qf-back-face" aria-hidden="true">
-                <i></i>
-              </div>
-              <figcaption>{ja ? jaL : enL}</figcaption>
-            </figure>
-          ))}
-        </div>
-        <div class="mock-qf-phone-col">
-          <div class="mock-qf-iphone mock-qf-iphone-photo">
-            <img src="/assets/phone-solitaire.jpg" alt={ja ? "Quiet Solitaire のプレイ画面" : "Quiet Solitaire gameplay"} width="480" height="640" loading="lazy" />
-          </div>
-          <aside class="mock-qf-note">
-            <span class="mock-qf-note-ic" aria-hidden="true">🎨</span>
-            <div>
-              <strong>{ja ? "テーマについて" : "About themes"}</strong>
-              <p>
-                {ja
-                  ? "カード裏のデザインやテーブルの色合いを変えることで、より快適にゲームを楽しめます。"
-                  : "Changing backs and table colours keeps the table calm and comfortable."}
-              </p>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
+  <section class="quiet-feature-list">
+    {features.map(([icon, title, body], i) => (
+      <article data-reveal>
+        <span class="quiet-feature-number">{String(i + 1).padStart(2, "0")}</span>
+        <i aria-hidden="true">{icon}</i>
+        <div><h2>{title}</h2><p>{body}</p></div>
+      </article>
+    ))}
+  </section>
 
-    <!-- Table + left hand -->
-    <section class="mock-qf-split">
-      <div class="mock-qf-panel">
-        <h2>{ja ? "テーブルカラー" : "Table colours"}</h2>
-        <p>{ja ? "目にやさしい色合いから、お好みのテーブルを選べます。" : "Soft felt tones for resting eyes."}</p>
-        <div class="mock-qf-swatches">
-          {tables.map(([jaL, enL, tone]) => (
-            <div class:list={["mock-qf-swatch", `sw-${tone}`]}>
-              <i></i>
-              <span>{ja ? jaL : enL}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div class="mock-qf-panel">
-        <h2>{ja ? "左利き設定" : "Left-handed layout"}</h2>
-        <p>{ja ? "レイアウトや操作ボタンを、左利きに最適化します。" : "Shift layout and controls for a natural left hand."}</p>
-        <div class="mock-qf-toggle-card">
-          <div>
-            <strong>{ja ? "左利きモード" : "Left-handed mode"}</strong>
-            <p>{ja ? "カードの配置や操作ボタンを左側に配置し、より自然な操作感を実現します。" : "Place cards and controls on the left for a calmer grip."}</p>
-          </div>
-          <span class="mock-qf-switch is-on" aria-hidden="true"><i></i></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Hints + sound -->
-    <section class="mock-qf-split">
-      <div class="mock-qf-panel">
-        <h2>{ja ? "ヒントの設定" : "Hint settings"}</h2>
-        <p>{ja ? "ヒントの表示方法を、自分のスタイルに合わせて調整できます。" : "Tune how hints appear to match how you think."}</p>
-        <div class="mock-qf-radios">
-          <label><i></i><span><strong>{ja ? "ヒントを表示" : "Always show"}</strong><small>{ja ? "いつもヒントを表示します" : "Hints stay visible"}</small></span></label>
-          <label class="is-on"><i></i><span><strong>{ja ? "必要な時のみ" : "When needed"}</strong><small>{ja ? "行き詰まった時に自動で表示します" : "Appear when you’re stuck"}</small></span></label>
-          <label><i></i><span><strong>{ja ? "ヒントを非表示" : "Hide hints"}</strong><small>{ja ? "ヒントを使わずにプレイします" : "Play without hints"}</small></span></label>
-        </div>
-        <div class="mock-qf-slider-row">
-          <span>{ja ? "ヒントの表示時間" : "Hint duration"}</span>
-          <div class="mock-qf-track"><b style="width:42%"></b></div>
-          <span>3{ja ? "秒" : "s"}</span>
-        </div>
-      </div>
-      <div class="mock-qf-panel">
-        <h2>{ja ? "サウンドとハプティクス" : "Sound & haptics"}</h2>
-        <p>{ja ? "静けさを保ちつつ、心地よいフィードバックを。" : "Keep the table quiet — with soft feedback when you want it."}</p>
-        <div class="mock-qf-toggles">
-          <div class="mock-qf-toggle-card compact">
-            <div><strong>{ja ? "サウンド効果" : "Sound effects"}</strong><p>{ja ? "カードの移動や操作音を設定します" : "Card moves and control sounds"}</p></div>
-            <span class="mock-qf-switch is-on" aria-hidden="true"><i></i></span>
-          </div>
-          <div class="mock-qf-toggle-card compact">
-            <div><strong>BGM</strong><p>{ja ? "落ち着いたBGMでリラックスできます" : "Soft background music"}</p></div>
-            <span class="mock-qf-switch" aria-hidden="true"><i></i></span>
-          </div>
-          <div class="mock-qf-toggle-card compact">
-            <div><strong>{ja ? "ハプティクス" : "Haptics"}</strong><p>{ja ? "繊細な振動フィードバックを有効にします" : "Subtle vibration feedback"}</p></div>
-            <span class="mock-qf-switch is-on" aria-hidden="true"><i></i></span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Layout -->
-    <section class="mock-qf-block">
-      <h2>{ja ? "レイアウトの設定" : "Layout settings"}</h2>
-      <p>{ja ? "画面レイアウトを調整して、より快適なプレイ環境を作りましょう。" : "Adjust the board so the table fits your hands and screen."}</p>
-      <div class="mock-qf-layout-row">
-        <div class="mock-qf-iphone mock-qf-iphone-wide mock-qf-iphone-photo">
-          <img src="/assets/phone-solitaire.jpg" alt="" width="720" height="480" loading="lazy" />
-        </div>
-        <div class="mock-qf-layout-controls">
-          <div class="mock-qf-panel tight">
-            <strong>{ja ? "カードサイズ" : "Card size"}</strong>
-            <div class="mock-qf-slider-row">
-              <span>{ja ? "小" : "S"}</span>
-              <div class="mock-qf-track"><b style="width:55%"></b></div>
-              <span>{ja ? "大" : "L"}</span>
-            </div>
-          </div>
-          <div class="mock-qf-panel tight">
-            <strong>{ja ? "余白の調整" : "Margins"}</strong>
-            <div class="mock-qf-slider-row">
-              <span>{ja ? "狭い" : "Tight"}</span>
-              <div class="mock-qf-track"><b style="width:48%"></b></div>
-              <span>{ja ? "広い" : "Wide"}</span>
-            </div>
-          </div>
-          <div class="mock-qf-panel tight">
-            <strong>{ja ? "縦画面での並び" : "Portrait layout"}</strong>
-            <div class="mock-qf-layout-opts">
-              <button type="button" class="is-on">{ja ? "標準配置" : "Standard"}</button>
-              <button type="button">{ja ? "コンパクト配置" : "Compact"}</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <section class="mock-qf-cta">
-    <div class="mock-qf-cta-bg" aria-hidden="true"></div>
-    <h2>{ja ? "あなたらしい静けさで、毎日を整える時間を。" : "A quieter table, every day."}</h2>
-    <p>{ja ? "細やかなカスタマイズで、より心地よいソリティア体験を。" : "Small custom details for a calmer Klondike."}</p>
-    <div class="mock-qf-stores">
-      <span class="mock-store" aria-disabled="true">App Store</span>
-      <span class="mock-store google" aria-disabled="true">Google Play</span>
-    </div>
+  <section class="quiet-feature-principle" data-reveal>
+    <p class="content-eyebrow">ON YOUR IPHONE</p>
+    <h2>{ja ? "ゲームも設定も統計も、端末の中に。" : "Games, settings and stats stay on your device."}</h2>
+    <p>{ja ? "アカウントは不要です。進行中のゲームを閉じても続きから再開でき、好みの静けさもそのまま保たれます。" : "No account is required. Resume an unfinished deal and keep the table tuned to your preferred level of quiet."}</p>
+    <a href={ja ? "/ja/faq" : "/faq"}>{ja ? "保存と広告について確認する" : "Read about storage and ads"} →</a>
   </section>
 </div>

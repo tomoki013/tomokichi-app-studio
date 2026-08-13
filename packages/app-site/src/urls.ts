@@ -30,6 +30,10 @@ export const SITE_ORIGINS = {
       public: "https://yohaku.tmkch.io",
       workers: "https://tomokichi-yohaku.tomoki-ttttt.workers.dev",
     },
+    "quiet-solitaire": {
+      public: "https://solitaire.tmkch.io",
+      workers: "https://tomokichi-quiet-solitaire.tomoki-ttttt.workers.dev",
+    },
   },
 } as const;
 
@@ -63,7 +67,7 @@ export function appSiteWorkersUrl(app: string): string {
 }
 
 /** Public URL to register in product metadata and future DNS configuration. */
-export const SUPPORT_API_PUBLIC_URL = `${SITE_ORIGINS.services.supportApi.public}/api/support`;
+export const SUPPORT_API_PUBLIC_URL = `${SITE_ORIGINS.services.supportApi.public}/api/v1/support`;
 
 /** Canonical support endpoint served through the API custom domain. */
 export const SUPPORT_API_URL = SUPPORT_API_PUBLIC_URL;

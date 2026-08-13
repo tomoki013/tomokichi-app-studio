@@ -20,12 +20,8 @@ const supportHref = supportUrl("tana", lang);
 const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
 
 const nav = [
-  { slug: "", label: ja ? "ホーム" : "Home", href: ja ? "/ja" : "/" },
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
-  { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
   { slug: "pricing", label: ja ? "料金" : "Pricing", href: href("pricing") },
-  { slug: "news", label: ja ? "ブログ" : "Blog", href: href("news") },
-  { slug: "faq", label: ja ? "お問い合わせ" : "Contact", href: href("faq") },
 ];
 
 const footerColumns = [
@@ -59,7 +55,7 @@ const footerColumns = [
     title: ja ? "運営者情報" : "Operator",
     links: [
       { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
-      { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+      { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/products"), external: true },
     ],
   },
 ];
@@ -69,7 +65,7 @@ const mobileFooterLinks = [
   { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
   { label: ja ? "利用規約" : "Terms of Use", href: href("terms") },
   { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
-  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/products"), external: true },
 ];
 
 const metaDescription =

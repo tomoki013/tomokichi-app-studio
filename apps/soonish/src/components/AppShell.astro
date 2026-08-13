@@ -22,9 +22,6 @@ const storeLabel = ja ? "近日公開" : "Coming soon";
 const nav = [
   { slug: "screenshots", label: ja ? "機能" : "Features", href: href("screenshots") },
   { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
-  { slug: "features", label: ja ? "活用シーン" : "Use cases", href: href("features") },
-  { slug: "pricing", label: ja ? "料金" : "Pricing", href: href("pricing") },
-  { slug: "faq", label: ja ? "よくある質問" : "FAQ", href: href("faq") },
 ];
 
 const footerColumns = ja
@@ -58,7 +55,7 @@ const footerColumns = ja
         title: "運営者情報",
         links: [
           { label: "運営サイト", href: mainSiteUrl("ja"), external: true },
-          { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true },
+          { label: "ほかのアプリ", href: mainSiteUrl("ja", "/products"), external: true },
           { label: "お問い合わせ", href: supportHref, external: true },
         ],
       },
@@ -93,7 +90,7 @@ const footerColumns = ja
         title: "Operator",
         links: [
           { label: "Operator site", href: mainSiteUrl("en"), external: true },
-          { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true },
+          { label: "Other apps", href: mainSiteUrl("en", "/products"), external: true },
           { label: "Contact", href: supportHref, external: true },
         ],
       },
@@ -104,7 +101,7 @@ const mobileFooterLinks = [
   { label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") },
   { label: ja ? "利用規約" : "Terms of Service", href: href("terms") },
   { label: ja ? "運営サイト" : "Operator site", href: mainSiteUrl(lang), external: true },
-  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true },
+  { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/products"), external: true },
 ];
 
 const metaDescription = description ?? (ja ? homeDescription[0] : homeDescription[1]);

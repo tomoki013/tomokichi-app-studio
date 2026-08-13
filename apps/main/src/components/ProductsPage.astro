@@ -1,6 +1,6 @@
 ---
 import type { Locale } from "../data/apps";
-import { featuredApps, orderedApps } from "../data/apps";
+import { conceptApps, developingApps, orderedApps, releasedApps } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { appsPage } from "../lib/copy";
 import { entriesForProduct } from "../lib/journal";
@@ -12,7 +12,6 @@ import SiteHeader from "./SiteHeader.astro";
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
 const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
-const visualIcons = featuredApps.slice(0, 4).map((app) => app.iconClass);
 
 // The records a product came out of, resolved once so each card can link back.
 const behindByProduct = new Map(
@@ -20,6 +19,11 @@ const behindByProduct = new Map(
     orderedApps.map(async (app) => [app.slug, await entriesForProduct(lang, app.slug)] as const),
   ),
 );
+
+const visualIcons = orderedApps.slice(0, 4).map((app) => ({
+  iconClass: app.iconClass,
+  accent: app.accent,
+}));
 ---
 
 <BaseLayout lang={lang} title={appsPage.metaTitle[lang]} description={appsPage.metaDescription[lang]}>
@@ -33,7 +37,14 @@ const behindByProduct = new Map(
           <p class="lead">{appsPage.hero.body[lang]}</p>
         </div>
         <div class="apps-visual" aria-hidden="true">
-          {visualIcons.map((ic, i) => <div class:list={["app-icon", ic, `i${i + 1}`]}><span></span></div>)}
+          {visualIcons.map((ic, i) => (
+            <div
+              class:list={["app-icon", ic.iconClass, `i${i + 1}`]}
+              style={ic.accent ? `box-shadow: inset 0 0 0 1px rgb(0 0 0 / 5%), 0 10px 26px ${ic.accent}33` : undefined}
+            >
+              <span></span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -43,10 +54,45 @@ const behindByProduct = new Map(
         ))}
       </nav>
 
-      <section class="apps-list shell" data-apps-list>
-        {orderedApps.map((app) => <AppCard app={app} lang={lang} variant="large" behind={behindByProduct.get(app.slug)} />)}
-        <p class="apps-empty" hidden data-empty>{ja ? "該当するアプリはありません。" : "No apps match this filter."}</p>
-      </section>
+      <div class="apps-catalogue" data-apps-list>
+        <section class="apps-section shell" data-section="released" hidden={releasedApps.length === 0}>
+          <header class="apps-section-head">
+            <h2>{appsPage.sections.available[lang]}</h2>
+            <span class="apps-count">{releasedApps.length}</span>
+          </header>
+          <div class="apps-list apps-list-available">
+            {releasedApps.map((app) => (
+              <AppCard app={app} lang={lang} variant="large" behind={behindByProduct.get(app.slug)} />
+            ))}
+          </div>
+        </section>
+
+        <section class="apps-section shell" data-section="developing" hidden={developingApps.length === 0}>
+          <header class="apps-section-head">
+            <h2>{appsPage.sections.developing[lang]}</h2>
+            <span class="apps-count">{developingApps.length}</span>
+          </header>
+          <div class="apps-list apps-list-developing">
+            {developingApps.map((app) => (
+              <AppCard app={app} lang={lang} variant="medium" behind={behindByProduct.get(app.slug)} />
+            ))}
+          </div>
+        </section>
+
+        <section class="apps-section shell" data-section="concept" hidden={conceptApps.length === 0}>
+          <header class="apps-section-head">
+            <h2>{appsPage.sections.concept[lang]}</h2>
+            <span class="apps-count">{conceptApps.length}</span>
+          </header>
+          <div class="apps-list apps-list-concept">
+            {conceptApps.map((app) => (
+              <AppCard app={app} lang={lang} variant="medium" behind={behindByProduct.get(app.slug)} />
+            ))}
+          </div>
+        </section>
+
+        <p class="apps-empty shell" hidden data-empty>{ja ? "該当するアプリはありません。" : "No apps match this filter."}</p>
+      </div>
 
       <section class="apps-support shell">
         <h2>{appsPage.bottom.heading[lang]}</h2>
@@ -62,10 +108,11 @@ const behindByProduct = new Map(
 <script is:inline>
   (() => {
     const bar = document.querySelector("[data-filter-bar]");
-    const list = document.querySelector("[data-apps-list]");
-    if (!bar || !list) return;
-    const cards = Array.from(list.querySelectorAll(".app-card"));
-    const empty = list.querySelector("[data-empty]");
+    const root = document.querySelector("[data-apps-list]");
+    if (!bar || !root) return;
+    const cards = Array.from(root.querySelectorAll(".app-card"));
+    const sections = Array.from(root.querySelectorAll("[data-section]"));
+    const empty = root.querySelector("[data-empty]");
 
     const apply = (key) => {
       let shown = 0;
@@ -73,6 +120,14 @@ const behindByProduct = new Map(
         const match = key === "all" || card.getAttribute("data-status") === key;
         card.classList.toggle("is-hidden", !match);
         if (match) shown++;
+      });
+      sections.forEach((section) => {
+        const total = section.querySelectorAll(".app-card").length;
+        if (total === 0) {
+          section.hidden = true;
+          return;
+        }
+        section.hidden = section.querySelectorAll(".app-card:not(.is-hidden)").length === 0;
       });
       if (empty) empty.hidden = shown !== 0;
       bar.querySelectorAll("button").forEach((b) => {

@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+
+const { lang, size = "md", priority = false, class: className = "" } = Astro.props as {
+  lang: "ja" | "en";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  priority?: boolean;
+  class?: string;
+};
+const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.{png,webp}", { eager: true });
+const image = screens[`../assets/screens/${lang}-home.png`]?.default
+  ?? screens[`../assets/screens/${lang}-home.webp`]?.default;
+if (!image) throw new Error(`Missing Tripory ${lang} home capture`);
+const alt = lang === "ja"
+  ? "Triporyのマイワールド画面。旅で訪れた国と最初の旅を記録するボタンが表示されている"
+  : "Tripory’s My World screen, showing visited countries and the action to record a first trip";
+---
+
+<PhoneFrame size={size} tone="graphite" glare={false} class={className}>
+  <Image
+    src={image}
+    alt={alt}
+    format="webp"
+    widths={[240, 360, 480, 640, 990]}
+    sizes="(max-width: 720px) 45vw, 323px"
+    loading={priority ? "eager" : "lazy"}
+    fetchpriority={priority ? "high" : undefined}
+    decoding="async"
+  />
+</PhoneFrame>

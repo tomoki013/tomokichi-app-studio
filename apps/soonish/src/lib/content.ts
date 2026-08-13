@@ -147,11 +147,7 @@ export function features(ja: boolean) {
           "カラーとアイコンのシェルフ",
           "好きな色とアイコンでシェルフを分け、眺めやすい置き場をつくれます。",
         ],
-        [
-          "search",
-          "検索",
-          "タイトルやメモ、URLからさっと探せます。",
-        ],
+        ["search", "検索", "タイトルやメモ、URLからさっと探せます。"],
         [
           "backup",
           "JSONバックアップ",
@@ -167,11 +163,7 @@ export function features(ja: boolean) {
           "10言語",
           "英語・日本語・中国語（簡繁）・韓国語・スペイン語・フランス語・ドイツ語・ポルトガル語（ブラジル）・イタリア語。",
         ],
-        [
-          "moon",
-          "やさしいオンボーディング",
-          "はじめてのシェルフづくりを、短い案内で案内します。",
-        ],
+        ["moon", "やさしいオンボーディング", "はじめてのシェルフづくりを、短い案内で案内します。"],
       ] as const)
     : ([
         [
@@ -209,16 +201,8 @@ export function features(ja: boolean) {
           "Shelves with colour & icons",
           "Group items into shelves with colours and icons that feel like yours.",
         ],
-        [
-          "search",
-          "Search",
-          "Find items by title, notes, or URL.",
-        ],
-        [
-          "backup",
-          "JSON backup",
-          "Export and import from Settings before you change devices.",
-        ],
+        ["search", "Search", "Find items by title, notes, or URL."],
+        ["backup", "JSON backup", "Export and import from Settings before you change devices."],
         [
           "device",
           "On-device, no account",
@@ -229,11 +213,7 @@ export function features(ja: boolean) {
           "Ten languages",
           "English, Japanese, Simplified & Traditional Chinese, Korean, Spanish, French, German, Portuguese (Brazil), Italian.",
         ],
-        [
-          "moon",
-          "Gentle onboarding",
-          "A short intro helps you set up your first shelf.",
-        ],
+        ["moon", "Gentle onboarding", "A short intro helps you set up your first shelf."],
       ] as const);
 }
 
@@ -378,10 +358,7 @@ export function landingFaqs(ja: boolean) {
           "どんなアプリですか？",
           "Soonishは、保存・整理・AI相談をひとつにした旅行メモアプリです。リンクやメモを残し、文脈ごとAIに渡せます。",
         ],
-        [
-          "無料ですか？",
-          "Free プランは¥0。Plus は月額¥480（税込¥528）。Team は近日公開予定です。",
-        ],
+        ["無料ですか？", "Free プランは¥0。Plus は月額¥480（税込¥528）。Team は近日公開予定です。"],
         [
           "どのAIで使えますか？",
           "アプリ内のAI相談に加え、ChatGPT や Gemini など普段使っているAIに、保存した内容をもとに相談できます。",
@@ -392,10 +369,7 @@ export function landingFaqs(ja: boolean) {
           "What is Soonish?",
           "A travel memo app that unifies save, organise, and AI consult — keep links and notes, then hand context to AI.",
         ],
-        [
-          "Is it free?",
-          "Free is ¥0. Plus is ¥480/month (¥528 tax incl.). Team is coming soon.",
-        ],
+        ["Is it free?", "Free is ¥0. Plus is ¥480/month (¥528 tax incl.). Team is coming soon."],
         [
           "Which AI works?",
           "In-app consult, plus ChatGPT, Gemini, and other tools you already use with what you saved.",
@@ -406,43 +380,151 @@ export function landingFaqs(ja: boolean) {
 export function faqs(ja: boolean): [string, string, string][] {
   return ja
     ? [
-        ["base", "Soonishはどんなアプリですか？", "今すぐではないけれどいつかやりたいことを集める、ローカルファーストのシェルフアプリです。タスク管理ではなく、忘れていた興味を再発見するための場所です。"],
-        ["base", "無料で使えますか？", "はい。基本機能は無料です。現在、広告およびアプリ内課金はありません。"],
+        [
+          "base",
+          "Soonishはどんなアプリですか？",
+          "今すぐではないけれどいつかやりたいことを集める、ローカルファーストのシェルフアプリです。タスク管理ではなく、忘れていた興味を再発見するための場所です。",
+        ],
+        [
+          "base",
+          "無料で使えますか？",
+          "はい。基本機能は無料です。現在、広告およびアプリ内課金はありません。",
+        ],
         ["base", "アカウントは必要ですか？", "いいえ。登録やログインなしですぐに使えます。"],
         ["base", "対応環境は？", "iPhone・iOS 17以降向けです。10言語に対応しています。"],
-        ["feature", "何を保存できますか？", "テキストやURLを保存できます。リンクプレビューやGoogleマップのリンクにも対応しています。"],
-        ["feature", "Share拡張とは？", "Safariなどほかのアプリの共有シートから、Soonishのシェルフへ直接送れます。拡張と本体はApp Groupで同じデータを参照します。"],
-        ["feature", "理由チップとは？", "「なぜこれが目に止まったか」を短いチップで残す機能です。あとから見返したときに、当時の気持ちを思い出せます。"],
-        ["feature", "ゆるい時期とは？", "soon / someday / seasonal など、厳密な期限ではなくゆるいタイミングのラベルです。"],
-        ["feature", "「今日、これどう？」とは？", "シェルフにしまっておいた項目から、日々のピックとしていくつかを提示する再発見の機能です。"],
-        ["feature", "ステータスはどう使いますか？", "やった／アーカイブ／シェルフに戻すで整理できます。完了の強制ではなく、自分のペースで片付けられます。"],
+        [
+          "feature",
+          "何を保存できますか？",
+          "テキストやURLを保存できます。リンクプレビューやGoogleマップのリンクにも対応しています。",
+        ],
+        [
+          "feature",
+          "Share拡張とは？",
+          "Safariなどほかのアプリの共有シートから、Soonishのシェルフへ直接送れます。拡張と本体はApp Groupで同じデータを参照します。",
+        ],
+        [
+          "feature",
+          "理由チップとは？",
+          "「なぜこれが目に止まったか」を短いチップで残す機能です。あとから見返したときに、当時の気持ちを思い出せます。",
+        ],
+        [
+          "feature",
+          "ゆるい時期とは？",
+          "soon / someday / seasonal など、厳密な期限ではなくゆるいタイミングのラベルです。",
+        ],
+        [
+          "feature",
+          "「今日、これどう？」とは？",
+          "シェルフにしまっておいた項目から、日々のピックとしていくつかを提示する再発見の機能です。",
+        ],
+        [
+          "feature",
+          "ステータスはどう使いますか？",
+          "やった／アーカイブ／シェルフに戻すで整理できます。完了の強制ではなく、自分のペースで片付けられます。",
+        ],
         ["data", "データはどこに保存されますか？", "SwiftDataにより端末内に保存されます。"],
-        ["data", "自動同期できますか？", "現在、iCloudなどを使った端末間の自動同期には対応していません。"],
-        ["data", "バックアップできますか？", "はい。設定からJSONで書き出し、別の端末で読み込めます。"],
-        ["data", "Share拡張のデータは？", "Share拡張は本体アプリと同じApp Group領域を参照します。いずれも端末上に留まります。"],
-        ["data", "すべてのデータを削除できますか？", "はい。設定のデータ管理から削除できます。アンインストールでも端末内データは消えます。"],
-        ["net", "オフラインで使えますか？", "保存・閲覧・再発見・検索・JSONの書き出し／読み込みなど、主要機能はオフラインで利用できます。"],
-        ["net", "通信が必要な操作は？", "リンクプレビューの取得、問い合わせの送信、最新のプライバシーポリシー・利用規約の表示、外部サイトを開く場合などです。"],
+        [
+          "data",
+          "自動同期できますか？",
+          "現在、iCloudなどを使った端末間の自動同期には対応していません。",
+        ],
+        [
+          "data",
+          "バックアップできますか？",
+          "はい。設定からJSONで書き出し、別の端末で読み込めます。",
+        ],
+        [
+          "data",
+          "Share拡張のデータは？",
+          "Share拡張は本体アプリと同じApp Group領域を参照します。いずれも端末上に留まります。",
+        ],
+        [
+          "data",
+          "すべてのデータを削除できますか？",
+          "はい。設定のデータ管理から削除できます。アンインストールでも端末内データは消えます。",
+        ],
+        [
+          "net",
+          "オフラインで使えますか？",
+          "保存・閲覧・再発見・検索・JSONの書き出し／読み込みなど、主要機能はオフラインで利用できます。",
+        ],
+        [
+          "net",
+          "通信が必要な操作は？",
+          "リンクプレビューの取得、問い合わせの送信、最新のプライバシーポリシー・利用規約の表示、外部サイトを開く場合などです。",
+        ],
         ["net", "広告は表示されますか？", "いいえ。現時点で広告はありません。"],
       ]
     : [
-        ["base", "What is Soonish?", "A local-first shelf for things you want to do someday — not a task manager, but a place to rediscover forgotten interests."],
-        ["base", "Is it free?", "Yes. Core features are free. There are no ads and no in-app purchases today."],
+        [
+          "base",
+          "What is Soonish?",
+          "A local-first shelf for things you want to do someday — not a task manager, but a place to rediscover forgotten interests.",
+        ],
+        [
+          "base",
+          "Is it free?",
+          "Yes. Core features are free. There are no ads and no in-app purchases today.",
+        ],
         ["base", "Do I need an account?", "No."],
         ["base", "What devices are supported?", "iPhone on iOS 17 or later, with ten languages."],
-        ["feature", "What can I save?", "Text and URLs, with link previews and support for Google Maps links."],
-        ["feature", "What is the Share extension?", "Send items from Safari and other apps into your shelf via the system share sheet. The extension and the main app share data through an App Group."],
-        ["feature", "What are reason chips?", "Short tags for why something caught your eye — so the feeling comes back when you rediscover it."],
-        ["feature", "What is loose timing?", "Labels like soon, someday, and seasonal — a mood of when, not a hard deadline."],
-        ["feature", "What is rediscovery?", "Daily “how about this?” picks surface items you stashed earlier."],
-        ["feature", "How do statuses work?", "Done, archive, or back to the shelf — tidy at your own pace."],
+        [
+          "feature",
+          "What can I save?",
+          "Text and URLs, with link previews and support for Google Maps links.",
+        ],
+        [
+          "feature",
+          "What is the Share extension?",
+          "Send items from Safari and other apps into your shelf via the system share sheet. The extension and the main app share data through an App Group.",
+        ],
+        [
+          "feature",
+          "What are reason chips?",
+          "Short tags for why something caught your eye — so the feeling comes back when you rediscover it.",
+        ],
+        [
+          "feature",
+          "What is loose timing?",
+          "Labels like soon, someday, and seasonal — a mood of when, not a hard deadline.",
+        ],
+        [
+          "feature",
+          "What is rediscovery?",
+          "Daily “how about this?” picks surface items you stashed earlier.",
+        ],
+        [
+          "feature",
+          "How do statuses work?",
+          "Done, archive, or back to the shelf — tidy at your own pace.",
+        ],
         ["data", "Where is data stored?", "On your device with SwiftData."],
         ["data", "Is there automatic sync?", "Not via iCloud or similar today."],
-        ["data", "Can I back up?", "Yes. Export JSON from Settings and import it on another device."],
-        ["data", "What about Share extension data?", "It uses the same App Group as the main app. Everything stays on device."],
-        ["data", "Can I delete everything?", "Yes, from Data management in Settings. Uninstalling also removes on-device data."],
-        ["net", "Does it work offline?", "Yes for saving, browsing, rediscovery, search, and JSON export/import."],
-        ["net", "What needs a network?", "Fetching some link previews, sending support messages, loading the latest legal documents, and opening external sites."],
+        [
+          "data",
+          "Can I back up?",
+          "Yes. Export JSON from Settings and import it on another device.",
+        ],
+        [
+          "data",
+          "What about Share extension data?",
+          "It uses the same App Group as the main app. Everything stays on device.",
+        ],
+        [
+          "data",
+          "Can I delete everything?",
+          "Yes, from Data management in Settings. Uninstalling also removes on-device data.",
+        ],
+        [
+          "net",
+          "Does it work offline?",
+          "Yes for saving, browsing, rediscovery, search, and JSON export/import.",
+        ],
+        [
+          "net",
+          "What needs a network?",
+          "Fetching some link previews, sending support messages, loading the latest legal documents, and opening external sites.",
+        ],
         ["net", "Are there ads?", "No ads at present."],
       ];
 }
@@ -521,7 +603,8 @@ export function newsPosts(ja: boolean) {
           datetime: "2026-08-08",
           badge: "お知らせ",
           title: "Soonish公式ブランドサイトを公開しました",
-          summary: "機能、使い方、コンセプト、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
+          summary:
+            "機能、使い方、コンセプト、FAQ、プライバシーポリシー、利用規約をまとめて掲載しています。",
           body: [
             "Soonishの公式ブランドサイトを公開しました。今すぐではないけれどいつかやりたいことを集めるシェルフアプリという位置づけを、公開準備中の段階からそのままお伝えしています。",
             "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
@@ -752,7 +835,10 @@ export function termsSections(ja: boolean): [string, string][] {
           "第3条（利用料金）",
           "本アプリは無料で提供されます。現時点で広告およびアプリ内課金はありません。将来有料商品を提供する場合は、App Storeまたは購入画面に税込価格を表示します。通信に必要な費用は利用者の負担とします。",
         ],
-        ["第4条（利用者の責任）", "利用者は、自己の責任において本サービスを利用します。保存する内容が第三者の権利を侵害しないようご注意ください。"],
+        [
+          "第4条（利用者の責任）",
+          "利用者は、自己の責任において本サービスを利用します。保存する内容が第三者の権利を侵害しないようご注意ください。",
+        ],
         [
           "第5条（禁止事項）",
           "法令違反、不正アクセス、運営妨害、違法な複製・再配布、サポートフォームの荒らし、その他運営者が不適切と合理的に判断する行為を禁止します。",

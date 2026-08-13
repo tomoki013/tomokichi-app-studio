@@ -154,8 +154,8 @@ a {
 /* ——— Landing hero ——— */
 
 .yohaku-hero {
-  min-height: max(calc(100vh - 72px), 880px);
-  padding: 88px max(28px, calc((100vw - 1180px) / 2)) 140px;
+  min-height: max(calc(100vh - 72px), 920px);
+  padding: 120px max(36px, calc((100vw - 1120px) / 2)) 180px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -166,8 +166,8 @@ a {
 
 .hero-inner {
   display: grid;
-  grid-template-columns: minmax(280px, 0.9fr) minmax(520px, 1.15fr);
-  gap: clamp(36px, 5vw, 72px);
+  grid-template-columns: minmax(280px, 0.85fr) minmax(480px, 1fr);
+  gap: clamp(48px, 7vw, 96px);
   align-items: center;
 }
 
@@ -223,6 +223,10 @@ a {
   filter: drop-shadow(0 24px 28px rgb(0 0 0 / 8%));
 }
 
+.hero-device-single {
+  width: min(100%, 280px);
+}
+
 .hero-device {
   margin: 0;
   /* Lets the three frames shrink together when the hero column is narrower
@@ -246,9 +250,9 @@ a {
 /* ——— Sections ——— */
 
 .section-pad {
-  width: min(100% - 56px, 1100px);
+  width: min(100% - 72px, 1040px);
   margin: 0 auto;
-  padding: 96px 0;
+  padding: 128px 0;
 }
 
 .section-heading {
@@ -267,10 +271,10 @@ a {
 }
 
 .feature-grid {
-  margin-top: 48px;
+  margin-top: 64px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
 .feature-grid article,
@@ -1211,7 +1215,7 @@ a {
     inset: auto;
     width: 100%;
     margin: 0 0 8px;
-    order: -1;
+    order: 99;
   }
 
   .yohaku-page .app-hero-scroll {

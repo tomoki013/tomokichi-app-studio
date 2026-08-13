@@ -29,6 +29,11 @@ export interface AppItem {
   /** 2–3 line description shown on the large (Products page) cards. */
   description: Record<Locale, string>;
   /**
+   * Short concept label for product exploration (e.g. Travel Memory).
+   * Helps differentiate apps that share a surface domain.
+   */
+  concept: Record<Locale, string>;
+  /**
    * What was noticed that led to this. Products lead with this rather than a
    * feature list — an app here is the answer to something, not the starting
    * point.
@@ -66,6 +71,10 @@ export const apps: AppItem[] = [
     description: {
       ja: "離れて過ごす時間を、ただ待つだけで終わらせないためのアプリです。",
       en: "An app that turns time apart into something more than just waiting.",
+    },
+    concept: {
+      ja: "距離と再会",
+      en: "Distance & reunion",
     },
     origin: {
       ja: "会えるまであと何日、と数えていると、あいだの日がぜんぶ「まだ会えていない日」になってしまう。その日々にも何か残ってほしかった。",
@@ -105,8 +114,8 @@ export const apps: AppItem[] = [
         en: "iPhone, iOS 26 or later",
       },
       privacy: {
-        ja: "端末内に保存。アカウント登録は不要です。",
-        en: "Stored on your device. No account required.",
+        ja: "個人データは端末内に保存。共有した再会のみiCloud経由で同期。独自アカウントは不要です。",
+        en: "Personal data stays on your device. Shared reunions sync via iCloud. No proprietary account.",
       },
       languages: {
         ja: "6言語（日本語・英語・スペイン語・フランス語・韓国語・簡体字中国語）",
@@ -120,12 +129,16 @@ export const apps: AppItem[] = [
     slug: "tripory",
     name: "Tripory",
     tagline: {
-      ja: "旅した場所と記憶を、自分だけの地図に。",
-      en: "Turn the places you travel into a map of your own.",
+      ja: "旅そのものを、あとから辿れる記憶に。",
+      en: "Keep the journey itself as a memory you can revisit.",
     },
     description: {
-      ja: "訪れた国や都市、旅ごとの記録を残せるアプリです。",
-      en: "An app for keeping the countries, cities and trips you have travelled.",
+      ja: "写真・タイムライン・メモで、旅の過程を残すアプリです。地図は記憶を眺める方法のひとつです。",
+      en: "An app for keeping journeys — photos, timeline, notes. The map is one way to look back at memory.",
+    },
+    concept: {
+      ja: "旅の記憶",
+      en: "Travel memory",
     },
     origin: {
       ja: "行った国と、行きたい国と、旅ごとの記憶。どれも別々の場所に散らばっていて、あとから辿れなくなっていた。",
@@ -136,19 +149,20 @@ export const apps: AppItem[] = [
     iconClass: "tripory",
     url: appSiteUrl("tripory"),
     accent: "#5F9E7F",
+    screen: "tripory-home",
     detail: {
       highlights: {
         ja: [
-          "訪問済み・行きたい国をステータスで管理",
           "旅ごとの記録（タイトル・訪問先・日付・メモ）",
+          "旅のタイムラインで過程を振り返る",
           "旅の記録に写真を添付",
-          "住んでいる国の設定と履歴",
+          "訪問済み・行きたい国をステータスで管理",
         ],
         en: [
-          "Track countries as visited or want to go",
-          "Keep a record per trip: title, places, dates and notes",
+          "A record per trip: title, places, dates and notes",
+          "Look back on the journey as a timeline",
           "Attach photos to a trip",
-          "Set the country you live in, and keep its history",
+          "Track countries as visited or want to go",
         ],
       },
       pricing: {
@@ -171,12 +185,16 @@ export const apps: AppItem[] = [
     slug: "colorvia",
     name: "Colorvia",
     tagline: {
-      ja: "訪れた国で、自分だけの世界地図を彩る。",
-      en: "Colour a world map with the places you visit.",
+      ja: "訪れた場所を塗って、進捗が見える地図をつくる。",
+      en: "Colour the places you’ve been. Watch the map fill in.",
     },
     description: {
-      ja: "訪れた国を選ぶだけで、旅の広がりを静かに記録できるアプリです。",
-      en: "A quiet way to record how your travels grow, one visited country at a time.",
+      ja: "国・州・都道府県を塗ることに集中した、訪問記録アプリです。地図そのものが体験です。",
+      en: "A visited-places app focused on colouring countries, states, and prefectures. The map is the experience.",
+    },
+    concept: {
+      ja: "訪れた場所",
+      en: "Visited places",
     },
     origin: {
       ja: "旅の記録は増えていくのに、自分がどこまで行ったのかは頭の中にしかなかった。一目で分かる形が欲しかった。",
@@ -230,6 +248,10 @@ export const apps: AppItem[] = [
     description: {
       ja: "やることに追われる日常に、小さな休息をつくるアプリです。",
       en: "An app that makes small pockets of rest in a busy day.",
+    },
+    concept: {
+      ja: "余白と沈黙",
+      en: "Space & pause",
     },
     origin: {
       ja: "予定のない時間まで、有効活用しようとしてしまう。空けておくには、空白の方を予定として書いておく必要があった。",
@@ -288,6 +310,10 @@ export const apps: AppItem[] = [
     description: {
       ja: "旅のメモを保存・整理し、いつものAIに文脈ごと渡して相談できるアプリです。",
       en: "Save and organise travel notes, then hand your context to the AI you already use.",
+    },
+    concept: {
+      ja: "保存と相談",
+      en: "Save & consult",
     },
     origin: {
       ja: "行きたい場所や気になる店のリンクは増えるのに、いざ計画すると文脈が散らばっていてAIにも渡せなかった。",
@@ -348,6 +374,10 @@ export const apps: AppItem[] = [
       ja: "本棚・読書記録・統計まで。読書体験に寄り添う3つのプランを用意した読書アプリです。",
       en: "Shelves, reading logs, and stats — a reading app with three plans that stay close to how you read.",
     },
+    concept: {
+      ja: "読書と本棚",
+      en: "Reading & shelves",
+    },
     origin: {
       ja: "同じ巻をもう一度買った。持っている本が、本棚を見ないと分からない状態だった。",
       en: "I bought the same volume twice. What I already owned was only knowable by standing in front of the shelf.",
@@ -406,6 +436,10 @@ export const apps: AppItem[] = [
       ja: "カード裏・テーブル・左利き・ヒント・サウンドまで整えられる、落ち着いたクロンダイクです。",
       en: "A calm Klondike with card backs, felt colours, left-handed layout, hints, and soft feedback.",
     },
+    concept: {
+      ja: "静かなカード",
+      en: "Quiet cards",
+    },
     origin: {
       ja: "暇つぶしのカードが、いつも騒がしすぎた。音も光も控えめなテーブルが欲しかった。",
       en: "Every solitaire I tried felt too loud. I wanted a quieter table.",
@@ -414,6 +448,8 @@ export const apps: AppItem[] = [
     platform: ["iPhone"],
     iconClass: "quiet-solitaire",
     accent: "#2F6B4F",
+    screen: "quiet-solitaire-game",
+    url: appSiteUrl("quiet-solitaire"),
     detail: {
       highlights: {
         ja: [
@@ -457,6 +493,10 @@ export const apps: AppItem[] = [
     description: {
       ja: "下書きを素早く残し、白いボードの上でノードとしてつなげる、ローカルファーストの思考アプリです。",
       en: "A local-first thinking app: capture drafts quickly, then place and link them on a white board.",
+    },
+    concept: {
+      ja: "思考のボード",
+      en: "Thinking board",
     },
     origin: {
       ja: "メモは増えるのに、関係が見えない。整理する前に、まず置いてつなぎたかった。",
@@ -514,6 +554,10 @@ export const apps: AppItem[] = [
       ja: "Timer・Calculator・Counter・Stopwatchなど、手描きUIの小さな道具シリーズです。",
       en: "A hand-drawn utility series — Timer, Calculator, Counter, Stopwatch, and friends.",
     },
+    concept: {
+      ja: "手描きの道具",
+      en: "Hand-drawn tools",
+    },
     origin: {
       ja: "道具の画面がどれも同じ顔をして見えた。自分の線で数字を書いて、それで動かしたかった。",
       en: "Every utility looked the same. I wanted to write the digits myself, then let them run the tool.",
@@ -559,6 +603,11 @@ export const apps: AppItem[] = [
 
 /** Apps ordered for display. */
 export const orderedApps = [...apps].sort((a, b) => a.order - b.order);
+
+/** Apps by release status — Home and Products treat these differently. */
+export const releasedApps = orderedApps.filter((app) => app.status === "released");
+export const developingApps = orderedApps.filter((app) => app.status === "developing");
+export const conceptApps = orderedApps.filter((app) => app.status === "concept");
 
 /** Featured apps for the home page (max 5). */
 export const featuredApps = orderedApps.filter((app) => app.featured).slice(0, 5);

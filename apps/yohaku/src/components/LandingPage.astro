@@ -11,18 +11,14 @@ const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Sto
 
 const features = ja
   ? [
-      { mark: "□", title: "余白を置く", body: "名前と時間で、何もしない時間を今日の中に置けます。" },
-      { mark: "□□■", title: "今日・週・月で見渡す", body: "カードと印で、静かに余白のリズムを振り返れます。" },
-      { mark: "◌", title: "始まる前の通知", body: "許可すると、余白の少し前にそっとお知らせします。" },
-      { mark: "…", title: "あとから、ひとこと", body: "終わった余白を、答えても答えなくてもいい小さな問いで振り返れます。" },
-      { mark: "◇", title: "端末の中に", body: "アカウントなし。余白は端末内に保存されます。" },
+      { mark: "□", title: "余白を置く", body: "名前と時間で、何もしない時間を今日に置く。" },
+      { mark: "□□■", title: "今日・週・月", body: "静かな印で、余白のリズムを振り返る。" },
+      { mark: "…", title: "あとから、ひとこと", body: "答えても、答えなくてもいい。" },
     ]
   : [
-      { mark: "□", title: "Leave space", body: "Give unplanned time a name and a start and end." },
-      { mark: "□□■", title: "Day, week, month", body: "Look back through quiet cards and simple marks." },
-      { mark: "◌", title: "A notice beforehand", body: "When enabled, a gentle reminder shortly before each space." },
-      { mark: "…", title: "A quiet check-in", body: "Afterward, reflect with one small question—or simply dismiss it." },
-      { mark: "◇", title: "On your device", body: "No account. Spaces stay on your iPhone." },
+      { mark: "□", title: "Leave space", body: "A name, a start, an end." },
+      { mark: "□□■", title: "Day, week, month", body: "Quiet marks. Nothing more." },
+      { mark: "…", title: "A quiet check-in", body: "Answer, or simply dismiss." },
     ];
 
 const description = ja
@@ -56,13 +52,13 @@ const jsonLd = JSON.stringify({
   <section class="yohaku-hero">
     <div class="hero-inner">
       <div class="hero-copy">
-        <h1>{ja ? <>余白を置く、<br />小さな習慣を。</> : <>Leave room.<br />Keep it small.</>}</h1>
+        <h1>{ja ? <>余白を置く。</> : <>Leave room.</>}</h1>
         <p class="hero-lead">{ja ? "予定ではなく、余白だけを。" : "Not another plan. Just space."}</p>
         <span class="hero-rule" aria-hidden="true"></span>
         <p class="hero-body">
           {ja
-            ? "Yohakuは、日々の中に何もしない時間を置き、今日・週・月で静かに振り返るためのiPhoneアプリです。"
-            : "Yohaku is an iPhone app for leaving time with nothing planned, then looking back across your day, week, and month."}
+            ? "何もしない時間を、今日に置く。それだけ。"
+            : "Leave time with nothing planned. That is enough."}
         </p>
         <div class="hero-actions">
           <span class="store-button store-soon" aria-disabled="true">
@@ -73,18 +69,10 @@ const jsonLd = JSON.stringify({
         </div>
       </div>
 
-      <section class="hero-devices" aria-label={ja ? "YohakuのToday、Week、Month画面" : "Yohaku Today, Week and Month screens"}>
-        <figure class="hero-device">
+      <section class="hero-devices" aria-label={ja ? "YohakuのToday画面" : "Yohaku Today screen"}>
+        <figure class="hero-device hero-device-single">
           <figcaption>{ja ? "今日" : "Today"}</figcaption>
-          <AppScreen screen="today" size="md" lang={lang} priority />
-        </figure>
-        <figure class="hero-device">
-          <figcaption>{ja ? "週" : "Week"}</figcaption>
-          <AppScreen screen="week" size="md" lang={lang} priority />
-        </figure>
-        <figure class="hero-device">
-          <figcaption>{ja ? "月" : "Month"}</figcaption>
-          <AppScreen screen="month" size="md" lang={lang} priority />
+          <AppScreen screen="today" size="lg" lang={lang} priority />
         </figure>
       </section>
     </div>

@@ -7,6 +7,7 @@ import { validateSupportRequest } from "../support/validation";
 
 const MAX_BODY_BYTES = 20 * 1024;
 const LOCAL_ORIGIN = "http://localhost:4321";
+const SUPPORT_API_PATHS = ["/api/v1/support", "/api/support"];
 
 type SupportApp = Hono<{ Bindings: SupportBindings }>;
 type SupportContext = Context<{ Bindings: SupportBindings }>;
@@ -56,7 +57,7 @@ export function registerSupportRoute(
   app: SupportApp,
   dependencies: SupportDependencies = {},
 ): void {
-  app.options("/api/support", (c) => {
+  app.on("OPTIONS", SUPPORT_API_PATHS, (c) => {
     const origin = c.req.header("Origin");
     if (!origin || !allowedOrigins(c.env).has(origin)) {
       return c.json(
@@ -75,7 +76,7 @@ export function registerSupportRoute(
     });
   });
 
-  app.post("/api/support", async (c) => {
+  app.on("POST", SUPPORT_API_PATHS, async (c) => {
     const startedAt = Date.now();
     const origin = c.req.header("Origin");
     if (origin && !allowedOrigins(c.env).has(origin)) {

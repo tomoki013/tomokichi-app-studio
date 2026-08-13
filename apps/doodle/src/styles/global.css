@@ -19,14 +19,14 @@
   --app-site-header-compact-background: rgb(246 241 231 / 94%);
   --app-site-store-foreground: #fff;
   --app-site-store-background: var(--ink);
-  --app-site-footer-background: #1f1c18;
-  --app-site-footer-foreground: #fff;
-  --app-site-footer-tagline: #b8aea0;
-  --app-site-footer-heading: #9a9084;
-  --app-site-footer-link: #cfc4b4;
-  --app-site-footer-link-hover: #ffffff;
-  --app-site-footer-border: rgb(255 255 255 / 10%);
-  --app-site-footer-meta: #8a8074;
+  --app-site-footer-background: #fffdf8;
+  --app-site-footer-foreground: #23201d;
+  --app-site-footer-tagline: #716a62;
+  --app-site-footer-heading: #625b53;
+  --app-site-footer-link: #403b36;
+  --app-site-footer-link-hover: #111;
+  --app-site-footer-border: rgb(35 32 29 / 14%);
+  --app-site-footer-meta: #7f776e;
   --app-site-hero-muted: var(--muted);
   --app-site-notice-background: rgb(255 252 245 / 78%);
   --app-news-card-bg: #fffdf8;
@@ -37,7 +37,8 @@
   --app-news-focus: var(--coral);
   --app-news-featured-tint: rgb(232 106 92 / 8%);
   --app-news-featured-dot: rgb(232 106 92 / 22%);
-  --app-news-title-font: "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  --app-news-title-font:
+    "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
 
   color: var(--ink);
   background: var(--paper);
@@ -608,8 +609,7 @@ button {
   border-radius: 22px 28px 20px 26px;
   background:
     linear-gradient(135deg, rgb(232 106 92 / 8%), transparent 40%),
-    linear-gradient(320deg, rgb(74 143 212 / 10%), transparent 42%),
-    #fffdf8;
+    linear-gradient(320deg, rgb(74 143 212 / 10%), transparent 42%), #fffdf8;
   box-shadow: 5px 6px 0 rgb(26 24 20 / 8%);
 }
 
@@ -767,14 +767,13 @@ button {
   gap: 10px;
   justify-items: center;
   border-radius: 20px;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      #fffdf8,
-      #fffdf8 18px,
-      rgb(74 143 212 / 10%) 18px,
-      rgb(74 143 212 / 10%) 19px
-    );
+  background: repeating-linear-gradient(
+    0deg,
+    #fffdf8,
+    #fffdf8 18px,
+    rgb(74 143 212 / 10%) 18px,
+    rgb(74 143 212 / 10%) 19px
+  );
   overflow: hidden;
 }
 
@@ -1003,7 +1002,7 @@ button {
   .doodle-page .app-hero-notice {
     position: relative;
     inset: auto;
-    order: -1;
+    order: 99;
     width: 100%;
     margin: 0;
   }
@@ -1086,7 +1085,8 @@ button {
 
 .mock-du,
 .mock-db {
-  --hand: "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", "Yu Gothic", cursive, sans-serif;
+  --hand:
+    "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", "Yu Gothic", cursive, sans-serif;
   --ink: #1a1814;
   --muted: #6b645a;
   --paper: #f7f2e9;
@@ -1111,7 +1111,10 @@ button {
   );
   background-size: 100% 100%;
 }
-.mock-du-heart { color: var(--coral); margin-left: 4px; }
+.mock-du-heart {
+  color: var(--coral);
+  margin-left: 4px;
+}
 .mock-du-link {
   color: var(--blue);
   font-size: 13px;
@@ -1119,7 +1122,9 @@ button {
   text-decoration: none;
   white-space: nowrap;
 }
-.mock-du-link:hover { text-decoration: underline; }
+.mock-du-link:hover {
+  text-decoration: underline;
+}
 .mock-du-new {
   display: inline-flex;
   align-items: center;
@@ -1215,7 +1220,10 @@ button {
   line-height: 1.75;
 }
 
-.mock-du-phone { position: relative; justify-self: end; }
+.mock-du-phone {
+  position: relative;
+  justify-self: end;
+}
 .mock-du-phone-bezel {
   width: 132px;
   padding: 9px;
@@ -1262,17 +1270,31 @@ button {
   border: 1.5px solid rgb(26 24 20 / 20%);
   margin: 0 auto;
 }
-.mock-du-mini-timer i { background: #e8f1fb; border-radius: 50%; }
-.mock-du-mini-calc i { background: #fde8e4; }
-.mock-du-mini-count i { background: #fdf3d0; }
-.mock-du-mini-sw i { background: #e9f6ee; border-radius: 50%; }
+.mock-du-mini-timer i {
+  background: #e8f1fb;
+  border-radius: 50%;
+}
+.mock-du-mini-calc i {
+  background: #fde8e4;
+}
+.mock-du-mini-count i {
+  background: #fdf3d0;
+}
+.mock-du-mini-sw i {
+  background: #e9f6ee;
+  border-radius: 50%;
+}
 .mock-du-star {
   position: absolute;
   color: var(--yellow);
   font-size: 18px;
   text-shadow: 1px 1px 0 rgb(26 24 20 / 12%);
 }
-.mock-du-star-a { top: -8px; right: -6px; transform: rotate(12deg); }
+.mock-du-star-a {
+  top: -8px;
+  right: -6px;
+  transform: rotate(12deg);
+}
 .mock-du-cloud {
   position: absolute;
   width: 36px;
@@ -1289,9 +1311,22 @@ button {
   border-radius: 50%;
   background: #fff;
 }
-.mock-du-cloud::before { width: 16px; height: 16px; top: -8px; left: 4px; }
-.mock-du-cloud::after { width: 20px; height: 20px; top: -10px; left: 14px; }
-.mock-du-cloud-a { top: -14px; left: 8px; }
+.mock-du-cloud::before {
+  width: 16px;
+  height: 16px;
+  top: -8px;
+  left: 4px;
+}
+.mock-du-cloud::after {
+  width: 20px;
+  height: 20px;
+  top: -10px;
+  left: 14px;
+}
+.mock-du-cloud-a {
+  top: -14px;
+  left: 8px;
+}
 
 /* ---- MID: apps + history ---- */
 .mock-du-mid {
@@ -1346,10 +1381,20 @@ button {
   border-radius: 7px;
   border: 1.5px solid var(--line);
 }
-.mock-du-ic-timer { background: #e8f1fb; border-radius: 50%; }
-.mock-du-ic-calc { background: #fde8e4; }
-.mock-du-ic-count { background: #fdf3d0; }
-.mock-du-ic-sw { background: #e9f6ee; border-radius: 50%; }
+.mock-du-ic-timer {
+  background: #e8f1fb;
+  border-radius: 50%;
+}
+.mock-du-ic-calc {
+  background: #fde8e4;
+}
+.mock-du-ic-count {
+  background: #fdf3d0;
+}
+.mock-du-ic-sw {
+  background: #e9f6ee;
+  border-radius: 50%;
+}
 
 .mock-du-device {
   margin-bottom: 10px;
@@ -1392,7 +1437,10 @@ button {
   font-size: 11px;
   font-weight: 700;
 }
-.mock-du-calc-ui { padding: 8px 6px; gap: 6px; }
+.mock-du-calc-ui {
+  padding: 8px 6px;
+  gap: 6px;
+}
 .mock-du-calc-display {
   width: 100%;
   text-align: right;
@@ -1416,8 +1464,13 @@ button {
   font-size: 9px;
   font-weight: 700;
 }
-.mock-du-keys span.op { background: #fde8e4; color: var(--coral); }
-.mock-du-count-num { color: #d4891a; }
+.mock-du-keys span.op {
+  background: #fde8e4;
+  color: var(--coral);
+}
+.mock-du-count-num {
+  color: #d4891a;
+}
 .mock-du-count-btns {
   display: flex;
   gap: 10px;
@@ -1535,10 +1588,14 @@ button {
   font-size: 11.5px;
   line-height: 1.55;
 }
-.mock-du-history-more { font-size: 12px; }
+.mock-du-history-more {
+  font-size: 12px;
+}
 
 /* roadmap */
-.mock-du-section { margin-bottom: 44px; }
+.mock-du-section {
+  margin-bottom: 44px;
+}
 .mock-du-row-head-left {
   justify-content: flex-start;
   gap: 14px;
@@ -1562,10 +1619,18 @@ button {
   border-radius: 16px;
   background: var(--card);
 }
-.mock-du-rm-a { background: #f3eefc; }
-.mock-du-rm-b { background: #eef4fc; }
-.mock-du-rm-c { background: #eef8f1; }
-.mock-du-rm-d { background: #fdf6e8; }
+.mock-du-rm-a {
+  background: #f3eefc;
+}
+.mock-du-rm-b {
+  background: #eef4fc;
+}
+.mock-du-rm-c {
+  background: #eef8f1;
+}
+.mock-du-rm-d {
+  background: #fdf6e8;
+}
 .mock-du-rm-ic {
   width: 42px;
   height: 42px;
@@ -1599,8 +1664,14 @@ button {
   font-size: 11px;
   font-weight: 700;
 }
-.mock-du-when-soon { background: #f3e8fc; color: #6b4a9a; }
-.mock-du-when-later { background: #fdf3d0; color: #8a6a10; }
+.mock-du-when-soon {
+  background: #f3e8fc;
+  color: #6b4a9a;
+}
+.mock-du-when-later {
+  background: #fdf3d0;
+  color: #8a6a10;
+}
 .mock-du-rm p,
 .mock-du-help-card p {
   margin: 0 0 10px;
@@ -1674,10 +1745,26 @@ button {
   border-radius: 50%;
   background: rgb(255 255 255 / 75%);
 }
-.mock-du-cta-cloud::before { width: 22px; height: 22px; top: -12px; left: 6px; }
-.mock-du-cta-cloud::after { width: 28px; height: 28px; top: -14px; left: 20px; }
-.mock-du-cta-cloud-l { left: 28px; top: 28px; }
-.mock-du-cta-cloud-r { right: 36px; bottom: 28px; }
+.mock-du-cta-cloud::before {
+  width: 22px;
+  height: 22px;
+  top: -12px;
+  left: 6px;
+}
+.mock-du-cta-cloud::after {
+  width: 28px;
+  height: 28px;
+  top: -14px;
+  left: 20px;
+}
+.mock-du-cta-cloud-l {
+  left: 28px;
+  top: 28px;
+}
+.mock-du-cta-cloud-r {
+  right: 36px;
+  bottom: 28px;
+}
 .mock-du-cta-plane {
   position: absolute;
   right: 14%;
@@ -1769,7 +1856,10 @@ button {
   font-size: 8px;
   color: var(--muted);
 }
-.mock-db-tabs .on { color: var(--blue); font-weight: 800; }
+.mock-db-tabs .on {
+  color: var(--blue);
+  font-weight: 800;
+}
 .mock-db-desk {
   position: absolute;
   right: 4%;
@@ -1831,8 +1921,7 @@ button {
   place-items: center;
   background:
     radial-gradient(circle at 30% 40%, rgb(232 197 71 / 30%), transparent 42%),
-    radial-gradient(circle at 70% 55%, rgb(74 143 212 / 18%), transparent 40%),
-    #f2eee4;
+    radial-gradient(circle at 70% 55%, rgb(74 143 212 / 18%), transparent 40%), #f2eee4;
 }
 .mock-db-featured-art .mock-du-new {
   position: absolute;
@@ -1857,9 +1946,17 @@ button {
   position: absolute;
   font-size: 22px;
 }
-.mock-db-leaf { right: 18%; top: 22%; }
-.mock-db-cloud-face { left: 16%; bottom: 18%; }
-.mock-db-featured-copy { padding: 26px 28px 22px; }
+.mock-db-leaf {
+  right: 18%;
+  top: 22%;
+}
+.mock-db-cloud-face {
+  left: 16%;
+  bottom: 18%;
+}
+.mock-db-featured-copy {
+  padding: 26px 28px 22px;
+}
 .mock-db-kicker {
   margin: 0 0 8px;
   color: var(--coral);
@@ -1906,10 +2003,18 @@ button {
   display: grid;
   place-items: center;
 }
-.mock-db-art-calc { background: linear-gradient(165deg, #fff, #fde8e4); }
-.mock-db-art-timer { background: linear-gradient(165deg, #fff, #e8f1fb); }
-.mock-db-art-plane { background: linear-gradient(165deg, #fff, #e9f6ee); }
-.mock-db-art-party { background: linear-gradient(165deg, #fff, #fdf3d0); }
+.mock-db-art-calc {
+  background: linear-gradient(165deg, #fff, #fde8e4);
+}
+.mock-db-art-timer {
+  background: linear-gradient(165deg, #fff, #e8f1fb);
+}
+.mock-db-art-plane {
+  background: linear-gradient(165deg, #fff, #e9f6ee);
+}
+.mock-db-art-party {
+  background: linear-gradient(165deg, #fff, #fdf3d0);
+}
 .mock-db-badge {
   position: absolute;
   top: 10px;
@@ -1921,10 +2026,18 @@ button {
   font-size: 10px;
   font-weight: 750;
 }
-.mock-db-badge-blue { color: var(--blue); }
-.mock-db-badge-green { color: #3d8a5a; }
-.mock-db-badge-purple { color: #7a5aa8; }
-.mock-db-badge-coral { color: var(--coral); }
+.mock-db-badge-blue {
+  color: var(--blue);
+}
+.mock-db-badge-green {
+  color: #3d8a5a;
+}
+.mock-db-badge-purple {
+  color: #7a5aa8;
+}
+.mock-db-badge-coral {
+  color: var(--coral);
+}
 .mock-db-mini-calc {
   width: 72px;
   padding: 8px;
@@ -2041,32 +2154,253 @@ button {
   }
 }
 
-/* Header closer to doodle mock */
-.doodle-page .app-site-logo {
-  font-family: "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", sans-serif;
-  font-weight: 700;
-}
-.doodle-page .app-site-primary-nav a[aria-current="page"] {
-  box-shadow: inset 0 -3px 0 #4a8fd4;
-}
-.doodle-page .app-site-store,
-.doodle-page .app-site-store-button {
-  border-radius: 999px !important;
-  background: #111 !important;
-  color: #fff !important;
-}
-
 /* Photo / illustration assets */
 .mock-db-hero-img {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: 0.28; border-radius: 20px; filter: saturate(0.9);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.28;
+  border-radius: 20px;
+  filter: saturate(0.9);
 }
-.mock-db-hero-art { position: relative; }
-.mock-db-hero-phone, .mock-db-desk, .mock-du-star, .mock-du-cloud { position: relative; z-index: 1; }
-.mock-du-phone { position: relative; }
+.mock-db-hero-art {
+  position: relative;
+}
+.mock-db-hero-phone,
+.mock-db-desk,
+.mock-du-star,
+.mock-du-cloud {
+  position: relative;
+  z-index: 1;
+}
+.mock-du-phone {
+  position: relative;
+}
 .mock-du-phone-photo {
-  position: absolute; inset: -12px -20px auto auto; width: 120px; height: 150px;
-  object-fit: cover; border-radius: 16px; opacity: 0.35; transform: rotate(8deg);
-  z-index: 0; border: 2px solid rgb(26 24 20 / 12%);
+  position: absolute;
+  inset: -12px -20px auto auto;
+  width: 120px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 16px;
+  opacity: 0.35;
+  transform: rotate(8deg);
+  z-index: 0;
+  border: 2px solid rgb(26 24 20 / 12%);
 }
-.mock-du-phone-bezel { position: relative; z-index: 1; }
+.mock-du-phone-bezel {
+  position: relative;
+  z-index: 1;
+}
+/* =========================================================
+   2026 visual direction — paper, ink and cheerful doodles
+   ========================================================= */
+.doodle-page main {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 6%,
+      rgb(236 117 129 / 10%) 6% calc(6% + 1px),
+      transparent calc(6% + 1px)
+    ),
+    repeating-linear-gradient(180deg, transparent 0 31px, rgb(84 134 178 / 8%) 31px 32px), #fffdf8;
+}
+
+.doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) {
+  width: min(100% - 48px, 1080px);
+  padding: 72px 0 96px;
+}
+
+.doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) .content-hero {
+  max-width: 820px;
+  margin: 0 auto 58px;
+  padding: 40px 44px;
+  position: relative;
+  border: 2px solid #24211e;
+  border-radius: 24px 20px 26px 18px;
+  background: rgb(255 253 248 / 92%);
+  box-shadow: 8px 9px 0 rgb(63 150 238 / 12%);
+  text-align: center;
+  transform: rotate(-0.25deg);
+}
+
+.doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) .content-hero::before,
+.doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) .content-hero::after {
+  position: absolute;
+  color: #f1b62a;
+  font-size: 30px;
+  filter: drop-shadow(1px 1px 0 #171513);
+}
+
+.doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) .content-hero::before {
+  content: "★";
+  top: 20px;
+  left: 24px;
+}
+.doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) .content-hero::after {
+  content: "♡";
+  right: 26px;
+  bottom: 20px;
+  color: #ef789a;
+}
+
+.doodle-page .content-page h1 {
+  font-family: "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", cursive;
+  font-size: clamp(38px, 6vw, 66px);
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+  text-decoration: underline 5px #ef789a;
+  text-underline-offset: 13px;
+  text-decoration-skip-ink: none;
+}
+
+.doodle-page .content-eyebrow {
+  color: #3189dd;
+  font:
+    800 12px / 1.2 "Segoe Print",
+    cursive;
+  letter-spacing: 0.13em;
+}
+
+.doodle-page .feature-grid article,
+.doodle-page .how-list li,
+.doodle-page .concept-grid article,
+.doodle-page .faq-list details,
+.doodle-page .legal-copy section,
+.doodle-page .content-cta {
+  border: 1.5px solid rgb(36 33 30 / 24%);
+  border-radius: 18px 15px 20px 16px;
+  background: rgb(255 253 248 / 94%);
+  box-shadow: 4px 5px 0 rgb(36 33 30 / 5%);
+}
+
+.doodle-page .feature-grid article:nth-child(4n + 1) {
+  border-color: rgb(63 150 238 / 45%);
+}
+.doodle-page .feature-grid article:nth-child(4n + 2) {
+  border-color: rgb(239 120 154 / 45%);
+}
+.doodle-page .feature-grid article:nth-child(4n + 3) {
+  border-color: rgb(123 196 127 / 55%);
+}
+.doodle-page .feature-grid article:nth-child(4n + 4) {
+  border-color: rgb(242 183 43 / 55%);
+}
+
+.doodle-page .feature-grid h2,
+.doodle-page .how-list h2,
+.doodle-page .concept-grid h2,
+.doodle-page .faq-list summary,
+.doodle-page .legal-copy h2 {
+  font-family: "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", cursive;
+}
+
+@media (max-width: 900px) {
+  .doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) {
+    width: min(100% - 28px, 1080px);
+    padding-top: 38px;
+  }
+  .doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) .content-hero {
+    padding: 34px 24px;
+  }
+}
+
+/* Editorial refinement: retain the hand-drawn identity without decorative noise. */
+.doodle-page .hero-sketch-bg .sketch-scribble,
+.doodle-page .hero-sketch-bg .crayon {
+  display: none;
+}
+.doodle-page :is(.pillar-grid article, .feature-grid article, .suite-grid li, .faq-list details) {
+  border-radius: 6px;
+  box-shadow: none;
+  transform: none;
+}
+.doodle-page .pillar-grid article,
+.doodle-page .feature-grid article {
+  background: rgb(255 253 248 / 76%);
+}
+.doodle-page .suite-grid li {
+  border: 0;
+  border-top: 1.5px solid rgb(36 33 30 / 22%);
+  background: transparent;
+}
+.doodle-page .content-page:not(:has(.mock-du)):not(:has(.mock-db)) .content-hero {
+  border-radius: 6px;
+  box-shadow: none;
+  transform: none;
+}
+.doodle-page .content-page .content-hero::before,
+.doodle-page .content-page .content-hero::after {
+  display: none;
+}
+.doodle-page :is(.mock-du, .mock-db) article,
+.doodle-page :is(.mock-du, .mock-db) details {
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+/* —— Hero: pencil path + glyph draw-in —— */
+.pencil-path {
+  position: absolute;
+  left: 12%;
+  top: 18%;
+  width: 76%;
+  height: auto;
+  color: rgb(26 24 20 / 18%);
+  pointer-events: none;
+  z-index: 1;
+}
+.pencil-path path {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pencil-path path {
+    animation: doodle-stroke 4.5s ease-in-out infinite;
+  }
+  .glyph {
+    animation: doodle-glyph 5.2s ease-in-out infinite;
+  }
+  .glyph.g-7 {
+    animation-delay: 0.1s;
+  }
+  .glyph.g-plus {
+    animation-delay: 0.25s;
+  }
+  .glyph.g-3 {
+    animation-delay: 0.4s;
+  }
+  .glyph.g-eq {
+    animation-delay: 0.55s;
+  }
+  .glyph.g-10 {
+    animation-delay: 0.7s;
+  }
+}
+@keyframes doodle-stroke {
+  0% {
+    stroke-dashoffset: 220;
+    opacity: 0.2;
+  }
+  45% {
+    stroke-dashoffset: 0;
+    opacity: 0.55;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+}
+@keyframes doodle-glyph {
+  0%,
+  100% {
+    filter: saturate(1);
+    opacity: 0.92;
+  }
+  50% {
+    filter: saturate(1.08);
+    opacity: 1;
+  }
+}

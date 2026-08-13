@@ -1,9 +1,8 @@
 ---
-import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import {
-  conceptScreens,
   descriptions,
   faqCategories,
   faqs as faqList,
@@ -17,6 +16,7 @@ import {
   termsSections,
   titles,
 } from "../lib/content";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 import QuietFeaturesPage from "./QuietFeaturesPage.astro";
 import QuietReviewsPage from "./QuietReviewsPage.astro";
@@ -33,7 +33,6 @@ const steps = stepList(ja);
 const guides = howGuides(ja);
 const faqs = faqList(ja);
 const faqCats = ja ? faqCategories.ja : faqCategories.en;
-const concepts = conceptScreens(ja);
 const posts = newsPosts(ja);
 ---
 
@@ -91,44 +90,17 @@ const posts = newsPosts(ja);
     )}
 
     {page === "screenshots" && (
-      <div class="concept-page">
-        <p class="concept-disclaimer" data-reveal>
-          {ja
-            ? "以下は実機のスクリーンショットではありません。Quiet Solitaireの雰囲気を伝えるためのコンセプトカードです。"
-            : "These are not real device screenshots. They are stylized concept cards that convey Quiet Solitaire’s atmosphere."}
-        </p>
-        <div class="concept-grid">
-          {concepts.map((card) => (
-            <article class:list={["concept-card", `concept-${card.id}`]} data-reveal>
-              <div class="concept-art" aria-hidden="true">
-                {card.id === "table" && (
-                  <div class="mini-table">
-                    <span class="mc c1"></span>
-                    <span class="mc c2"></span>
-                    <span class="mc c3"></span>
-                  </div>
-                )}
-                {card.id === "deal" && (
-                  <div class="mini-deal">
-                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                )}
-                {card.id === "undo" && (
-                  <div class="mini-undo">
-                    <span class="undo-ring">↶</span>
-                    <span class="mc"></span>
-                  </div>
-                )}
-                {card.id === "settings" && (
-                  <div class="mini-settings">
-                    <span></span><span></span><span></span>
-                  </div>
-                )}
-              </div>
-              <h2>{card.title}</h2>
-              <p>{card.caption}</p>
-            </article>
-          ))}
+      <div class="quiet-capture-page" data-reveal>
+        <AppScreen lang={lang} size="xl" />
+        <div class="quiet-capture-copy">
+          <p class="content-eyebrow">IPHONE 17 PRO MAX · REAL CAPTURE</p>
+          <h2>{ja ? "静けさは、実際の画面にも。" : "The quiet is in the real screen."}</h2>
+          <p>{ja ? "iPhone 17 Pro Maxのシミュレータで、動作中のQuiet Solitaireをそのまま撮影しました。深緑の卓、読みやすいカード、指が迷わない4つの操作だけ。" : "Captured directly from the running game on an iPhone 17 Pro Max simulator: deep green felt, highly legible cards, and only four controls to find."}</p>
+          <ul>
+            <li>{ja ? "クロンダイクの盤面を一画面に" : "A complete Klondike table in one screen"}</li>
+            <li>{ja ? "ゲーム・設定・統計は端末内" : "Games, settings, and stats stay on device"}</li>
+            <li>{ja ? "アンドゥと左利きレイアウトに対応" : "Undo and left-handed layout included"}</li>
+          </ul>
         </div>
       </div>
     )}
@@ -175,10 +147,18 @@ const posts = newsPosts(ja);
 
     {(page === "features" || page === "how-to") && (
       <div class="content-cta" data-reveal>
-        <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
-          <span class="hero-cta-dot" aria-hidden="true"></span>
-          <span>{storeLabel}</span>
-        </span>
+        <div>
+          <p class="content-eyebrow">ONE QUIET DEAL</p>
+          <h2>{ja ? "次の一巡を、静かな卓で。" : "Your next deal, at a quieter table."}</h2>
+          <p>{ja ? "公開までは、実際のゲーム画面とお知らせをご覧いただけます。" : "Until launch, explore the real game screen and release notes."}</p>
+        </div>
+        <div class="content-cta-actions">
+          <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+            <span class="hero-cta-dot" aria-hidden="true"></span>
+            <span>{storeLabel}</span>
+          </span>
+          <a href={ja ? "/ja/screenshots" : "/screenshots"}>{ja ? "実際の画面を見る" : "See the real screen"} →</a>
+        </div>
       </div>
     )}
   </section>

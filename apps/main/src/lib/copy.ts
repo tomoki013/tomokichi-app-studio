@@ -12,7 +12,6 @@ type L<T = string> = Record<Locale, T>;
  * made it.
  */
 export const nav: { label: L; href: string; match: string }[] = [
-  { label: { ja: "記録", en: "Journal" }, href: "/journal", match: "journal" },
   { label: { ja: "つくったもの", en: "Products" }, href: "/products", match: "products" },
   { label: { ja: "私について", en: "About" }, href: "/about", match: "about" },
 ];
@@ -140,6 +139,8 @@ export const home = {
   journalHeading: { ja: "日々の記録", en: "Recent notes" } as L,
   journalAll: { ja: "記録をすべて見る", en: "Read all notes" } as L,
   appsHeading: { ja: "日常から生まれたもの", en: "What came out of it" } as L,
+  appsAvailableHeading: { ja: "公開中", en: "Available now" } as L,
+  appsMakingHeading: { ja: "いまつくっているもの", en: "Currently making" } as L,
   appsAll: { ja: "すべて見る", en: "View all" } as L,
   about: {
     heading: { ja: "作っている人", en: "The person making these" } as L,
@@ -281,15 +282,20 @@ export const about = {
 export const appsPage = {
   metaTitle: { ja: "つくったもの。 — Tomokichi", en: "What I’ve made — Tomokichi" } as L,
   metaDescription: {
-    ja: "日常で感じたことから生まれた、アプリと小さな企画。何を感じて作ったのかから紹介します。",
-    en: "Apps and small projects that came out of something noticed in daily life — starting with why each one exists.",
+    ja: "日常で感じたことから生まれた、アプリと小さな企画。公開中と開発中を分けて、それぞれの世界観を探索できます。",
+    en: "Apps and small projects born from daily life — explore available releases and work in progress, each with its own world.",
   } as L,
   hero: {
     heading: { ja: "つくったもの。", en: "What I’ve made." } as L,
     body: {
-      ja: "どれも、日常の中で気になったことから始まっています。\n\n何を感じて作ったのか、\n何を大切にしたのかから紹介します。\n\n公開中のものから、\nまだ構想の途中にあるものまで。",
-      en: "Every one of these started from something\nthat caught my attention in ordinary life.\n\nEach is introduced by what prompted it\nand what it tries to protect.\n\nFrom what’s already out\nto what’s still taking shape.",
+      ja: "どれも、日常の中で気になったことから始まっています。\n\n公開済みのものと、いま手がけているものを分けて並べています。\n雰囲気の違いごと、公式サイトへ進めます。",
+      en: "Every one of these started from something\nthat caught my attention in ordinary life.\n\nAvailable apps and work in progress are kept apart\nso you can explore each world, then open its site.",
     } as L,
+  },
+  sections: {
+    available: { ja: "公開中", en: "Available now" } as L,
+    developing: { ja: "開発中", en: "In development" } as L,
+    concept: { ja: "構想中", en: "Concept" } as L,
   },
   filters: [
     { key: "all", label: { ja: "すべて", en: "All" } as L },
@@ -298,8 +304,9 @@ export const appsPage = {
     { key: "concept", label: { ja: "構想中", en: "Concept" } as L },
   ],
   soon: { ja: "準備中", en: "Coming soon" } as L,
-  visit: { ja: "アプリサイトを見る", en: "Visit app site" } as L,
+  visit: { ja: "公式サイトを見る", en: "Explore site" } as L,
   origin: { ja: "はじまり", en: "Where it started" } as L,
+  emptySection: { ja: "まだありません。", en: "Nothing here yet." } as L,
   spec: {
     highlights: { ja: "できること", en: "What it does" } as L,
     pricing: { ja: "料金", en: "Price" } as L,

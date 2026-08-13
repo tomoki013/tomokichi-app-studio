@@ -2,6 +2,7 @@
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
 import { features as featureList, steps as stepList } from "../lib/content";
+import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 
 type Locale = "ja" | "en";
@@ -47,7 +48,7 @@ const jsonLd = JSON.stringify({
     </div>
 
     <div class="hero-copy" data-reveal>
-      <p class="eyebrow">{ja ? "静かなテーブルで、一巡だけ。" : "One quiet deal at the table."}</p>
+      <p class="eyebrow">QUIET TABLE</p>
       <h1>
         {ja ? (
           <>夜の卓で、<br />カードと向き合う。</>
@@ -58,14 +59,14 @@ const jsonLd = JSON.stringify({
       <p>
         {ja ? (
           <>
-            Quiet Solitaireは、iPhone向けのクロンダイク・ソリティアです。<br />
-            アンドゥ、統計、左利きレイアウト。データは端末の中だけに。
+            騒がしくないクロンダイク。深いフェルトとクリームのカード。<br />
+            アンドゥ、左利き、統計。ゲームは端末の中だけに。
           </>
         ) : (
           <>
-            Quiet Solitaire is Klondike for iPhone—undo, stats, and a left-handed layout.
+            Klondike without the noise. Deep felt and cream cards.
             <br />
-            Games and settings stay on your device. No account.
+            Undo, left-handed layout, stats—games stay on your device.
           </>
         )}
       </p>
@@ -82,25 +83,19 @@ const jsonLd = JSON.stringify({
       <small>{ja ? "iPhone・iOS 26.0以降向け。現在App Store公開準備中。" : "iPhone · iOS 26.0+. Preparing for the App Store."}</small>
     </div>
 
-    <div class="hero-visual" data-reveal role="img" aria-label={ja ? "クリームのカードがフェルト卓に扇状に並ぶコンセプトビジュアル" : "Concept visual of cream cards fanned on a green felt table"}>
-      <div class="card-table">
-        <div class="table-rim"></div>
-        <div class="table-felt">
-          <div class="card-fan" aria-hidden="true">
-            <span class="playing-card card-1"><i>A</i><b>♠</b></span>
-            <span class="playing-card card-2"><i>K</i><b class="red">♥</b></span>
-            <span class="playing-card card-3"><i>Q</i><b>♣</b></span>
-            <span class="playing-card card-4"><i>J</i><b class="red">♦</b></span>
-            <span class="playing-card card-5"><i>10</i><b>♠</b></span>
-          </div>
-          <div class="foundation-row" aria-hidden="true">
-            <span class="mini-pile"></span>
-            <span class="mini-pile"></span>
-            <span class="mini-pile filled"><i>A</i><b class="red">♥</b></span>
-            <span class="mini-pile filled"><i>A</i><b>♠</b></span>
-          </div>
-        </div>
-      </div>
+    <div class="hero-visual" data-reveal>
+      <span class="capture-note">{ja ? "実際のゲーム画面" : "REAL GAME CAPTURE"}</span>
+      <AppScreen lang={lang} size="xl" priority class="quiet-hero-phone" />
+    </div>
+
+    <div class="mobile-quiet-hero-actions">
+      <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+        <span class="hero-cta-dot" aria-hidden="true"></span>
+        <span>{storeLabel}</span>
+      </span>
+      <a class="hero-cta hero-cta-secondary" href={`${base}/features`}>
+        <span>{ja ? "機能を見る" : "Explore features"}</span><span aria-hidden="true">→</span>
+      </a>
     </div>
 
     <AppHeroChrome
@@ -155,13 +150,11 @@ const jsonLd = JSON.stringify({
               ? "派手な演出より、卓の静けさ。ソフトな影と金のアクセントで、夜のカードテーブルをそのままUIにしています。"
               : "Less spectacle, more table calm—soft shadows and ivory-gold accents, so the UI feels like an evening card table."}
           </p>
-          <a class="section-link inline" href={`${base}/screenshots`}>{ja ? "コンセプト画面を見る" : "See concept screens"} →</a>
+          <a class="section-link inline" href={`${base}/screenshots`}>{ja ? "実際の画面を見る" : "See the real screen"} →</a>
         </div>
-        <div class="mood-swatches" aria-hidden="true">
-          <span class="swatch felt"></span>
-          <span class="swatch cream"></span>
-          <span class="swatch gold"></span>
-          <span class="swatch forest"></span>
+        <div class="mood-capture">
+          <span>{ja ? "動作中のアプリから撮影" : "CAPTURED FROM THE RUNNING APP"}</span>
+          <AppScreen lang={lang} size="lg" class="mood-phone" />
         </div>
       </div>
     </section>
@@ -186,6 +179,7 @@ const jsonLd = JSON.stringify({
           <span class="hero-cta-dot" aria-hidden="true"></span>
           <span>{storeLabel}</span>
         </span>
+        <a class="start-news-link" href={`${base}/news`}>{ja ? "公開までのお知らせ" : "Follow launch updates"} →</a>
       </div>
     </section>
   </div>

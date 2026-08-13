@@ -1,6 +1,6 @@
 ---
-import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import {
   conceptShots,
   descriptions,
@@ -173,7 +173,9 @@ const posts = newsPosts(ja);
         "[data-reveal], .feature-card, .how-story, .concept-shot, .subpage > :not(.page-intro):not(.page-hero)",
       );
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-        items.forEach((item) => item.classList.add("is-visible"));
+        items.forEach((item) => {
+          item.classList.add("is-visible");
+        });
         return;
       }
       const observer = new IntersectionObserver(

@@ -47,7 +47,7 @@ const jsonLd = JSON.stringify({
     </div>
 
     <div class="hero-copy" data-reveal>
-      <p class="eyebrow">{ja ? "ローカルファーストの思考ボード" : "Local-first thinking board"}</p>
+      <p class="eyebrow">WRITE · PLACE · CONNECT</p>
       <h1>
         {ja ? (
           <>書いて、置いて、<br />あとでつなぐ。</>
@@ -58,19 +58,15 @@ const jsonLd = JSON.stringify({
       <p class="hero-lead">
         {ja ? (
           <>
-            ざっくりした考えを、止まる前に捕まえる。
+            止まる前に書く。白いボードに置く。関係はあとからでいい。
             <br />
-            Rough Boardは、フルスクリーンで書き、白いキャンバスに置き、
-            <br />
-            関係はあとから結べるiPhoneアプリです。
+            ローカルファーストの思考ボード。広告もiCloudもなし。
           </>
         ) : (
           <>
-            Catch rough thoughts before they slip away.
+            Write before it slips. Place it on a white board. Connect later.
             <br />
-            Write full-screen, place soft nodes on a quiet white board,
-            <br />
-            and draw the links when you are ready.
+            Local-first thinking—no ads, no iCloud.
           </>
         )}
       </p>
@@ -90,17 +86,21 @@ const jsonLd = JSON.stringify({
 
     <div class="hero-visual" data-reveal>
       <div class="board-stage" role="img" aria-label={ja ? "Rough Boardのコンセプトボード" : "Rough Board concept board"}>
+        <div class="draft-strip" aria-hidden="true">
+          <span class="draft-cursor"></span>
+          <span>{ja ? "ざっくり書く…" : "writing rough…"}</span>
+        </div>
         <svg class="board-edges" viewBox="0 0 320 520" fill="none" aria-hidden="true">
-          <path d="M78 148 C120 170, 150 210, 168 248" stroke="currentColor" stroke-width="1.2" />
-          <path d="M168 248 C210 236, 240 200, 258 168" stroke="currentColor" stroke-width="1.2" />
-          <path d="M168 248 C150 300, 120 340, 96 372" stroke="currentColor" stroke-width="1.2" />
-          <path d="M168 248 C210 290, 230 330, 242 380" stroke="currentColor" stroke-width="1.2" />
+          <path class="edge-path" d="M78 148 C120 170, 150 210, 168 248" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 5" />
+          <path class="edge-path" d="M168 248 C210 236, 240 200, 258 168" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 5" />
+          <path class="edge-path" d="M168 248 C150 300, 120 340, 96 372" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 5" />
+          <path class="edge-path" d="M168 248 C210 290, 230 330, 242 380" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 5" />
         </svg>
         <article class="board-node n1">
           <p>{ja ? "朝のメモ" : "Morning note"}</p>
           <span>{ja ? "あとで整理" : "tidy later"}</span>
         </article>
-        <article class="board-node n2">
+        <article class="board-node n2 is-core">
           <p>{ja ? "プロジェクトの芯" : "Core idea"}</p>
           <span>{ja ? "まだ粗い" : "still rough"}</span>
         </article>
@@ -119,7 +119,7 @@ const jsonLd = JSON.stringify({
         <div class="board-chrome">
           <span>Write</span>
           <span>Board</span>
-          <span>Account</span>
+          <span>Search</span>
         </div>
       </div>
     </div>

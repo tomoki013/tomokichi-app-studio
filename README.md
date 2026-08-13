@@ -9,7 +9,8 @@ Tomokichiの小さなアプリをまとめたpnpm + Turborepo monorepoです。
 - Tripory: `https://tripory.tmkch.io`
 - Colorvia: `https://colorvia.tmkch.io`
 - Yohaku: `https://yohaku.tmkch.io`
-- Support API: `https://api.tmkch.io/api/support`
+- Quiet Solitaire: `https://solitaire.tmkch.io`
+- Support API v1: `https://api.tmkch.io/api/v1/support`
 
 各ブランドのプライバシーポリシー、利用規約、特定商取引法に基づく表記は、
 それぞれ `/privacy`、`/terms`、`/commercial-transactions` で公開します。

@@ -421,6 +421,11 @@ html.app-site-menu-open body {
   background: var(--app-site-footer-background, rgb(255 255 255 / 55%));
 }
 
+/* Keep the final section visually separate from the footer across brands. */
+.app-site-page > main {
+  padding-bottom: var(--app-site-footer-gap, clamp(54px, 7vw, 96px));
+}
+
 .app-site-footer .app-site-logo {
   font-size: 20px;
 }
@@ -699,7 +704,7 @@ html.app-site-menu-open body {
   .app-site-mobile-nav-panel {
     height: 100%;
     max-height: 100%;
-    padding: 18px 18px 22px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     overflow: auto;
@@ -721,11 +726,20 @@ html.app-site-menu-open body {
   }
 
   .app-site-mobile-nav-top {
+    position: sticky;
+    top: 0;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    padding: 16px 18px 14px;
     margin-bottom: 18px;
+    border-bottom: 1px solid var(--app-site-mobile-divider, rgb(60 50 45 / 10%));
+    background: var(--app-site-mobile-top-background, rgb(255 255 255 / 58%));
+    box-shadow: 0 8px 24px rgb(57 47 40 / 5%);
+    -webkit-backdrop-filter: blur(18px) saturate(1.35);
+    backdrop-filter: blur(18px) saturate(1.35);
   }
 
   .app-site-mobile-nav-brand {
@@ -740,6 +754,7 @@ html.app-site-menu-open body {
   .app-site-mobile-nav-links {
     display: grid;
     gap: 6px;
+    padding-inline: 18px;
   }
 
   .app-site-mobile-nav-links a {
@@ -771,8 +786,9 @@ html.app-site-menu-open body {
   }
 
   .app-site-mobile-nav-meta {
-    margin-top: auto;
+    margin: auto 18px 0;
     padding-top: 18px;
+    padding-bottom: 22px;
     display: grid;
     gap: 14px;
     border-top: 1px solid var(--app-site-mobile-divider, rgb(60 50 45 / 10%));
@@ -877,6 +893,9 @@ html.app-site-menu-open body {
 }
 
 @media (max-width: 760px) {
+  .app-site-page > main {
+    padding-bottom: var(--app-site-footer-gap-mobile, 44px);
+  }
   .app-hero-scroll {
     display: none;
   }
@@ -949,5 +968,50 @@ html.app-site-menu-open body {
 
   .app-site-footer-columns {
     gap: 22px 18px;
+  }
+}
+
+/* Mobile reading baseline shared by every app brand site. */
+@media (max-width: 760px) {
+  .app-site-page main,
+  .app-site-page main > * {
+    min-width: 0;
+  }
+
+  .app-site-page img,
+  .app-site-page video {
+    max-width: 100%;
+  }
+
+  .app-hero-notice {
+    min-height: 64px;
+    padding: 10px 16px;
+    line-height: 1.45;
+  }
+
+  .app-hero-notice strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .app-site-footer-columns nav {
+    min-width: 0;
+  }
+
+  .app-site-footer-columns a {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-site-footer-columns {
+    grid-template-columns: 1fr;
+  }
+  .app-site-mobile-footer-links {
+    grid-template-columns: 1fr;
   }
 }

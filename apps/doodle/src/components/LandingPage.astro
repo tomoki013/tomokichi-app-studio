@@ -72,7 +72,7 @@ const jsonLd = JSON.stringify({
     </div>
 
     <div class="hero-copy" data-reveal>
-      <p class="eyebrow">{ja ? "Doodle Series" : "Doodle Series"}</p>
+      <p class="eyebrow">HAND-DRAWN · UTILITY</p>
       <h1>
         {ja ? (
           <>書いて、使って、<br />遊ぶ。</>
@@ -82,8 +82,8 @@ const jsonLd = JSON.stringify({
       </h1>
       <p class="hero-lead">
         {ja
-          ? "手書きの数字と記号が、そのままユーティリティになる。独立した落書きアプリたちが、ひとつのシリーズとしてつながります。"
-          : "Hand-drawn digits and symbols become everyday utilities. Independent doodle apps, linked as one series."}
+          ? "紙に走り書きした数字が、タイマーや電卓になる。独立した落書きアプリたちが、シリーズとしてつながる。"
+          : "Digits scrawled on paper become timers and calculators. Independent doodle apps, linked as one series."}
       </p>
       <div class="hero-actions">
         <span class="store-button store-soon" aria-disabled="true">
@@ -101,6 +101,9 @@ const jsonLd = JSON.stringify({
     <div class="hero-visual" data-reveal aria-hidden="true">
       <div class="sketch-pad">
         <div class="sketch-pad-ruled"></div>
+        <svg class="pencil-path" viewBox="0 0 200 120" fill="none" aria-hidden="true">
+          <path d="M18 78 C48 40, 72 96, 98 58 S148 28, 182 52" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
         <div class="sketch-glyphs">
           <span class="glyph g-7">7</span>
           <span class="glyph g-plus">+</span>
@@ -115,6 +118,7 @@ const jsonLd = JSON.stringify({
         <span>Calc</span>
         <span>Dice</span>
         <span>Bingo</span>
+        <span>Counter</span>
       </div>
     </div>
 

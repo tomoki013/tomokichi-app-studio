@@ -1,98 +1,179 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import AppScreen from "./AppScreen.astro";
 import Shell from "./Shell.astro";
 
 type Locale = "ja" | "en";
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
 const c = ja
   ? {
       title: "Tripory",
-      tagline: "旅で集めた、わたしの世界",
-      intro: "訪れた国や旅の思い出を美しく記録し、\nあなただけの世界地図をつくりましょう。",
-      features: "主な機能",
+      tagline: "旅そのものを、記憶として残す。",
+      intro:
+        "国を塗るだけのアプリではありません。\n写真・タイムライン・メモで、旅の過程をあとから辿れるようにします。",
+      features: "旅を残す方法",
       featureLink: "すべての機能を見る",
-      screenshots: "美しい旅の記録体験",
+      screenshots: "旅の記録のようす",
       shotLink: "スクリーンショットを見る",
-      cta: "さあ、あなたの旅を記録しよう。",
-      ctaSub: "Triporyと一緒に、世界をもっと身近に。",
+      cta: "次の旅から、残してみる。",
+      ctaSub: "Triporyは現在、App Store公開準備中です。",
+      notice: "Tripory公式ブランドサイトを公開しました",
     }
   : {
       title: "Tripory",
-      tagline: "The world you collect through travel",
-      intro: "Beautifully record the countries you visit and the memories you make.\nBuild a world map that is entirely your own.",
-      features: "Main features",
+      tagline: "Keep the journey as memory.",
+      intro:
+        "Not an app for colouring countries alone.\nKeep photos, timeline and notes so the trip itself remains traceable later.",
+      features: "Ways to keep a journey",
       featureLink: "View all features",
-      screenshots: "A beautiful travel journal",
+      screenshots: "How a trip looks",
       shotLink: "View screenshots",
-      cta: "Start recording your journey.",
-      ctaSub: "Bring the world closer with Tripory.",
+      cta: "Start with the next journey.",
+      ctaSub: "Tripory is preparing for the App Store.",
+      notice: "The official Tripory brand site is now live",
     };
 const features = ja
   ? [
-      ["世界地図", "訪れた国が自動で色づく、美しい3Dマップ", "/assets/world-globe.png"],
-      ["旅の記録", "すべての旅をタイムラインで振り返る", "/assets/mountain-lake.png"],
-      ["思い出をコレクション", "写真やメモで、旅の瞬間を美しく残す", "/assets/venice.png"],
-      ["旅の統計", "訪れた国・都市・日数をデータで振り返る", "/assets/iceland.png"],
+      ["旅のタイムライン", "出発から帰着まで、旅の流れを時系列で振り返る", "/assets/mountain-lake.png"],
+      ["思い出の写真", "その日の光や風景を、旅の記録に添える", "/assets/venice.png"],
+      ["場所とメモ", "都市名と、そのときの一言をセットで残す", "/assets/iceland.png"],
+      ["地図で眺める", "記憶を地図上に並べて、旅の広がりを見る", "/assets/world-globe.png"],
     ]
   : [
-      ["World map", "A beautiful 3D map that colours every country you visit", "/assets/world-globe.png"],
-      ["Travel timeline", "Look back on every journey in chronological order", "/assets/mountain-lake.png"],
-      ["Memory collection", "Keep travel moments with photos and notes", "/assets/venice.png"],
-      ["Travel statistics", "Explore countries, cities and days through data", "/assets/iceland.png"],
+      ["Travel timeline", "Look back on the flow of a trip from start to return", "/assets/mountain-lake.png"],
+      ["Memory photos", "Attach the light and scenery of each day to the record", "/assets/venice.png"],
+      ["Places & notes", "Keep city names with a short note from that moment", "/assets/iceland.png"],
+      ["See it on a map", "Arrange memories on a map to see how the journey grew", "/assets/world-globe.png"],
     ];
-const screens = [
-  ["home", ja ? "ホーム" : "Home"],
-  ["timeline", ja ? "旅の記録" : "Timeline"],
-  ["country", ja ? "国の詳細" : "Country"],
-  ["memory", ja ? "旅の思い出" : "Memories"],
-  ["map", ja ? "世界地図" : "World map"],
-  ["stats", ja ? "統計" : "Statistics"],
-];
+const journey = ja
+  ? [
+      ["01.18", "Reykjavík"],
+      ["03.04", "Lisboa"],
+      ["04.22", "Marrakech"],
+      ["06.09", "Venezia"],
+      ["08.14", "Cape Town"],
+      ["10.02", "Cusco"],
+      ["11.19", "Sydney"],
+    ]
+  : [
+      ["01.18", "Reykjavík"],
+      ["03.04", "Lisbon"],
+      ["04.22", "Marrakech"],
+      ["06.09", "Venice"],
+      ["08.14", "Cape Town"],
+      ["10.02", "Cusco"],
+      ["11.19", "Sydney"],
+    ];
+const memoryNotes = ja
+  ? [
+      ["01", "場所", "訪れた国や都市を、地図と一緒に残す。"],
+      ["02", "時間", "旅の始まりから帰る日までを、ひとつの流れに。"],
+      ["03", "感触", "写真と短い言葉で、その日の空気まで思い出す。"],
+    ]
+  : [
+      ["01", "Place", "Keep countries and cities together with the map."],
+      ["02", "Time", "See every trip as one flow, from departure to return."],
+      ["03", "Feeling", "Let a photograph and a few words bring the day back."],
+    ];
 ---
 
 <Shell lang={lang} title={`${c.title} — ${c.tagline}`}>
-  <section class="new-home">
+  <section class="new-home tripory-hero">
     <img class="home-sky" src="/assets/cappadocia.png" alt="" />
-    <div class="home-copy">
-      <p class="eyebrow">TRIPORY</p>
-      <h1>{c.tagline}</h1>
-      <p>{c.intro.split("\n").map((line) => <>{line}<br /></>)}</p>
-      <a class="download-badge" href="#download">●<span>{ja ? "App Storeからダウンロード" : "Download on the App Store"}</span></a>
+    <div class="hero-editorial">
+      <div class="home-copy">
+        <p class="eyebrow">TRAVEL MEMORY</p>
+        <h1>{c.tagline}</h1>
+        <p>{c.intro.split("\n").map((line) => <>{line}<br /></>)}</p>
+        <span class="store-soon download-badge desktop-hero-store" aria-disabled="true">
+          ●<span>{storeLabel}</span>
+        </span>
+      </div>
+
+      <div class="hero-stage" aria-hidden="true">
+        <figure class="hero-photo">
+          <img src="/assets/venice.png" alt="" />
+          <figcaption>{ja ? "旅の一枚" : "A frame from the trip"}</figcaption>
+        </figure>
+        <AppScreen lang={lang} size="xl" priority class="home-phone" />
+        <div class="journey-rail">
+          <div class="journey-track">
+            {[0, 1].map((group) => (
+              <div class="journey-loop" aria-hidden={group === 1}>
+                {journey.map(([date, city]) => (
+                  <span class="journey-stop">
+                    <em>{date}</em>
+                    <strong>{city}</strong>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div class="mobile-hero-actions">
+        <span class="store-soon download-badge" aria-disabled="true">●<span>{storeLabel}</span></span>
+        <a href={`${base}/features`}>{ja ? "機能を見る" : "Explore features"} →</a>
+      </div>
     </div>
-    <img class="home-phone" src="/assets/hero-devices.png" alt="Tripory on iPhone and Apple Watch" />
-    <AppHeroChrome
-      lang={lang}
-      date="2026-07-24"
-      news={ja ? "Tripory 1.0.0を公開しました！" : "Tripory 1.0.0 is now available!"}
-      newsHref={`${base}/news`}
-    />
+    <AppHeroChrome lang={lang} date="2026-07-24" news={c.notice} newsHref={`${base}/news`} />
   </section>
 
-  <section class="home-section" data-reveal>
-    <div class="section-bar"><h2>{ja ? "旅を記録するたび、あなたの世界が広がっていく。" : "Every journey makes your world a little wider."}</h2></div>
-    <p class="home-summary-text">{ja ? "新しい国を訪れるたびに、地図が色づき、コレクションが増えていく。" : "Each country colours your map and grows your collection."}</p>
+  <section class="home-section memory-manifesto" data-reveal>
+    <div class="manifesto-lead">
+      <p class="eyebrow">A JOURNEY, NOT A CHECKLIST</p>
+      <h2>{ja ? "地図の先にある、旅の時間を残す。" : "Keep the time behind every pin on the map."}</h2>
+      <p>{ja ? "中心にあるのは、塗りつぶした国の数ではなく、そこで過ごした時間。Triporyは写真、日付、場所、メモをひとつの物語としてつなぎます。" : "The point is not the number of countries you can colour in. Tripory connects photographs, dates, places and notes into the story of time spent there."}</p>
+    </div>
+    <div class="memory-notes">
+      {memoryNotes.map(([number, heading, body]) => <article><b>{number}</b><h3>{heading}</h3><p>{body}</p></article>)}
+    </div>
   </section>
 
   <section class="home-section" data-reveal>
     <div class="section-bar"><h2>{c.features}</h2><a href={`${base}/features`}>{c.featureLink}　→</a></div>
-    <div class="home-features">
-      {features.map(([title, body, image], i) => <article class:list={{ dark: i === 0 || i === 3 }} data-reveal><img src={image} alt="" /><div><h3>{title}</h3><p>{body}</p></div><a href={`${base}/features`}>→</a></article>)}
+    <div class="home-features feature-editorial-grid">
+      {features.map(([title, body, image], i) => (
+        <article class:list={{ dark: i === 0 || i === 3 }} data-reveal>
+          <img src={image} alt="" />
+          <div><h3>{title}</h3><p>{body}</p></div>
+          <a href={`${base}/features`}>→</a>
+        </article>
+      ))}
     </div>
   </section>
 
   <section class="home-section screenshots-section" data-reveal>
     <div class="section-bar"><h2>{c.screenshots}</h2><a href={`${base}/screenshots`}>{c.shotLink}　→</a></div>
-    <div class="screen-row">
-      {screens.map(([slug, label]) => <figure data-reveal><img src={`/assets/screen-${slug}.png`} alt={`${label} screen`} /><figcaption>{label}</figcaption></figure>)}
+    <div class="real-screen-feature">
+      <AppScreen lang={lang} size="lg" class="real-screen-phone" />
+      <div class="real-screen-copy" data-reveal>
+        <p class="eyebrow">REAL APP CAPTURE</p>
+        <h3>{ja ? "旅の入口は、あなたの世界。" : "Your world is where every trip begins."}</h3>
+        <p>{ja ? "iPhone 17 Pro Maxのシミュレータで、実際のTriporyから撮影しました。訪れた国、写真、次の旅への入口がひとつの画面につながります。" : "Captured directly from Tripory on an iPhone 17 Pro Max simulator. Visited countries, photographs, and the next journey meet in one place."}</p>
+        <a href={`${base}/screenshots`}>{ja ? "実際の画面を大きく見る" : "See the real screen in detail"} →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section tripory-promise" data-reveal>
+    <div class="promise-image"><img src="/assets/morocco.png" alt="" /></div>
+    <div class="promise-copy">
+      <p class="eyebrow">PRIVATE BY DESIGN</p>
+      <h2>{ja ? "思い出は、あなたの手元に。" : "Your memories stay with you."}</h2>
+      <p>{ja ? "アカウント登録は不要。旅の記録は端末内に保存され、選んだ写真だけを扱います。便利さのために、旅の記憶を差し出さない設計です。" : "No account is required. Trip records stay on your device, and the app only handles photographs you select. Convenience should not cost you the privacy of your memories."}</p>
+      <a href={`${base}/principles`}>{ja ? "Triporyの設計思想" : "Read our principles"} →</a>
     </div>
   </section>
 
   <section class="tripory-cta" id="download" data-reveal>
     <img src="/assets/mountain-lake.png" alt="" />
     <div><h2>{c.cta}</h2><p>{c.ctaSub}</p></div>
-      <div class="store-row"><a href="#download">●　App Store</a></div>
-    <div class="qr">▦</div>
+    <div class="store-row">
+      <span class="store-soon" aria-disabled="true">●　{storeLabel}</span>
+    </div>
   </section>
 </Shell>

@@ -49,6 +49,14 @@ export const APP_BRANDS = [
     support: true,
     footer: true,
   },
+  {
+    slug: "quiet-solitaire",
+    name: "Quiet Solitaire",
+    publicUrl: appSiteUrl("quiet-solitaire"),
+    workersUrl: appSiteWorkersUrl("quiet-solitaire"),
+    support: true,
+    footer: true,
+  },
   // Unpublished brand sites: available for support forms, not linked from the main footer yet.
   {
     slug: "soonish",
@@ -63,14 +71,6 @@ export const APP_BRANDS = [
     name: "Tana",
     publicUrl: appSiteUrl("tana"),
     workersUrl: appSiteWorkersUrl("tana"),
-    support: true,
-    footer: false,
-  },
-  {
-    slug: "quiet-solitaire",
-    name: "Quiet Solitaire",
-    publicUrl: appSiteUrl("quiet-solitaire"),
-    workersUrl: appSiteWorkersUrl("quiet-solitaire"),
     support: true,
     footer: false,
   },

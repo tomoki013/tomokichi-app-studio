@@ -1,142 +1,28 @@
 ---
+import AppScreen from "./AppScreen.astro";
+
 const { lang } = Astro.props as { lang: "ja" | "en" };
 const ja = lang === "ja";
-
-const voices = ja
-  ? [
-      { q: "余計な演出がなく、ただ静かにカードに集中できるのが心地いいです。一日の終わりに欠かせない時間になりました。", who: "30代・会社員", when: "夜のリラックスタイムに" },
-      { q: "デザインがとても美しく、見ているだけで癒されます。操作も直感的で、ストレスを感じません。", who: "40代・主婦", when: "家事の合間のリフレッシュに" },
-      { q: "オフラインでも遊べるので、移動中やカフェでも気軽に楽しめます。気づけば毎日プレイしています。", who: "20代・学生", when: "通学中のひとときに" },
-    ]
-  : [
-      { q: "No noisy effects — just quiet focus on the cards. It’s become part of how I end the day.", who: "30s · office worker", when: "Evening wind-down" },
-      { q: "The design is beautiful; even looking at it feels restful. Controls are intuitive.", who: "40s · at home", when: "Between chores" },
-      { q: "Offline play means trains and cafés work fine. I somehow end up playing every day.", who: "20s · student", when: "On the commute" },
-    ];
-
-const points = ja
-  ? [
-      { ic: "❀", t: "静かで落ち着く世界観", b: "音や演出が控えめで、心がすっと整うと好評です。" },
-      { ic: "♠", t: "美しく洗練されたデザイン", b: "カードや背景のデザインが美しく、見ているだけで癒されます。" },
-      { ic: "☁", t: "オフラインでどこでも快適", b: "通信なしでも快適にプレイでき、いつでもどこでも楽しめます。" },
-      { ic: "▣", t: "シンプルで奥深いゲーム性", b: "ルールはシンプル。でもやり込むほどに面白いと支持されています。" },
-    ]
-  : [
-      { ic: "❀", t: "A calm atmosphere", b: "Soft sound and restrained motion settle the mind." },
-      { ic: "♠", t: "Refined design", b: "Cards and felt that feel good just to look at." },
-      { ic: "☁", t: "Offline anywhere", b: "Play without a network — trains, cafés, late nights." },
-      { ic: "▣", t: "Simple, deep play", b: "Easy rules with enough depth to keep returning." },
-    ];
+const notes = ja
+  ? [["01", "夜にも読みやすく", "深い緑とクリーム色のカードで、コントラストを保ちながら眩しさを抑えています。"], ["02", "迷わない操作", "画面下部の操作を4つに絞り、片手でも次の一手に戻りやすくしています。"], ["03", "自分のペース", "アンドゥ、統計、触覚やサウンドの設定で、急かされない遊び方を選べます。"]]
+  : [["01", "Easy on evening eyes", "Deep green and cream cards keep contrast clear without feeling glaring."], ["02", "Controls that stay out of the way", "Four actions sit at the bottom so the next move remains easy to find in one hand."], ["03", "Your own pace", "Undo, stats, haptics and sound controls let the game remain unhurried."]];
 ---
 
-<div class="mock-qr">
-  <header class="mock-qr-hero">
-    <div class="mock-qr-hero-bg" aria-hidden="true">
-      <img src="/assets/hero-mug.jpg" alt="" width="1400" height="800" loading="eager" />
+<div class="quiet-notes-page">
+  <header class="quiet-notes-hero">
+    <div>
+      <p class="content-eyebrow">BEFORE THE FIRST REVIEW</p>
+      <h1>{ja ? "まだレビューはありません。だから、いま伝えられることを。" : "No reviews yet. Here is what we can honestly share."}</h1>
+      <p>{ja ? "Quiet Solitaireは現在App Store公開準備中です。存在しない声を飾る代わりに、実際の画面と設計で目指している体験をご紹介します。" : "Quiet Solitaire is preparing for the App Store. Instead of dressing up voices that do not exist yet, this page shares the real screen and the experience it is designed to create."}</p>
     </div>
-    <h1>{ja ? "静かな時間を、もっと好きになる。" : "Fall a little more for quiet time."}</h1>
-    <p>{ja ? "Quiet Solitaire を愛用しているプレイヤーの声をご紹介します。" : "Voices from people who keep Quiet Solitaire close."}</p>
+    <AppScreen lang={lang} size="lg" class="quiet-notes-phone" />
   </header>
-
-  <section class="mock-qr-voices">
-    <h2>{ja ? "プレイヤーの声" : "Player voices"}</h2>
-    <div class="mock-qr-ornament" aria-hidden="true">♠</div>
-    <div class="mock-qr-voice-grid">
-      {voices.map((v) => (
-        <blockquote>
-          <p>“{v.q}”</p>
-          <div class="mock-qr-stars" aria-hidden="true">★★★★★</div>
-          <footer>
-            <span class="mock-qr-av" aria-hidden="true"></span>
-            <div>
-              <strong>{v.who}</strong>
-              <em>{v.when}</em>
-            </div>
-          </footer>
-        </blockquote>
-      ))}
-    </div>
-    <p class="mock-qr-src">{ja ? "※ App Store レビューより抜粋（2024年5月時点）" : "App Store review excerpts (May 2024). Illustrative until launch."}</p>
+  <section class="quiet-notes-grid">
+    {notes.map(([n, title, body]) => <article data-reveal><b>{n}</b><h2>{title}</h2><p>{body}</p></article>)}
   </section>
-
-  <section class="mock-qr-points">
-    <h2>{ja ? "レビューで特に評価されているポイント" : "What reviewers highlight"}</h2>
-    <div class="mock-qr-point-grid">
-      {points.map((p) => (
-        <article>
-          <span aria-hidden="true">{p.ic}</span>
-          <h3>{p.t}</h3>
-          <p>{p.b}</p>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="mock-qr-split">
-    <div>
-      <h2>{ja ? "どんな人に選ばれているか" : "Who chooses Quiet Solitaire"}</h2>
-      <ul class="mock-qr-list">
-        {(ja
-          ? ["仕事や家事の合間に、ほっと一息つきたい方", "スマホで手軽に、頭の体操をしたい方", "音や演出に疲れず、静かに楽しみたい方", "美しいデザインや世界観を大切にする方"]
-          : ["Anyone who wants a quiet pause between tasks", "A light mental stretch on the phone", "Those tired of loud effects", "People who care about quiet design"]
-        ).map((line) => <li>{line}</li>)}
-      </ul>
-    </div>
-    <div class="mock-qr-photo mock-qr-photo-a">
-      <img src="/assets/phone-solitaire.jpg" alt="" width="640" height="480" loading="lazy" />
-    </div>
-  </section>
-
-  <section class="mock-qr-split reverse">
-    <div class="mock-qr-photo mock-qr-photo-b">
-      <img src="/assets/photo-table.jpg" alt="" width="640" height="480" loading="lazy" />
-    </div>
-    <div>
-      <h2>{ja ? "リラックスタイムに寄り添う理由" : "Why it fits quiet breaks"}</h2>
-      <ul class="mock-qr-checks">
-        {(ja
-          ? ["静寂を大切にしたミニマルで上質な体験設計", "気持ちよく続けられるスムーズで直感的な操作性", "プレイ履歴や統計で自分のペースを楽しめる", "自分好みに彩れるテーマやカードデザイン"]
-          : ["Minimal design that protects quiet", "Smooth controls you return to", "History and stats at your pace", "Themes and card backs you own"]
-        ).map((line) => <li>{line}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  <section class="mock-qr-excerpts">
-    <h2>{ja ? "App Store レビュー抜粋" : "App Store review excerpts"}</h2>
-    <div class="mock-qr-ex-grid">
-      {(ja
-        ? [
-            ["とにかく静かで合掌できます。1日の終わりにプレイすると、心が落ち着きます。", "calm_player"],
-            ["グラフィックが美しくて、癒されます。シンプルだけど、思考力が鍛えられる気がします。", "green_tea_time"],
-            ["オフラインで遊べるのがとても便利。移動中の時間が、有意義なものになりました。", "solitaire_love"],
-          ]
-        : [
-            ["Quiet enough to end the day gently. My mind settles when I play.", "calm_player"],
-            ["Beautiful graphics. Simple rules that still exercise the mind.", "green_tea_time"],
-            ["Offline play is so practical — commute time feels useful again.", "solitaire_love"],
-          ]
-      ).map(([text, by]) => (
-        <article>
-          <div class="mock-qr-stars" aria-hidden="true">★★★★★</div>
-          <p>{text}</p>
-          <span>by {by}</span>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="mock-qr-cta">
-    <div class="mock-qr-cta-inner">
-      <span class="mock-qr-cta-icon" aria-hidden="true">♠</span>
-      <div>
-        <h2>{ja ? "静かな時間を、あなたの日常に。" : "Bring quiet time into your day."}</h2>
-        <p>{ja ? "今すぐダウンロードして、心地よいソリティア体験をはじめましょう。" : "Download when it ships, and start a calmer Klondike."}</p>
-      </div>
-      <div class="mock-qf-stores">
-        <span class="mock-store" aria-disabled="true">App Store</span>
-        <span class="mock-store google" aria-disabled="true">Google Play</span>
-      </div>
-    </div>
-  </section>
+  <aside class="quiet-notes-status" data-reveal>
+    <span>STATUS / 2026</span>
+    <h2>{ja ? "公開後、届いた声だけをここに載せます。" : "After launch, only genuine feedback will appear here."}</h2>
+    <a href={ja ? "/ja/news" : "/news"}>{ja ? "公開状況を見る" : "Follow launch news"} →</a>
+  </aside>
 </div>

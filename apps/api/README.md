@@ -2,7 +2,7 @@
 
 Cloudflare Workers 上で動作する Hono API です。
 
-本番のお問い合わせエンドポイントは `https://api.tmkch.io/api/support` です。
+本番のお問い合わせエンドポイントは `https://api.tmkch.io/api/v1/support` です。
 公開メール窓口は `support@tmkch.io`（Cloudflare Email Routing）です。フォーム配送は
 Resendで検証済みの内部受信先を維持し、公開アドレスの転送経路とは分離します。
 

@@ -9,7 +9,12 @@ import StatusBadge from "./StatusBadge.astro";
 interface Props {
   app: AppItem;
   lang: Locale;
-  variant?: "compact" | "large";
+  /**
+   * compact — home grid
+   * medium — products “in development” exploration cards
+   * large — products “available” (or detailed) cards
+   */
+  variant?: "compact" | "medium" | "large";
   /** Journal entries this product came out of. */
   behind?: JournalEntry[];
 }
@@ -17,6 +22,7 @@ const { app, lang, variant = "compact", behind = [] } = Astro.props;
 const appsHref = lang === "ja" ? "/ja/products" : "/products";
 const compactHref = app.url ?? appsHref;
 const externalCompact = Boolean(app.url);
+const ja = lang === "ja";
 
 const detail = app.detail;
 const specs = detail
@@ -27,6 +33,10 @@ const specs = detail
       ...(detail.languages ? [[appsPage.spec.languages[lang], detail.languages[lang]]] : []),
     ] as [string, string][])
   : [];
+
+const accentStyle = app.accent
+  ? `--card-accent:${app.accent};--card-wash:${app.accent}18;`
+  : undefined;
 ---
 
 {variant === "compact" ? (
@@ -36,24 +46,73 @@ const specs = detail
     rel={externalCompact ? "noopener noreferrer" : undefined}
     target={externalCompact ? "_blank" : undefined}
     aria-label={`${app.name} — ${app.tagline[lang]}`}
+    style={accentStyle}
+    data-status={app.status}
+    data-product={app.slug}
   >
     <div class="card-body">
       <div class="card-top">
         <AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={44} />
         <StatusBadge status={app.status} lang={lang} />
       </div>
+      <p class="concept">{app.concept[lang]}</p>
       <h3>{app.name}</h3>
       <p class="tagline">{app.tagline[lang]}</p>
     </div>
   </a>
+) : variant === "medium" ? (
+  <article
+    class="app-card medium"
+    id={app.slug}
+    data-status={app.status}
+    data-product={app.slug}
+    style={accentStyle}
+  >
+    <div class="card-visual" aria-hidden="true">
+      {app.screen ? (
+        <AppScreen screen={app.screen} lang={lang} alt="" size="sm" />
+      ) : (
+        <div class="card-visual-fallback">
+          <AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={72} />
+        </div>
+      )}
+    </div>
+    <div class="card-body">
+      <div class="card-top">
+        <AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={48} />
+        <StatusBadge status={app.status} lang={lang} />
+      </div>
+      <p class="concept">{app.concept[lang]}</p>
+      <h3>{app.name}</h3>
+      <p class="tagline">{app.tagline[lang]}</p>
+      <p class="desc">{app.description[lang]}</p>
+      <div class="card-actions">
+        {app.url ? (
+          <a class="arrow-link soft" href={app.url} rel="noopener noreferrer" target="_blank">
+            <span>{appsPage.visit[lang]}</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        ) : (
+          <span class="soon">{appsPage.soon[lang]}</span>
+        )}
+      </div>
+    </div>
+  </article>
 ) : (
-  <article class="app-card large" id={app.slug} data-status={app.status}>
+  <article
+    class="app-card large"
+    id={app.slug}
+    data-status={app.status}
+    data-product={app.slug}
+    style={accentStyle}
+  >
     <div class="card-body">
       {app.accent && <span class="accent-line" style={`background:${app.accent}`} aria-hidden="true"></span>}
       <div class="card-top">
         <AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={54} />
         <StatusBadge status={app.status} lang={lang} />
       </div>
+      <p class="concept">{app.concept[lang]}</p>
       <h3>{app.name}</h3>
       <p class="tagline">{app.tagline[lang]}</p>
 
@@ -109,11 +168,20 @@ const specs = detail
         ) : (
           <span class="soon">{appsPage.soon[lang]}</span>
         )}
+        {app.status === "released" && (
+          <span class="available-note">{ja ? "App Storeで公開中" : "Available on the App Store"}</span>
+        )}
       </div>
     </div>
-    {app.screen && (
+    {app.screen ? (
       <div class="preview-pane">
         <AppScreen screen={app.screen} lang={lang} alt={`${app.name} — ${app.tagline[lang]}`} size="sm" />
+      </div>
+    ) : (
+      <div class="preview-pane preview-pane-fallback" aria-hidden="true">
+        <div class="card-visual-fallback large">
+          <AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={96} />
+        </div>
       </div>
     )}
   </article>

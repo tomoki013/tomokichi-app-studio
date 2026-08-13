@@ -14,8 +14,8 @@ const homeImg = ja ? "/assets/colorvia-home.webp" : "/assets/colorvia-home-en.we
 const homeImgPng = ja ? "/assets/colorvia-home.png" : "/assets/colorvia-home-en.png";
 
 const description = ja
-  ? "Colorviaは、訪れた国や地域を選ぶだけで世界地図が色づく旅の記録アプリです。対応国では都道府県や州まで残せます。現在App Store公開準備中。"
-  : "Colorvia turns the countries and regions you have visited into a personal map of the world. Currently preparing for the App Store.";
+  ? "Colorviaは、訪れた国・州・都道府県を塗ることに集中した訪問記録アプリです。地図そのものが体験です。現在App Store公開準備中。"
+  : "Colorvia is a visited-places app focused on colouring countries, states and prefectures. The map is the experience. Preparing for the App Store.";
 
 const features = ja
   ? [
@@ -79,7 +79,7 @@ const jsonLd = JSON.stringify({
 
 <AppShell
   lang={lang}
-  title={ja ? "旅した場所を塗って、自分だけの世界地図をつくろう。" : "Colour the places you visit. Build a world map of your own."}
+  title={ja ? "訪れた場所を塗る。地図が進捗になる。" : "Colour the places you’ve been. Progress on a map."}
   description={description}
   jsonLd={jsonLd}
 >
@@ -98,31 +98,36 @@ const jsonLd = JSON.stringify({
         decoding="async"
         fetchpriority="high"
       />
-      <div class="world-wash world-wash-back">WORLD</div>
-      <div class="world-wash">WORLD</div>
+      <div class="world-wash world-wash-back">VISITED</div>
+      <div class="world-wash">VISITED</div>
+      <div class="map-progress" aria-hidden="true">
+        <span>42%</span>
+        <em>{ja ? "世界の訪問率" : "of the world"}</em>
+      </div>
     </div>
     <div class="hero-copy" data-reveal>
-      <p class="eyebrow">{ja ? "世界を、シンプルに彩ろう。" : "Colour the world, simply."}</p>
+      <p class="eyebrow">VISITED PLACES</p>
       <h1>
         {ja ? (
-          <>旅した場所を塗って、<br />自分だけの世界地図をつくろう。</>
+          <>訪れた場所を塗って、<br />進捗が見える地図をつくろう。</>
         ) : (
-          <>Colour the places you visit.<br />Build a world map of your own.</>
+          <>Colour the places you’ve been.<br />Watch the map fill in.</>
         )}
       </h1>
       <p>
         {ja ? (
           <>
-            Colorviaは、訪れた国や地域を選ぶだけで、<br />
-            世界地図が少しずつ色づいていく旅の記録アプリです。<br />
-            対応している国では、都道府県や州など、<br />
-            国の中の訪れた場所まで残せます。
+            Colorviaは、訪れた国を選び、地図を塗ることに集中したアプリです。<br />
+            対応している国では都道府県や州まで残せます。<br />
+            旅の物語ではなく、訪問のコレクションと進捗が主役です。
           </>
         ) : (
           <>
-            Colorvia turns the countries and regions you have visited into a personal map of the world.
+            Colorvia is focused on marking visited places and colouring the map.
             <br />
-            In supported countries, you can go deeper and record states, prefectures, provinces, and travel areas.
+            In supported countries, go deeper with states, prefectures and provinces.
+            <br />
+            Not a travel journal — a collection of places, and the progress of filling them in.
           </>
         )}
       </p>

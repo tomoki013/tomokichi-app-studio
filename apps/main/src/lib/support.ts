@@ -6,7 +6,7 @@ import type { Locale } from "../data/apps";
 import { supportAppOptions, supportCategoryOptions } from "./support-copy";
 
 const parsedApiUrl = new URL(configuredApiUrl);
-if (parsedApiUrl.protocol !== "https:" || parsedApiUrl.pathname !== "/api/support") {
+if (parsedApiUrl.protocol !== "https:" || parsedApiUrl.pathname !== "/api/v1/support") {
   throw new Error("Support API URL is invalid");
 }
 export const SUPPORT_API_URL = parsedApiUrl.toString();

@@ -17,19 +17,11 @@ const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const nav = ja
   ? [
       { slug: "features", label: "機能紹介", href: href("features") },
-      { slug: "principles", label: "こだわり", href: href("principles") },
       { slug: "screenshots", label: "スクリーンショット", href: href("screenshots") },
-      { slug: "faq", label: "よくある質問", href: href("faq") },
-      { slug: "news", label: "お知らせ", href: href("news") },
-      { slug: "updates", label: "アップデート情報", href: href("updates") },
     ]
   : [
       { slug: "features", label: "Features", href: href("features") },
-      { slug: "principles", label: "Principles", href: href("principles") },
       { slug: "screenshots", label: "Screenshots", href: href("screenshots") },
-      { slug: "faq", label: "FAQ", href: href("faq") },
-      { slug: "news", label: "News", href: href("news") },
-      { slug: "updates", label: "App updates", href: href("updates") },
     ];
 const supportHref = supportUrl("tripory", lang);
 const footerColumns = ja
@@ -37,17 +29,17 @@ const footerColumns = ja
       { title: "プロダクト", links: [{ label: "機能紹介", href: href("features") }, { label: "こだわり", href: href("principles") }, { label: "スクリーンショット", href: href("screenshots") }] },
       { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("news") }, { label: "アップデート情報", href: href("updates") }, { label: "お問い合わせ", href: supportHref, external: true }] },
       { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }, { label: "特定商取引法に基づく表記", href: href("commercial-transactions") }] },
-      { title: "運営者情報", links: [{ label: "運営サイト", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/apps"), external: true }] },
+      { title: "運営者情報", links: [{ label: "運営サイト", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/products"), external: true }] },
     ]
   : [
       { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "Principles", href: href("principles") }, { label: "Screenshots", href: href("screenshots") }] },
       { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("news") }, { label: "App updates", href: href("updates") }, { label: "Contact", href: supportHref, external: true }] },
       { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }, { label: "Commercial Transactions", href: href("commercial-transactions") }] },
-      { title: "Operator", links: [{ label: "Operator site", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/apps"), external: true }] },
+      { title: "Operator", links: [{ label: "Operator site", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/products"), external: true }] },
     ];
 const metaDescription = description ?? (ja
-  ? "Triporyは、旅で訪れた場所と思い出を、自分だけの世界として残すアプリです。"
-  : "Tripory keeps the places and memories from your travels in a world of your own.");
+  ? "Triporyは、写真・タイムライン・メモで旅そのものを記憶として残すiPhoneアプリです。現在App Store公開準備中。"
+  : "Tripory keeps the journey itself — photos, timeline and notes — as memory you can revisit. Preparing for the App Store.");
 ---
 
 <AppSiteShell
@@ -58,16 +50,18 @@ const metaDescription = description ?? (ja
   brand="TRIPORY"
   logoImage="/assets/tripory-icon.png"
   ogImage="/assets/cappadocia.png"
-  tagline={ja ? "旅で集めた、わたしの世界。" : "The world, collected through travel."}
+  tagline={ja ? "旅そのものを、記憶として残す。" : "Keep the journey as memory."}
   siteUrl={appSiteUrl("tripory")}
   homeHref={ja ? "/ja" : "/"}
   jaPageHref={jaPageHref}
   enPageHref={enPageHref}
   nav={nav}
   footerColumns={footerColumns}
-  appStoreLabel={ja ? "Appをダウンロード" : "Download the app"}
+  appStoreLabel={ja ? "App Storeで近日公開" : "Coming soon on the App Store"}
+  appStoreHref=""
+  appStoreComingSoon
   menuLabel={ja ? "メニュー" : "Menu"}
-  pageClass="tripory-page"
+  pageClass={`tripory-page${page ? " tripory-subpage" : ""}`}
 >
   <slot />
   <script is:inline>

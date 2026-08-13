@@ -1,6 +1,6 @@
 ---
 import type { Locale } from "../data/apps";
-import { featuredApps } from "../data/apps";
+import { developingApps, releasedApps } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { home, principles, principlesHeading } from "../lib/copy";
 import { currentEntry, recentEntries } from "../lib/journal";
@@ -18,6 +18,8 @@ const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
 
 const current = await currentEntry(lang);
 const recent = await recentEntries(lang, 3);
+const available = releasedApps.slice(0, 3);
+const making = developingApps.slice(0, 5);
 ---
 
 <BaseLayout lang={lang} title={home.metaTitle[lang]} description={home.hero.body[lang].replaceAll("\n", " ")}>
@@ -64,9 +66,24 @@ const recent = await recentEntries(lang, 3);
 
       <section class="home-apps shell">
         <SectionHeader title={home.appsHeading[lang]} linkHref={p("/products")} linkLabel={home.appsAll[lang]} />
-        <div class="app-grid">
-          {featuredApps.map((app) => <AppCard app={app} lang={lang} variant="compact" />)}
-        </div>
+
+        {available.length > 0 && (
+          <div class="home-apps-group">
+            <h3 class="home-apps-label">{home.appsAvailableHeading[lang]}</h3>
+            <div class="app-grid app-grid-available">
+              {available.map((app) => <AppCard app={app} lang={lang} variant="compact" />)}
+            </div>
+          </div>
+        )}
+
+        {making.length > 0 && (
+          <div class="home-apps-group">
+            <h3 class="home-apps-label">{home.appsMakingHeading[lang]}</h3>
+            <div class="app-grid">
+              {making.map((app) => <AppCard app={app} lang={lang} variant="compact" />)}
+            </div>
+          </div>
+        )}
       </section>
 
       <section class="home-approach shell">

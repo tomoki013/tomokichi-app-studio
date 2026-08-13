@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets";
+import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
+
+const { lang, size = "md", priority = false, class: className = "" } = Astro.props as {
+  lang: "ja" | "en";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  priority?: boolean;
+  class?: string;
+};
+const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", { eager: true });
+const image = screens[`../assets/screens/${lang}-game.webp`]?.default;
+if (!image) throw new Error(`Missing Quiet Solitaire ${lang} game capture`);
+const alt = lang === "ja"
+  ? "Quiet Solitaireの実際のゲーム画面。深緑の卓にクリーム色のカードが並んでいる"
+  : "The real Quiet Solitaire game screen, with cream cards arranged on a deep green table";
+---
+
+<PhoneFrame size={size} tone="graphite" glare={false} class={className}>
+  <Image
+    src={image}
+    alt={alt}
+    format="webp"
+    widths={[240, 360, 480, 640, 990]}
+    sizes="(max-width: 720px) 48vw, 323px"
+    loading={priority ? "eager" : "lazy"}
+    fetchpriority={priority ? "high" : undefined}
+    decoding="async"
+  />
+</PhoneFrame>

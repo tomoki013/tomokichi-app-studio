@@ -2,6 +2,12 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "tomokichi-quiet-solitaire",
   "compatibility_date": "2026-08-07",
+  "routes": [
+    {
+      "pattern": "solitaire.tmkch.io",
+      "custom_domain": true
+    }
+  ],
   "assets": { "directory": "./dist" },
   "observability": { "enabled": true }
 }

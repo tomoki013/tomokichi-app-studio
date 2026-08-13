@@ -29,11 +29,12 @@ const {
   class?: string;
 };
 
-const [app, ...rest] = screen.split("-");
 const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", {
   eager: true,
 });
-const key = `../assets/screens/${app}-${lang}-${rest.join("-")}.webp`;
+const separator = screen.lastIndexOf("-");
+const localizedStem = `${screen.slice(0, separator)}-${lang}-${screen.slice(separator + 1)}`;
+const key = `../assets/screens/${localizedStem}.webp`;
 const image = screens[key]?.default;
 if (!image) {
   throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
