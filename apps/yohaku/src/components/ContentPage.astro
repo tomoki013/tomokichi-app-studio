@@ -13,6 +13,7 @@ import {
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 import UpdatesPage from "./UpdatesPage.astro";
+import YohakuStory from "./YohakuStory.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
@@ -264,26 +265,18 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
     </header>
 
     {page === "features" && (
-      <div class="feature-blocks">
-        {featureBlocks.map((block, i) => (
-          <article class:list={["feature-block", i % 2 === 1 && "is-reverse"]}>
-            <div class="feature-block-copy">
-              <h2>{block.heading}</h2>
-              <p>{block.body}</p>
-            </div>
-            <div class="feature-block-visual">
-              {"appearance" in block ? (
-                <div class="appearance-screens">
-                  <AppScreen screen="today" size="md" lang={lang} class="appearance-screen appearance-screen--light" />
-                  <AppScreen screen="today-dark" size="md" lang={lang} class="appearance-screen appearance-screen--dark" />
-                </div>
-              ) : (
-                <AppScreen screen={block.screen} size="md" lang={lang} />
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
+      <YohakuStory
+        lang={lang}
+        class="yohaku-story--page"
+        steps={featureBlocks.map((block, i) => ({
+          kicker: String(i + 1).padStart(2, "0"),
+          title: block.heading,
+          body: block.body,
+          screen: "screen" in block ? block.screen : undefined,
+          appearance: "appearance" in block,
+          side: i % 2 === 0 ? "start" as const : "end" as const,
+        }))}
+      />
     )}
 
     {page === "how-to" && (
@@ -297,21 +290,18 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
             ? "Yohakuは、毎日きちんと続けるためのアプリではありません。余白がほしいと感じた日に、ひとつ置くだけ。実際の画面を見ながら、ゆっくり使い方をご案内します。"
             : "Yohaku is not a habit you have to perfect. Leave one space on the day you need it. Here is a gentle, screen-by-screen guide."}</p>
         </section>
-        <ol class="how-guides">
-          {howSteps.map((step, index) => (
-            <li class:list={["how-guide", index % 2 === 1 && "is-reverse"]}>
-              <div class="how-guide-copy">
-                <div class="how-guide-number"><span>{step.n}</span><i aria-hidden="true"></i></div>
-                <h2>{step.title}</h2>
-                <p>{step.body}</p>
-                <aside><span aria-hidden="true">○</span><p>{step.note}</p></aside>
-              </div>
-              <div class="how-guide-visual">
-                <AppScreen screen={step.screen} size="md" lang={lang} />
-              </div>
-            </li>
-          ))}
-        </ol>
+        <YohakuStory
+          lang={lang}
+          class="yohaku-story--page"
+          steps={howSteps.map((step, index) => ({
+            kicker: String(step.n).padStart(2, "0"),
+            title: step.title,
+            body: step.body,
+            note: step.note,
+            screen: step.screen,
+            side: index % 2 === 0 ? "start" as const : "end" as const,
+          }))}
+        />
         <section class="how-closing">
           <span aria-hidden="true">◇</span>
           <h2>{ja ? "うまく使うより、ふと思い出せれば十分です。" : "You do not need to use it perfectly."}</h2>

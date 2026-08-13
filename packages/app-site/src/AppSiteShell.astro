@@ -33,6 +33,7 @@ const {
   pageClass = "",
   jsonLd = "",
   mobileFooterLinks = [] as FooterLink[],
+  clientRouter = true,
 } = Astro.props as {
   lang: Locale;
   title: string;
@@ -61,6 +62,8 @@ const {
   pageClass?: string;
   jsonLd?: string;
   mobileFooterLinks?: FooterLink[];
+  /** Set false for sites that prefer immediate document navigation. */
+  clientRouter?: boolean;
 };
 
 const absolutePageUrl = `${siteUrl}${lang === "ja" ? jaPageHref : enPageHref}`;
@@ -106,7 +109,7 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
     {iconHref && <link rel="icon" type="image/png" href={iconHref} />}
     <title>{title} — {brand}</title>
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
-    <ClientRouter />
+    {clientRouter && <ClientRouter />}
   </head>
   <body>
     <div class:list={["app-site-page", pageClass]}>
@@ -223,7 +226,7 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
         </div>
       </nav>
 
-      <main id="main" transition:animate="fade"><slot /></main>
+      <main id="main" transition:animate={clientRouter ? "fade" : undefined}><slot /></main>
       <footer class="app-site-footer">
         <div class="app-site-footer-brand">
           <a class="app-site-logo" href={homeHref}>

@@ -1,0 +1,89 @@
+---
+import YohakuStory from "./YohakuStory.astro";
+
+const { lang } = Astro.props as { lang: "ja" | "en" };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+
+const steps = ja
+  ? [
+      {
+        kicker: "01  ·  Today",
+        title: "余白をつくる。",
+        body: "開始と終了を決めて、今日の中に小さな余白を置く。",
+        screen: "today" as const,
+        side: "start" as const,
+      },
+      {
+        kicker: "02  ·  Week",
+        title: "一週間を、見渡す。",
+        body: "計画表ではなく、余白の跡を静かに振り返るための画面です。",
+        screen: "week" as const,
+        side: "end" as const,
+      },
+      {
+        kicker: "03  ·  Month",
+        title: "ひと月のリズム。",
+        body: "余白を置いた日が、静かな印として残っていく。",
+        screen: "month" as const,
+        side: "start" as const,
+      },
+      {
+        kicker: "04  ·  Notice",
+        title: "必要なときだけ。",
+        body: "余白の始まりを、そっと知らせます。それ以上は送りません。",
+        screen: "today" as const,
+        side: "end" as const,
+      },
+      {
+        kicker: "05  ·  Reflection",
+        title: "終わったあと、ひとこと。",
+        body: "答えても、答えなくてもいい。一度だけ、小さく尋ねます。",
+        screen: "reflection" as const,
+        side: "start" as const,
+      },
+    ]
+  : [
+      {
+        kicker: "01  ·  Today",
+        title: "Leave space.",
+        body: "Choose a start and an end. A little room in the day.",
+        screen: "today" as const,
+        side: "start" as const,
+      },
+      {
+        kicker: "02  ·  Week",
+        title: "Glance across a week.",
+        body: "Not a planner. Just the marks you left.",
+        screen: "week" as const,
+        side: "end" as const,
+      },
+      {
+        kicker: "03  ·  Month",
+        title: "A month of rhythm.",
+        body: "Days with space remain as quiet marks.",
+        screen: "month" as const,
+        side: "start" as const,
+      },
+      {
+        kicker: "04  ·  Notice",
+        title: "Only when it matters.",
+        body: "A gentle notice before a space begins. Nothing more.",
+        screen: "today" as const,
+        side: "end" as const,
+      },
+      {
+        kicker: "05  ·  Reflection",
+        title: "One small check-in.",
+        body: "Answer, or simply dismiss. It will not ask again.",
+        screen: "reflection" as const,
+        side: "start" as const,
+      },
+    ];
+---
+
+<YohakuStory lang={lang} heading={ja ? "Yohakuでできること" : "What Yohaku does"} steps={steps} class="yohaku-story--home">
+  <p class="yohaku-story-more">
+    <a class="text-link" href={`${base}/how-to`}>{ja ? "使い方を見る" : "See how to use it"} →</a>
+  </p>
+</YohakuStory>
