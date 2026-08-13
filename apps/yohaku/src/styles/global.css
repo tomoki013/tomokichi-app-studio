@@ -64,6 +64,8 @@ a {
 
 .yohaku-page .app-site-header {
   box-shadow: 0 8px 30px rgb(0 0 0 / 4%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .yohaku-page .app-site-logo {
@@ -266,8 +268,327 @@ a {
   letter-spacing: 0.12em;
 }
 
-.feature-section {
+.yohaku-story {
   border-top: 1px solid var(--yohaku-line);
+}
+
+.yohaku-story-heading {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  padding: 128px 0 8px;
+}
+
+.y-beat-track {
+  height: 250vh;
+  view-timeline-name: --yohaku-beat;
+  view-timeline-axis: block;
+}
+
+.yohaku-story--page .y-beat-track {
+  height: 235vh;
+}
+
+.y-beat-pin {
+  height: calc(100vh - 88px);
+  position: sticky;
+  top: 88px;
+}
+
+.y-beat-stage {
+  width: min(100% - 40px, 1220px);
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  container-type: inline-size;
+}
+
+.y-beat-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  transform: translate3d(-50%, -50%, 0);
+  transform-origin: center;
+  opacity: 1;
+  backface-visibility: hidden;
+}
+
+.y-beat-visual .app-phone-frame {
+  --phone-w: min(360px, 36cqi, calc((100vh - 190px) * 0.5));
+}
+
+.y-beat-visual .appearance-screens {
+  width: min(100%, 580px);
+  min-height: 620px;
+}
+
+.y-beat-copy {
+  width: min(26em, 36%);
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  z-index: 2;
+  transform: translate3d(0, -50%, 0);
+  opacity: 1;
+}
+
+.y-beat[data-side="end"] .y-beat-copy {
+  right: auto;
+  left: 4%;
+}
+
+.yohaku-story.is-story-ready .y-beat-visual {
+  transform: translate3d(-50%, -50%, 0);
+  opacity: 1;
+}
+
+.yohaku-story.is-story-ready .y-beat-copy {
+  transform: translate3d(0, calc(-50% + 14px), 0);
+  opacity: 0;
+}
+
+@supports (animation-timeline: view()) {
+  .yohaku-story .y-beat-visual {
+    animation: yohaku-open-start 1s cubic-bezier(0.45, 0, 0.2, 1) both;
+    animation-timeline: --yohaku-beat;
+    animation-range: cover 30% cover 58%;
+  }
+
+  .yohaku-story .y-beat[data-side="end"] .y-beat-visual {
+    animation-name: yohaku-open-end;
+  }
+
+  .yohaku-story .y-beat-copy {
+    animation: yohaku-copy-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) both;
+    animation-timeline: --yohaku-beat;
+    animation-range: cover 47% cover 64%;
+  }
+}
+
+@keyframes yohaku-open-start {
+  from {
+    transform: translate3d(-50%, -50%, 0);
+  }
+  to {
+    transform: translate3d(calc(-50% - min(23.5cqi, 286px)), -50%, 0);
+  }
+}
+
+@keyframes yohaku-open-end {
+  from {
+    transform: translate3d(-50%, -50%, 0);
+  }
+  to {
+    transform: translate3d(calc(-50% + min(23.5cqi, 286px)), -50%, 0);
+  }
+}
+
+@keyframes yohaku-copy-reveal {
+  from {
+    transform: translate3d(0, calc(-50% + 12px), 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, -50%, 0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .yohaku-story .y-beat-visual,
+  .yohaku-story .y-beat-copy {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.story-kicker {
+  margin: 0 0 14px;
+  color: #999;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.y-beat-copy h3 {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
+}
+
+.y-beat-copy > p {
+  margin: 16px 0 0;
+  color: #555;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.95;
+}
+
+.y-beat-note {
+  margin-top: 22px;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 10px;
+  border-radius: 12px;
+  background: var(--yohaku-panel);
+}
+
+.y-beat-note p {
+  margin: 0;
+  color: #555;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+.yohaku-story-more {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  padding: 8px 0 96px;
+  text-align: center;
+}
+
+.yohaku-principles {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(72px, 10vw, 140px);
+  align-items: start;
+}
+
+.principles-intro h2 {
+  margin: 18px 0 24px;
+  font-size: clamp(34px, 4vw, 52px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+}
+
+.principles-intro > p:last-child {
+  margin: 0;
+  color: #555;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.principles-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--yohaku-line);
+}
+
+.principles-list li {
+  padding: 26px 0;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 18px;
+  border-bottom: 1px solid var(--yohaku-line);
+}
+
+.principles-list li > span {
+  padding-top: 5px;
+  color: #aaa;
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.principles-list h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.principles-list p {
+  margin: 0;
+  color: #666;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.yohaku-pause {
+  min-height: min(72vh, 720px);
+  padding: 96px 24px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 30px;
+  border-block: 1px solid var(--yohaku-line);
+  text-align: center;
+}
+
+.yohaku-pause > span {
+  color: #aaa;
+  font-family: var(--sans);
+  font-size: 22px;
+}
+
+.yohaku-pause p {
+  margin: 0;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  line-height: 1.9;
+}
+
+.yohaku-screen-stack {
+  position: relative;
+}
+
+.yohaku-screen-stack > :first-child,
+.yohaku-screen-stack > :first-child img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.yohaku-screen-stack > :not(:first-child) {
+  position: absolute;
+  inset: 0;
+}
+
+.yohaku-screen-stack > :not(:first-child),
+.yohaku-screen-stack > :not(:first-child) img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.content-page:has(.yohaku-story) {
+  width: 100%;
+  max-width: none;
+}
+
+.content-page:has(.yohaku-story) .content-hero,
+.content-page:has(.yohaku-story) .how-welcome,
+.content-page:has(.yohaku-story) .how-closing {
+  width: min(100% - 48px, 1040px);
+  margin-inline: auto;
+}
+
+/* Long information pages should not paint sections until they approach the
+   viewport. The learned `auto` size keeps later visits free of scroll jumps. */
+.feature-block,
+.how-guide,
+.faq-item,
+.yohaku-page .app-site-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 680px;
+}
+
+.yohaku-page .app-site-footer {
+  contain-intrinsic-size: auto 460px;
 }
 
 .feature-grid {
@@ -1169,6 +1490,26 @@ a {
 }
 
 @media (max-width: 760px) {
+  .yohaku-principles {
+    width: min(100% - 40px, 1040px);
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+
+  .principles-intro h2 {
+    font-size: 32px;
+  }
+
+  .yohaku-pause {
+    min-height: 58vh;
+    padding-block: 72px;
+  }
+
+  .yohaku-pause p {
+    font-size: 22px;
+    line-height: 1.85;
+  }
+
   .yohaku-hero {
     min-height: 0;
     padding: 88px 16px 48px;
@@ -1225,6 +1566,65 @@ a {
   .section-pad {
     width: min(100% - 32px, 1100px);
     padding: 64px 0;
+  }
+
+  .yohaku-story-heading,
+  .yohaku-story-more,
+  .y-beat-stage {
+    width: min(100% - 32px, 1220px);
+  }
+
+  .y-beat-visual .app-phone-frame {
+    --phone-w: min(340px, 78vw);
+  }
+
+  .yohaku-story-heading {
+    padding: 64px 0 8px;
+  }
+
+  .y-beat-track,
+  .yohaku-story--page .y-beat-track {
+    height: auto;
+  }
+
+  .y-beat-pin {
+    height: auto;
+    position: static;
+    overflow: visible;
+    padding: 40px 0;
+    opacity: 1;
+  }
+
+  .y-beat-stage {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .y-beat-visual,
+  .y-beat[data-side="end"] .y-beat-visual,
+  .y-beat-copy,
+  .y-beat[data-side="end"] .y-beat-copy {
+    width: auto;
+    position: static;
+    inset: auto;
+    transform: none;
+    opacity: 1;
+    animation: none;
+  }
+
+  .y-beat-copy h3 {
+    font-size: 24px;
+  }
+
+  .y-beat-copy > p {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .yohaku-story-more {
+    padding: 8px 0 64px;
   }
 
   .feature-grid,
@@ -1295,6 +1695,63 @@ a {
   .secondary-button,
   [data-reveal] {
     transition: none;
+  }
+
+  @media (min-width: 761px) {
+    .y-beat-track,
+    .yohaku-story--page .y-beat-track {
+      height: auto;
+    }
+
+    .y-beat-pin {
+      height: auto;
+      position: static;
+      opacity: 1;
+    }
+
+    .y-beat-stage {
+      min-height: min(86vh, 760px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 64px;
+    }
+
+    .y-beat-visual,
+    .y-beat[data-side="end"] .y-beat-visual,
+    .y-beat-copy,
+    .y-beat[data-side="end"] .y-beat-copy {
+      width: auto;
+      position: static;
+      transform: none;
+      opacity: 1;
+      animation: none;
+    }
+
+    .y-beat[data-side="end"] .y-beat-copy {
+      order: -1;
+    }
+  }
+}
+
+@media print {
+  .y-beat-track,
+  .yohaku-story--page .y-beat-track {
+    height: auto;
+  }
+
+  .y-beat-pin {
+    height: auto;
+    position: static;
+    overflow: visible;
+  }
+
+  .y-beat-visual,
+  .y-beat-copy {
+    position: static;
+    transform: none;
+    opacity: 1;
+    will-change: auto;
   }
 }
 

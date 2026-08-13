@@ -3,23 +3,12 @@ import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
 import { appSiteUrl } from "@tomokichi/app-site/urls";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
+import FeatureStory from "./FeatureStory.astro";
 
 const { lang } = Astro.props as { lang: "ja" | "en" };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
 const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
-
-const features = ja
-  ? [
-      { mark: "□", title: "余白を置く", body: "名前と時間で、何もしない時間を今日に置く。" },
-      { mark: "□□■", title: "今日・週・月", body: "静かな印で、余白のリズムを振り返る。" },
-      { mark: "…", title: "あとから、ひとこと", body: "答えても、答えなくてもいい。" },
-    ]
-  : [
-      { mark: "□", title: "Leave space", body: "A name, a start, an end." },
-      { mark: "□□■", title: "Day, week, month", body: "Quiet marks. Nothing more." },
-      { mark: "…", title: "A quiet check-in", body: "Answer, or simply dismiss." },
-    ];
 
 const description = ja
   ? "Yohakuは、日々の中に何もしない時間を置き、今日・週・月で静かに振り返るためのiPhoneアプリです。現在App Store公開準備中。"
@@ -85,50 +74,26 @@ const jsonLd = JSON.stringify({
     />
   </section>
 
-  <section class="feature-section section-pad" id="features">
-    <header class="section-heading" data-reveal>
-      <h2>{ja ? "Yohakuでできること" : "What Yohaku does"}</h2>
-      <span class="section-rule" aria-hidden="true"></span>
-    </header>
-    <div class="feature-grid">
-      {features.map(({ mark, title, body }) => (
-        <article data-reveal>
-          <span class="feature-mark" aria-hidden="true">{mark}</span>
-          <h3>{title}</h3>
-          <p>{body}</p>
-        </article>
-      ))}
+  <FeatureStory lang={lang} />
+
+  <section class="yohaku-principles section-pad" aria-labelledby="principles-title">
+    <div class="principles-intro">
+      <p class="content-eyebrow">PHILOSOPHY</p>
+      <h2 id="principles-title">{ja ? <>余白を、<br />成果にしない。</> : <>Space is not<br />another achievement.</>}</h2>
+      <p>{ja
+        ? "続けることも、埋めることも、うまく休むことも求めません。Yohakuは、何もしない時間を置いて、あとから静かに眺めるための道具です。"
+        : "No streaks to maintain, gaps to fill, or perfect way to rest. Yohaku is simply a place to leave time open and look back quietly."}</p>
     </div>
+    <ol class="principles-list">
+      <li><span>01</span><div><h3>{ja ? "競わない" : "No competition"}</h3><p>{ja ? "連続記録や達成率はありません。" : "No streaks or completion scores."}</p></div></li>
+      <li><span>02</span><div><h3>{ja ? "急かさない" : "No pressure"}</h3><p>{ja ? "通知は必要なときに、一度だけ。" : "A notice only when it matters."}</p></div></li>
+      <li><span>03</span><div><h3>{ja ? "外へ出さない" : "Stays with you"}</h3><p>{ja ? "記録はアカウントなしで端末の中に。" : "No account. Your spaces stay on-device."}</p></div></li>
+    </ol>
   </section>
 
-  <section class="story-section story-quiet section-pad" id="concept">
-    <div class="story-visual" data-reveal>
-      <AppScreen screen="today" size="lg" lang={lang} />
-    </div>
-    <div class="story-copy" data-reveal>
-      <h2>{ja ? "静かに整える。" : "Settle, quietly."}</h2>
-      <span class="story-rule" aria-hidden="true"></span>
-      <p>
-        {ja
-          ? "気づいたときに、余白をそっと置く。完璧でなくていい、小さな習慣です。"
-          : "When you notice the need, leave a little space. A small habit—no need to be perfect."}
-      </p>
-    </div>
-  </section>
-
-  <section class="story-section story-shape section-pad">
-    <div class="story-copy" data-reveal>
-      <h2>{ja ? <>余白のある日が、<br />静かな印になる。</> : <>Days with space<br />leave quiet marks.</>}</h2>
-      <span class="story-rule" aria-hidden="true"></span>
-      <p>
-        {ja
-          ? "Month画面では、余白のある日がカレンダー上の黒いマスとして残ります。ひと月の件数も確認でき、自分の時間のリズムが少しずつ見えてきます。"
-          : "On Month, days with space remain as quiet marks on the calendar. A monthly count helps you notice the rhythm of time you left open."}
-      </p>
-    </div>
-    <div class="story-visual" data-reveal>
-      <AppScreen screen="month" size="lg" lang={lang} />
-    </div>
+  <section class="yohaku-pause" aria-label={ja ? "Yohakuの考え方" : "Yohaku’s approach"}>
+    <span aria-hidden="true">□</span>
+    <p>{ja ? <>予定を増やすのではなく、<br />予定のない時間を置く。</> : <>Do not add another plan.<br />Leave time without one.</>}</p>
   </section>
 
   <section class="pricing-teaser section-pad" data-reveal>

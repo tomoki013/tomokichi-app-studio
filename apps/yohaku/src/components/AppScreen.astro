@@ -15,19 +15,31 @@ type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
 const {
   screen,
+  layers,
   lang,
   size = "md",
   label = "",
   priority = false,
+  eager = false,
   class: className = "",
+  alt: altOverride,
 } = Astro.props as {
-  screen: Screen;
+  screen?: Screen;
+  /** When set, screens share one device frame and can crossfade. */
+  layers?: Screen[];
   lang: "ja" | "en";
   size?: Size;
   label?: string;
   priority?: boolean;
+  eager?: boolean;
   class?: string;
+  alt?: string;
 };
+
+const layerList = layers?.length ? layers : screen ? [screen] : [];
+if (!layerList.length) {
+  throw new Error("AppScreen needs `screen` or `layers`");
+}
 
 const ja = lang === "ja";
 
@@ -65,26 +77,54 @@ const alts: Record<Screen, [string, string]> = {
 const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", {
   eager: true,
 });
-const key = `../assets/screens/${lang}-${screen}.webp`;
-const image = screens[key]?.default;
-if (!image) {
-  throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
+const images = layerList.map((name) => {
+  const key = `../assets/screens/${lang}-${name}.webp`;
+  const image = screens[key]?.default;
+  if (!image) {
+    throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
+  }
+  return { name, image };
+});
+const primary = images[0];
+if (!primary) {
+  throw new Error("AppScreen needs `screen` or `layers`");
 }
 
 // The screen is 89.6% of the device width, so this is the widest the bitmap can
 // ever be laid out at — the frame only ever shrinks below its nominal size.
 const screenWidth: Record<Size, number> = { xs: 118, sm: 158, md: 208, lg: 262, xl: 323 };
+const stackedAlt = ja
+  ? "YohakuのToday・Week・Month画面。同じ端末の中で余白の見方が移り変わる"
+  : "Yohaku’s Today, Week and Month screens, changing inside the same device";
 ---
 
 <PhoneFrame size={size} label={label} class={className}>
-  <Image
-    src={image}
-    format="webp"
-    widths={[240, 360, 480, 640, 960]}
-    sizes={`${screenWidth[size]}px`}
-    alt={alts[screen][ja ? 0 : 1]}
-    loading={priority ? "eager" : "lazy"}
-    decoding="async"
-    fetchpriority={priority ? "high" : undefined}
-  />
+  {images.length === 1 ? (
+    <Image
+      src={primary.image}
+      format="webp"
+      widths={[240, 360, 480, 640, 960]}
+      sizes={`${screenWidth[size]}px`}
+      alt={altOverride ?? alts[primary.name][ja ? 0 : 1]}
+      loading={priority || eager ? "eager" : "lazy"}
+      decoding="async"
+      fetchpriority={priority ? "high" : undefined}
+    />
+  ) : (
+    <div class="yohaku-screen-stack">
+      {images.map(({ image }, index) => (
+        <Image
+          src={image}
+          format="webp"
+          widths={[240, 360, 480, 640, 960]}
+          sizes={`${screenWidth[size]}px`}
+          alt={index === 0 ? (altOverride ?? stackedAlt) : ""}
+          loading={priority || eager ? "eager" : "lazy"}
+          decoding="async"
+          fetchpriority={priority && index === 0 ? "high" : undefined}
+          class={index > 0 ? "is-overlay" : undefined}
+        />
+      ))}
+    </div>
+  )}
 </PhoneFrame>

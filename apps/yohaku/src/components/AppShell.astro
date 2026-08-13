@@ -22,6 +22,7 @@ const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Sto
 const nav = [
   { slug: "screenshots", label: ja ? "コンセプト" : "Concept", href: href("screenshots") },
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
+  { slug: "how-to", label: ja ? "使い方" : "How to", href: href("how-to") },
 ];
 
 const footerColumns = [
@@ -95,6 +96,7 @@ const mobileFooterLinks = [
   menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
   themeColor="#ffffff"
   pageClass="yohaku-page"
+  clientRouter={false}
   jsonLd={jsonLd}
 >
   <slot />
