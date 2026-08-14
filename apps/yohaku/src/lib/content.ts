@@ -2,7 +2,7 @@ export type Locale = "ja" | "en";
 export type Page =
   | "features"
   | "how-to"
-  | "screenshots"
+  | "concept"
   | "pricing"
   | "faq"
   | "privacy"
@@ -15,7 +15,7 @@ export const pick = <T>(ja: boolean, pair: [T, T]): T => pair[ja ? 0 : 1];
 export const titles: Record<Page, [string, string]> = {
   features: ["機能", "Features"],
   "how-to": ["使い方", "How to"],
-  screenshots: ["コンセプト", "Concept"],
+  concept: ["コンセプト", "Concept"],
   pricing: ["料金", "Pricing"],
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
@@ -33,7 +33,7 @@ export const descriptions: Record<Page, [string, string]> = {
     "余白の作成から振り返り、通知、広告削除まで、Yohakuの使い方を解説します。",
     "Learn how to create space, review your day, week and month, and manage notifications.",
   ],
-  screenshots: [
+  concept: [
     "予定ではなく余白だけを置く、Yohakuの考え方をご紹介します。",
     "The idea behind Yohaku: leave space, not another plan.",
   ],

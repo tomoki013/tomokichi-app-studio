@@ -607,10 +607,15 @@ button {
   padding: clamp(88px, 12vw, 120px) 0 80px;
 }
 
-.content-page.content-updates .content-hero {
-  max-width: 650px;
-  margin-inline: auto;
+.content-page.content-updates .content-hero,
+.content-page.content-privacy .content-hero,
+.content-page.content-terms .content-hero {
   text-align: center;
+  justify-items: center;
+}
+.content-page.content-privacy .legal-dates,
+.content-page.content-terms .legal-dates {
+  justify-items: center;
 }
 
 .content-hero {
@@ -947,12 +952,13 @@ button {
 /* FAQ */
 .faq-page {
   display: grid;
-  gap: 22px;
+  gap: 26px;
 }
 
 .faq-tabs {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
 }
 
@@ -974,16 +980,37 @@ button {
   border-color: var(--felt-deep);
 }
 
+.faq-list {
+  display: grid;
+  gap: 10px;
+}
+
 .faq-list details {
+  padding: 0 20px;
+  border: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 4px 0;
+  background: var(--cream-card);
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.faq-list details:hover,
+.faq-list details[open] {
+  border-color: color-mix(in srgb, #0d4735 30%, transparent);
 }
 
 .faq-list summary {
+  min-height: 62px;
+  padding: 18px 0;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) 16px;
+  gap: 14px;
+  align-items: center;
+  font-size: 14.5px;
+  line-height: 1.6;
   list-style: none;
   cursor: pointer;
-  padding: 16px 4px;
-  font-size: 15px;
   font-weight: 600;
 }
 
@@ -2008,6 +2035,9 @@ button {
 
 .quiet-solitaire-page .content-page:not(:has(.mock-qf)):not(:has(.mock-qr)) .content-hero {
   width: 100vw;
+  /* The Updates page also caps the hero at 650px. Without this the band kept
+     that cap while still pulling left by 50vw, so it sat off to one side. */
+  max-width: none;
   min-height: 310px;
   margin-left: calc(50% - 50vw);
   margin-bottom: 58px;
@@ -2667,4 +2697,40 @@ button {
     grid-template-columns: 1fr;
     gap: 30px;
   }
+}
+
+/* FAQ question marker and chevron, matching the other brand sites. */
+.faq-list summary::before {
+  content: "Q";
+  color: #0d4735;
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+.faq-list summary::after {
+  content: "⌄";
+  justify-self: end;
+  color: var(--muted);
+  transition: transform 0.25s ease;
+}
+.faq-list details[open] summary::after {
+  transform: rotate(180deg);
+}
+.faq-list details > p {
+  padding-left: 34px;
+}
+
+/* ——— Shared scroll story (features / how-to) ——— */
+.quiet-solitaire-page {
+  --app-story-line: var(--line);
+  --app-story-kicker: #8a693c;
+  --app-story-body: var(--muted);
+  --app-story-note-background: var(--cream-card);
+  --app-story-title-weight: 500;
+}
+.quiet-solitaire-page .app-beat-copy h3 {
+  font-family: Georgia, "Yu Mincho", serif;
+  letter-spacing: 0.04em;
+}
+.quiet-solitaire-page .app-story-heading h2 {
+  font-family: Georgia, "Yu Mincho", serif;
 }

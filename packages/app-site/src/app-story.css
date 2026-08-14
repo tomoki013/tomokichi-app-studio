@@ -1,0 +1,325 @@
+/*
+ * Scroll story — the feature/how-to layout every brand site shares.
+ *
+ * Each beat pins for a screen height. The visual starts centred and slides to
+ * one side as the beat scrolls, uncovering the copy on the other. Browsers with
+ * scroll-driven animations do this in CSS; the rest fall back to the script in
+ * `app-story.js`, which writes the same transforms. Below 760px, or under
+ * reduced motion, both are switched off and the beats stack.
+ *
+ * Apps theme it through the --app-story-* properties; nothing here assumes a
+ * particular palette.
+ */
+
+.app-story {
+  border-top: 1px solid var(--app-story-line, rgb(0 0 0 / 8%));
+}
+
+.app-story-heading {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  padding: 128px 0 8px;
+}
+
+.app-story-heading h2 {
+  margin: 0;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: var(--app-story-heading-weight, 400);
+  letter-spacing: 0.06em;
+}
+
+.app-story-lead {
+  width: min(100% - 72px, 720px);
+  margin: 0 auto;
+  padding: 22px 0 0;
+  color: var(--app-story-body, #555);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.app-beat-track {
+  height: 250vh;
+  view-timeline-name: --app-beat;
+  view-timeline-axis: block;
+}
+
+.app-story--page .app-beat-track {
+  height: 235vh;
+}
+
+.app-beat-pin {
+  height: calc(100vh - 88px);
+  position: sticky;
+  top: 88px;
+}
+
+.app-beat-stage {
+  width: min(100% - 40px, 1220px);
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  container-type: inline-size;
+}
+
+.app-beat-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  transform: translate3d(-50%, -50%, 0);
+  transform-origin: center;
+  opacity: 1;
+  backface-visibility: hidden;
+}
+
+.app-beat-visual .app-phone-frame {
+  --phone-w: min(360px, 36cqi, calc((100vh - 190px) * 0.5));
+}
+
+.app-beat-copy {
+  width: min(26em, 36%);
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  z-index: 2;
+  transform: translate3d(0, -50%, 0);
+  opacity: 1;
+}
+
+.app-beat[data-side="end"] .app-beat-copy {
+  right: auto;
+  left: 4%;
+}
+
+/* Set by the fallback script so the copy starts hidden only when it will be
+   animated in — without it, a no-JS visitor would see nothing. */
+.app-story.is-story-ready .app-beat-visual {
+  transform: translate3d(-50%, -50%, 0);
+  opacity: 1;
+}
+
+.app-story.is-story-ready .app-beat-copy {
+  transform: translate3d(0, calc(-50% + 14px), 0);
+  opacity: 0;
+}
+
+@supports (animation-timeline: view()) {
+  .app-story .app-beat-visual {
+    animation: app-beat-open-start 1s cubic-bezier(0.45, 0, 0.2, 1) both;
+    animation-timeline: --app-beat;
+    animation-range: cover 30% cover 58%;
+  }
+
+  .app-story .app-beat[data-side="end"] .app-beat-visual {
+    animation-name: app-beat-open-end;
+  }
+
+  .app-story .app-beat-copy {
+    animation: app-beat-copy-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) both;
+    animation-timeline: --app-beat;
+    animation-range: cover 47% cover 64%;
+  }
+}
+
+@keyframes app-beat-open-start {
+  from {
+    transform: translate3d(-50%, -50%, 0);
+  }
+  to {
+    transform: translate3d(calc(-50% - min(23.5cqi, 286px)), -50%, 0);
+  }
+}
+
+@keyframes app-beat-open-end {
+  from {
+    transform: translate3d(-50%, -50%, 0);
+  }
+  to {
+    transform: translate3d(calc(-50% + min(23.5cqi, 286px)), -50%, 0);
+  }
+}
+
+@keyframes app-beat-copy-reveal {
+  from {
+    transform: translate3d(0, calc(-50% + 12px), 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, -50%, 0);
+    opacity: 1;
+  }
+}
+
+.app-beat-kicker {
+  margin: 0 0 14px;
+  color: var(--app-story-kicker, #999);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.app-beat-copy h3 {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: var(--app-story-title-weight, 400);
+  letter-spacing: 0.03em;
+  line-height: 1.45;
+}
+
+.app-beat-copy > p {
+  margin: 16px 0 0;
+  color: var(--app-story-body, #555);
+  font-size: 14px;
+  line-height: 1.95;
+}
+
+.app-beat-note {
+  margin-top: 22px;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 10px;
+  border-radius: 12px;
+  background: var(--app-story-note-background, rgb(0 0 0 / 4%));
+}
+
+.app-beat-note p {
+  margin: 0;
+  color: var(--app-story-body, #555);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+.app-story-more {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  padding: 8px 0 96px;
+  text-align: center;
+}
+
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .app-story .app-beat-visual,
+  .app-story .app-beat-copy {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  .app-story-heading,
+  .app-story-more,
+  .app-beat-stage {
+    width: min(100% - 32px, 1220px);
+  }
+
+  .app-story-heading {
+    padding: 64px 0 8px;
+  }
+
+  .app-story-more {
+    padding: 8px 0 64px;
+  }
+
+  .app-beat-track,
+  .app-story--page .app-beat-track {
+    height: auto;
+    view-timeline-name: none;
+  }
+
+  .app-beat-pin {
+    height: auto;
+    position: static;
+    overflow: visible;
+    padding: 40px 0;
+  }
+
+  .app-beat-stage {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    container-type: normal;
+  }
+
+  .app-beat-visual,
+  .app-beat[data-side="end"] .app-beat-visual,
+  .app-beat-copy,
+  .app-beat[data-side="end"] .app-beat-copy {
+    width: auto;
+    position: static;
+    inset: auto;
+  }
+
+  .app-beat-visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .app-beat-visual .app-phone-frame {
+    --phone-w: min(340px, 78vw);
+  }
+
+  .app-beat-copy h3 {
+    font-size: 24px;
+  }
+
+  .app-beat-copy > p {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+}
+
+/* Above the mobile breakpoint, reduced motion gets a plain two-column beat
+   rather than a pinned one that would never move. */
+@media (prefers-reduced-motion: reduce) and (min-width: 761px) {
+  .app-beat-track,
+  .app-story--page .app-beat-track {
+    height: auto;
+  }
+
+  .app-beat-pin {
+    height: auto;
+    position: static;
+  }
+
+  .app-beat-stage {
+    min-height: min(86vh, 760px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 64px;
+    container-type: normal;
+  }
+
+  .app-beat-visual,
+  .app-beat[data-side="end"] .app-beat-visual,
+  .app-beat-copy,
+  .app-beat[data-side="end"] .app-beat-copy {
+    width: auto;
+    position: static;
+    inset: auto;
+  }
+
+  .app-beat[data-side="end"] .app-beat-copy {
+    order: -1;
+  }
+}
+
+@media print {
+  .app-beat-track,
+  .app-story--page .app-beat-track {
+    height: auto;
+  }
+
+  .app-beat-pin {
+    height: auto;
+    position: static;
+    overflow: visible;
+  }
+
+  .app-beat-visual,
+  .app-beat-copy {
+    position: static;
+    transform: none;
+    opacity: 1;
+  }
+}

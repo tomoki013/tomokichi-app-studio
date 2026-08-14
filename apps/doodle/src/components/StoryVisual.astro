@@ -1,0 +1,16 @@
+---
+/** A sketched panel standing in for a screen. The Doodle apps have no real
+    captures yet, so nothing here is presented as a screenshot. */
+const { mark = "✎", caption = "", index = 0 } = Astro.props as {
+  mark?: string;
+  caption?: string;
+  index?: number;
+};
+---
+
+<figure class="story-sketch" style={`--sketch-i:${index}`}>
+  <span class="story-sketch-mark" aria-hidden="true">{mark}</span>
+  <span class="story-sketch-rule" aria-hidden="true"></span>
+  <span class="story-sketch-rule is-short" aria-hidden="true"></span>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

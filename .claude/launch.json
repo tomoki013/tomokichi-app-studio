@@ -20,10 +20,28 @@
       "port": 4323
     },
     {
+      "name": "colorvia",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tomokichi/colorvia", "dev"],
+      "port": 4324
+    },
+    {
       "name": "yohaku",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "@tomokichi/yohaku", "dev"],
       "port": 4325
+    },
+    {
+      "name": "quiet-solitaire",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tomokichi/quiet-solitaire", "dev"],
+      "port": 4328
+    },
+    {
+      "name": "doodle",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tomokichi/doodle", "dev"],
+      "port": 4330
     }
   ]
 }

@@ -133,13 +133,13 @@ const jsonLd = JSON.stringify({
           </div>
           <span class="distance-line"></span>
         </div>
+        <div class="home-actions">
+          <span class="store-soon" aria-disabled="true">{c.store}</span>
+          <a class="secondary-link" href={`${base}/how-to`}>{c.howLink}<span aria-hidden="true">→</span></a>
+        </div>
       </div>
       <div class="home-phone-picture">
         <AppScreen screen="home" size="lg" lang={lang} priority />
-      </div>
-      <div class="home-actions">
-        <span class="store-soon" aria-disabled="true">{c.store}</span>
-        <a class="secondary-link" href={`${base}/how-to`}>▷　{c.howLink}</a>
       </div>
     </div>
   </section>

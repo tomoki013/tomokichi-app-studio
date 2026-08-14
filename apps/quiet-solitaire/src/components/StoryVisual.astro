@@ -1,0 +1,9 @@
+---
+/** One story beat's visual. Quiet Solitaire has a single real capture, so every
+    beat shows the same table rather than inventing screens it does not have. */
+import AppScreen from "./AppScreen.astro";
+
+const { lang, index = 0 } = Astro.props as { lang: "ja" | "en"; index?: number };
+---
+
+<AppScreen lang={lang} size="xl" priority={index < 2} />

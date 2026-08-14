@@ -1,80 +1,45 @@
 ---
-import AppScreen from "./AppScreen.astro";
+/**
+ * Yohaku's take on the shared scroll story: copy comes from the caller and
+ * every beat's visual is a real capture in the shared phone frame.
+ */
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
+import StoryVisual, { type StoryScreen } from "./StoryVisual.astro";
 
-export type StoryScreen = "today" | "today-dark" | "week" | "month" | "settings-iap" | "add" | "reflection";
+export type { StoryScreen };
 
-export type StoryStep = {
-  kicker?: string;
-  title: string;
-  body: string;
-  note?: string;
+export type YohakuStep = Omit<StoryStep, "visual"> & {
   screen?: StoryScreen;
+  /** Shows the light and dark captures side by side instead of one screen. */
   appearance?: boolean;
-  side?: "start" | "end";
 };
 
 const {
   lang,
   heading = "",
+  lead = "",
   steps,
   class: className = "",
 } = Astro.props as {
   lang: "ja" | "en";
   heading?: string;
-  steps: StoryStep[];
+  lead?: string;
+  steps: YohakuStep[];
   class?: string;
 };
+
+const storySteps: StoryStep[] = steps.map((step) => ({
+  ...step,
+  visual: { lang, screen: step.screen, appearance: step.appearance },
+}));
 ---
 
-<section class:list={["yohaku-story", className]} aria-label={heading || undefined}>
-  {heading && (
-    <header class="section-heading yohaku-story-heading">
-      <h2>{heading}</h2>
-      <span class="section-rule" aria-hidden="true"></span>
-    </header>
-  )}
-
-  {steps.map((step, index) => {
-    const side = step.side ?? (index % 2 === 0 ? "start" : "end");
-    return (
-      <article class="y-beat" data-y-beat data-side={side}>
-        <div
-          class="y-beat-track"
-          data-y-track
-        >
-          <div class="y-beat-pin">
-            <div class="y-beat-stage">
-              <div class="y-beat-visual" data-y-visual>
-                {step.appearance ? (
-                  <div class="appearance-screens">
-                    <AppScreen screen="today" size="lg" lang={lang} eager={index < 2} class="appearance-screen appearance-screen--light" />
-                    <AppScreen screen="today-dark" size="lg" lang={lang} eager={index < 2} class="appearance-screen appearance-screen--dark" />
-                  </div>
-                ) : step.screen ? (
-                  <AppScreen screen={step.screen} size="xl" lang={lang} eager={index < 2} />
-                ) : null}
-              </div>
-              <div class="y-beat-copy" data-y-copy>
-                {step.kicker && <p class="story-kicker">{step.kicker}</p>}
-                <h3>{step.title}</h3>
-                <p>{step.body}</p>
-                {step.note && (
-                  <aside class="y-beat-note">
-                    <span aria-hidden="true">○</span>
-                    <p>{step.note}</p>
-                  </aside>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-    );
-  })}
-
+<AppStory
+  heading={heading}
+  lead={lead}
+  steps={storySteps}
+  visual={StoryVisual}
+  class:list={["yohaku-story", className]}
+>
   <slot />
-</section>
-
-<script>
-  import "../scripts/yohaku-story";
-</script>
+</AppStory>

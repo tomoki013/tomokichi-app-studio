@@ -26,29 +26,42 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
 
     <main>
       <article class="support-page shell" data-support-root data-locale={lang} data-state="idle">
-        <header class="support-intro">
+        <header class="support-intro" data-reveal>
           <p class="eyebrow">APP SUPPORT</p>
           <h1>{copy.title}</h1>
           <p class="lead">{copy.lead}</p>
-          <p class="support-disclosure">{copy.disclosure}</p>
         </header>
 
-        <div class="support-panel">
+        <ol class="support-steps" data-reveal>
+          {copy.steps.map((step, i) => (
+            <li style={`--reveal-i:${i}`}>
+              <b>{step.label}</b>
+              <strong>{step.title}</strong>
+              <span>{step.body}</span>
+            </li>
+          ))}
+        </ol>
+
+        <p class="support-disclosure" data-reveal>{copy.disclosure}</p>
+
+        <div class="support-panel" data-reveal>
           <form data-support-form novalidate>
             <div class="support-status" data-support-status role="alert" aria-live="assertive" hidden></div>
 
-            <div class="support-field">
-              <label for={`support-app-${lang}`}>{copy.app}</label>
-              <select id={`support-app-${lang}`} name="app">
-                {supportAppOptions.map((option) => <option value={option.value}>{option.label[lang]}</option>)}
-              </select>
-            </div>
+            <div class="support-row">
+              <div class="support-field">
+                <label for={`support-app-${lang}`}>{copy.app}</label>
+                <select id={`support-app-${lang}`} name="app">
+                  {supportAppOptions.map((option) => <option value={option.value}>{option.label[lang]}</option>)}
+                </select>
+              </div>
 
-            <div class="support-field">
-              <label for={`support-category-${lang}`}>{copy.category}</label>
-              <select id={`support-category-${lang}`} name="category">
-                {supportCategoryOptions.map((option) => <option value={option.value}>{option.label[lang]}</option>)}
-              </select>
+              <div class="support-field">
+                <label for={`support-category-${lang}`}>{copy.category}</label>
+                <select id={`support-category-${lang}`} name="category">
+                  {supportCategoryOptions.map((option) => <option value={option.value}>{option.label[lang]}</option>)}
+                </select>
+              </div>
             </div>
 
             <div class="support-field">

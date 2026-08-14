@@ -33,7 +33,7 @@ const alsoRead = await relatedEntries(entry, lang);
 
     <main>
       <article class="entry shell">
-        <header class="entry-head">
+        <header class="entry-head" data-reveal="rise">
           <p class="journal-meta">
             <time datetime={date.toISOString().slice(0, 10)}>{formatDate(date, lang)}</time>
             <span class="journal-dot" aria-hidden="true">·</span>
@@ -42,7 +42,7 @@ const alsoRead = await relatedEntries(entry, lang);
           <h1>{title}</h1>
         </header>
 
-        <div class="entry-body">
+        <div class="entry-body" data-reveal>
           <Content />
         </div>
 

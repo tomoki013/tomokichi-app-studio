@@ -1,6 +1,8 @@
 ---
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import {
+  appDetail,
   descriptions,
   type Locale,
   type Page,
@@ -13,6 +15,7 @@ import {
 import AppShell from "./AppShell.astro";
 import DoodleBlogPage from "./DoodleBlogPage.astro";
 import DoodleUpdatesPage from "./DoodleUpdatesPage.astro";
+import StoryVisual from "./StoryVisual.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
@@ -195,6 +198,16 @@ const faqs = ja
       ["support", "How do I contact you?", "Use the shared support form with Doodle selected, or email support@tmkch.io."],
     ];
 
+/* How-to leads with the shared scroll story used across every brand site. */
+const howBeats: StoryStep[] = howSteps.map((step, i) => ({
+  kicker: String(i + 1).padStart(2, "0"),
+  title: step.title,
+  body: step.body,
+  note: step.note,
+  noteMark: "✎",
+  visual: { mark: ["✎", "＃", "⏱", "☑"][i % 4], caption: step.title },
+}));
+
 const faqCats = ja
   ? [
       ["all", "すべて"],
@@ -211,87 +224,6 @@ const faqCats = ja
       ["support", "Support"],
     ];
 
-const newsPosts = ja
-  ? [
-      {
-        id: "site-launch",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "お知らせ",
-        title: "Doodle公式ブランドサイトを公開しました",
-        summary: "手描きユーティリティのシリーズ構想、機能、使い方、FAQ、プライバシーを掲載しています。",
-        body: [
-          "Doodleシリーズの公式ブランドサイトを公開しました。手書きの数字と記号をユーティリティに使うという世界観と、Timer や Calculator をはじめとするアプリ群の位置づけを、App Store公開準備中の段階からお伝えします。",
-          "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
-          "データはアプリごとに端末内へ保存し、手描きアセットは App Group「group.io.tmkch.doodle」で同一端末上のシリーズ間共有を想定しています。詳細はプライバシーポリシーと利用規約をご確認ください。",
-        ],
-      },
-      {
-        id: "column-sketch",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "コラム",
-        badgeTone: "column" as const,
-        title: "完璧な線より、走り書きの数字",
-        summary: "ラフな線が、そのまま道具の見た目と操作感になる。",
-        body: [
-          "Doodleは、きれいなフォントに置き換えるためのアプリではありません。紙に書いたような数字と記号が、タイマーや電卓のUIそのものになります。",
-          "シリーズは独立アプリの集合ですが、DoodleKit と App Group で「書いたもの」を共有できるので、一度描いた線を複数の道具で楽しめます。",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "準備中",
-        badgeTone: "note" as const,
-        title: "App Store公開に向けて",
-        summary: "iPhone・iOS 26以降向け。現在公開準備中です。",
-        body: [
-          "Doodleシリーズは現在App Store公開準備中です。対応環境や価格の最終表示は、公開時のApp Store上の記載が正しいものとします。",
-        ],
-      },
-    ]
-  : [
-      {
-        id: "site-launch",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "Update",
-        title: "The official Doodle brand site is now live",
-        summary: "Series concept, features, how-to, FAQ, and privacy—while we prepare for the App Store.",
-        body: [
-          "The official Doodle Series brand site is live. It explains the idea of hand-drawn digits and symbols as everyday utilities, and where apps like Timer and Calculator fit—while release is still in preparation.",
-          "There is no App Store link yet. When distribution is ready, we will share it here as well.",
-          "Working data stays on-device per app; doodle assets are intended for on-device sharing via App Group “group.io.tmkch.doodle”. See the Privacy Policy and Terms for details.",
-        ],
-      },
-      {
-        id: "column-sketch",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "Column",
-        badgeTone: "column" as const,
-        title: "Rough digits over perfect fonts",
-        summary: "Wobbly lines become both the look and the controls.",
-        body: [
-          "Doodle is not about swapping in a pretty typeface. Numbers and symbols that feel paper-drawn are the UI of timers, calculators, and more.",
-          "Apps stay independent, but DoodleKit and an App Group let one set of strokes travel across tools on the same device.",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "Coming soon",
-        badgeTone: "note" as const,
-        title: "Preparing for the App Store",
-        summary: "Designed for iPhone on iOS 26+.",
-        body: [
-          "The Doodle Series is being prepared for the App Store. The listing will be the source of truth for requirements and pricing when it ships.",
-        ],
-      },
-    ];
 ---
 
 <AppShell lang={lang} title={title} page={page} description={description}>
@@ -328,13 +260,22 @@ const newsPosts = ja
         <div class="suite-inline">
           <h2>{ja ? "シリーズのアプリ" : "Apps in the series"}</h2>
           <ul>
-            {suiteApps.map((app) => (
-              <li>
-                <span aria-hidden="true">{app.mark}</span>
-                <strong>{ja ? app.nameJa : app.nameEn}</strong>
-                <span>{ja ? app.blurbJa : app.blurbEn}</span>
-              </li>
-            ))}
+            {suiteApps.map((app) => {
+              const detailed = appDetail(app.id);
+              const row = (
+                <>
+                  <span aria-hidden="true">{app.mark}</span>
+                  <strong>{ja ? app.nameJa : app.nameEn}</strong>
+                  <span>{ja ? app.blurbJa : app.blurbEn}</span>
+                </>
+              );
+              /* Only the four apps with their own page become links. */
+              return detailed ? (
+                <li class="has-page"><a href={`${base}/apps/${app.id}`}>{row}<i aria-hidden="true">→</i></a></li>
+              ) : (
+                <li>{row}</li>
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -347,25 +288,14 @@ const newsPosts = ja
             ? "描いて、開いて、使う。はじめての流れを4ステップで。"
             : "Draw, open, use. A four-step first run through the series."}
         </p>
-        <ol class="how-list">
-          {howSteps.map((step) => (
-            <li>
-              <span class="how-n" aria-hidden="true">{step.n}</span>
-              <div>
-                <h2>{step.title}</h2>
-                <p>{step.body}</p>
-                <aside>{step.note}</aside>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <AppStory class="app-story--page" steps={howBeats} visual={StoryVisual} />
         <p class="section-more">
           <a href={`${base}/faq`}>{ja ? "よくある質問を見る" : "Read the FAQ"} →</a>
         </p>
       </div>
     )}
 
-    {page === "screenshots" && (
+    {page === "concept" && (
       <div class="concept-page">
         <p class="page-lead">
           {ja
@@ -441,7 +371,7 @@ const newsPosts = ja
       </article>
     )}
 
-    {(page === "features" || page === "how-to" || page === "screenshots") && (
+    {(page === "features" || page === "how-to" || page === "concept") && (
       <div class="content-cta">
         <span class="store-button store-soon" aria-disabled="true">
           <span class="store-dot" aria-hidden="true"></span>

@@ -1,0 +1,35 @@
+---
+/** One beat's visual: a real capture, or the light/dark pair for appearance. */
+import AppScreen from "./AppScreen.astro";
+
+export type StoryScreen =
+  | "today"
+  | "today-dark"
+  | "week"
+  | "month"
+  | "settings-iap"
+  | "add"
+  | "reflection";
+
+const {
+  lang,
+  screen,
+  appearance = false,
+  index = 0,
+} = Astro.props as {
+  lang: "ja" | "en";
+  screen?: StoryScreen;
+  appearance?: boolean;
+  index?: number;
+};
+const eager = index < 2;
+---
+
+{appearance ? (
+  <div class="appearance-screens">
+    <AppScreen screen="today" size="lg" lang={lang} eager={eager} class="appearance-screen appearance-screen--light" />
+    <AppScreen screen="today-dark" size="lg" lang={lang} eager={eager} class="appearance-screen appearance-screen--dark" />
+  </div>
+) : screen ? (
+  <AppScreen screen={screen} size="xl" lang={lang} eager={eager} />
+) : null}

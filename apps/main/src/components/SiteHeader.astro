@@ -15,35 +15,39 @@ const base = lang === "ja" ? "/ja" : "";
 const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
 ---
 
-<header class="site-header shell">
-  <a class="brand" href={lang === "ja" ? "/ja" : "/"}>Tomokichi</a>
+<!-- Header and mobile menu travel together so the menu cannot scroll out from
+     under a header that stays put. -->
+<div class="site-topbar" data-topbar>
+  <header class="site-header shell">
+    <a class="brand" href={lang === "ja" ? "/ja" : "/"}>Tomokichi</a>
 
-  <nav aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
+    <nav aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
+      {nav.map((item) => (
+        <a
+          href={href(item.href)}
+          class:list={{ current: current === item.match }}
+          aria-current={current === item.match ? "page" : undefined}
+        >
+          {item.label[lang]}
+        </a>
+      ))}
+    </nav>
+
+    <div class="header-actions">
+      <LanguageSwitcher lang={lang} path={path} />
+      <button class="header-menu" type="button" aria-label={lang === "ja" ? "メニュー" : "Menu"} aria-expanded="false" data-menu-toggle>☰</button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" hidden aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"} data-mobile-nav>
     {nav.map((item) => (
-      <a
-        href={href(item.href)}
-        class:list={{ current: current === item.match }}
-        aria-current={current === item.match ? "page" : undefined}
-      >
-        {item.label[lang]}
-      </a>
+      <a href={href(item.href)} class:list={{ current: current === item.match }}>{item.label[lang]}</a>
     ))}
   </nav>
-
-  <div style="display:flex; align-items:center; gap:14px; justify-self:end;">
-    <LanguageSwitcher lang={lang} path={path} />
-    <button class="header-menu" type="button" aria-label={lang === "ja" ? "メニュー" : "Menu"} aria-expanded="false" data-menu-toggle>☰</button>
-  </div>
-</header>
-
-<nav class="mobile-nav" hidden aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"} data-mobile-nav>
-  {nav.map((item) => (
-    <a href={href(item.href)} class:list={{ current: current === item.match }}>{item.label[lang]}</a>
-  ))}
-</nav>
+</div>
 
 <style>
-  .mobile-nav { display: none; flex-direction: column; padding: 8px clamp(22px, 5.1vw, 62px) 18px; border-bottom: 1px solid var(--line-soft); }
+  .mobile-nav { display: none; flex-direction: column; padding: 8px clamp(22px, 5.1vw, 62px) 18px; border-bottom: 1px solid var(--line-soft); background: var(--surface); }
   .mobile-nav a { padding: 12px 0; font-size: 14px; color: var(--ink-soft); border-bottom: 1px solid var(--line-soft); }
   .mobile-nav a:last-child { border-bottom: 0; }
   .mobile-nav a.current { color: var(--ink); }
@@ -54,6 +58,27 @@ const href = (p: string) => `${base}${p === "/" ? "" : p}` || "/";
 
 <script is:inline>
   (() => {
+    const topbar = document.querySelector("[data-topbar]");
+    if (topbar) {
+      let scheduled = false;
+      const sync = () => {
+        topbar.classList.toggle("is-stuck", window.scrollY > 24);
+      };
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (scheduled) return;
+          scheduled = true;
+          requestAnimationFrame(() => {
+            scheduled = false;
+            sync();
+          });
+        },
+        { passive: true },
+      );
+      sync();
+    }
+
     const btn = document.querySelector("[data-menu-toggle]");
     const menu = document.querySelector("[data-mobile-nav]");
     if (!btn || !menu) return;

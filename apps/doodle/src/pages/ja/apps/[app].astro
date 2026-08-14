@@ -1,0 +1,16 @@
+---
+import SuiteAppPage from "../../../components/SuiteAppPage.astro";
+import { appDetails, suiteApps } from "../../../lib/content";
+import "../../../styles/global.css";
+
+export function getStaticPaths() {
+  return appDetails.flatMap((detail) => {
+    const app = suiteApps.find((item) => item.id === detail.id);
+    return app ? [{ params: { app: detail.id }, props: { detail, app } }] : [];
+  });
+}
+
+const { app, detail } = Astro.props;
+---
+
+<SuiteAppPage lang="ja" app={app} detail={detail} />

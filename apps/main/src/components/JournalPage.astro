@@ -20,7 +20,7 @@ const entries = await journalEntries(lang);
     <SiteHeader lang={lang} path="/journal" current="journal" />
 
     <main>
-      <section class="journal-hero shell">
+      <section class="journal-hero shell" data-reveal="rise">
         <h1>{journal.hero.heading[lang]}</h1>
         <p class="lead">{journal.hero.body[lang]}</p>
       </section>
@@ -29,7 +29,11 @@ const entries = await journalEntries(lang);
         {entries.length === 0 ? (
           <p class="journal-empty">{journal.empty[lang]}</p>
         ) : (
-          entries.map((entry) => <JournalCard entry={entry} lang={lang} />)
+          entries.map((entry, i) => (
+            <div data-reveal style={`--reveal-i:${Math.min(i, 4)}`}>
+              <JournalCard entry={entry} lang={lang} />
+            </div>
+          ))
         )}
       </section>
     </main>

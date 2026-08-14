@@ -2,7 +2,7 @@ export type Locale = "ja" | "en";
 export type Page =
   | "features"
   | "how-to"
-  | "screenshots"
+  | "concept"
   | "faq"
   | "privacy"
   | "terms"
@@ -14,7 +14,7 @@ export const pick = <T>(ja: boolean, pair: [T, T]): T => pair[ja ? 0 : 1];
 export const titles: Record<Page, [string, string]> = {
   features: ["機能", "Features"],
   "how-to": ["使い方", "How to"],
-  screenshots: ["コンセプト画面", "Concept visuals"],
+  concept: ["コンセプト", "Concept"],
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
@@ -31,7 +31,7 @@ export const descriptions: Record<Page, [string, string]> = {
     "落書きを描き、TimerやCalculatorなど各アプリで使うまでの流れ。",
     "How to draw doodles and use them across Timer, Calculator, and the rest of the series.",
   ],
-  screenshots: [
+  concept: [
     "手描きUIの雰囲気を伝える、Doodleシリーズのコンセプトビジュアル。",
     "Concept doodle visuals that show the hand-drawn look of the Doodle Series.",
   ],
@@ -404,3 +404,196 @@ export function termsSections(ja: boolean): [string, string][] {
         ["Article 13 — Contact", "Shared support form (app: Doodle), or support@tmkch.io."],
       ];
 }
+
+/**
+ * Detail pages for the four apps shipping first.
+ *
+ * Everything here has to be checkable against the series' own description: the
+ * apps are free, independent, store their doodles on device, and share one
+ * DoodleKit asset library through an App Group. Nothing claims a release date.
+ */
+export type AppDetail = {
+  id: string;
+  /** Accent used for the page's marks and rules. */
+  accent: "coral" | "yellow" | "blue";
+  taglineJa: string;
+  taglineEn: string;
+  leadJa: string;
+  leadEn: string;
+  /** `[heading, body]` — three things this app does. */
+  pointsJa: [string, string][];
+  pointsEn: [string, string][];
+  /** `[heading, body]` — three steps to first use. */
+  stepsJa: [string, string][];
+  stepsEn: [string, string][];
+};
+
+export const appDetails: AppDetail[] = [
+  {
+    id: "timer",
+    accent: "coral",
+    taglineJa: "手書きの数字で、時間をはかる。",
+    taglineEn: "Count down in numbers you drew.",
+    leadJa:
+      "残り時間を表示するのは、自分で描いた0から9の数字です。線の震えも、はみ出しも、そのまま残ります。",
+    leadEn:
+      "The digits ticking down are the ones you drew, from zero to nine. Every wobble and overshoot stays exactly as you made it.",
+    pointsJa: [
+      [
+        "描いた数字がそのまま出る",
+        "0から9まで描いておけば、カウントダウンの表示がその筆跡に置き換わります。描き直せばすぐ反映されます。",
+      ],
+      [
+        "よく使う時間を残す",
+        "3分、10分、25分。決まった長さを保存しておけば、次からは選ぶだけで始められます。",
+      ],
+      [
+        "終わったら知らせる",
+        "時間になると通知でお知らせします。アプリを開いたままにしておく必要はありません。",
+      ],
+    ],
+    pointsEn: [
+      [
+        "Your handwriting, on the clock",
+        "Draw zero through nine once and the countdown renders in your own strokes. Redraw a digit and it updates straight away.",
+      ],
+      [
+        "Keep the lengths you reuse",
+        "Three minutes, ten, twenty-five. Save the ones you set often and start them with a single tap.",
+      ],
+      [
+        "A notice when it ends",
+        "The timer tells you when it is done, so the app does not have to stay open.",
+      ],
+    ],
+    stepsJa: [
+      ["数字を描く", "はじめに0から9までを指で描きます。きれいでなくてかまいません。"],
+      ["長さを決める", "時間を選ぶか、よく使う長さを保存しておきます。"],
+      ["置いておく", "開始したらアプリを閉じてかまいません。終わりは通知が知らせます。"],
+    ],
+    stepsEn: [
+      [
+        "Draw the digits",
+        "Start by drawing zero through nine with a finger. Neatness is not the point.",
+      ],
+      ["Choose a length", "Pick a duration, or save the ones you reach for most."],
+      [
+        "Leave it running",
+        "Close the app once it starts. A notification tells you when it is finished.",
+      ],
+    ],
+  },
+  {
+    id: "calculator",
+    accent: "blue",
+    taglineJa: "落書きの数字と記号で、計算する。",
+    taglineEn: "Do the sums in doodled symbols.",
+    leadJa:
+      "数字だけでなく、＋−×÷や＝も自分で描けます。計算そのものは正確に、見た目だけが手描きになります。",
+    leadEn:
+      "Not just the digits — the plus, minus, times, divide and equals are yours too. The arithmetic stays exact; only the look is hand-made.",
+    pointsJa: [
+      [
+        "記号まで手描き",
+        "演算子と＝も描いた線に置き換わります。ノートの余白で計算しているような画面になります。",
+      ],
+      ["計算はふつうに正確", "見た目は落書きでも、四則演算の結果はきちんと計算されます。"],
+      ["履歴をさかのぼる", "直前の式を見返して、続きから計算できます。"],
+    ],
+    pointsEn: [
+      [
+        "Operators too",
+        "The signs and the equals mark render in your ink, so the screen reads like working in a margin.",
+      ],
+      [
+        "Still exactly right",
+        "The look is a doodle; the arithmetic is not. Results are calculated properly.",
+      ],
+      ["Look back a step", "Review the previous expression and carry on from it."],
+    ],
+    stepsJa: [
+      ["数字と記号を描く", "0から9と、＋−×÷＝を一度描いておきます。"],
+      ["いつもどおり打つ", "操作は普通の電卓と同じです。押した順に式が組み上がります。"],
+      ["描き直す", "気に入らない線は、いつでも描き直せます。"],
+    ],
+    stepsEn: [
+      [
+        "Draw digits and signs",
+        "Sketch zero through nine, plus the four operators and equals, once.",
+      ],
+      ["Tap as usual", "It works like any calculator; the expression builds as you go."],
+      ["Redraw anytime", "A stroke you dislike can be drawn again whenever you want."],
+    ],
+  },
+  {
+    id: "counter",
+    accent: "yellow",
+    taglineJa: "タップするたび、手描きの数字が増えていく。",
+    taglineEn: "Tap, and your hand-drawn number climbs.",
+    leadJa:
+      "数えたいものに名前をつけて、タップで増やしていくだけ。表示される数は、自分で描いた数字です。",
+    leadEn: "Name the thing you are counting and tap. The number that appears is the one you drew.",
+    pointsJa: [
+      [
+        "複数のカウンターを持てる",
+        "数えたい対象ごとにカウンターを作り、それぞれ別に数を持てます。",
+      ],
+      ["増やすも減らすも", "タップで増やし、必要なら戻せます。ゼロに戻すのもすぐです。"],
+      ["端末の中に残る", "数えた結果は端末内に保存されます。アカウントは要りません。"],
+    ],
+    pointsEn: [
+      [
+        "More than one at a time",
+        "Make a counter per thing you are tracking; each keeps its own total.",
+      ],
+      [
+        "Up, and back down",
+        "Tap to add, step back when you miscount, and reset to zero in one move.",
+      ],
+      ["Kept on your device", "Totals stay on the phone. No account is involved."],
+    ],
+    stepsJa: [
+      ["数字を描く", "0から9を描いておきます。ここは他のDoodleアプリと共通です。"],
+      ["カウンターを作る", "名前をつけて、数えたいものごとに用意します。"],
+      ["数える", "あとはタップするだけ。数は自動的に保存されます。"],
+    ],
+    stepsEn: [
+      ["Draw the digits", "Sketch zero through nine — the same set the other Doodle apps use."],
+      ["Create a counter", "Give it a name, one per thing you want to track."],
+      ["Start counting", "Tap away; the total saves itself."],
+    ],
+  },
+  {
+    id: "stopwatch",
+    accent: "coral",
+    taglineJa: "走り書きの数字で、ラップを刻む。",
+    taglineEn: "Lap times in a rough, sketchy hand.",
+    leadJa:
+      "経過時間もラップも、描いた数字で表示されます。速さを競うためではなく、時間の流れを見るための道具です。",
+    leadEn:
+      "Elapsed time and laps both render in your own digits. It is less about racing than about watching time pass.",
+    pointsJa: [
+      ["ラップを重ねる", "計測中にラップを刻み、あとから一覧で見返せます。"],
+      ["止めて、また動かす", "一時停止と再開ができます。区切りたいところで止めてかまいません。"],
+      ["描いた数字で表示", "経過時間も、ラップの記録も、自分の筆跡で並びます。"],
+    ],
+    pointsEn: [
+      ["Stack up laps", "Mark laps while it runs and review the list afterwards."],
+      ["Pause and resume", "Stop wherever it makes sense and pick the same run back up."],
+      ["Shown in your ink", "Elapsed time and every lap appear in the digits you drew."],
+    ],
+    stepsJa: [
+      ["数字を描く", "0から9を一度描いておきます。"],
+      ["はじめる", "開始してからラップを刻んでいきます。"],
+      ["見返す", "止めたあと、ラップの一覧をゆっくり確認できます。"],
+    ],
+    stepsEn: [
+      ["Draw the digits", "Sketch zero through nine once."],
+      ["Start it", "Begin the run and mark laps as you go."],
+      ["Look back", "When you stop, the lap list is there to read through."],
+    ],
+  },
+];
+
+export const appDetail = (id: string): AppDetail | undefined =>
+  appDetails.find((app) => app.id === id);

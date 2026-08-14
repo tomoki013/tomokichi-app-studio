@@ -1,4 +1,5 @@
 ---
+import { OPERATOR } from "./operator";
 import { supportUrl } from "./urls";
 
 type Purchase = {
@@ -78,48 +79,86 @@ const returnsEn = hasPurchases
   ? "Because the product is digital content, returns and cancellations are not accepted after delivery begins. Refunds follow Apple's terms and are requested through Apple's refund request page, except where required by law."
   : "Because the product is digital content, returns and cancellations are not accepted after delivery begins, except where required by law or Apple's rules.";
 
-const rows = ja
+const i = ja ? 0 : 1;
+
+/** `kind` swaps the plain text body for markup the row needs (links, notes). */
+type Row = { term: string; body: string; kind?: "telephone" | "contact"; note?: string };
+
+const rows: Row[] = ja
   ? [
-      ["販売事業者", "Tomokichi"],
-      ["運営責任者", "請求があった場合、遅滞なく開示します。"],
-      ["所在地・電話番号", "請求があった場合、遅滞なく開示します。"],
-      ["お問い合わせ", "support@tmkch.io"],
-      ["販売価格", priceJa],
-      ["商品代金以外の必要料金", "インターネット接続に必要な通信料等は、利用者の負担となります。"],
-      ["支払方法・支払時期", paymentJa],
-      ["サービスの提供時期", deliveryJa],
-      ["返品・キャンセル", returnsJa],
-      ["動作環境", "対応するOS・端末はApp Storeの商品ページに表示します。"],
+      { term: "販売事業者", body: OPERATOR.seller[i] },
+      { term: "運営責任者", body: OPERATOR.responsible[i] },
+      { term: "所在地", body: OPERATOR.address[i] },
+      {
+        term: "電話番号",
+        body: OPERATOR.telephone[i],
+        kind: "telephone",
+        note: "受付時間の都合上、まずは下記のお問い合わせフォームをご利用ください。ご請求があれば遅滞なく電話にて対応します。",
+      },
+      {
+        term: "お問い合わせ",
+        body: OPERATOR.email,
+        kind: "contact",
+        note: "お問い合わせフォームからのご連絡が確実です。",
+      },
+      { term: "販売価格", body: priceJa },
+      { term: "商品代金以外の必要料金", body: "インターネット接続に必要な通信料等は、利用者の負担となります。" },
+      { term: "支払方法・支払時期", body: paymentJa },
+      { term: "サービスの提供時期", body: deliveryJa },
+      { term: "返品・キャンセル", body: returnsJa },
+      { term: "動作環境", body: "対応するOS・端末はApp Storeの商品ページに表示します。" },
     ]
   : [
-      ["Seller", "Tomokichi"],
-      ["Responsible operator", "Disclosed without delay upon request."],
-      ["Address and telephone number", "Disclosed without delay upon request."],
-      ["Contact", "support@tmkch.io"],
-      ["Price", priceEn],
-      ["Additional charges", "You are responsible for internet access and data charges."],
-      ["Payment method and timing", paymentEn],
-      ["Delivery", deliveryEn],
-      ["Returns and cancellations", returnsEn],
-      ["System requirements", "Supported operating systems and devices are listed on the App Store product page."],
+      { term: "Seller", body: OPERATOR.seller[i] },
+      { term: "Responsible operator", body: OPERATOR.responsible[i] },
+      { term: "Address", body: OPERATOR.address[i] },
+      {
+        term: "Telephone",
+        body: OPERATOR.telephone[i],
+        kind: "telephone",
+        note: "The support form below is the fastest route; the number above is answered on request.",
+      },
+      {
+        term: "Contact",
+        body: OPERATOR.email,
+        kind: "contact",
+        note: "The support form is the most reliable way to reach us.",
+      },
+      { term: "Price", body: priceEn },
+      { term: "Additional charges", body: "You are responsible for internet access and data charges." },
+      { term: "Payment method and timing", body: paymentEn },
+      { term: "Delivery", body: deliveryEn },
+      { term: "Returns and cancellations", body: returnsEn },
+      { term: "System requirements", body: "Supported operating systems and devices are listed on the App Store product page." },
     ];
 ---
 
 <section class="commercial-page">
-  <header class="commercial-intro">
+  <header class="commercial-intro" data-reveal>
     <p class="commercial-eyebrow">LEGAL</p>
     <h1>{ja ? "特定商取引法に基づく表記" : "Commercial Transactions Disclosure"}</h1>
     <p>{ja ? `${appName}に関する販売条件と事業者情報を掲載しています。` : `Seller and transaction information for ${appName}.`}</p>
   </header>
 
-  <dl class="commercial-list">
-    {rows.map(([term, description]) => (
+  <dl class="commercial-list" data-reveal>
+    {rows.map((row) => (
       <div>
-        <dt>{term}</dt>
+        <dt>{row.term}</dt>
         <dd>
-          {term === (ja ? "お問い合わせ" : "Contact") ? (
-            <><a href="mailto:support@tmkch.io">{description}</a><span> · </span><a href={contactHref}>{ja ? "お問い合わせフォーム" : "Support form"}</a></>
-          ) : description}
+          {row.kind === "telephone" ? (
+            <a class="commercial-action" href={OPERATOR.telephoneHref}>{row.body}</a>
+          ) : row.kind === "contact" ? (
+            <span class="commercial-actions">
+              <a class="commercial-action" href={`mailto:${OPERATOR.email}`}>{row.body}</a>
+              <a class="commercial-action is-primary" href={contactHref}>
+                {ja ? "お問い合わせフォームを開く" : "Open the support form"}
+                <span aria-hidden="true">→</span>
+              </a>
+            </span>
+          ) : (
+            row.body
+          )}
+          {row.note && <span class="commercial-note">{row.note}</span>}
         </dd>
       </div>
     ))}
@@ -139,9 +178,31 @@ const rows = ja
   .commercial-list dd { margin: 0; font-size: 13px; line-height: 1.9; opacity: .78; }
   .commercial-list a { color: inherit; text-underline-offset: 4px; }
   .commercial-updated { margin: 24px 0 0; font-size: 11px; opacity: .52; }
+
+  /* Contact and telephone read as controls, so they are never mistaken for text. */
+  .commercial-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .commercial-action {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 15px; border-radius: 999px;
+    border: 1px solid color-mix(in srgb, currentColor 26%, transparent);
+    font-size: 12.5px; line-height: 1.5; text-decoration: none; white-space: nowrap;
+    transition: background-color .22s ease, border-color .22s ease, transform .22s ease;
+  }
+  .commercial-action:hover,
+  .commercial-action:focus-visible {
+    background: color-mix(in srgb, currentColor 9%, transparent);
+    border-color: color-mix(in srgb, currentColor 46%, transparent);
+    transform: translateY(-1px);
+  }
+  .commercial-action.is-primary { border-color: color-mix(in srgb, currentColor 52%, transparent); font-weight: 600; }
+  .commercial-action span { transition: transform .22s ease; }
+  .commercial-action:hover span { transform: translateX(3px); }
+  .commercial-note { display: block; margin-top: 9px; font-size: 11.5px; line-height: 1.8; opacity: .7; }
+
   @media (max-width: 600px) {
     .commercial-page { width: min(100% - 32px, 760px); padding-top: 72px; }
     .commercial-list > div { grid-template-columns: 1fr; gap: 7px; padding: 19px 2px; }
     .commercial-list dt, .commercial-list dd { font-size: 12.5px; }
+    .commercial-action { white-space: normal; }
   }
 </style>
