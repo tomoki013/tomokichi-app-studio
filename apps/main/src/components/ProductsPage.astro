@@ -32,11 +32,11 @@ const visualIcons = orderedApps.slice(0, 4).map((app) => ({
 
     <main>
       <section class="apps-hero shell">
-        <div>
+        <div data-reveal="rise">
           <h1>{appsPage.hero.heading[lang]}</h1>
           <p class="lead">{appsPage.hero.body[lang]}</p>
         </div>
-        <div class="apps-visual" aria-hidden="true">
+        <div class="apps-visual" aria-hidden="true" data-reveal="zoom">
           {visualIcons.map((ic, i) => (
             <div
               class:list={["app-icon", ic.iconClass, `i${i + 1}`]}
@@ -56,7 +56,7 @@ const visualIcons = orderedApps.slice(0, 4).map((app) => ({
 
       <div class="apps-catalogue" data-apps-list>
         <section class="apps-section shell" data-section="released" hidden={releasedApps.length === 0}>
-          <header class="apps-section-head">
+          <header class="apps-section-head" data-reveal="fade">
             <h2>{appsPage.sections.available[lang]}</h2>
             <span class="apps-count">{releasedApps.length}</span>
           </header>
@@ -68,7 +68,7 @@ const visualIcons = orderedApps.slice(0, 4).map((app) => ({
         </section>
 
         <section class="apps-section shell" data-section="developing" hidden={developingApps.length === 0}>
-          <header class="apps-section-head">
+          <header class="apps-section-head" data-reveal="fade">
             <h2>{appsPage.sections.developing[lang]}</h2>
             <span class="apps-count">{developingApps.length}</span>
           </header>
@@ -80,7 +80,7 @@ const visualIcons = orderedApps.slice(0, 4).map((app) => ({
         </section>
 
         <section class="apps-section shell" data-section="concept" hidden={conceptApps.length === 0}>
-          <header class="apps-section-head">
+          <header class="apps-section-head" data-reveal="fade">
             <h2>{appsPage.sections.concept[lang]}</h2>
             <span class="apps-count">{conceptApps.length}</span>
           </header>
@@ -94,7 +94,7 @@ const visualIcons = orderedApps.slice(0, 4).map((app) => ({
         <p class="apps-empty shell" hidden data-empty>{ja ? "該当するアプリはありません。" : "No apps match this filter."}</p>
       </div>
 
-      <section class="apps-support shell">
+      <section class="apps-support shell" data-reveal="rise">
         <h2>{appsPage.bottom.heading[lang]}</h2>
         <p>{appsPage.bottom.body[lang]}</p>
         <ArrowLink href={p("/support")} label={appsPage.bottom.cta[lang]} />

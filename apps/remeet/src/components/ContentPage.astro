@@ -1,4 +1,5 @@
 ---
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import {
@@ -11,7 +12,6 @@ import {
   pageDescriptions,
   pick,
   privacySections,
-  steps as stepList,
   subtitleMap,
   termsSections,
   titleMap,
@@ -19,6 +19,7 @@ import {
 import { supportHref } from "../lib/links";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
+import StoryVisual from "./StoryVisual.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
@@ -28,7 +29,6 @@ const descriptionPair = pageDescriptions[page];
 const subtitle = subtitlePair ? pick(ja, subtitlePair) : undefined;
 const description = descriptionPair ? pick(ja, descriptionPair) : undefined;
 const features = featureList(ja);
-const steps = stepList(ja);
 const guides = guideList(ja);
 const faqs = faqList(ja);
 const legalSections = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
@@ -84,6 +84,60 @@ const screenshots = (
       ]
 ) as ["home" | "memories" | "wishes" | "album" | "settings", string][];
 
+/*
+ * Features and How-to lead with the shared scroll story. Only the beats that a
+ * real screen can carry become story steps; the rest of the feature list stays
+ * a compact grid underneath, so the page does not become thirty screens tall.
+ */
+const featureBeats: StoryStep[] = (
+  ja
+    ? [
+        ["再会までのカウントダウン", "再会の日までを、日数と進捗で見守ります。少しずつ近づいていく感覚が、待つ時間を支えます。", "home"],
+        ["二つの場所をつなぐルート", "ふたりの場所をつなぐルートイラストで、離れている距離をやさしく表現します。正確な地図やリアルタイムの航路ではありません。", "home"],
+        ["待っている間の記録", "写真とメモで、離れている日々を自分の記録として残せます。1件につき写真は1枚です。", "memories"],
+        ["会ったらやりたいことリスト", "一緒にしたいことをリストに残せます。共有した再会では、招待したパートナーと一緒に編集できます。", "wishes"],
+        ["再会の日を、アルバムに", "会えた日の写真と振り返りを残し、完了した再会はアルバムとして見返せます。", "album"],
+        ["通知も言語も、設定で選ぶ", "1週間前・前日・当日の朝・再会時刻の通知を個別に切り替えられます。日本語を含む6言語に対応しています。", "settings"],
+      ]
+    : [
+        ["A countdown to the reunion", "Watch the days and progress until you meet again. Feeling it draw closer carries the waiting.", "home"],
+        ["A route between two places", "A gentle route illustration connects both places and softens the distance. It is not a live map or real-time flight path.", "home"],
+        ["Memories while apart", "Keep photos and notes from the days in between as your own record. One photo per entry.", "memories"],
+        ["Things to do together", "List what you want to do when you meet. On a shared reunion, the invited partner can edit it with you.", "wishes"],
+        ["The day itself, in an album", "Save a photo and reflection from the day you meet, then revisit completed reunions in albums.", "album"],
+        ["Notifications and language, your way", "Toggle one week before, the day before, the morning of, and reunion time independently. Available in six languages.", "settings"],
+      ]
+).map(([title, body, screen], i) => ({
+  kicker: String(i + 1).padStart(2, "0"),
+  title,
+  body,
+  visual: { lang, screen },
+}));
+
+const howBeats: StoryStep[] = (
+  ja
+    ? [
+        ["再会予定を作る", "再会の日付と、ふたりがいる場所を設定します。旅行や帰省など、複数の予定を並行して持てます。", "home", "独自アカウントは不要です。作成した予定はすぐにホームに表示されます。"],
+        ["待っている日々を記録する", "写真とメモで、離れている時間を残します。毎日でなくてかまいません。", "memories", "個人利用の記録は端末内に保存されます。"],
+        ["会ったらやりたいことを残す", "再会の日にしたいことを、ひとつずつリストに。共有した再会なら、相手と一緒に書き足せます。", "wishes", "共有した再会だけがAppleのiCloudを通じて同期されます。"],
+        ["再会の日を、アルバムに残す", "会えた日の写真と振り返りをアルバムへ。予定が変わったときは日時を変更できます。", "album", "同じ相手の再会は、あとからまとめられます。"],
+        ["通知とウィジェットを整える", "設定から通知の種類を選び、ホーム画面やロック画面にウィジェットを置きます。", "settings", "ウィジェットはアプリを開かずに残り日数を確認できます。"],
+      ]
+    : [
+        ["Create a reunion", "Set the date and where each of you will be. Trips and visits can run side by side.", "home", "No proprietary account is needed. A new plan appears on Home right away."],
+        ["Record the waiting days", "Keep photos and notes from the time apart. It does not have to be every day.", "memories", "Personal records stay on your device."],
+        ["Save things to do together", "List what you want to do when you meet. On a shared reunion you can add to it together.", "wishes", "Only a shared reunion syncs, through Apple iCloud."],
+        ["Keep the day in an album", "Save a photo and reflection from the day you meet, or change the date if plans move.", "album", "Reunions with the same person can be grouped later."],
+        ["Set up notices and widgets", "Choose which notifications you want in Settings, then place a widget on your Home or Lock Screen.", "settings", "A widget shows the days left without opening the app."],
+      ]
+).map(([title, body, screen, note], i) => ({
+  kicker: String(i + 1).padStart(2, "0"),
+  title,
+  body,
+  note,
+  visual: { lang, screen },
+}));
+
 const heroEyebrow: Partial<Record<Page, string>> = {
   features: "FEATURES",
   "how-to": "HOW TO USE",
@@ -102,6 +156,33 @@ const envNote = ja
 
 const newsPosts = ja
   ? [
+      {
+        id: "widgets-explained",
+        date: "2026.08.12",
+        datetime: "2026-08-12",
+        badge: "コラム",
+        badgeTone: "column" as const,
+        title: "ウィジェットは、6つのサイズで残り日数を見せます",
+        summary: "ホーム画面のSmall / Medium / Largeと、ロック画面のインライン・円形・長方形。サイズごとに見せる情報が違います。",
+        body: [
+          "Remeetのウィジェットは、アプリを開かずに次の再会までの残り日数を確かめるためのものです。ホーム画面ではSmall、Medium、Largeの3サイズ、ロック画面ではインライン、円形、長方形の3種類に対応しています。",
+          "小さいサイズでは残り日数だけを、大きいサイズでは進捗やふたつの場所をつなぐルート、直近の記録まで表示します。表示する再会予定は、複数ある場合でも切り替えられます。",
+          "ウィジェットに表示されるのは端末内の情報だけです。共有していない再会の内容が、ほかの端末へ送られることはありません。",
+        ],
+      },
+      {
+        id: "share-pass-note",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "お知らせ",
+        title: "Share Passの考え方を、料金ページにまとめました",
+        summary: "個人利用は無料、1つ目の再会の共有も無料。2つ目以降の共有にだけ、有料のShare Passを使います。",
+        body: [
+          "料金ページを更新し、無料でできることと、費用がかかる場面を表で並べました。アプリのダウンロードと個人利用は無料で、共有も1つ目の再会までは無料です。",
+          "2つ目以降の再会を共有するときにだけ、Share Pass（1枚 ¥500・税込・買い切りの消費型アプリ内課金）を使います。サブスクリプションではなく、有効期限もありません。相手が参加するまでPassは消費されないので、招待を送っただけでは減りません。",
+          "消費型のため、一度使ったPassは復元できません。価格と提供内容は、App Storeの商品ページとアプリ内の購入画面の表示が正しいものとします。",
+        ],
+      },
       {
         id: "site-launch",
         date: "2026.08.01",
@@ -142,6 +223,33 @@ const newsPosts = ja
       },
     ]
   : [
+      {
+        id: "widgets-explained",
+        date: "2026.08.12",
+        datetime: "2026-08-12",
+        badge: "Column",
+        badgeTone: "column" as const,
+        title: "Six widget sizes, each showing the wait differently",
+        summary: "Small, Medium and Large on the Home Screen; inline, circular and rectangular on the Lock Screen.",
+        body: [
+          "Remeet’s widgets exist so you can check the days until the next reunion without opening the app. The Home Screen supports Small, Medium and Large; the Lock Screen supports inline, circular and rectangular.",
+          "Smaller sizes show only the days remaining. Larger ones add progress, the route between both places, and your most recent records. If you keep several reunions, you can choose which one a widget follows.",
+          "A widget only ever reads what is already on your device. Nothing from a reunion you have not shared leaves your iPhone.",
+        ],
+      },
+      {
+        id: "share-pass-note",
+        date: "2026.08.08",
+        datetime: "2026-08-08",
+        badge: "Update",
+        title: "The pricing page now spells out where Share Pass applies",
+        summary: "Personal use is free and so is your first shared reunion. A paid pass covers each additional shared reunion.",
+        body: [
+          "We rewrote the pricing page as a plain table of what is free and what costs money. Downloading Remeet and using it on your own is free, and sharing your first reunion is free too.",
+          "Sharing a second or later reunion uses a Share Pass: ¥500 each, tax included, a one-time consumable in-app purchase. It is not a subscription and it does not expire. The pass is not spent until your partner actually joins, so sending an invitation does not use one up.",
+          "Because it is a consumable, a spent pass cannot be restored. The tax-inclusive price on the App Store product page and the in-app purchase screen is authoritative.",
+        ],
+      },
       {
         id: "site-launch",
         date: "2026.08.01",
@@ -197,7 +305,7 @@ const newsPosts = ja
           <span class="blob blob-b"></span>
           {page === "features" && <AppScreen screen="home" size="sm" lang={lang} class="hero-art-screen" />}
           {page === "how-to" && <AppScreen screen="wishes" size="sm" lang={lang} class="hero-art-screen" />}
-          {(page === "news" || page === "updates") && <span class="release-orbit"><b>R</b><i></i><em></em></span>}
+          {(page === "news" || page === "updates") && <span class="release-marks"><i></i><i></i><i></i></span>}
           {page === "screenshots" && <AppScreen screen="album" size="sm" lang={lang} class="hero-art-screen" />}
           {page === "faq" && <span class="hero-marks"><b>?</b><i>?</i></span>}
           {page === "pricing" && <img src="/assets/sky-vase.png" alt="" width="1122" height="1402" loading="lazy" decoding="async" />}
@@ -213,34 +321,30 @@ const newsPosts = ja
 
     {page === "features" && (
       <>
-        <div class="feature-page-grid">
-          {features.map(([icon, heading, body]) => (
-            <article>
-              <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} /></span>
-              <div><h2>{heading}</h2><p>{body}</p></div>
-            </article>
-          ))}
-        </div>
+        <AppStory class="app-story--page" steps={featureBeats} visual={StoryVisual} />
+        <section class="feature-rest">
+          <h2 class="block-title">{ja ? "そのほかにできること" : "Everything else it does"}</h2>
+          <div class="feature-page-grid">
+            {features.map(([icon, heading, body]) => (
+              <article data-reveal>
+                <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} /></span>
+                <div><h2>{heading}</h2><p>{body}</p></div>
+              </article>
+            ))}
+          </div>
+        </section>
         <p class="env-note feature-env"><strong>{envLine}</strong><br />{envNote}</p>
-        <a class="orange-cta" href={ja ? "/ja/how-to" : "/how-to"}>{ja ? "使い方を見る" : "See how it works"} →</a>
+        <div class="page-actions">
+          <a class="orange-cta" href={ja ? "/ja/how-to" : "/how-to"}>{ja ? "使い方を見る" : "See how it works"} →</a>
+          <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+        </div>
       </>
     )}
 
     {page === "how-to" && (
       <>
-        <ol class="step-row">
-          {steps.map(([icon, heading, body], i) => (
-            <li>
-              <span class="step-no">{i + 1}</span>
-              <article>
-                <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} /></span>
-                <h2>{heading}</h2>
-                <p>{body}</p>
-              </article>
-            </li>
-          ))}
-        </ol>
-        <aside class="how-note">
+        <AppStory class="app-story--page" steps={howBeats} visual={StoryVisual} />
+        <aside class="how-note" data-reveal>
           <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.bulb} /></span>
           <div>
             <h2>{ja ? "はじめての方へ" : "New to Remeet?"}</h2>
@@ -251,7 +355,7 @@ const newsPosts = ja
           <h2 class="block-title">{ja ? "もっと詳しく" : "In more detail"}</h2>
           <div class="guide-visual-list">
             {guides.map((guide) => (
-              <article class="guide-visual">
+              <article class="guide-visual" data-reveal>
                 <div class="guide-visual-copy">
                   <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[guide.icon]} /></span>
                   <h3>{guide.title}</h3>
@@ -269,11 +373,13 @@ const newsPosts = ja
             ))}
           </div>
         </section>
-        <aside class="how-help">
+        <aside class="how-help" data-reveal>
           <p>{ja ? "使い方でわからないことがあれば、よくある質問もご覧ください。" : "If anything is still unclear, the FAQ may help."}</p>
           <a href={ja ? "/ja/faq" : "/faq"}>{ja ? "よくある質問へ" : "Go to the FAQ"} →</a>
         </aside>
-        <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+        <div class="page-actions">
+          <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+        </div>
       </>
     )}
 
@@ -299,37 +405,77 @@ const newsPosts = ja
 
     {page === "pricing" && (
       <div class="pricing-story">
-        <section class="personal-plan">
-          <header><p>{ja ? "ひとりで使う" : "USE IT YOURSELF"}</p><strong>{ja ? "無料" : "Free"}</strong></header>
-          <div class="plan-message">
-            <p>{ja ? "予定や思い出を自分の端末で残す基本機能は、すべて無料です。" : "Every core feature for keeping plans and memories on your own device is free."}</p>
-            <p>{ja ? "アカウント登録は不要。一部画面には広告が表示されます。" : "No account is needed. Ads may appear on some screens."}</p>
-          </div>
-          <ul class="plan-list">{planIncludes.map((item) => <li>{item}</li>)}</ul>
-        </section>
-        <section class="share-pass-plan">
-          <div class="pass-ticket" aria-hidden="true"><span>SHARE PASS</span><b>1</b><small>ONE REUNION</small></div>
-          <div class="share-pass-copy">
-            <p class="plan-label">{ja ? "2回目以降の共有" : "ADDITIONAL SHARED REUNIONS"}</p>
-            <h2>{ja ? "Share Pass 1枚" : "One Share Pass"}</h2>
-            <strong class="plan-price">¥500</strong>
-            <p>{ja
-              ? "1枚で、1つの再会を1人のパートナーと共有できます。予定、待っている間の記録、やりたいことをふたりで残せて、その再会では双方に広告が表示されません。"
-              : "One pass shares one reunion with one partner. Keep the plan, memories, and wish list together, and that reunion is ad-free for both people."}</p>
-            <ul>
-              <li>{ja ? "最初の再会の共有は無料" : "Your first shared reunion is free"}</li>
+        <p class="pricing-summary" data-reveal>{ja
+          ? "アプリのダウンロードと個人利用は無料です。共有は1つ目の再会まで無料で、2つ目以降の共有には有料のShare Pass（1枚 ¥500・税込・買い切りの消費型アプリ内課金）が必要です。"
+          : "Downloading Remeet and using it on your own is free. Sharing is free for your first reunion; sharing a second or later reunion requires a paid Share Pass (¥500 each, tax included, a one-time consumable in-app purchase)."}</p>
+
+        <div class="plan-pair">
+          <section class="plan-card" data-reveal>
+            <p class="plan-label">{ja ? "個人利用" : "On your own"}</p>
+            <p class="plan-amount"><strong>¥0</strong><span>{ja ? "アプリ内課金なしで使えます" : "no purchase needed"}</span></p>
+            <p class="plan-summary">{ja
+              ? "予定や思い出を自分の端末で残す基本機能。一部画面に広告が表示されます。"
+              : "Every core feature for keeping plans and memories on your own device. Ads appear on some screens."}</p>
+            <ul class="plan-list">{planIncludes.map((item) => <li>{item}</li>)}</ul>
+          </section>
+
+          <section class="plan-card plan-card--paid" data-reveal style="--reveal-i:1">
+            <p class="plan-badge">{ja ? "有料" : "Paid"}</p>
+            <p class="plan-label">{ja ? "2つ目以降の再会を共有する" : "Share a second reunion"}</p>
+            <p class="plan-amount"><strong>¥500</strong><span>{ja ? "／ 1枚・税込・買い切り" : "per pass, tax included, one time"}</span></p>
+            <p class="plan-summary">{ja
+              ? "Share Pass 1枚で、1つの再会を1人のパートナーと共有できます。予定・記録・やりたいことをふたりで残せて、その再会は双方に広告が表示されません。"
+              : "One Share Pass shares one reunion with one partner. Keep the plan, memories, and wish list together, and that reunion is ad-free for both of you."}</p>
+            <ul class="plan-list">
+              <li>{ja ? "1枚につき、共有できる再会は1つ" : "One pass covers one reunion"}</li>
               <li>{ja ? "有効期限なし・必要な再会にだけ使用" : "No expiry; use it only when you need it"}</li>
-              <li>{ja ? "買い切りの消費型商品・サブスクリプションなし" : "One-time consumable; no subscription"}</li>
+              <li>{ja ? "消費型のため、使用後は復元できません" : "Consumable — it cannot be restored once used"}</li>
               <li>{ja ? "相手が参加するまでPassは消費されません" : "The pass is not spent until your partner joins"}</li>
+              <li>{ja ? "サブスクリプションではありません" : "Not a subscription"}</li>
             </ul>
-            <small>{ja ? "価格と提供内容はApp Storeおよびアプリ内購入画面の表示が正しいものとします。" : "The App Store and in-app purchase screen are the source of truth for price and availability."}</small>
-          </div>
-        </section>
-        <p class="plan-ad-note">{ja
-          ? "個人利用では一部画面に広告が表示されます。Share Passを適用して共有した再会は、参加者双方が広告なしで利用できます。"
-          : "Personal use may include ads on some screens. A reunion shared with a Share Pass is ad-free for both participants."}</p>
+          </section>
+        </div>
+
+        <table class="plan-table" data-reveal>
+          <caption>{ja ? "無料でできることと、有料が必要になる場面" : "What is free, and where a purchase is needed"}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{ja ? "できること" : "What you do"}</th>
+              <th scope="col">{ja ? "料金" : "Cost"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(ja
+              ? [
+                  ["アプリのダウンロードと個人利用", "無料"],
+                  ["1つ目の再会をパートナーと共有する", "無料"],
+                  ["2つ目以降の再会を共有する", "Share Pass 1枚 ¥500"],
+                  ["共有した再会を広告なしで使う", "Share Passに含まれます"],
+                  ["個人利用中の広告を消す", "現在ご用意がありません"],
+                ]
+              : [
+                  ["Download and personal use", "Free"],
+                  ["Share your first reunion", "Free"],
+                  ["Share a second or later reunion", "¥500 per Share Pass"],
+                  ["Ad-free inside a shared reunion", "Included with the pass"],
+                  ["Remove ads during personal use", "Not offered today"],
+                ]
+            ).map(([what, cost]) => (
+              <tr>
+                <th scope="row">{what}</th>
+                <td>{cost}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <p class="plan-ad-note" data-reveal>{ja
+          ? "個人利用では一部画面に広告が表示されます。Share Passを適用して共有した再会は、参加者双方が広告なしで利用できます。価格と提供内容は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。返金はAppleの規定に従います。"
+          : "Personal use includes ads on some screens. A reunion shared with a Share Pass is ad-free for both participants. The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative, and refunds follow Apple’s terms."}</p>
         <p class="env-note"><strong>{envLine}</strong><br />{envNote}</p>
-        <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+        <div class="page-actions">
+          <span class="orange-cta store-soon" aria-disabled="true">{storeLabel}</span>
+        </div>
       </div>
     )}
 

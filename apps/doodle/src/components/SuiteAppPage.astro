@@ -1,0 +1,99 @@
+---
+/** One app in the series: what it does, how to start, and where it sits. */
+import { type AppDetail, pick, type SuiteApp, suiteApps } from "../lib/content";
+import AppShell from "./AppShell.astro";
+
+const { lang, app, detail } = Astro.props as {
+  lang: "ja" | "en";
+  app: SuiteApp;
+  detail: AppDetail;
+};
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const name = ja ? app.nameJa : app.nameEn;
+const tagline = pick(ja, [detail.taglineJa, detail.taglineEn]);
+const lead = pick(ja, [detail.leadJa, detail.leadEn]);
+const points = ja ? detail.pointsJa : detail.pointsEn;
+const steps = ja ? detail.stepsJa : detail.stepsEn;
+const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+
+/** The rest of the series, so a visitor can move sideways from here. */
+const siblings = suiteApps.filter((item) => item.id !== app.id).slice(0, 6);
+---
+
+<AppShell
+  lang={lang}
+  page={`apps/${app.id}`}
+  title={`${name} — ${ja ? "Doodleシリーズ" : "Doodle Series"}`}
+  description={`${name}: ${tagline}`}
+>
+  <section class={`content-page suite-app suite-app--${detail.accent}`}>
+    <header class="suite-hero" data-reveal="rise">
+      <p class="content-eyebrow">DOODLE SERIES</p>
+      <p class="suite-hero-mark" aria-hidden="true">{app.mark}</p>
+      <h1>{name}</h1>
+      <p class="suite-hero-tagline">{tagline}</p>
+      <p class="suite-hero-lead">{lead}</p>
+      <div class="hero-actions">
+        <span class="store-button store-soon" aria-disabled="true">
+          <span class="store-dot" aria-hidden="true"></span>
+          {storeLabel}
+        </span>
+        <a class="secondary-button" href={`${base}/how-to`}>{ja ? "使い方を見る" : "See how it works"}</a>
+      </div>
+    </header>
+
+    <section class="suite-points">
+      <h2 class="suite-section-title" data-reveal="fade">{ja ? "できること" : "What it does"}</h2>
+      <div class="suite-point-grid">
+        {points.map(([heading, body], i) => (
+          <article data-reveal style={`--reveal-i:${i}`}>
+            <b>{String(i + 1).padStart(2, "0")}</b>
+            <h3>{heading}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="suite-steps">
+      <h2 class="suite-section-title" data-reveal="fade">{ja ? "はじめかた" : "Getting started"}</h2>
+      <ol>
+        {steps.map(([heading, body], i) => (
+          <li data-reveal style={`--reveal-i:${i}`}>
+            <span class="how-n" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h3>{heading}</h3>
+              <p>{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <aside class="suite-shared" data-reveal>
+      <h2>{ja ? "描いた線は、シリーズで共有されます" : "Your strokes travel across the series"}</h2>
+      <p>
+        {ja
+          ? "一度描いた数字や記号は、App Groupを通じてDoodleシリーズの他のアプリでも使えます。アプリごとに描き直す必要はありません。保存先は端末内です。"
+          : "Digits and symbols you draw once become available to the other Doodle apps through a shared App Group, so nothing has to be redrawn per app. Everything stays on your device."}
+      </p>
+    </aside>
+
+    <section class="suite-siblings">
+      <h2 class="suite-section-title" data-reveal="fade">{ja ? "シリーズのほかのアプリ" : "Elsewhere in the series"}</h2>
+      <ul>
+        {siblings.map((item, i) => (
+          <li data-reveal style={`--reveal-i:${Math.min(i, 4)}`}>
+            <span aria-hidden="true">{item.mark}</span>
+            <strong>{ja ? item.nameJa : item.nameEn}</strong>
+            <span>{ja ? item.blurbJa : item.blurbEn}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="section-more">
+        <a href={`${base}/features`}>{ja ? "シリーズ全体を見る" : "See the whole series"} →</a>
+      </p>
+    </section>
+  </section>
+</AppShell>

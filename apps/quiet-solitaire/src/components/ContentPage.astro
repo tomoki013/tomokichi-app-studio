@@ -1,4 +1,5 @@
 ---
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
@@ -20,6 +21,7 @@ import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
 import QuietFeaturesPage from "./QuietFeaturesPage.astro";
 import QuietReviewsPage from "./QuietReviewsPage.astro";
+import StoryVisual from "./StoryVisual.astro";
 
 const { lang, page } = Astro.props as { lang: "ja" | "en"; page: Page };
 const ja = lang === "ja";
@@ -34,6 +36,15 @@ const guides = howGuides(ja);
 const faqs = faqList(ja);
 const faqCats = ja ? faqCategories.ja : faqCategories.en;
 const posts = newsPosts(ja);
+
+/* How-to leads with the shared scroll story used across every brand site. */
+const howBeats: StoryStep[] = guides.map((guide, i) => ({
+  kicker: String(i + 1).padStart(2, "0"),
+  title: guide.title,
+  body: guide.steps.join(""),
+  note: guide.note,
+  visual: { lang },
+}));
 ---
 
 <AppShell lang={lang} title={title} page={page} description={description}>
@@ -69,19 +80,7 @@ const posts = newsPosts(ja);
             </li>
           ))}
         </ol>
-        <div class="guide-list">
-          {guides.map((guide) => (
-            <article data-reveal>
-              <h2>{guide.title}</h2>
-              <ol>
-                {guide.steps.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ol>
-              <aside>{guide.note}</aside>
-            </article>
-          ))}
-        </div>
+        <AppStory class="app-story--page" steps={howBeats} visual={StoryVisual} />
         <aside class="how-help" data-reveal>
           <p>{ja ? "わからないことがあれば、FAQもご覧ください。" : "If anything is still unclear, the FAQ may help."}</p>
           <a href={ja ? "/ja/faq" : "/faq"}>{ja ? "よくある質問へ" : "Go to the FAQ"} →</a>

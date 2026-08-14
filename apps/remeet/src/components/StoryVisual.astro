@@ -1,0 +1,35 @@
+---
+/** One story beat's visual: a real capture, or a product image where no
+    single screen shows the feature (widgets, for instance). */
+import AppScreen from "./AppScreen.astro";
+
+type Screen = "home" | "memories" | "wishes" | "album" | "settings";
+
+const {
+  lang,
+  screen,
+  image,
+  imageAlt = "",
+  index = 0,
+} = Astro.props as {
+  lang: "ja" | "en";
+  screen?: Screen;
+  image?: string;
+  imageAlt?: string;
+  index?: number;
+};
+---
+
+{screen ? (
+  <AppScreen screen={screen} size="xl" lang={lang} priority={index < 2} />
+) : image ? (
+  <img
+    class="story-image"
+    src={image}
+    alt={imageAlt}
+    width="1122"
+    height="1402"
+    loading={index < 2 ? "eager" : "lazy"}
+    decoding="async"
+  />
+) : null}

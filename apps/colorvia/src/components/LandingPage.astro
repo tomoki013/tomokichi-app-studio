@@ -231,6 +231,11 @@ const jsonLd = JSON.stringify({
       <a class="section-link" href={`${base}/how-to`}>{ja ? "詳しい使い方" : "Full how-to"} →</a>
     </section>
 
+    <section class="landing-pad lang-note" data-reveal>
+      <h2>{ja ? "11言語に対応" : "Eleven languages"}</h2>
+      <p>{ja ? languagesJa : languagesEn}</p>
+    </section>
+
     <section class="landing-pad screenshots" id="screenshots">
       <header class="section-title" data-reveal>
         <h2>{ja ? "スクリーンショット" : "Screenshots"}</h2>
@@ -285,11 +290,6 @@ const jsonLd = JSON.stringify({
         ))}
       </div>
       <a class="section-link" href={`${base}/faq`}>{ja ? "すべての質問を見る" : "View all questions"} →</a>
-    </section>
-
-    <section class="landing-pad lang-note" data-reveal>
-      <h2>{ja ? "11言語に対応" : "Eleven languages"}</h2>
-      <p>{ja ? languagesJa : languagesEn}</p>
     </section>
 
     <section class="download-cta" id="download" data-reveal>

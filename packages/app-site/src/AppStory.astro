@@ -1,0 +1,90 @@
+---
+/**
+ * The shared feature/how-to scroll story.
+ *
+ * Steps carry only copy. Each app passes its own `visual` component plus the
+ * props for it on each step, so a site can show whatever it actually has — a
+ * real device capture, a pair of light/dark screens, or an illustration:
+ *
+ * ```astro
+ * <AppStory steps={steps} visual={MyStoryVisual} />
+ * ```
+ *
+ * `MyStoryVisual` receives `{ ...step.visual, index }`.
+ */
+import "./app-story.css";
+
+export type StoryStep = {
+  /** Small label above the title, e.g. "01 · Today". */
+  kicker?: string;
+  title: string;
+  body: string;
+  /** Optional aside under the body. */
+  note?: string;
+  /** Which side the visual slides to. Defaults to alternating. */
+  side?: "start" | "end";
+  /** Marker glyph for the note aside. */
+  noteMark?: string;
+  /** Props handed to the app's `visual` component for this beat. */
+  visual?: Record<string, unknown>;
+};
+
+const {
+  heading = "",
+  lead = "",
+  steps,
+  visual: Visual,
+  class: className = "",
+} = Astro.props as {
+  heading?: string;
+  lead?: string;
+  steps: StoryStep[];
+  visual?: unknown;
+  class?: string;
+};
+
+const VisualComponent = Visual as never;
+---
+
+<section class:list={["app-story", className]} aria-label={heading || undefined}>
+  {heading && (
+    <header class="app-story-heading">
+      <h2>{heading}</h2>
+      {lead && <p class="app-story-lead">{lead}</p>}
+    </header>
+  )}
+
+  {steps.map((step, index) => {
+    const side = step.side ?? (index % 2 === 0 ? "start" : "end");
+    return (
+      <article class="app-beat" data-beat data-side={side}>
+        <div class="app-beat-track" data-beat-track>
+          <div class="app-beat-pin">
+            <div class="app-beat-stage">
+              <div class="app-beat-visual" data-beat-visual>
+                {Visual && step.visual && <VisualComponent {...step.visual} index={index} />}
+              </div>
+              <div class="app-beat-copy" data-beat-copy>
+                {step.kicker && <p class="app-beat-kicker">{step.kicker}</p>}
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+                {step.note && (
+                  <aside class="app-beat-note">
+                    <span aria-hidden="true">{step.noteMark ?? "○"}</span>
+                    <p>{step.note}</p>
+                  </aside>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    );
+  })}
+
+  <slot />
+</section>
+
+<script>
+  import "./app-story.js";
+</script>

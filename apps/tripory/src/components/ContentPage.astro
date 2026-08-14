@@ -1,17 +1,19 @@
 ---
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import AppScreen from "./AppScreen.astro";
 import Shell from "./Shell.astro";
+import StoryVisual from "./StoryVisual.astro";
 
 type Locale = "ja" | "en";
-type Page = "features" | "principles" | "screenshots" | "faq" | "privacy" | "terms" | "news" | "updates";
+type Page = "features" | "how-to" | "screenshots" | "faq" | "privacy" | "terms" | "news" | "updates";
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
 const titleMap: Record<Page, [string, string]> = {
   features: ["機能紹介", "Features"],
-  principles: ["こだわり", "Principles"],
+  "how-to": ["使い方", "How to"],
   screenshots: ["スクリーンショット", "Screenshots"],
   faq: ["よくある質問", "Frequently asked questions"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
@@ -21,7 +23,7 @@ const titleMap: Record<Page, [string, string]> = {
 };
 const subtitleMap: Partial<Record<Page, [string, string]>> = {
   features: ["旅のすべてを、ひとつのアプリに。", "Everything about your travels, in one app."],
-  principles: ["デザインも、体験も、美しく。", "Beautiful in both design and experience."],
+  "how-to": ["旅を残す、三つのステップ。", "Three quiet steps to keep a journey."],
   screenshots: ["美しい旅の記録体験を。", "A beautiful way to remember every journey."],
   faq: ["よくいただくご質問をまとめました。", "Everything you may want to know."],
   news: ["Triporyからのお知らせと旅のコラム。", "News from Tripory and stories about keeping journeys."],
@@ -30,12 +32,12 @@ const subtitleMap: Partial<Record<Page, [string, string]>> = {
 const title = titleMap[page][ja ? 0 : 1];
 const subtitle = subtitleMap[page]?.[ja ? 0 : 1];
 const pageNumber: Record<Page, string> = {
-  features: "01", principles: "02", screenshots: "03", faq: "04",
+  features: "01", "how-to": "02", screenshots: "03", faq: "04",
   news: "05", updates: "06", privacy: "07", terms: "08",
 };
 const pageVisual: Record<Page, string> = {
   features: "/assets/world-globe.png",
-  principles: "/assets/morocco.png",
+  "how-to": "/assets/mountain-lake.png",
   screenshots: "/assets/iceland.png",
   faq: "/assets/venice.png",
   news: "/assets/santorini.png",
@@ -45,7 +47,7 @@ const pageVisual: Record<Page, string> = {
 };
 const pageCaption: Record<Page, [string, string]> = {
   features: ["旅を、点ではなく流れで残す。", "Keep the journey, not just the pins."],
-  principles: ["記憶を預けない設計。", "Designed to keep memory yours."],
+  "how-to": ["残す、添える、見返す。", "Keep, add, look back."],
   screenshots: ["いま動いているTripory。", "The Tripory that exists today."],
   faq: ["旅立つ前の、小さな確認。", "A few things before departure."],
   news: ["Triporyから届く便り。", "Dispatches from Tripory."],
@@ -69,32 +71,89 @@ const features = ja
       ["◷", "Statistics", "See countries, cities, days and regions through clear visual insights.", "/assets/iceland.png"],
       ["⌕", "Search and organise", "Find memories quickly by country, trip or location.", "/assets/santorini.png"],
     ];
-const principles = ja
+/* How-to uses the shared scroll story. The first beat shows the real capture;
+   the rest use travel photographs, because only one screen has been captured. */
+const howBeats: StoryStep[] = (
+  (ja
+    ? [
+        ["住んでいる国を決める", "最初に住んでいる国を設定します。ここが基準になり、その国は自動的に「訪問済み」として扱われ、旅の行き先の候補からは外れます。あとから設定画面で変更できます。", "はじめの一度だけです。変更履歴は旅の記録ページから確認できます。", true, ""],
+        ["旅をはじめる", "行き先と日付を残します。国を塗るためではなく、その旅の時間をひとつの流れにするための一歩です。", "旅は何件でも並行して持てます。過去の旅からでもかまいません。", false, "/assets/mountain-lake.png"],
+        ["写真と一言を添える", "選んだ写真と、そのときの短い言葉を添えます。iOSの標準的な写真選択画面を使うため、写真ライブラリ全体へは触れません。", "写真は保存容量を抑えるため、端末内でリサイズしてから保存されます。", false, "/assets/venice.png"],
+        ["地図とタイムラインで見返す", "残した旅を地図と時系列でたどり、いつ、どこで、何を見ていたかを思い出します。訪れた国や都市、日数は統計としても確認できます。", "記録は端末内にだけ保存されます。機種変更の前にご注意ください。", false, "/assets/world-globe.png"],
+      ]
+    : [
+        ["Set your home country", "Start by choosing where you live. It becomes the baseline: that country counts as visited and drops out of destination suggestions. You can change it later in Settings.", "Only once, at the start. The change history stays on the trip records page.", true, ""],
+        ["Start a trip", "Keep a destination and dates. Not to colour a country, but to hold that stretch of time as one journey.", "Trips can run side by side, and a past trip is just as welcome.", false, "/assets/mountain-lake.png"],
+        ["Add a photo and a note", "Attach a chosen photograph and a few words from that moment. It uses the standard iOS picker, so the app never sees your full library.", "Photos are resized on your device before they are stored.", false, "/assets/venice.png"],
+        ["Look back on the map", "Revisit trips on the map and timeline — when you were there, and what you saw. Countries, cities and days add up as quiet statistics.", "Records live only on your device, so back up before switching phones.", false, "/assets/world-globe.png"],
+      ]) as [string, string, string, boolean, string][]
+).map(([title, body, note, screen, image], i) => ({
+  kicker: String(i + 1).padStart(2, "0"),
+  title,
+  body,
+  note,
+  visual: { lang, screen, image },
+}));
+/** `[category, question, answer]`. Categories drive the filter tabs. */
+const faqs: [string, string, string][] = ja
   ? [
-      ["美しいデザイン", "旅の記録を引き立てる、洗練されたビジュアル。", "/assets/world-globe.png"],
-      ["使いやすさ", "直感的な操作で、旅の記録がもっと楽しく。", "/assets/mountain-lake.png"],
-      ["プライバシーを大切に", "あなたのデータはあなたのもの。安心して使えます。", "/assets/morocco.png"],
+      ["base", "Triporyは何をするアプリですか？", "訪れた国と、その旅そのものを記録するアプリです。国を塗りつぶすだけでなく、旅の期間・写真・メモをひとつの流れとして残し、地図とタイムラインで振り返れます。"],
+      ["base", "旅行の計画を立てるアプリですか？", "いいえ。予約や行程を管理するためのアプリではありません。すでに行った旅、これから行きたい国を、自分の記録として残すためのものです。"],
+      ["base", "無料で使えますか？", "はい。現在提供している機能はすべて無料でご利用いただけます。サブスクリプションはありません。"],
+      ["base", "アカウント登録は必要ですか？", "いいえ。登録やログインは不要です。メールアドレスの入力も求めません。"],
+      ["base", "対応環境は？", "iPhone向けに開発しています。対応するiOSのバージョンはApp Storeの商品ページに表示します。"],
+      ["base", "Android版はありますか？", "現在、Android版は提供していません。"],
+      ["trip", "「住んでいる国」はなぜ設定するのですか？", "記録を海外旅行に絞り込むための基準として使います。設定した国は自動的に「訪問済み」として扱われ、旅の行き先の候補からは除外されます。"],
+      ["trip", "住んでいる国は変更できますか？", "はい。設定画面からいつでも変更できます。変更履歴は旅の記録ページから確認・調整できます。"],
+      ["trip", "旅は何件まで記録できますか？", "件数の上限は設けていません。複数の旅を並行して持てます。"],
+      ["trip", "過去の旅も記録できますか？", "はい。日付を選んで、以前の旅をあとから記録できます。"],
+      ["trip", "旅の記録はあとから編集できますか？", "はい。タイトル・訪問先・日付・メモを後から変更できます。"],
+      ["trip", "1つの旅に写真は何枚添えられますか？", "旅の記録に写真を添付できます。枚数の扱いはアプリ内の表示に従います。"],
+      ["map", "地図の国境はどこまで正確ですか？", "Natural Earth（パブリックドメインの簡易データ）とApple MapKitに基づく簡易的な表示です。政治的な立場や見解を示すものではありません。"],
+      ["map", "統計では何が見られますか？", "訪れた国、都市、日数、地域ごとの割合を確認できます。"],
+      ["map", "地図の表示に通信は必要ですか？", "地図タイル（衛星写真・地形・道路などの背景画像）の表示にはインターネット通信が必要です。AppleのMapKitを利用しています。"],
+      ["data", "データはどこに保存されますか？", "端末内のデータベースにのみ保存されます。運営者を含む第三者がアクセスすることはありません。"],
+      ["data", "写真はどのように扱われますか？", "iOS標準の写真選択画面（PhotosPicker）を使用するため、選んだ写真だけが本アプリに渡され、写真ライブラリ全体へアクセスすることはありません。選択された写真は、保存容量を抑えるため端末内でリサイズ・圧縮して保存します。"],
+      ["data", "オフラインでも使えますか？", "地図タイルの表示を除き、記録の閲覧・編集など主要な機能はオフラインでもご利用いただけます。"],
+      ["data", "他の端末と同期できますか？", "現在、端末間の同期機能はありません。データは各端末に個別に保存されるため、機種変更の際はご注意ください。"],
+      ["data", "データを書き出せますか？", "現在、データの書き出しや読み込みには対応していません。"],
+      ["data", "データを削除するには？", "設定画面の「すべてのデータを削除」からいつでも削除できます。アプリをアンインストールした場合も、端末内のデータは削除されます。"],
+      ["data", "記録が消えた場合、復旧できますか？", "端末内にのみ保存されているため、運営者が復旧することはできません。機種変更やアプリ削除の前に、必要に応じてご自身でバックアップをお願いします。"],
+      ["data", "広告は表示されますか？", "広告配信や行動解析のためのSDKは組み込んでいません。"],
     ]
   : [
-      ["Beautiful design", "A refined visual language that lets your memories shine.", "/assets/world-globe.png"],
-      ["Effortless to use", "Intuitive interactions make recording every trip a pleasure.", "/assets/mountain-lake.png"],
-      ["Privacy first", "Your travel data belongs to you and remains protected.", "/assets/morocco.png"],
+      ["base", "What does Tripory do?", "It records the countries you visited and the journeys themselves. Rather than only filling in a map, it keeps each trip's dates, photos and notes as one thread you can revisit on a map and a timeline."],
+      ["base", "Is it a trip-planning app?", "No. It does not manage bookings or itineraries. It is for keeping the trips you took, and the countries you still want to see."],
+      ["base", "Is it free?", "Yes. Everything offered today is free, and there is no subscription."],
+      ["base", "Do I need an account?", "No. There is no sign-up or login, and we never ask for an email address."],
+      ["base", "What devices are supported?", "Tripory is built for iPhone. The supported iOS version is listed on the App Store product page."],
+      ["base", "Is there an Android version?", "Not currently."],
+      ["trip", "Why does it ask for a home country?", "It is the baseline for narrowing records to international travel. Your home country counts as visited and is left out of destination suggestions."],
+      ["trip", "Can I change my home country?", "Yes, at any time from Settings. The change history stays available on the trip records page."],
+      ["trip", "How many trips can I keep?", "There is no limit, and trips can run side by side."],
+      ["trip", "Can I add trips from the past?", "Yes. Choose the dates and record an earlier journey whenever you like."],
+      ["trip", "Can I edit a trip later?", "Yes — title, destination, dates and notes can all be changed afterwards."],
+      ["trip", "How many photos can a trip hold?", "You can attach photos to a trip record; the app's own screens show how many apply."],
+      ["map", "How accurate are the borders?", "They are a simplified representation based on the public-domain Natural Earth dataset and Apple MapKit, and do not represent any political position."],
+      ["map", "What do the statistics show?", "Countries, cities, days, and the share of each region you have travelled in."],
+      ["map", "Does the map need a network?", "Yes, for map tiles — the satellite, terrain and road imagery behind your records. That uses Apple's MapKit."],
+      ["data", "Where is my data stored?", "Data is stored only in an on-device database. No one, including the operator, can access it."],
+      ["data", "How are photos handled?", "The app uses iOS's standard photo picker, so only the photos you choose are passed to the app — it never accesses your full photo library. Chosen photos are resized and compressed on your device to save storage."],
+      ["data", "Can I use Tripory offline?", "Aside from loading map tiles, core features such as viewing and editing records work offline."],
+      ["data", "Can I sync across devices?", "There is currently no sync between devices. Each device keeps its own data, so please back up before switching phones."],
+      ["data", "Can I export my data?", "Not currently — there is no export or import."],
+      ["data", "How do I delete my data?", "Use \"Delete all data\" in Settings at any time. Uninstalling the app also removes the data stored on your device."],
+      ["data", "Can lost records be recovered?", "No. Because everything lives on your device, the operator cannot restore it. Please keep your own backup before changing phones or deleting the app."],
+      ["data", "Are there ads?", "No advertising or analytics SDKs are included."],
     ];
-const faqs = ja
-  ? [
-      ["データはどこに保存されますか？", "端末内のデータベースにのみ保存されます。運営者を含む第三者がアクセスすることはありません。"],
-      ["写真はどのように扱われますか？", "iOS標準の写真選択画面（PhotosPicker）を使用するため、選んだ写真だけが本アプリに渡され、写真ライブラリ全体へアクセスすることはありません。"],
-      ["オフラインでも使えますか？", "地図タイルの表示を除き、記録の閲覧・編集など主要な機能はオフラインでもご利用いただけます。"],
-      ["他の端末と同期できますか？", "現在、端末間の同期機能はありません。データは各端末に個別に保存されるため、機種変更の際はご注意ください。"],
-      ["データを削除するには？", "設定画面の「すべてのデータを削除」からいつでも削除できます。アプリをアンインストールした場合も、端末内のデータは削除されます。"],
-    ]
-  : [
-      ["Where is my data stored?", "Data is stored only in an on-device database. No one, including the operator, can access it."],
-      ["How are photos handled?", "The app uses iOS's standard photo picker, so only the photos you choose are passed to the app — it never accesses your full photo library."],
-      ["Can I use Tripory offline?", "Aside from loading map tiles, core features such as viewing and editing records work offline."],
-      ["Can I sync across devices?", "There is currently no sync between devices. Each device keeps its own data, so please back up before switching phones."],
-      ["How do I delete my data?", "Use \"Delete all data\" in Settings at any time. Uninstalling the app also removes the data stored on your device."],
-    ];
+
+const faqCategories = ja
+  ? [["all", "すべて"], ["base", "基本"], ["trip", "旅の記録"], ["map", "地図と統計"], ["data", "データ"]]
+  : [["all", "All"], ["base", "Basics"], ["trip", "Trips"], ["map", "Map & stats"], ["data", "Your data"]];
+const faqCount = (key: string) =>
+  key === "all" ? faqs.length : faqs.filter(([cat]) => cat === key).length;
+
+const isLegal = page === "privacy" || page === "terms";
 
 const newsPosts = ja
   ? [
@@ -239,41 +298,105 @@ const legal = {
 ---
 
 <Shell lang={lang} title={title} page={page}>
-  <section class:list={["subpage", `subpage-${page}`]}>
-    <header class="page-intro">
-      <div class="page-intro-copy">
-        <div class="page-intro-index"><span>{pageNumber[page]}</span><b>TRIPORY / {page.toUpperCase()}</b></div>
+  <section class:list={["subpage", `subpage-${page}`, isLegal && "subpage-legal"]}>
+    {isLegal ? (
+      /* Legal pages open inside the app as well as on the web, so they drop the
+         marketing hero and read as a plain document on a small screen. */
+      <header class="legal-intro">
+        <p class="legal-eyebrow">TRIPORY / {page.toUpperCase()}</p>
         <h1>{title}</h1>
-        {subtitle && <p>{subtitle}</p>}
-        {(page === "privacy" || page === "terms") && <small>{ja ? "制定日：2026年7月24日／最終更新日：2026年7月24日" : "Effective: July 24, 2026 / Last updated: July 24, 2026"}</small>}
-      </div>
-      <figure class="page-intro-visual">
-        <img src={pageVisual[page]} alt="" />
-        <figcaption><span>↗</span>{pageCaption[page][ja ? 0 : 1]}</figcaption>
-      </figure>
-    </header>
+        <dl class="legal-dates">
+          <div><dt>{ja ? "制定日" : "Effective"}</dt><dd><time datetime="2026-07-24">{ja ? "2026年7月24日" : "July 24, 2026"}</time></dd></div>
+          <div><dt>{ja ? "最終更新日" : "Last updated"}</dt><dd><time datetime="2026-08-14">{ja ? "2026年8月14日" : "August 14, 2026"}</time></dd></div>
+        </dl>
+      </header>
+    ) : (
+      <header class="page-intro">
+        <div class="page-intro-copy">
+          <div class="page-intro-index"><span>{pageNumber[page]}</span><b>TRIPORY / {page.toUpperCase()}</b></div>
+          <h1>{title}</h1>
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+        <figure class="page-intro-visual">
+          <img src={pageVisual[page]} alt="" />
+          <figcaption><span>↗</span>{pageCaption[page][ja ? 0 : 1]}</figcaption>
+        </figure>
+      </header>
+    )}
 
     {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body, image], i) => <article data-reveal><div class="feature-page-image"><img src={image} alt="" /><span>{icon}</span></div><div><b>0{i + 1}</b><h2>{heading}</h2><p>{body}</p></div></article>)}</div><a class="orange-cta" href={ja ? "/ja/screenshots" : "/screenshots"}>{ja ? "実際の画面で確かめる" : "See it in the real app"} →</a></>}
 
-    {page === "principles" && <div class="how-page-list">{principles.map(([heading, body, image], i) => <article><b>0{i + 1}</b><div><h2>{heading}</h2><p>{body}</p></div><img src={image} alt="" /></article>)}</div>}
+    {page === "how-to" && <AppStory class="app-story--page" steps={howBeats} visual={StoryVisual} />}
 
     {page === "screenshots" && (
-      <div class="capture-detail">
-        <AppScreen lang={lang} size="xl" />
-        <div>
-          <p class="capture-kicker">IPHONE 17 PRO MAX · REAL CAPTURE</p>
-          <h2>{ja ? "つくりものではなく、いまのTripory。" : "Not a mockup—the Tripory that exists today."}</h2>
-          <p>{ja ? "アプリ本体をデモデータ付きで起動し、iPhone 17 Pro Maxのシミュレータからそのまま撮影しています。画面の文字、余白、色、操作の入口まで、実際のプロダクトです。" : "Captured directly from the running app with fictional demo data on an iPhone 17 Pro Max simulator. The type, spacing, colour, and controls are the real product."}</p>
-          <dl>
-            <div><dt>{ja ? "画面" : "Screen"}</dt><dd>{ja ? "マイワールド" : "My World"}</dd></div>
-            <div><dt>{ja ? "保存" : "Storage"}</dt><dd>{ja ? "端末内" : "On device"}</dd></div>
-            <div><dt>{ja ? "撮影" : "Capture"}</dt><dd>1320 × 2868</dd></div>
-          </dl>
+      <div class="capture-page">
+        <div class="capture-detail" data-reveal>
+          <AppScreen lang={lang} size="xl" priority />
+          <div>
+            <p class="capture-kicker">IPHONE 17 PRO MAX · REAL CAPTURE</p>
+            <h2>{ja ? "つくりものではなく、いまのTripory。" : "Not a mockup — the Tripory that exists today."}</h2>
+            <p>{ja
+              ? "アプリ本体をデモデータ付きで起動し、iPhone 17 Pro Maxのシミュレータからそのまま撮影しています。画面の文字、余白、色、操作の入口まで、実際のプロダクトです。"
+              : "Captured directly from the running app with fictional demo data on an iPhone 17 Pro Max simulator. The type, spacing, colour, and controls are the real product."}</p>
+            <dl>
+              <div><dt>{ja ? "画面" : "Screen"}</dt><dd>{ja ? "マイワールド" : "My World"}</dd></div>
+              <div><dt>{ja ? "保存" : "Storage"}</dt><dd>{ja ? "端末内" : "On device"}</dd></div>
+              <div><dt>{ja ? "撮影" : "Capture"}</dt><dd>1320 × 2868</dd></div>
+              <div><dt>{ja ? "データ" : "Data"}</dt><dd>{ja ? "架空のデモ" : "Fictional demo"}</dd></div>
+            </dl>
+          </div>
         </div>
+
+        <ol class="capture-notes">
+          {(ja
+            ? [
+                ["訪れた国が、地図に残る", "「訪問済み」にした国が地図の上に積み重なっていきます。塗り絵ではなく、旅の履歴です。"],
+                ["次に行きたい国も置ける", "行きたい国は別のステータスとして残せます。これから旅する場所も、同じ地図の上にあります。"],
+                ["最初の旅は、ここから", "記録がまだない状態でも、次の一歩がわかるようになっています。"],
+              ]
+            : [
+                ["Visited countries stay on the map", "Countries you mark as visited accumulate on the globe — a history of travel, not a colouring book."],
+                ["Where you still want to go", "Countries you want to visit keep their own status, so the places ahead sit on the same map."],
+                ["Your first trip starts here", "Even with nothing recorded yet, the screen makes the next step obvious."],
+              ]
+          ).map(([heading, body], i) => (
+            <li data-reveal style={`--reveal-i:${i}`}>
+              <b>{String(i + 1).padStart(2, "0")}</b>
+              <div><h3>{heading}</h3><p>{body}</p></div>
+            </li>
+          ))}
+        </ol>
+
+        <aside class="capture-pending" data-reveal>
+          <h2>{ja ? "ほかの画面は、公開時に追加します" : "More screens arrive at release"}</h2>
+          <p>{ja
+            ? "このページに載せるのは、実際に撮影した画面だけです。タイムラインや統計の画面は、App Store公開に合わせて同じ方法で撮影して追加します。"
+            : "Only real captures go on this page. The timeline and statistics screens will be added the same way when Tripory reaches the App Store."}</p>
+          <a href={ja ? "/ja/how-to" : "/how-to"}>{ja ? "使い方を見る" : "See how it works"} <span aria-hidden="true">→</span></a>
+        </aside>
       </div>
     )}
 
-    {page === "faq" && <><div class="faq-list">{faqs.map(([q, a], i) => <details open={i === 0}><summary>Q. {q}<span>⌄</span></summary><p>{a}</p></details>)}</div><div class="faq-contact"><span>✉</span><div><h2>{ja ? "その他のご質問はこちら" : "Still have questions?"}</h2><p>{ja ? "共通サポートフォームからお問い合わせください。" : "Send us a message through the shared support form."}</p></div><a href={supportUrl("tripory", lang)}>{ja ? "お問い合わせへ" : "Contact us"}</a></div></>}
+    {page === "faq" && (
+      <>
+        <nav class="faq-tabs" aria-label={ja ? "質問のカテゴリ" : "Question categories"} data-faq-tabs>
+          {faqCategories.map(([key, label], i) => (
+            <button type="button" data-cat={key} aria-pressed={i === 0 ? "true" : "false"}>
+              <span>{label}</span><small>{faqCount(key)}</small>
+            </button>
+          ))}
+        </nav>
+        <div class="faq-list" data-faq-list>
+          {faqs.map(([cat, q, a], i) => (
+            <details data-cat={cat} open={i === 0}>
+              <summary><b>Q</b><span>{q}</span><i aria-hidden="true">⌄</i></summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
+        <div class="faq-contact"><span>✉</span><div><h2>{ja ? "その他のご質問はこちら" : "Still have questions?"}</h2><p>{ja ? "共通サポートフォームからお問い合わせください。" : "Send us a message through the shared support form."}</p></div><a href={supportUrl("tripory", lang)}>{ja ? "お問い合わせへ" : "Contact us"}</a></div>
+      </>
+    )}
 
     {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2>{body.split("\n\n").map((para) => <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>)}</section>)}</article>}
 
@@ -292,7 +415,7 @@ const legal = {
         <p>{ja ? "旅の記録を、もう少し先へ。" : "Take the story a little further."}</p>
         <div>
           <a href={ja ? "/ja/features" : "/features"}>{ja ? "機能紹介" : "Features"} <span>→</span></a>
-          <a href={ja ? "/ja/principles" : "/principles"}>{ja ? "こだわり" : "Principles"} <span>→</span></a>
+          <a href={ja ? "/ja/how-to" : "/how-to"}>{ja ? "使い方" : "How to"} <span>→</span></a>
           <a href={ja ? "/ja/faq" : "/faq"}>{ja ? "よくある質問" : "FAQ"} <span>→</span></a>
         </div>
       </aside>
@@ -300,3 +423,32 @@ const legal = {
 
   </section>
 </Shell>
+
+<script is:inline>
+  (() => {
+    const bindFaq = () => {
+      const tabs = document.querySelector("[data-faq-tabs]");
+      const list = document.querySelector("[data-faq-list]");
+      if (!tabs || !list || tabs.dataset.bound === "1") return;
+      tabs.dataset.bound = "1";
+      const items = Array.from(list.querySelectorAll("details"));
+      tabs.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-cat]");
+        if (!button) return;
+        const cat = button.getAttribute("data-cat");
+        items.forEach((item) => {
+          const show = cat === "all" || item.getAttribute("data-cat") === cat;
+          item.hidden = !show;
+          if (!show) item.open = false;
+        });
+        tabs.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b.getAttribute("data-cat") === cat));
+        });
+        const first = items.find((item) => !item.hidden);
+        if (first) first.open = true;
+      });
+    };
+    document.addEventListener("astro:page-load", bindFaq);
+    bindFaq();
+  })();
+</script>

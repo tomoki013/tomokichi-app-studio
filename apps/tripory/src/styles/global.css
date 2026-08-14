@@ -854,17 +854,7 @@ img {
   color: #8fa0ad;
   font-size: 9.5px;
 }
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 0.7s ease var(--delay, 0ms),
-    transform 0.7s cubic-bezier(0.2, 0.75, 0.2, 1) var(--delay, 0ms);
-}
-[data-reveal].visible {
-  opacity: 1;
-  transform: none;
-}
+/* Reveal comes from app-site-shell.css; nothing to override here. */
 .dark-cta {
   width: 280px;
   min-height: 48px;
@@ -894,20 +884,40 @@ img {
   background: #071725;
 }
 .faq-list summary {
-  min-height: 65px;
-  display: flex;
+  min-height: 68px;
+  padding: 18px 0;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) 18px;
+  gap: 14px;
   align-items: center;
-  justify-content: space-between;
   list-style: none;
-  font-size: 11px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  font-weight: 550;
   cursor: pointer;
+}
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+.faq-list summary b {
+  color: #f0a184;
+  font:
+    400 14px Georgia,
+    serif;
+}
+.faq-list summary i {
+  font-style: normal;
+  transition: transform 0.25s ease;
+}
+.faq-list details[open] summary i {
+  transform: rotate(180deg);
 }
 .faq-list details p {
   margin: 0;
-  padding: 0 0 20px;
-  color: #b7c2c9;
-  font-size: 9px;
-  line-height: 1.8;
+  padding: 0 0 22px 36px;
+  color: #d3dbe0;
+  font-size: 13.5px;
+  line-height: 1.95;
 }
 
 /* Subpage shell — mirrors Remeet's structural pattern */
@@ -1072,9 +1082,9 @@ img {
 }
 .how-page-list p {
   margin: 0;
-  color: #bdc8cf;
-  font-size: 11px;
-  line-height: 2;
+  color: #d3dbe0;
+  font-size: 13.5px;
+  line-height: 1.95;
 }
 .how-page-list img {
   width: 100%;
@@ -1104,19 +1114,22 @@ img {
 }
 .faq-contact h2 {
   margin: 0;
-  font-size: 12px;
+  font-size: 16px;
 }
 .faq-contact p {
-  margin: 5px 0 0;
-  color: #bdc8cf;
-  font-size: 9px;
+  margin: 7px 0 0;
+  color: #d3dbe0;
+  font-size: 13px;
+  line-height: 1.75;
 }
 .faq-contact a {
-  padding: 12px 22px;
+  padding: 13px 24px;
   border-radius: 10px;
   color: #071725;
   background: white;
-  font-size: 10px;
+  font-size: 12.5px;
+  font-weight: 650;
+  white-space: nowrap;
 }
 
 .legal-copy {
@@ -2080,6 +2093,7 @@ img {
   margin-inline: auto;
 }
 .tripory-subpage .how-page-list article {
+  color: #0b1723;
   min-height: 360px;
   padding: 0;
   grid-template-columns: 72px minmax(260px, 0.8fr) minmax(340px, 1.2fr);
@@ -2197,5 +2211,221 @@ img {
     width: 100%;
     margin-top: 12px;
     order: 99;
+  }
+}
+
+/* ——— Shared scroll story (how-to) ——— */
+.tripory-page {
+  --app-story-line: #c8c1b8;
+  --app-story-kicker: #a2603f;
+  --app-story-body: #4a5661;
+  --app-story-note-background: rgb(7 23 37 / 5%);
+  --app-story-title-weight: 400;
+}
+.tripory-page .app-story {
+  color: #0b1723;
+}
+.tripory-page .app-beat-copy h3 {
+  font-family: Georgia, "Yu Mincho", serif;
+  letter-spacing: -0.02em;
+}
+.tripory-page .story-photo {
+  width: min(430px, 40cqi);
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 24px 54px rgb(7 23 37 / 20%);
+}
+.tripory-page .story-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ——— FAQ filter tabs ——— */
+.faq-tabs {
+  margin: 0 auto clamp(26px, 4vw, 40px);
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgb(7 23 37 / 12%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 70%);
+}
+.faq-tabs button {
+  min-height: 40px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 999px;
+  color: #45535e;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 650;
+}
+.faq-tabs button small {
+  min-width: 20px;
+  min-height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(7 23 37 / 7%);
+  font-size: 10px;
+}
+.faq-tabs button[aria-pressed="true"] {
+  color: #fff;
+  background: #071725;
+}
+.faq-tabs button[aria-pressed="true"] small {
+  background: rgb(255 255 255 / 18%);
+}
+
+/* ——— Screenshots page ——— */
+.capture-page {
+  display: grid;
+  gap: clamp(46px, 7vw, 82px);
+}
+.capture-notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.capture-notes li {
+  padding: 26px 24px;
+  display: grid;
+  gap: 14px;
+  border-top: 1px solid #c8c1b8;
+}
+.capture-notes b {
+  color: #a2603f;
+  font:
+    400 15px Georgia,
+    serif;
+  letter-spacing: 0.08em;
+}
+.capture-notes h3 {
+  margin: 0 0 9px;
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 1.5;
+}
+.capture-notes p {
+  margin: 0;
+  color: #4a5661;
+  font-size: 13px;
+  line-height: 1.9;
+}
+.capture-pending {
+  padding: clamp(26px, 4vw, 44px);
+  border-radius: 24px;
+  color: #f4f1ec;
+  background: #071725;
+}
+.capture-pending h2 {
+  margin: 0;
+  font:
+    400 clamp(21px, 2.6vw, 28px) / 1.45 Georgia,
+    "Yu Mincho",
+    serif;
+}
+.capture-pending p {
+  margin: 16px 0 0;
+  max-width: 62ch;
+  color: #c3cdd2;
+  font-size: 13.5px;
+  line-height: 1.95;
+}
+.capture-pending a {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid currentColor;
+  font-size: 12.5px;
+  font-weight: 650;
+}
+.capture-pending a span {
+  transition: transform 0.24s ease;
+}
+.capture-pending a:hover span {
+  transform: translateX(4px);
+}
+
+/* ——— Legal pages ———
+   These open inside the app as well, so they are a plain readable document
+   rather than the marketing hero the other subpages use. */
+.subpage-legal {
+  width: min(calc(100% - 44px), 760px);
+}
+.legal-intro {
+  margin-bottom: clamp(38px, 6vw, 60px);
+  padding-bottom: clamp(24px, 4vw, 34px);
+  border-bottom: 1px solid #c8c1b8;
+}
+.legal-eyebrow {
+  margin: 0 0 14px;
+  color: #7d8a94;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+.legal-intro h1 {
+  margin: 0;
+  font:
+    400 clamp(28px, 4.4vw, 42px) / 1.32 Georgia,
+    "Yu Mincho",
+    serif;
+  letter-spacing: -0.03em;
+}
+.legal-dates {
+  margin: 22px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 32px;
+}
+.legal-dates div {
+  display: grid;
+  gap: 5px;
+}
+.legal-dates dt {
+  color: #7d8a94;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.legal-dates dd {
+  margin: 0;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .tripory-page .story-photo {
+    width: min(320px, 78vw);
+  }
+  .capture-notes {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .faq-tabs {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .faq-tabs button {
+    flex: 0 0 auto;
   }
 }

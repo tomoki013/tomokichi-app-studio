@@ -156,8 +156,10 @@ a {
 /* ——— Landing hero ——— */
 
 .yohaku-hero {
-  min-height: max(calc(100vh - 72px), 920px);
-  padding: 120px max(36px, calc((100vw - 1120px) / 2)) 180px;
+  /* Was 920px tall with a single 280px phone floating in the middle of the
+     right column — the space read as an accident rather than as room. */
+  min-height: max(calc(100vh - 72px), 720px);
+  padding: 96px max(36px, calc((100vw - 1120px) / 2)) 148px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -168,8 +170,8 @@ a {
 
 .hero-inner {
   display: grid;
-  grid-template-columns: minmax(280px, 0.85fr) minmax(480px, 1fr);
-  gap: clamp(48px, 7vw, 96px);
+  grid-template-columns: minmax(300px, 1fr) minmax(0, 0.82fr);
+  gap: clamp(40px, 6vw, 80px);
   align-items: center;
 }
 
@@ -217,16 +219,21 @@ a {
   gap: 12px;
 }
 
+/* The frame sits against the right edge of the hero, not adrift in the middle. */
 .hero-devices {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-end;
   gap: 18px;
   filter: drop-shadow(0 24px 28px rgb(0 0 0 / 8%));
 }
 
 .hero-device-single {
-  width: min(100%, 280px);
+  width: min(100%, 330px);
+}
+
+.hero-device-single .app-phone-frame {
+  --phone-w: min(330px, 100%);
 }
 
 .hero-device {
@@ -268,189 +275,23 @@ a {
   letter-spacing: 0.12em;
 }
 
-.yohaku-story {
-  border-top: 1px solid var(--yohaku-line);
+/* Scroll story — layout and motion live in app-story.css; Yohaku only sets
+   its own type weights and greys. */
+.yohaku-page {
+  --app-story-line: var(--yohaku-line);
+  --app-story-kicker: #999;
+  --app-story-body: #555;
+  --app-story-note-background: var(--yohaku-panel);
 }
 
-.yohaku-story-heading {
-  width: min(100% - 72px, 1040px);
-  margin: 0 auto;
-  padding: 128px 0 8px;
-}
-
-.y-beat-track {
-  height: 250vh;
-  view-timeline-name: --yohaku-beat;
-  view-timeline-axis: block;
-}
-
-.yohaku-story--page .y-beat-track {
-  height: 235vh;
-}
-
-.y-beat-pin {
-  height: calc(100vh - 88px);
-  position: sticky;
-  top: 88px;
-}
-
-.y-beat-stage {
-  width: min(100% - 40px, 1220px);
-  height: 100%;
-  margin: 0 auto;
-  position: relative;
-  container-type: inline-size;
-}
-
-.y-beat-visual {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 1;
-  transform: translate3d(-50%, -50%, 0);
-  transform-origin: center;
-  opacity: 1;
-  backface-visibility: hidden;
-}
-
-.y-beat-visual .app-phone-frame {
-  --phone-w: min(360px, 36cqi, calc((100vh - 190px) * 0.5));
-}
-
-.y-beat-visual .appearance-screens {
-  width: min(100%, 580px);
-  min-height: 620px;
-}
-
-.y-beat-copy {
-  width: min(26em, 36%);
-  position: absolute;
-  top: 50%;
-  right: 4%;
-  z-index: 2;
-  transform: translate3d(0, -50%, 0);
-  opacity: 1;
-}
-
-.y-beat[data-side="end"] .y-beat-copy {
-  right: auto;
-  left: 4%;
-}
-
-.yohaku-story.is-story-ready .y-beat-visual {
-  transform: translate3d(-50%, -50%, 0);
-  opacity: 1;
-}
-
-.yohaku-story.is-story-ready .y-beat-copy {
-  transform: translate3d(0, calc(-50% + 14px), 0);
-  opacity: 0;
-}
-
-@supports (animation-timeline: view()) {
-  .yohaku-story .y-beat-visual {
-    animation: yohaku-open-start 1s cubic-bezier(0.45, 0, 0.2, 1) both;
-    animation-timeline: --yohaku-beat;
-    animation-range: cover 30% cover 58%;
-  }
-
-  .yohaku-story .y-beat[data-side="end"] .y-beat-visual {
-    animation-name: yohaku-open-end;
-  }
-
-  .yohaku-story .y-beat-copy {
-    animation: yohaku-copy-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) both;
-    animation-timeline: --yohaku-beat;
-    animation-range: cover 47% cover 64%;
-  }
-}
-
-@keyframes yohaku-open-start {
-  from {
-    transform: translate3d(-50%, -50%, 0);
-  }
-  to {
-    transform: translate3d(calc(-50% - min(23.5cqi, 286px)), -50%, 0);
-  }
-}
-
-@keyframes yohaku-open-end {
-  from {
-    transform: translate3d(-50%, -50%, 0);
-  }
-  to {
-    transform: translate3d(calc(-50% + min(23.5cqi, 286px)), -50%, 0);
-  }
-}
-
-@keyframes yohaku-copy-reveal {
-  from {
-    transform: translate3d(0, calc(-50% + 12px), 0);
-    opacity: 0;
-  }
-  to {
-    transform: translate3d(0, -50%, 0);
-    opacity: 1;
-  }
-}
-
-@media (max-width: 760px), (prefers-reduced-motion: reduce) {
-  .yohaku-story .y-beat-visual,
-  .yohaku-story .y-beat-copy {
-    animation: none;
-    transform: none;
-    opacity: 1;
-  }
-}
-
-.story-kicker {
-  margin: 0 0 14px;
-  color: #999;
+.app-beat-kicker,
+.app-beat-copy > p,
+.app-beat-note p {
   font-family: var(--sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
 }
 
-.y-beat-copy h3 {
-  margin: 0;
-  font-size: clamp(26px, 3vw, 38px);
-  font-weight: 400;
+.app-beat-copy h3 {
   letter-spacing: 0.04em;
-  line-height: 1.45;
-}
-
-.y-beat-copy > p {
-  margin: 16px 0 0;
-  color: #555;
-  font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.95;
-}
-
-.y-beat-note {
-  margin-top: 22px;
-  padding: 14px 16px;
-  display: grid;
-  grid-template-columns: 16px 1fr;
-  gap: 10px;
-  border-radius: 12px;
-  background: var(--yohaku-panel);
-}
-
-.y-beat-note p {
-  margin: 0;
-  color: #555;
-  font-family: var(--sans);
-  font-size: 12.5px;
-  line-height: 1.75;
-}
-
-.yohaku-story-more {
-  width: min(100% - 72px, 1040px);
-  margin: 0 auto;
-  padding: 8px 0 96px;
-  text-align: center;
 }
 
 .yohaku-principles {
@@ -565,14 +406,14 @@ a {
   object-position: top center;
 }
 
-.content-page:has(.yohaku-story) {
+.content-page:has(.app-story) {
   width: 100%;
   max-width: none;
 }
 
-.content-page:has(.yohaku-story) .content-hero,
-.content-page:has(.yohaku-story) .how-welcome,
-.content-page:has(.yohaku-story) .how-closing {
+.content-page:has(.app-story) .content-hero,
+.content-page:has(.app-story) .how-welcome,
+.content-page:has(.app-story) .how-closing {
   width: min(100% - 48px, 1040px);
   margin-inline: auto;
 }
@@ -1442,13 +1283,7 @@ a {
   line-height: 2;
 }
 
-/* ——— Reveal (optional, keep gentle) ——— */
-
-[data-reveal] {
-  transition:
-    opacity 0.55s ease,
-    transform 0.55s ease;
-}
+/* Reveal comes from app-site-shell.css; nothing to override here. */
 
 /* ——— Responsive ——— */
 
@@ -1490,6 +1325,16 @@ a {
 }
 
 @media (max-width: 760px) {
+  /* The stage drops its container context here, so cqi has nothing to read. */
+  .appearance-screens {
+    width: min(100%, 340px);
+    min-height: 390px;
+  }
+
+  .appearance-screens .app-phone-frame {
+    --phone-w: min(170px, 42vw);
+  }
+
   .yohaku-principles {
     width: min(100% - 40px, 1040px);
     grid-template-columns: 1fr;
@@ -1568,65 +1413,6 @@ a {
     padding: 64px 0;
   }
 
-  .yohaku-story-heading,
-  .yohaku-story-more,
-  .y-beat-stage {
-    width: min(100% - 32px, 1220px);
-  }
-
-  .y-beat-visual .app-phone-frame {
-    --phone-w: min(340px, 78vw);
-  }
-
-  .yohaku-story-heading {
-    padding: 64px 0 8px;
-  }
-
-  .y-beat-track,
-  .yohaku-story--page .y-beat-track {
-    height: auto;
-  }
-
-  .y-beat-pin {
-    height: auto;
-    position: static;
-    overflow: visible;
-    padding: 40px 0;
-    opacity: 1;
-  }
-
-  .y-beat-stage {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .y-beat-visual,
-  .y-beat[data-side="end"] .y-beat-visual,
-  .y-beat-copy,
-  .y-beat[data-side="end"] .y-beat-copy {
-    width: auto;
-    position: static;
-    inset: auto;
-    transform: none;
-    opacity: 1;
-    animation: none;
-  }
-
-  .y-beat-copy h3 {
-    font-size: 24px;
-  }
-
-  .y-beat-copy > p {
-    font-size: 15px;
-    line-height: 1.85;
-  }
-
-  .yohaku-story-more {
-    padding: 8px 0 64px;
-  }
-
   .feature-grid,
   .pace-grid {
     grid-template-columns: 1fr;
@@ -1695,63 +1481,6 @@ a {
   .secondary-button,
   [data-reveal] {
     transition: none;
-  }
-
-  @media (min-width: 761px) {
-    .y-beat-track,
-    .yohaku-story--page .y-beat-track {
-      height: auto;
-    }
-
-    .y-beat-pin {
-      height: auto;
-      position: static;
-      opacity: 1;
-    }
-
-    .y-beat-stage {
-      min-height: min(86vh, 760px);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 64px;
-    }
-
-    .y-beat-visual,
-    .y-beat[data-side="end"] .y-beat-visual,
-    .y-beat-copy,
-    .y-beat[data-side="end"] .y-beat-copy {
-      width: auto;
-      position: static;
-      transform: none;
-      opacity: 1;
-      animation: none;
-    }
-
-    .y-beat[data-side="end"] .y-beat-copy {
-      order: -1;
-    }
-  }
-}
-
-@media print {
-  .y-beat-track,
-  .yohaku-story--page .y-beat-track {
-    height: auto;
-  }
-
-  .y-beat-pin {
-    height: auto;
-    position: static;
-    overflow: visible;
-  }
-
-  .y-beat-visual,
-  .y-beat-copy {
-    position: static;
-    transform: none;
-    opacity: 1;
-    will-change: auto;
   }
 }
 
@@ -1828,12 +1557,19 @@ a {
   place-items: center;
 }
 
+/* Every screen inside is absolutely positioned, and the story stage places this
+   box without giving it a width — so it needs one of its own, or it collapses
+   to zero and the pair vanishes. */
 .appearance-screens {
-  width: min(100%, 420px);
-  min-height: 455px;
+  width: min(430px, 78cqi);
+  min-height: 470px;
   position: relative;
   display: grid;
   place-items: center;
+}
+
+.appearance-screens .app-phone-frame {
+  --phone-w: min(200px, 34cqi);
 }
 
 .appearance-screen {
@@ -2434,12 +2170,14 @@ a {
   text-align: center;
 }
 
+/* Both plans get the same width. The paid one used to be a narrow sticky rail,
+   which read as an afterthought next to a full-width "free". */
 .pricing-columns {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
-  gap: clamp(24px, 4vw, 44px);
-  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 32px);
+  align-items: stretch;
 }
 
 .pricing-plan {
@@ -2453,12 +2191,10 @@ a {
 }
 
 .pricing-plan--support {
-  position: sticky;
-  top: 104px;
-  padding: 28px;
+  padding: clamp(26px, 4vw, 40px);
   color: #111;
-  background: #f6f6f6;
-  border-color: var(--yohaku-line);
+  background: linear-gradient(170deg, #f4f4f4, #fbfbfb 62%);
+  border-color: #cfcfcf;
 }
 
 .pricing-plan header {
@@ -3281,5 +3017,138 @@ a {
   .update-card,
   .update-card.is-featured {
     min-height: 320px;
+  }
+}
+
+/* ——— Features page hero ——— */
+.feature-hero {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto clamp(20px, 4vw, 40px);
+  display: grid;
+  gap: clamp(26px, 4vw, 40px);
+  align-items: center;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+}
+.feature-hero > p {
+  margin: 0;
+  color: #555;
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 2;
+}
+.feature-hero dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 22px 20px;
+  border: 1px solid var(--yohaku-line);
+  border-radius: 16px;
+  background: var(--yohaku-panel);
+}
+.feature-hero dl div {
+  display: grid;
+  gap: 6px;
+  text-align: center;
+}
+.feature-hero dt {
+  font-size: clamp(20px, 2.6vw, 27px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+.feature-hero dd {
+  margin: 0;
+  color: #888;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  line-height: 1.6;
+}
+
+/* ——— Concept page ——— */
+.concept-origin {
+  width: min(100%, 720px);
+  margin: clamp(40px, 6vw, 68px) auto 0;
+}
+.concept-origin-kicker {
+  margin: 0 0 16px;
+  color: #999;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+.concept-origin blockquote {
+  margin: 0;
+  padding-left: 22px;
+  border-left: 1px solid var(--yohaku-line);
+  font-size: clamp(17px, 2.2vw, 22px);
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+}
+.concept-origin > p:last-child {
+  margin: 24px 0 0;
+  color: #555;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 2;
+}
+.concept-not {
+  width: min(100%, 720px);
+  margin: clamp(44px, 7vw, 76px) auto 0;
+  padding: clamp(24px, 4vw, 34px);
+  border-radius: 18px;
+  background: var(--yohaku-panel);
+}
+.concept-not h2 {
+  margin: 0 0 18px;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.concept-not ul {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+  list-style: none;
+}
+.concept-not li {
+  position: relative;
+  padding-left: 22px;
+  color: #555;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.85;
+}
+.concept-not li::before {
+  content: "";
+  position: absolute;
+  top: 0.85em;
+  left: 0;
+  width: 10px;
+  height: 1px;
+  background: #aaa;
+}
+.concept-screens {
+  margin-top: clamp(46px, 7vw, 82px);
+}
+.concept-screens > h2 {
+  margin: 0 0 clamp(24px, 4vw, 38px);
+  text-align: center;
+  font-size: clamp(18px, 2.2vw, 23px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* The paid plan lists what it includes with the same ticks as the free one. */
+.pricing-list--support li span {
+  color: #444;
+}
+
+@media (max-width: 900px) {
+  .feature-hero {
+    grid-template-columns: 1fr;
+    width: min(100% - 44px, 1040px);
   }
 }

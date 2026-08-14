@@ -1,6 +1,8 @@
 ---
 import type { Locale } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import type { LegalDoc } from "../lib/copy";
+import ArrowLink from "./ArrowLink.astro";
 import SiteFooter from "./SiteFooter.astro";
 import SiteHeader from "./SiteHeader.astro";
 
@@ -8,20 +10,48 @@ interface Props {
   lang: Locale;
   path: string;
   current?: string;
-  metaTitle: string;
-  metaDescription?: string;
-  heading: string;
+  doc: LegalDoc;
 }
-const { lang, path, current, metaTitle, metaDescription, heading } = Astro.props;
+const { lang, path, current, doc } = Astro.props;
+const supportHref = lang === "ja" ? "/ja/support" : "/support";
 ---
 
-<BaseLayout lang={lang} title={metaTitle} description={metaDescription ?? metaTitle}>
+<BaseLayout lang={lang} title={doc.metaTitle[lang]} description={doc.metaDescription[lang]}>
   <div class="site">
     <SiteHeader lang={lang} path={path} current={current} />
     <main>
       <article class="doc shell">
-        <h1>{heading}</h1>
-        <slot />
+        <header class="doc-head" data-reveal>
+          <p class="doc-eyebrow">{doc.eyebrow}</p>
+          <h1>{doc.heading[lang]}</h1>
+          <p class="doc-dates">
+            <span>{doc.effectiveLabel[lang]}：{doc.effective[lang]}</span>
+            <span>{doc.updatedLabel[lang]}：{doc.updated[lang]}</span>
+          </p>
+        </header>
+
+        <p class="doc-intro" data-reveal>{doc.intro[lang]}</p>
+
+        {doc.sections.map((section, i) => (
+          <section class="doc-section" data-reveal>
+            <h2>
+              <b>{String(i + 1).padStart(2, "0")}</b>
+              <span>{section.title[lang]}</span>
+            </h2>
+            {section.body[lang].map((paragraph) => <p>{paragraph}</p>)}
+            {section.list && (
+              <ul>
+                {section.list[lang].map((item) => <li>{item}</li>)}
+              </ul>
+            )}
+          </section>
+        ))}
+
+        <aside class="doc-contact" data-reveal>
+          <h2>{doc.contact.heading[lang]}</h2>
+          <p>{doc.contact.body[lang]}</p>
+          <ArrowLink href={supportHref} label={doc.contact.cta[lang]} soft />
+        </aside>
       </article>
     </main>
     <SiteFooter lang={lang} />

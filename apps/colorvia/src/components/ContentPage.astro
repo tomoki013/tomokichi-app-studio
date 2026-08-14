@@ -1,4 +1,5 @@
 ---
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
@@ -16,6 +17,7 @@ import {
 } from "../lib/content";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
+import StoryVisual from "./StoryVisual.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
 const ja = lang === "ja";
@@ -368,6 +370,22 @@ const howGuides = ja
       },
     ];
 
+/* Features and How-to share the scroll story used across every brand site. */
+const featureBeats: StoryStep[] = featureGroups.map((group, i) => ({
+  kicker: String(i + 1).padStart(2, "0"),
+  title: group.h,
+  body: group.items.join(ja ? "。" : ". ") + (ja ? "。" : "."),
+  visual: { lang, screen: group.screen },
+}));
+
+const howBeats: StoryStep[] = howGuides.map((guide, i) => ({
+  kicker: `STEP ${String(i + 1).padStart(2, "0")}`,
+  title: guide.t,
+  body: guide.steps.join(""),
+  note: guide.note,
+  visual: { lang, screen: guide.screen },
+}));
+
 const faqs = ja
   ? [
       ["base", "Colorviaはどんなアプリですか？", "訪れた国を記録し、世界地図を色づかせる旅の記録アプリです。対応国では都道府県や州まで残せます。"],
@@ -444,29 +462,22 @@ const shots = [
     </header>
 
     {page === "features" && (
-      <div class="feature-showcase">
-        <header class="feature-showcase-intro">
-          <p>{ja ? "旅の記録を、地図の景色に。" : "Turn travel memories into a map."}</p>
-          <h2>{ja ? "選ぶ、眺める、振り返る。必要なことを、ひとつの場所に。" : "Choose, explore, and look back—all in one quiet place."}</h2>
-        </header>
-        {featureGroups.map((g, index) => (
-          <article class:list={["feature-story", index % 2 === 1 && "is-reverse"]}>
-            <div class="feature-story-copy">
-              <span>0{index + 1}</span>
-              <h2>{g.h}</h2>
-              <ul>{g.items.map((item) => <li>{item}</li>)}</ul>
-            </div>
-            <div class="feature-story-screen">
-              <AppScreen screen={g.screen} size="md" lang={lang} />
-            </div>
-          </article>
-        ))}
+      <>
+        <AppStory
+          class="app-story--page"
+          heading={ja ? "選ぶ、眺める、振り返る。" : "Choose, explore, look back."}
+          lead={ja
+            ? "旅の記録を地図の景色に変えるために必要なことを、ひとつの場所にまとめています。"
+            : "Everything needed to turn travel memories into a map, kept in one quiet place."}
+          steps={featureBeats}
+          visual={StoryVisual}
+        />
         <p class="env-line">
           {ja
             ? `11言語対応：${languagesJa}`
             : `Eleven languages: ${languagesEn}`}
         </p>
-      </div>
+      </>
     )}
 
     {page === "regions" && (
@@ -476,6 +487,22 @@ const shots = [
             ? "11か国で、都道府県・州・県・旅行エリアなど国の中まで記録できます。国名や区分名で検索し、タップすると分け方の詳細を開けます。"
             : "In 11 countries, record prefectures, states, provinces and travel areas. Search by country or unit name, then open a card for how it is divided."}
         </p>
+
+        {/* What the page actually covers, before the list of countries. */}
+        <dl class="region-stats" data-reveal>
+          <div>
+            <dt>{ja ? "対応国" : "Countries"}</dt>
+            <dd>{regions.length}</dd>
+          </div>
+          <div>
+            <dt>{ja ? "記録できる地域数" : "Regions in total"}</dt>
+            <dd>{regions.reduce((total, region) => total + region.count, 0)}</dd>
+          </div>
+          <div>
+            <dt>{ja ? "最も細かい国" : "Most detailed"}</dt>
+            <dd>{[...regions].sort((a, b) => b.count - a.count)[0]?.flag} {ja ? [...regions].sort((a, b) => b.count - a.count)[0]?.nameJa : [...regions].sort((a, b) => b.count - a.count)[0]?.nameEn}</dd>
+          </div>
+        </dl>
 
         <div class="region-toolbar" data-reveal>
           <label class="region-search">
@@ -570,25 +597,15 @@ const shots = [
     )}
 
     {page === "how-to" && (
-      <div class="how-showcase">
-        <header class="how-showcase-intro">
-          <p>{ja ? "はじめてのColorvia" : "Your first map"}</p>
-          <h2>{ja ? "思い出した国から、ひとつずつ色を置いてみましょう。" : "Start by colouring one place you remember."}</h2>
-        </header>
-        {howGuides.map((g, i) => (
-          <article class:list={["how-story", i % 2 === 1 && "is-reverse"]}>
-            <div class="how-story-copy">
-              <p class="how-story-number">STEP {String(i + 1).padStart(2, "0")}</p>
-              <h2>{g.t}</h2>
-              <ol>{g.steps.map((s) => <li>{s}</li>)}</ol>
-              <aside><span aria-hidden="true">○</span><p>{g.note}</p></aside>
-            </div>
-            <div class="how-story-screen">
-              <AppScreen screen={g.screen} size="md" lang={lang} />
-            </div>
-          </article>
-        ))}
-      </div>
+      <AppStory
+        class="app-story--page"
+        heading={ja ? "はじめてのColorvia" : "Your first map"}
+        lead={ja
+          ? "思い出した国から、ひとつずつ色を置いてみましょう。順番どおりでなくてかまいません。"
+          : "Start by colouring one place you remember. You do not have to follow the order."}
+        steps={howBeats}
+        visual={StoryVisual}
+      />
     )}
 
     {page === "screenshots" && (

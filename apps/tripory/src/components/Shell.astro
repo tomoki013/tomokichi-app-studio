@@ -17,22 +17,24 @@ const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const nav = ja
   ? [
       { slug: "features", label: "機能紹介", href: href("features") },
+      { slug: "how-to", label: "使い方", href: href("how-to") },
       { slug: "screenshots", label: "スクリーンショット", href: href("screenshots") },
     ]
   : [
       { slug: "features", label: "Features", href: href("features") },
+      { slug: "how-to", label: "How to", href: href("how-to") },
       { slug: "screenshots", label: "Screenshots", href: href("screenshots") },
     ];
 const supportHref = supportUrl("tripory", lang);
 const footerColumns = ja
   ? [
-      { title: "プロダクト", links: [{ label: "機能紹介", href: href("features") }, { label: "こだわり", href: href("principles") }, { label: "スクリーンショット", href: href("screenshots") }] },
+      { title: "プロダクト", links: [{ label: "機能紹介", href: href("features") }, { label: "使い方", href: href("how-to") }, { label: "スクリーンショット", href: href("screenshots") }] },
       { title: "サポート", links: [{ label: "よくある質問", href: href("faq") }, { label: "お知らせ", href: href("news") }, { label: "アップデート情報", href: href("updates") }, { label: "お問い合わせ", href: supportHref, external: true }] },
       { title: "規約", links: [{ label: "プライバシーポリシー", href: href("privacy") }, { label: "利用規約", href: href("terms") }, { label: "特定商取引法に基づく表記", href: href("commercial-transactions") }] },
       { title: "運営者情報", links: [{ label: "運営サイト", href: mainSiteUrl("ja"), external: true }, { label: "ほかのアプリ", href: mainSiteUrl("ja", "/products"), external: true }] },
     ]
   : [
-      { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "Principles", href: href("principles") }, { label: "Screenshots", href: href("screenshots") }] },
+      { title: "Product", links: [{ label: "Features", href: href("features") }, { label: "How to", href: href("how-to") }, { label: "Screenshots", href: href("screenshots") }] },
       { title: "Support", links: [{ label: "FAQ", href: href("faq") }, { label: "News", href: href("news") }, { label: "App updates", href: href("updates") }, { label: "Contact", href: supportHref, external: true }] },
       { title: "Legal", links: [{ label: "Privacy Policy", href: href("privacy") }, { label: "Terms of Service", href: href("terms") }, { label: "Commercial Transactions", href: href("commercial-transactions") }] },
       { title: "Operator", links: [{ label: "Operator site", href: mainSiteUrl("en"), external: true }, { label: "Other apps", href: mainSiteUrl("en", "/products"), external: true }] },

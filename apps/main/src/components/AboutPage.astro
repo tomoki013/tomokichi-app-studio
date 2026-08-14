@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import { SITE_ORIGINS } from "@tomokichi/app-site/urls";
+import introduce from "../assets/introduce.jpg";
 import type { Locale } from "../data/apps";
 import { orderedApps } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -27,7 +29,7 @@ const links = {
 
     <main>
       <section class="about-hero shell">
-        <div>
+        <div data-reveal="rise">
           <h1>{about.hero.heading[lang]}</h1>
           <p class="lead">{about.hero.body[lang]}</p>
         </div>
@@ -40,11 +42,11 @@ const links = {
       </section>
 
       <section class="about-maker shell">
-        <div>
+        <div data-reveal="left">
           <h2>{about.maker.heading[lang]}</h2>
           <p>{about.maker.body[lang]}</p>
         </div>
-        <ul class="meta">
+        <ul class="meta" data-reveal="right">
           <li class="loc">{about.maker.location}</li>
           <li><a href={links.website} target="_blank" rel="noopener noreferrer">{about.maker.linksLabel.website[lang]} ↗</a></li>
           <li><a href={links.github} target="_blank" rel="noopener noreferrer">{about.maker.linksLabel.github[lang]} ↗</a></li>
@@ -53,10 +55,10 @@ const links = {
       </section>
 
       <section class="about-concept shell">
-        <h2>{about.concept.heading[lang]}</h2>
+        <h2 data-reveal="fade">{about.concept.heading[lang]}</h2>
         <div class="concept-grid">
-          {about.concept.items.map((item) => (
-            <article>
+          {about.concept.items.map((item, i) => (
+            <article data-reveal style={`--reveal-i:${i}`}>
               <h3>{item.title[lang]}</h3>
               <p>{item.body[lang]}</p>
             </article>
@@ -65,31 +67,48 @@ const links = {
       </section>
 
       <section class="about-approach shell" id="approach">
-        <h2 style="margin:0 0 6px;font:500 22px/1.3 var(--serif)">{principlesHeading[lang]}</h2>
+        <h2 style="margin:0 0 6px;font:500 22px/1.3 var(--serif)" data-reveal="fade">{principlesHeading[lang]}</h2>
         <div class="approach-grid">
-          {principles.map((item, i) => <PrincipleItem title={item.title[lang]} body={item.body[lang]} index={i} />)}
+          {principles.map((item, i) => (
+            <div data-reveal style={`--reveal-i:${i}`}>
+              <PrincipleItem title={item.title[lang]} body={item.body[lang]} index={i} />
+            </div>
+          ))}
         </div>
       </section>
 
       <section class="about-now shell">
-        <div>
+        <div data-reveal="left">
           <h2>{about.now.heading[lang]}</h2>
           <p>{about.now.body[lang]}</p>
         </div>
-        <img src="/assets/workspace.png" alt={ja ? "窓辺のノートとマグカップ" : "A notebook and mug by a window"} />
+        <figure class="photo-frame" data-reveal="right">
+          <Image
+            src={introduce}
+            format="webp"
+            widths={[320, 480, 720]}
+            sizes="(max-width: 900px) 88vw, 320px"
+            alt={ja
+              ? "旅先の高台に立つTomokichi。背後に川と丘の上の旧市街が広がっている"
+              : "Tomokichi standing on a hillside while travelling, with a river and an old town on the ridge behind"}
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>{about.now.caption[lang]}</figcaption>
+        </figure>
       </section>
 
       <section class="about-making shell">
-        <h2 style="margin:0;font:500 22px/1.3 var(--serif)">{about.making.heading[lang]}</h2>
+        <h2 style="margin:0;font:500 22px/1.3 var(--serif)" data-reveal="fade">{about.making.heading[lang]}</h2>
         <div class="making-row">
-          {orderedApps.map((app) => (
-            <div class="item"><AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={40} /><span>{app.name}</span></div>
+          {orderedApps.map((app, i) => (
+            <div class="item" data-reveal style={`--reveal-i:${i}`}><AppIcon iconClass={app.iconClass} slug={app.slug} name={app.name} size={40} /><span>{app.name}</span></div>
           ))}
         </div>
-        <div class="all"><ArrowLink href={p("/products")} label={about.making.all[lang]} /></div>
+        <div class="all" data-reveal="fade"><ArrowLink href={p("/products")} label={about.making.all[lang]} /></div>
       </section>
 
-      <section class="about-cta shell">
+      <section class="about-cta shell" data-reveal="rise">
         <a class="cta-card" href={p("/products")}>
           <h3>{about.bottom.apps.heading[lang]}</h3>
           <p>{about.bottom.apps.body[lang]}</p>

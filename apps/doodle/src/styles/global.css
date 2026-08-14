@@ -107,7 +107,10 @@ button {
 .doodle-hero {
   position: relative;
   min-height: 780px;
-  padding: 120px max(30px, calc((100vw - 1120px) / 2)) 150px;
+  /* The sticky header sits in flow, so without this pull-up the first 72px of
+     the page was bare paper above where the hero's artwork began. */
+  margin-top: -72px;
+  padding: 184px max(30px, calc((100vw - 1120px) / 2)) 150px;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 48px;
@@ -185,7 +188,11 @@ button {
   transform: rotate(-8deg);
 }
 
-.doodle-hero > *:not(.hero-sketch-bg) {
+/* Lifts the hero's own content above the sketch backdrop. The shared scroll
+   affordance and news bar are excluded: they position themselves against the
+   hero, and forcing them back into the grid dropped the scroll cue on top of
+   the buttons and pushed the news bar into the right-hand column. */
+.doodle-hero > *:not(.hero-sketch-bg, .app-hero-scroll, .app-hero-notice) {
   position: relative;
   z-index: 1;
 }
@@ -956,20 +963,7 @@ button {
   justify-content: center;
 }
 
-/* Reveal */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity 0.55s ease,
-    transform 0.55s ease;
-}
-
-[data-reveal].visible,
-.doodle-page [data-reveal] {
-  opacity: 1;
-  transform: none;
-}
+/* Reveal comes from app-site-shell.css; nothing to override here. */
 
 /* App site news / commercial inherit tokens; small doodle tweaks */
 .doodle-page .app-news-card {
@@ -993,7 +987,8 @@ button {
 @media (max-width: 760px) {
   .doodle-hero {
     min-height: 0;
-    padding: 100px 22px 120px;
+    margin-top: -62px;
+    padding: 140px 22px 120px;
     display: flex;
     flex-direction: column;
     gap: 28px;
@@ -2402,5 +2397,317 @@ button {
   50% {
     filter: saturate(1.08);
     opacity: 1;
+  }
+}
+
+/* ——— Hand-drawn "coming soon" ———
+   A solid black pill reads as a live download button. Doodle's coming-soon
+   label is a dashed sketch outline instead, in keeping with the rest. */
+.doodle-page .app-site-store-soon,
+.doodle-page .app-site-mobile-store.app-site-store-soon {
+  padding: 12px 22px;
+  border: 1.5px dashed rgb(26 24 20 / 34%);
+  border-radius: 999px 980px 999px 980px;
+  color: var(--muted);
+  background: rgb(255 252 245 / 74%);
+  opacity: 1;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.doodle-page .store-button.store-soon {
+  color: var(--ink);
+  background: rgb(255 252 245 / 74%);
+  border: 2px dashed rgb(26 24 20 / 34%);
+  box-shadow: 2px 3px 0 rgb(26 24 20 / 8%);
+  opacity: 1;
+}
+
+.doodle-page .store-button.store-soon .store-dot {
+  background: var(--coral);
+  box-shadow: 0 0 0 3px rgb(232 106 92 / 24%);
+}
+
+/* ——— More hand-drawn ———
+   Panels, cards and rules pick up the wobbly borders the hero already uses. */
+.doodle-page :is(.app-news-card, .app-release-list article, .commercial-list, .faq-list details) {
+  border-radius: 18px 15px 20px 14px;
+}
+
+.doodle-page :is(.app-news-card, .app-release-list article) {
+  border: 1.5px solid rgb(26 24 20 / 14%);
+  box-shadow: 2px 3px 0 rgb(26 24 20 / 5%);
+}
+
+.doodle-page .app-news-tabs,
+.doodle-page .faq-tabs {
+  border-radius: 999px 980px 999px 980px;
+  border: 1.5px solid rgb(26 24 20 / 14%);
+}
+
+.doodle-page .app-story {
+  border-top: 2px dashed rgb(26 24 20 / 14%);
+}
+
+.doodle-page .app-beat-note {
+  border: 1.5px dashed rgb(26 24 20 / 18%);
+  border-radius: 16px 13px 18px 12px;
+  background: rgb(255 252 245 / 70%);
+}
+
+.doodle-page :is(.app-beat-copy h3, .app-story-heading h2, .content-hero h1) {
+  font-family: "Segoe Print", "Comic Sans MS", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+.doodle-page {
+  --app-story-line: rgb(26 24 20 / 14%);
+  --app-story-kicker: var(--coral);
+  --app-story-body: var(--muted);
+  --app-story-note-background: transparent;
+  --app-story-title-weight: 500;
+}
+
+/* ——— Per-app pages ——— */
+.suite-app {
+  --suite-accent: var(--coral);
+}
+.suite-app--yellow {
+  --suite-accent: var(--yellow);
+}
+.suite-app--blue {
+  --suite-accent: var(--blue);
+}
+.suite-hero {
+  max-width: 44rem;
+  margin: 0 auto clamp(48px, 8vw, 88px);
+  text-align: center;
+}
+.suite-hero-mark {
+  width: 76px;
+  height: 76px;
+  margin: 18px auto 22px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgb(26 24 20 / 22%);
+  border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
+  color: var(--suite-accent);
+  background: rgb(255 252 245 / 76%);
+  font-size: 30px;
+}
+.suite-hero h1 {
+  margin: 0;
+  font:
+    500 clamp(36px, 6vw, 60px) / 1.1 "Segoe Print",
+    "Comic Sans MS",
+    "Hiragino Maru Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+  letter-spacing: -0.02em;
+}
+.suite-hero-tagline {
+  margin: 16px 0 0;
+  font-size: clamp(16px, 2vw, 21px);
+  font-weight: 600;
+  line-height: 1.6;
+}
+.suite-hero-lead {
+  margin: 18px auto 0;
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.95;
+}
+.suite-hero .hero-actions {
+  justify-content: center;
+}
+.suite-section-title {
+  margin: 0 0 clamp(20px, 3vw, 30px);
+  font:
+    500 clamp(20px, 2.6vw, 26px) / 1.3 "Segoe Print",
+    "Comic Sans MS",
+    "Hiragino Maru Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+}
+.suite-points,
+.suite-steps,
+.suite-siblings {
+  margin-bottom: clamp(48px, 7vw, 82px);
+}
+.suite-point-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.suite-point-grid article {
+  padding: 26px 24px;
+  border: 1.5px solid rgb(26 24 20 / 14%);
+  border-radius: 18px 15px 20px 14px;
+  background: rgb(255 252 245 / 74%);
+  box-shadow: 2px 3px 0 rgb(26 24 20 / 5%);
+}
+.suite-point-grid b {
+  color: var(--suite-accent);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+}
+.suite-point-grid h3 {
+  margin: 12px 0 10px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.suite-point-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
+.suite-steps ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 16px;
+}
+.suite-steps li {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding-bottom: 16px;
+  border-bottom: 2px dashed rgb(26 24 20 / 12%);
+}
+.suite-steps li:last-child {
+  border-bottom: 0;
+}
+.suite-steps h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.suite-steps p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.9;
+}
+.suite-shared {
+  margin-bottom: clamp(48px, 7vw, 82px);
+  padding: clamp(24px, 4vw, 36px);
+  border: 2px dashed rgb(26 24 20 / 18%);
+  border-radius: 20px 16px 22px 15px;
+  background: rgb(255 252 245 / 62%);
+}
+.suite-shared h2 {
+  margin: 0 0 12px;
+  font-size: clamp(17px, 2.2vw, 21px);
+}
+.suite-shared p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.95;
+}
+.suite-siblings ul {
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.suite-siblings li {
+  padding: 18px 20px;
+  display: grid;
+  gap: 6px;
+  border: 1.5px solid rgb(26 24 20 / 12%);
+  border-radius: 16px 13px 18px 12px;
+  background: rgb(255 252 245 / 62%);
+}
+.suite-siblings strong {
+  font-size: 15px;
+}
+.suite-siblings li > span:last-child {
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+/* Only apps that have a page of their own are links. */
+.suite-inline li.has-page a {
+  display: contents;
+}
+.suite-inline li.has-page {
+  cursor: pointer;
+  transition:
+    border-color 0.22s ease,
+    transform 0.22s ease;
+}
+.suite-inline li.has-page:hover {
+  border-color: var(--coral);
+  transform: translateY(-2px);
+}
+.suite-inline li.has-page i {
+  font-style: normal;
+  color: var(--coral);
+}
+
+@media (max-width: 860px) {
+  .suite-point-grid,
+  .suite-siblings ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sketched stand-in panels for the story beats. */
+.story-sketch {
+  width: min(360px, 34cqi);
+  aspect-ratio: 0.78;
+  margin: 0;
+  padding: 30px 26px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 16px;
+  border: 2.5px solid var(--ink);
+  border-radius: 18px 22px 16px 20px;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 55%), transparent 40%),
+    repeating-linear-gradient(
+      0deg,
+      #fffdf8,
+      #fffdf8 26px,
+      rgb(74 143 212 / 12%) 26px,
+      rgb(74 143 212 / 12%) 27px
+    );
+  box-shadow:
+    6px 8px 0 rgb(26 24 20 / 8%),
+    0 28px 60px rgb(54 45 30 / 14%);
+  transform: rotate(calc(1.5deg - var(--sketch-i, 0) * 1deg));
+}
+.story-sketch-mark {
+  color: var(--coral);
+  font-size: clamp(52px, 9cqi, 88px);
+  line-height: 1;
+}
+.story-sketch-rule {
+  width: 62%;
+  height: 2px;
+  border-radius: 2px;
+  background: rgb(26 24 20 / 16%);
+}
+.story-sketch-rule.is-short {
+  width: 38%;
+}
+.story-sketch figcaption {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .story-sketch {
+    width: min(300px, 76vw);
   }
 }

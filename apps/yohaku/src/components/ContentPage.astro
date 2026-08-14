@@ -253,7 +253,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
 
 <AppShell lang={lang} title={title} page={page} description={description}>
   <section class:list={["content-page", `content-${page}`]}>
-    <header class:list={["content-hero", page !== "privacy" && page !== "terms" && "content-hero--center"]}>
+    <header class="content-hero content-hero--center">
       <p class="content-eyebrow">{page.toUpperCase()}</p>
       <h1>{title}</h1>
       {(page === "privacy" || page === "terms") && (
@@ -265,9 +265,25 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
     </header>
 
     {page === "features" && (
+      <section class="feature-hero" data-reveal="rise">
+        <p>{ja
+          ? "Yohakuでできることは、多くありません。余白をひとつ置き、それを見渡し、終わったあとに一度だけ振り返る。その三つを、丁寧にやります。"
+          : "Yohaku does not do many things. Leave one space, glance across the ones you left, and check in once after it ends. It tries to do those three carefully."}</p>
+        <dl>
+          {(ja
+            ? [["9", "できること"], ["18", "対応言語"], ["¥0", "基本機能"]]
+            : [["9", "things it does"], ["18", "languages"], ["¥0", "for every core feature"]]
+          ).map(([value, label]) => (
+            <div><dt>{value}</dt><dd>{label}</dd></div>
+          ))}
+        </dl>
+      </section>
+    )}
+
+    {page === "features" && (
       <YohakuStory
         lang={lang}
-        class="yohaku-story--page"
+        class="app-story--page"
         steps={featureBlocks.map((block, i) => ({
           kicker: String(i + 1).padStart(2, "0"),
           title: block.heading,
@@ -292,7 +308,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
         </section>
         <YohakuStory
           lang={lang}
-          class="yohaku-story--page"
+          class="app-story--page"
           steps={howSteps.map((step, index) => ({
             kicker: String(step.n).padStart(2, "0"),
             title: step.title,
@@ -313,26 +329,57 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
       </div>
     )}
 
-    {page === "screenshots" && (
+    {page === "concept" && (
+      /* This page is about why Yohaku exists. Screens appear once, at the end,
+         so it does not read as a second screenshots page. */
       <div class="concept-page">
-        <p class="concept-lead">
+        <p class="concept-lead" data-reveal="rise">
           {ja
             ? "予定ではなく、余白だけを。Yohakuは、日々の中に何もしない時間を置き、静かに振り返るための小さな習慣です。"
             : "Not another plan—just space. Yohaku is a small habit for leaving time with nothing planned, then looking back quietly."}
         </p>
-        <div class="concept-phones">
-          {conceptScreens.map(({ screen, label }) => (
-            <AppScreen screen={screen} size="md" lang={lang} label={label} />
-          ))}
-        </div>
+
+        <section class="concept-origin" data-reveal>
+          <p class="concept-origin-kicker">{ja ? "はじまり" : "Where it started"}</p>
+          <blockquote>
+            {ja
+              ? "「カレンダーが空いている日に、罪悪感のようなものがあった。空いているなら何かできるはずだ、と考えてしまう。」"
+              : "“An empty day on the calendar carried a kind of guilt. If it is open, surely something could go there.”"}
+          </blockquote>
+          <p>
+            {ja
+              ? "休むつもりだった時間に用事を入れて、あとから乗り気じゃなかったことに気づく。問題は休む時間がないことではなく、空白が予定として扱われないから、いつでも上書きできてしまうことでした。だから、何もしない時間の方に名前と時刻を与えます。"
+              : "Time meant for resting quietly filled up with errands that never felt right afterwards. The problem was not a lack of rest — it was that blank time was not treated as a plan, so anything could overwrite it. So Yohaku gives the doing-nothing a name and a time of its own."}
+          </p>
+        </section>
+
         <div class="concept-ideas">
-          {conceptIdeas.map((idea) => (
-            <article>
+          {conceptIdeas.map((idea, i) => (
+            <article data-reveal style={`--reveal-i:${i}`}>
               <h2>{idea.title}</h2>
               <p>{idea.body}</p>
             </article>
           ))}
         </div>
+
+        <section class="concept-not" data-reveal>
+          <h2>{ja ? "Yohakuがしないこと" : "What Yohaku will not do"}</h2>
+          <ul>
+            {(ja
+              ? ["予定やタスクを管理しません。", "余白の最中にタイマーや専用モードは始まりません。", "続けた日数を数えて競わせません。", "記録から画像やアートを生成しません。", "余白の内容を運営者のサーバーへ送りません。"]
+              : ["It does not manage events or tasks.", "No timer or dedicated mode starts while a space is running.", "It does not count streaks or turn rest into a score.", "It does not generate art or patterns from your records.", "Nothing you write is sent to the operator’s servers."]
+            ).map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+
+        <section class="concept-screens" data-reveal>
+          <h2>{ja ? "その考え方が、画面ではこうなります" : "How that turns into screens"}</h2>
+          <div class="concept-phones">
+            {conceptScreens.map(({ screen, label }) => (
+              <AppScreen screen={screen} size="md" lang={lang} label={label} />
+            ))}
+          </div>
+        </section>
       </div>
     )}
 
@@ -374,11 +421,11 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
             <p class="pricing-plan-copy">{ja
               ? "追加機能の購入ではなく、開発を応援してくださる方へのお礼です。"
               : "Not a feature unlock—just our thank-you when you choose to support the app."}</p>
-            <ul class="pricing-iap-list">
+            <ul class="pricing-list pricing-list--support">
               {(ja
                 ? ["アプリ内の広告をすべて削除", "サブスクリプション・更新なし", "同じApple Accountで購入を復元", "全機能は無料版と同じ"]
                 : ["Remove every in-app ad", "No subscription or renewal", "Restore with the same Apple Account", "The same complete feature set"]
-              ).map((item) => <li>{item}</li>)}
+              ).map((item) => <li><span aria-hidden="true">✓</span>{item}</li>)}
             </ul>
             <span class="pricing-support-note">{ja ? "ありがとうございます。静かなアプリを、長く育てていきます。" : "Thank you. Your support helps this quiet app grow."}</span>
           </article>
@@ -453,7 +500,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
       </article>
     )}
 
-    {(page === "features" || page === "how-to" || page === "screenshots") && (
+    {(page === "features" || page === "how-to" || page === "concept") && (
       <section class="download-section download-section--inline">
         <h2>{ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}</h2>
         <span class="store-button store-soon" aria-disabled="true">{storeLabel}</span>

@@ -97,14 +97,19 @@
     serif;
 }
 
+/*
+ * The links stay centred, but they are given a wide band to sit in — a tight
+ * cluster stranded between the logo and the actions reads as a mistake.
+ */
 .app-site-primary-nav {
   min-width: 0;
   display: flex;
   flex: 1 1 auto;
   justify-content: center;
-  gap: clamp(30px, 3.4vw, 58px);
+  gap: clamp(34px, 5vw, 86px);
   font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.02em;
   transition:
     opacity 0.2s ease,
     visibility 0.2s ease,
@@ -142,8 +147,16 @@
   transform-origin: left;
 }
 
+.app-site-primary-nav a {
+  transition: color 0.22s ease;
+}
+
+/* Hover lands on the same colour as the current page, so the accent always
+   means "this link". */
+.app-site-primary-nav a:hover,
+.app-site-primary-nav a:focus-visible,
 .app-site-primary-nav a.active {
-  color: var(--app-site-accent, #e99647);
+  color: var(--app-site-nav-hover, var(--app-site-accent, #e99647));
 }
 
 .app-site-actions {
@@ -608,6 +621,66 @@ html.app-site-menu-open body {
 
 .app-hero-notice:hover a {
   transform: translateX(5px);
+}
+
+@media (max-width: 1180px) {
+  .app-site-primary-nav {
+    gap: clamp(22px, 3vw, 44px);
+  }
+}
+
+/* ——— Reveal ———
+ *
+ * One implementation for every brand site: the observer in AppSiteShell adds
+ * `.visible`, and markup picks a flavour with `data-reveal="…"` plus an
+ * optional `--reveal-i` for staggering siblings.
+ */
+
+[data-reveal] {
+  --reveal-delay: calc(var(--reveal-i, 0) * 80ms);
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 26px), 0) scale(var(--reveal-scale, 1));
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay);
+}
+
+[data-reveal].visible {
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal="fade"] {
+  --reveal-y: 0px;
+}
+
+/** Taller lift for section headers and heroes. */
+[data-reveal="rise"] {
+  --reveal-y: 46px;
+}
+
+[data-reveal="zoom"] {
+  --reveal-y: 14px;
+  --reveal-scale: 0.955;
+}
+
+[data-reveal="left"] {
+  --reveal-x: -34px;
+  --reveal-y: 0px;
+}
+
+[data-reveal="right"] {
+  --reveal-x: 34px;
+  --reveal-y: 0px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @media (max-width: 900px) {

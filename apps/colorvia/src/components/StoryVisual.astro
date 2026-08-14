@@ -1,0 +1,14 @@
+---
+/** One story beat's visual: a real Colorvia capture in the shared frame. */
+import AppScreen from "./AppScreen.astro";
+
+type Screen = "home" | "stats" | "controls" | "coral" | "dark" | "english";
+
+const { lang, screen, index = 0 } = Astro.props as {
+  lang: "ja" | "en";
+  screen: Screen;
+  index?: number;
+};
+---
+
+<AppScreen screen={screen} size="xl" lang={lang} priority={index < 2} />

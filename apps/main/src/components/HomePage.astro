@@ -1,10 +1,15 @@
 ---
+import { Image } from "astro:assets";
+import mountainLake from "../assets/travel/mountain-lake.jpg";
+import santorini from "../assets/travel/santorini.jpg";
+import venice from "../assets/travel/venice.jpg";
 import type { Locale } from "../data/apps";
 import { developingApps, releasedApps } from "../data/apps";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { home, principles, principlesHeading } from "../lib/copy";
-import { currentEntry, recentEntries } from "../lib/journal";
+import { currentEntry, journalEntries, recentEntries } from "../lib/journal";
 import AppCard from "./AppCard.astro";
+import AppScreen from "./AppScreen.astro";
 import ArrowLink from "./ArrowLink.astro";
 import JournalCard from "./JournalCard.astro";
 import PrincipleItem from "./PrincipleItem.astro";
@@ -18,8 +23,22 @@ const p = (path: string) => (ja ? `/ja${path === "/" ? "" : path}` : path);
 
 const current = await currentEntry(lang);
 const recent = await recentEntries(lang, 3);
+const allEntries = await journalEntries(lang);
 const available = releasedApps.slice(0, 3);
 const making = developingApps.slice(0, 5);
+
+/* The hero leads with where the questions come from, so the travel frames sit
+   in front and the product screen tucks in behind them. */
+const heroPhotos = [
+  { src: venice, className: "p1" },
+  { src: mountainLake, className: "p2" },
+  { src: santorini, className: "p3" },
+];
+const heroFacts = [
+  { term: home.facts.based[lang], value: "Kyoto / Tokyo" },
+  { term: home.facts.released[lang], value: String(releasedApps.length) },
+  { term: home.facts.notes[lang], value: String(allEntries.length) },
+];
 ---
 
 <BaseLayout lang={lang} title={home.metaTitle[lang]} description={home.hero.body[lang].replaceAll("\n", " ")}>
@@ -29,23 +48,53 @@ const making = developingApps.slice(0, 5);
     <main>
       <section class="hero shell">
         <div class="hero-copy">
-          <h1>{home.hero.heading[lang]}</h1>
-          <p class="lead">{home.hero.body[lang]}</p>
-          <div class="hero-actions">
+          <p class="hero-eyebrow" data-reveal="fade">{home.hero.eyebrow[lang]}</p>
+          <h1 data-reveal="rise" style="--reveal-i:1">{home.hero.heading[lang]}</h1>
+          <p class="lead" data-reveal style="--reveal-i:2">{home.hero.body[lang]}</p>
+          <div class="hero-actions" data-reveal style="--reveal-i:3">
             <ArrowLink href={p("/journal")} label={home.hero.cta[lang]} />
             <ArrowLink href={p("/products")} label={home.hero.ctaSub[lang]} soft />
           </div>
+          <dl class="hero-facts" data-reveal style="--reveal-i:4">
+            {heroFacts.map((fact) => (
+              <div>
+                <dt>{fact.term}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <figure class="hero-visual">
-          <img src="/assets/hero-phone.png" alt={ja ? "iPhoneで動くRemeet" : "Remeet running on an iPhone"} />
-        </figure>
+
+        <div class="hero-gallery" data-reveal="zoom" style="--reveal-i:2">
+          {heroPhotos.map((photo, i) => (
+            <figure class:list={["hero-photo", photo.className]} style={`--photo-i:${i}`}>
+              <Image
+                src={photo.src}
+                format="webp"
+                widths={[320, 520, 760]}
+                sizes="(max-width: 900px) 40vw, 300px"
+                alt=""
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </figure>
+          ))}
+          <AppScreen
+            class="hero-device"
+            screen="tripory-home"
+            lang={lang}
+            alt={ja ? "iPhoneで動くTripory" : "Tripory running on an iPhone"}
+            size="sm"
+          />
+        </div>
+
         <div class="hero-shapes" aria-hidden="true">
           <span class="s s1"></span><span class="s s2"></span><span class="arch"></span>
         </div>
       </section>
 
       {current && (
-        <section class="home-current shell">
+        <section class="home-current shell" data-reveal>
           <SectionHeader title={home.currentHeading[lang]} />
           <JournalCard entry={current} lang={lang} variant="current" />
         </section>
@@ -59,50 +108,72 @@ const making = developingApps.slice(0, 5);
             linkLabel={home.journalAll[lang]}
           />
           <div class="journal-rows">
-            {recent.map((entry) => <JournalCard entry={entry} lang={lang} />)}
+            {recent.map((entry, i) => (
+              <div data-reveal style={`--reveal-i:${i}`}>
+                <JournalCard entry={entry} lang={lang} />
+              </div>
+            ))}
           </div>
         </section>
       )}
 
       <section class="home-apps shell">
-        <SectionHeader title={home.appsHeading[lang]} linkHref={p("/products")} linkLabel={home.appsAll[lang]} />
+        <div data-reveal>
+          <SectionHeader title={home.appsHeading[lang]} linkHref={p("/products")} linkLabel={home.appsAll[lang]} />
+        </div>
 
         {available.length > 0 && (
           <div class="home-apps-group">
-            <h3 class="home-apps-label">{home.appsAvailableHeading[lang]}</h3>
+            <h3 class="home-apps-label" data-reveal="fade">{home.appsAvailableHeading[lang]}</h3>
             <div class="app-grid app-grid-available">
-              {available.map((app) => <AppCard app={app} lang={lang} variant="compact" />)}
+              {available.map((app, i) => (
+                <div data-reveal style={`--reveal-i:${i}`}>
+                  <AppCard app={app} lang={lang} variant="compact" />
+                </div>
+              ))}
             </div>
           </div>
         )}
 
         {making.length > 0 && (
           <div class="home-apps-group">
-            <h3 class="home-apps-label">{home.appsMakingHeading[lang]}</h3>
+            <h3 class="home-apps-label" data-reveal="fade">{home.appsMakingHeading[lang]}</h3>
             <div class="app-grid">
-              {making.map((app) => <AppCard app={app} lang={lang} variant="compact" />)}
+              {making.map((app, i) => (
+                <div data-reveal style={`--reveal-i:${i}`}>
+                  <AppCard app={app} lang={lang} variant="compact" />
+                </div>
+              ))}
             </div>
           </div>
         )}
       </section>
 
       <section class="home-approach shell">
-        <SectionHeader title={principlesHeading[lang]} />
+        <div data-reveal>
+          <SectionHeader title={principlesHeading[lang]} />
+        </div>
         <div class="approach-grid">
-          {principles.map((item, i) => <PrincipleItem title={item.title[lang]} body={item.body[lang]} index={i} />)}
+          {principles.map((item, i) => (
+            <div data-reveal style={`--reveal-i:${i}`}>
+              <PrincipleItem title={item.title[lang]} body={item.body[lang]} index={i} />
+            </div>
+          ))}
         </div>
       </section>
 
       <section class="home-about shell">
-        <div>
+        <div data-reveal="left">
           <h2>{home.about.heading[lang]}</h2>
           <p>{home.about.body[lang]}</p>
           <ArrowLink href={p("/about")} label={home.about.link[lang]} />
         </div>
-        <img class="avatar" src="/assets/avatar.png" alt="Tomokichi" />
+        <figure class="photo-frame photo-frame--round" data-reveal="right">
+          <img src="/assets/avatar.png" alt="Tomokichi" width="380" height="380" loading="lazy" />
+        </figure>
       </section>
 
-      <section class="home-prefooter shell">
+      <section class="home-prefooter shell" data-reveal="rise">
         <h2>{home.prefooter.heading[lang]}</h2>
         <p>{home.prefooter.body[lang]}</p>
         <ArrowLink href={p("/products")} label={home.appsAll[lang]} />
