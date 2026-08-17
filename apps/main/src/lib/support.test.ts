@@ -2,9 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   buildSupportRequest,
+  categoryImpliesReply,
   getOrCreateClientId,
   initialSelections,
   isValidEmail,
+  requiresEmail,
+  showsReplyToggle,
   SUPPORT_API_PUBLIC_URL,
   SUPPORT_API_URL,
   SUPPORT_CLIENT_ID_KEY,
@@ -69,6 +72,45 @@ describe("support form validation", () => {
     expect(validateSupportForm({ ...validValues, name: "x".repeat(101) })).toMatchObject({
       name: "TOO_LONG",
     });
+  });
+});
+
+describe("reply-implying categories", () => {
+  it("only 'question' implies a reply", () => {
+    expect(categoryImpliesReply("question")).toBe(true);
+    expect(categoryImpliesReply("bug")).toBe(false);
+    expect(categoryImpliesReply("feature")).toBe(false);
+    expect(categoryImpliesReply("other")).toBe(false);
+  });
+
+  it("hides the toggle only for reply-implying categories", () => {
+    expect(showsReplyToggle("question")).toBe(false);
+    expect(showsReplyToggle("bug")).toBe(true);
+  });
+
+  it("requires email for 'question' even with the toggle off", () => {
+    expect(requiresEmail({ category: "question", replyRequested: false })).toBe(true);
+    expect(requiresEmail({ category: "bug", replyRequested: false })).toBe(false);
+    expect(requiresEmail({ category: "bug", replyRequested: true })).toBe(true);
+  });
+
+  it("rejects a missing email for 'question' regardless of the toggle", () => {
+    expect(
+      validateSupportForm({ ...validValues, category: "question", email: "", replyRequested: false }),
+    ).toMatchObject({ email: "REQUIRED" });
+  });
+
+  it("omits email from the request for 'question' left blank is still required to build", () => {
+    const request = buildSupportRequest(
+      { ...validValues, category: "bug", replyRequested: false, email: "" },
+      {
+        requestId: "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+        clientId: "6ba7b810-9dad-41d1-80b4-00c04fd430c8",
+        locale: "ja",
+        now: new Date("2026-07-26T12:00:00.000Z"),
+      },
+    );
+    expect(request).not.toHaveProperty("email");
   });
 });
 

@@ -74,6 +74,27 @@ export function isValidEmail(value: string): boolean {
   return normalized.length <= 254 && EMAIL_PATTERN.test(normalized);
 }
 
+/**
+ * Categories that are already asking a question — a reply is the point, so
+ * there is no "would you like a reply?" toggle for them; email is required
+ * outright. Only "question" qualifies here. Mirrors
+ * `SupportCategory.impliesReply` in the Remeet app (the reference
+ * implementation — see `docs/support-form-porting.md` in that repo).
+ */
+export function categoryImpliesReply(category: string): boolean {
+  return category === "question";
+}
+
+/** Whether the toggle should be offered at all — hidden for reply-implying categories. */
+export function showsReplyToggle(category: string): boolean {
+  return !categoryImpliesReply(category);
+}
+
+/** Whether email is required, given the category and the toggle state. */
+export function requiresEmail(values: Pick<SupportFormValues, "category" | "replyRequested">): boolean {
+  return categoryImpliesReply(values.category) || values.replyRequested;
+}
+
 export function validateSupportForm(values: SupportFormValues): SupportFieldErrors {
   const errors: SupportFieldErrors = {};
   const name = values.name.trim();
@@ -81,7 +102,7 @@ export function validateSupportForm(values: SupportFormValues): SupportFieldErro
   const message = values.message.trim();
 
   if (name.length > 100) errors.name = "TOO_LONG";
-  if (values.replyRequested) {
+  if (requiresEmail(values)) {
     if (!email) errors.email = "REQUIRED";
     else if (email.length > 254) errors.email = "TOO_LONG";
     else if (!EMAIL_PATTERN.test(email)) errors.email = "INVALID_EMAIL";
@@ -127,7 +148,7 @@ export function buildSupportRequest(
     app,
     category,
     ...(name ? { name } : {}),
-    ...(values.replyRequested && values.email.trim()
+    ...(requiresEmail(values) && values.email.trim()
       ? { email: values.email.trim().toLowerCase() }
       : {}),
     message: values.message.trim(),

@@ -5,6 +5,8 @@ import {
   getOrCreateClientId,
   initialSelections,
   isValidEmail,
+  requiresEmail,
+  showsReplyToggle,
   SUPPORT_API_URL,
   SUPPORT_TIMEOUT_MS,
   type SupportFieldErrors,
@@ -46,7 +48,7 @@ function initializeSupportForm(root: HTMLElement): void {
   const email = form.elements.namedItem("email") as HTMLInputElement;
   const replyCheckbox = form.elements.namedItem("replyRequested") as HTMLInputElement;
   const emailField = root.querySelector<HTMLElement>("[data-email-field]");
-  const replyLabel = root.querySelector<HTMLElement>("[data-reply-label]");
+  const replyToggle = root.querySelector<HTMLElement>("[data-reply-toggle]");
   const message = form.elements.namedItem("message") as HTMLTextAreaElement;
   const website = form.elements.namedItem("website") as HTMLInputElement;
   const fieldElements = { name, email, message } as const;
@@ -64,14 +66,14 @@ function initializeSupportForm(root: HTMLElement): void {
     website: website.value,
   });
 
-  const updateReplyLabel = () => {
-    if (!replyLabel) return;
-    replyLabel.textContent =
-      category.value === "question" ? copy.replyRequestedQuestion : copy.replyRequested;
-  };
-
+  // A category that already implies a reply (currently just "question") never
+  // shows the toggle — email is required outright. Everything else offers
+  // the toggle, off by default, and only asks for email once it's checked.
   const updateEmailVisibility = () => {
-    const wanted = replyCheckbox.checked;
+    const toggleVisible = showsReplyToggle(category.value);
+    if (replyToggle) replyToggle.hidden = !toggleVisible;
+
+    const wanted = requiresEmail({ category: category.value, replyRequested: replyCheckbox.checked });
     if (emailField) emailField.hidden = !wanted;
     email.required = wanted;
     if (!wanted) {
@@ -96,7 +98,8 @@ function initializeSupportForm(root: HTMLElement): void {
   const updateSubmit = () => {
     submit.disabled =
       cycle.status === "submitting" ||
-      (replyCheckbox.checked && !isValidEmail(email.value)) ||
+      (requiresEmail({ category: category.value, replyRequested: replyCheckbox.checked }) &&
+        !isValidEmail(email.value)) ||
       message.value.trim().length < 10 ||
       message.value.trim().length > 5000;
     submit.setAttribute("aria-busy", String(cycle.status === "submitting"));
@@ -173,7 +176,10 @@ function initializeSupportForm(root: HTMLElement): void {
     });
   }
 
-  category.addEventListener("change", updateReplyLabel);
+  category.addEventListener("change", () => {
+    updateEmailVisibility();
+    updateSubmit();
+  });
   replyCheckbox.addEventListener("change", () => {
     updateEmailVisibility();
     updateSubmit();
@@ -248,7 +254,6 @@ function initializeSupportForm(root: HTMLElement): void {
     message.value = "";
     website.value = "";
     clearErrors();
-    updateReplyLabel();
     updateEmailVisibility();
     success.hidden = true;
     form.hidden = false;
@@ -257,7 +262,6 @@ function initializeSupportForm(root: HTMLElement): void {
     category.focus();
   });
 
-  updateReplyLabel();
   updateEmailVisibility();
   updateCounter();
 }

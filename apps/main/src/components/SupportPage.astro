@@ -67,7 +67,7 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
             <div class="support-field">
               <label for={`support-name-${lang}`}>
                 {copy.name}
-                <span class="optional">{copy.optional}</span>
+                <span class="badge is-optional">{copy.optional}</span>
               </label>
               <input
                 id={`support-name-${lang}`}
@@ -80,35 +80,12 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
               <p id={`support-name-error-${lang}`} class="field-error" data-error-for="name" role="alert" hidden></p>
             </div>
 
-            <div class="support-field support-checkbox-field">
-              <label class="support-checkbox">
-                <input
-                  id={`support-reply-${lang}`}
-                  type="checkbox"
-                  name="replyRequested"
-                  data-reply-checkbox
-                />
-                <span data-reply-label>{copy.replyRequested}</span>
-              </label>
-            </div>
-
-            <div class="support-field" data-email-field hidden>
-              <label for={`support-email-${lang}`}>{copy.email}</label>
-              <input
-                id={`support-email-${lang}`}
-                name="email"
-                type="email"
-                autocomplete="email"
-                inputmode="email"
-                maxlength="254"
-                aria-describedby={`support-email-error-${lang}`}
-              />
-              <p id={`support-email-error-${lang}`} class="field-error" data-error-for="email" role="alert" hidden></p>
-            </div>
-
             <div class="support-field">
               <div class="support-label-row">
-                <label for={`support-message-${lang}`}>{copy.message}</label>
+                <label for={`support-message-${lang}`}>
+                  {copy.message}
+                  <span class="badge is-required">{copy.required}</span>
+                </label>
                 <output data-message-count for={`support-message-${lang}`}>0 / 5000</output>
               </div>
               <textarea
@@ -127,6 +104,36 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
                 role="alert"
                 hidden
               ></p>
+            </div>
+
+            <div class="support-field support-checkbox-field" data-reply-toggle>
+              <label class="support-checkbox">
+                <input
+                  id={`support-reply-${lang}`}
+                  type="checkbox"
+                  name="replyRequested"
+                  data-reply-checkbox
+                />
+                <span>{copy.replyRequested}</span>
+              </label>
+              <p class="support-reply-note">{copy.replyNote}</p>
+            </div>
+
+            <div class="support-field" data-email-field hidden>
+              <label for={`support-email-${lang}`}>
+                {copy.email}
+                <span class="badge is-required">{copy.required}</span>
+              </label>
+              <input
+                id={`support-email-${lang}`}
+                name="email"
+                type="email"
+                autocomplete="email"
+                inputmode="email"
+                maxlength="254"
+                aria-describedby={`support-email-error-${lang}`}
+              />
+              <p id={`support-email-error-${lang}`} class="field-error" data-error-for="email" role="alert" hidden></p>
             </div>
 
             <div class="support-honeypot" aria-hidden="true">
