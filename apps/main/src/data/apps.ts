@@ -257,7 +257,7 @@ export const apps: AppItem[] = [
       ja: "予定のない時間まで、有効活用しようとしてしまう。空けておくには、空白の方を予定として書いておく必要があった。",
       en: "I kept trying to make good use of time that had nothing in it. To leave it open, the emptiness itself had to be written down as a plan.",
     },
-    status: "developing",
+    status: "released",
     platform: ["iPhone"],
     iconClass: "yohaku",
     url: appSiteUrl("yohaku"),

@@ -34,7 +34,7 @@ export function createSupportEmail(
     ["アプリ", request.app],
     ["カテゴリ", category],
     ["名前", request.name ?? "（未入力）"],
-    ["メールアドレス", request.email],
+    ["メールアドレス", request.email ?? "（未入力・返信不要）"],
     ["問い合わせ内容", request.message],
     ["アプリバージョン", request.appVersion ?? "（未入力）"],
     ["ビルド番号", request.buildNumber ?? "（未入力）"],

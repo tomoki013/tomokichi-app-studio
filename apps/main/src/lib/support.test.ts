@@ -19,6 +19,7 @@ const validValues: SupportFormValues = {
   category: "bug",
   name: " Test User ",
   email: " User@Example.COM ",
+  replyRequested: true,
   message: "1234567890",
   website: "",
 };
@@ -28,17 +29,26 @@ describe("support form validation", () => {
     expect(validateSupportForm(validValues)).toEqual({});
   });
 
-  it("rejects a missing email", () => {
+  it("rejects a missing email when a reply is requested", () => {
     expect(validateSupportForm({ ...validValues, email: "" })).toMatchObject({
       email: "REQUIRED",
     });
   });
 
-  it("rejects an invalid email", () => {
+  it("rejects an invalid email when a reply is requested", () => {
     expect(validateSupportForm({ ...validValues, email: "invalid" })).toMatchObject({
       email: "INVALID_EMAIL",
     });
     expect(isValidEmail("invalid")).toBe(false);
+  });
+
+  it("does not require email when no reply is requested", () => {
+    expect(
+      validateSupportForm({ ...validValues, email: "", replyRequested: false }),
+    ).toEqual({});
+    expect(
+      validateSupportForm({ ...validValues, email: "invalid", replyRequested: false }),
+    ).toEqual({});
   });
 
   it.each([
@@ -89,6 +99,19 @@ describe("support request construction", () => {
     expect(request).not.toHaveProperty("appVersion");
     expect(request).not.toHaveProperty("buildNumber");
     expect(request).not.toHaveProperty("osVersion");
+  });
+
+  it("omits email entirely when no reply is requested", () => {
+    const request = buildSupportRequest(
+      { ...validValues, name: "", replyRequested: false },
+      {
+        requestId: "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+        clientId: "6ba7b810-9dad-41d1-80b4-00c04fd430c8",
+        locale: "ja",
+        now: new Date("2026-07-26T12:00:00.000Z"),
+      },
+    );
+    expect(request).not.toHaveProperty("email");
   });
 
   it("uses the visible English locale", () => {

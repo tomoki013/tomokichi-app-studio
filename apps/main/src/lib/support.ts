@@ -22,6 +22,8 @@ export interface SupportFormValues {
   category: string;
   name: string;
   email: string;
+  /** Whether the user asked for a reply — gates whether email is required/sent. */
+  replyRequested: boolean;
   message: string;
   website: string;
 }
@@ -39,7 +41,7 @@ export interface SupportRequestBody {
   app: SupportApp;
   category: SupportCategory;
   name?: string;
-  email: string;
+  email?: string;
   message: string;
   locale: "ja-JP" | "en";
   submittedAt: string;
@@ -79,9 +81,11 @@ export function validateSupportForm(values: SupportFormValues): SupportFieldErro
   const message = values.message.trim();
 
   if (name.length > 100) errors.name = "TOO_LONG";
-  if (!email) errors.email = "REQUIRED";
-  else if (email.length > 254) errors.email = "TOO_LONG";
-  else if (!EMAIL_PATTERN.test(email)) errors.email = "INVALID_EMAIL";
+  if (values.replyRequested) {
+    if (!email) errors.email = "REQUIRED";
+    else if (email.length > 254) errors.email = "TOO_LONG";
+    else if (!EMAIL_PATTERN.test(email)) errors.email = "INVALID_EMAIL";
+  }
   if (!message) errors.message = "REQUIRED";
   else if (message.length < 10) errors.message = "TOO_SHORT";
   else if (message.length > 5000) errors.message = "TOO_LONG";
@@ -123,7 +127,9 @@ export function buildSupportRequest(
     app,
     category,
     ...(name ? { name } : {}),
-    email: values.email.trim().toLowerCase(),
+    ...(values.replyRequested && values.email.trim()
+      ? { email: values.email.trim().toLowerCase() }
+      : {}),
     message: values.message.trim(),
     locale: options.locale === "ja" ? "ja-JP" : "en",
     submittedAt: (options.now ?? new Date()).toISOString(),

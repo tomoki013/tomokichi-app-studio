@@ -17,7 +17,8 @@ const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
 const jaPageHref = (`/ja/${routePath}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${routePath}`.replace(/\/$/, "") || "/";
 const supportHref = supportUrl("yohaku", lang);
-const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const storeLabel = ja ? "App Storeでダウンロード" : "Download on the App Store";
+const appStoreHref = "https://apps.apple.com/app/id6798718923";
 
 const nav = [
   { slug: "concept", label: ja ? "コンセプト" : "Concept", href: href("concept") },
@@ -74,8 +75,8 @@ const mobileFooterLinks = [
   lang={lang}
   title={title}
   description={description ?? (ja
-    ? "Yohakuは、日々の中に何もしない時間を置き、今日・週・月で静かに振り返るためのiPhoneアプリです。現在App Store公開準備中。"
-    : "Yohaku is an iPhone app for leaving time with nothing planned, then looking back across your day, week and month. Currently preparing for the App Store.")}
+    ? "Yohakuは、日々の中に何もしない時間を置き、今日・週・月で静かに振り返るためのiPhoneアプリです。App Storeで配信中。"
+    : "Yohaku is an iPhone app for leaving time with nothing planned, then looking back across your day, week and month. Available now on the App Store.")}
   page={page}
   brand="Yohaku"
   logoImage="/assets/yohaku-icon.png"
@@ -90,8 +91,7 @@ const mobileFooterLinks = [
   footerColumns={footerColumns}
   mobileFooterLinks={mobileFooterLinks}
   appStoreLabel={storeLabel}
-  appStoreHref=""
-  appStoreComingSoon
+  appStoreHref={appStoreHref}
   menuLabel={ja ? "メニュー" : "Menu"}
   menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
   themeColor="#ffffff"

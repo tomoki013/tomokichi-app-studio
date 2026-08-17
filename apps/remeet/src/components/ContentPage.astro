@@ -1,5 +1,6 @@
 ---
 import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
+import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import {
@@ -157,33 +158,6 @@ const envNote = ja
 const newsPosts = ja
   ? [
       {
-        id: "widgets-explained",
-        date: "2026.08.12",
-        datetime: "2026-08-12",
-        badge: "コラム",
-        badgeTone: "column" as const,
-        title: "ウィジェットは、6つのサイズで残り日数を見せます",
-        summary: "ホーム画面のSmall / Medium / Largeと、ロック画面のインライン・円形・長方形。サイズごとに見せる情報が違います。",
-        body: [
-          "Remeetのウィジェットは、アプリを開かずに次の再会までの残り日数を確かめるためのものです。ホーム画面ではSmall、Medium、Largeの3サイズ、ロック画面ではインライン、円形、長方形の3種類に対応しています。",
-          "小さいサイズでは残り日数だけを、大きいサイズでは進捗やふたつの場所をつなぐルート、直近の記録まで表示します。表示する再会予定は、複数ある場合でも切り替えられます。",
-          "ウィジェットに表示されるのは端末内の情報だけです。共有していない再会の内容が、ほかの端末へ送られることはありません。",
-        ],
-      },
-      {
-        id: "share-pass-note",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "お知らせ",
-        title: "Share Passの考え方を、料金ページにまとめました",
-        summary: "個人利用は無料、1つ目の再会の共有も無料。2つ目以降の共有にだけ、有料のShare Passを使います。",
-        body: [
-          "料金ページを更新し、無料でできることと、費用がかかる場面を表で並べました。アプリのダウンロードと個人利用は無料で、共有も1つ目の再会までは無料です。",
-          "2つ目以降の再会を共有するときにだけ、Share Pass（1枚 ¥500・税込・買い切りの消費型アプリ内課金）を使います。サブスクリプションではなく、有効期限もありません。相手が参加するまでPassは消費されないので、招待を送っただけでは減りません。",
-          "消費型のため、一度使ったPassは復元できません。価格と提供内容は、App Storeの商品ページとアプリ内の購入画面の表示が正しいものとします。",
-        ],
-      },
-      {
         id: "site-launch",
         date: "2026.08.01",
         datetime: "2026-08-01",
@@ -196,60 +170,8 @@ const newsPosts = ja
           "Remeetは独自アカウント不要です。最初の再会は無料で共有でき、2回目以降はShare Passを使って1人のパートナーとiCloud共有できます。詳細は料金・プライバシーポリシー・利用規約をご確認ください。",
         ],
       },
-      {
-        id: "column-wait",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "コラム",
-        badgeTone: "column" as const,
-        title: "待つ時間を、物語の一部にする",
-        summary: "Remeetは再会の日までの日数を見える化し、そのあいだのメモや思い出を端末に残せます。",
-        body: [
-          "次に会う日が決まっていると、日常の中でその日までの距離を測りたくなることがあります。Remeetはそのカウントダウンを中心に、待っている間に残したい記録を手元に置いておくためのアプリです。",
-          "ホーム画面やロック画面のウィジェットも、その待ち時間をそっと思い出させるためのものです。最初の再会は無料で共有でき、その後は必要な再会にだけShare Passを使えます。サブスクリプションではありません。",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "準備中",
-        badgeTone: "note" as const,
-        title: "App Store公開に向けて",
-        summary: "個人利用と最初の再会の共有は無料。追加の共有にはShare Passを使います。",
-        body: [
-          "Remeetは現在App Store公開準備中です。個人利用と最初の再会の共有は無料で、一部画面に広告が表示されます。2回目以降の共有にはShare Pass（1枚¥500）を使います。価格と提供内容はApp Storeおよび購入画面の表示が正しいものとします。",
-        ],
-      },
     ]
   : [
-      {
-        id: "widgets-explained",
-        date: "2026.08.12",
-        datetime: "2026-08-12",
-        badge: "Column",
-        badgeTone: "column" as const,
-        title: "Six widget sizes, each showing the wait differently",
-        summary: "Small, Medium and Large on the Home Screen; inline, circular and rectangular on the Lock Screen.",
-        body: [
-          "Remeet’s widgets exist so you can check the days until the next reunion without opening the app. The Home Screen supports Small, Medium and Large; the Lock Screen supports inline, circular and rectangular.",
-          "Smaller sizes show only the days remaining. Larger ones add progress, the route between both places, and your most recent records. If you keep several reunions, you can choose which one a widget follows.",
-          "A widget only ever reads what is already on your device. Nothing from a reunion you have not shared leaves your iPhone.",
-        ],
-      },
-      {
-        id: "share-pass-note",
-        date: "2026.08.08",
-        datetime: "2026-08-08",
-        badge: "Update",
-        title: "The pricing page now spells out where Share Pass applies",
-        summary: "Personal use is free and so is your first shared reunion. A paid pass covers each additional shared reunion.",
-        body: [
-          "We rewrote the pricing page as a plain table of what is free and what costs money. Downloading Remeet and using it on your own is free, and sharing your first reunion is free too.",
-          "Sharing a second or later reunion uses a Share Pass: ¥500 each, tax included, a one-time consumable in-app purchase. It is not a subscription and it does not expire. The pass is not spent until your partner actually joins, so sending an invitation does not use one up.",
-          "Because it is a consumable, a spent pass cannot be restored. The tax-inclusive price on the App Store product page and the in-app purchase screen is authoritative.",
-        ],
-      },
       {
         id: "site-launch",
         date: "2026.08.01",
@@ -261,31 +183,6 @@ const newsPosts = ja
           "The official Remeet brand site is live. It explains the countdown to a reunion and the on-device records you keep while waiting—while the app is still preparing for release.",
           "There is no App Store link yet. When distribution is ready, we will share it here as well.",
           "Remeet needs no proprietary account. Share your first reunion for free, then use a Share Pass for each additional reunion shared with one partner through iCloud. See Pricing, Privacy, and Terms for details.",
-        ],
-      },
-      {
-        id: "column-wait",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "Column",
-        badgeTone: "column" as const,
-        title: "Make the wait part of your story",
-        summary: "Remeet surfaces the days until you meet again and keeps notes and memories on your iPhone.",
-        body: [
-          "When the next meeting is set, the distance to that day becomes something you notice. Remeet centers that countdown and keeps the records you want nearby while you wait.",
-          "Home and Lock Screen widgets are there as gentle reminders. Your first shared reunion is free; after that, use a Share Pass only for the reunion you want to share. There is no subscription.",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "Coming soon",
-        badgeTone: "note" as const,
-        title: "Preparing for the App Store",
-        summary: "Personal use and the first shared reunion are free. Share Pass is available for additional shared reunions.",
-        body: [
-          "Remeet is being prepared for the App Store. Personal use and the first shared reunion are free; some screens may show ads. Each additional shared reunion uses one ¥500 Share Pass. The App Store listing and purchase screen are the source of truth.",
         ],
       },
     ];
@@ -343,7 +240,7 @@ const newsPosts = ja
 
     {page === "how-to" && (
       <>
-        <AppStory class="app-story--page" steps={howBeats} visual={StoryVisual} />
+        <AppSimpleSteps steps={howBeats} visual={StoryVisual} />
         <aside class="how-note" data-reveal>
           <span class="tile" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons.bulb} /></span>
           <div>

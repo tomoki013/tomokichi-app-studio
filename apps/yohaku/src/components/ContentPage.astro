@@ -1,5 +1,6 @@
 ---
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
+import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
 import {
   descriptions,
@@ -12,7 +13,6 @@ import {
 } from "../lib/content";
 import AppScreen from "./AppScreen.astro";
 import AppShell from "./AppShell.astro";
-import UpdatesPage from "./UpdatesPage.astro";
 import YohakuStory from "./YohakuStory.astro";
 
 const { lang, page } = Astro.props as { lang: Locale; page: Page };
@@ -20,7 +20,95 @@ const ja = lang === "ja";
 const supportHref = supportUrl("yohaku", lang);
 const title = pick(ja, titles[page]);
 const description = pick(ja, descriptions[page]);
-const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const storeLabel = ja ? "App Storeでダウンロード" : "Download on the App Store";
+const appStoreHref = "https://apps.apple.com/app/id6798718923";
+
+const newsPosts = ja
+  ? [
+      {
+        id: "released",
+        date: "2026.08.17",
+        datetime: "2026-08-17",
+        badge: "お知らせ",
+        title: "Yohakuを、App Storeでリリースしました",
+        summary: "予定のあいだに余白を置くYohakuが、本日よりApp Storeでダウンロードいただけます。",
+        body: [
+          "Yohakuを本日App Storeでリリースしました。何もしない時間に名前と開始・終了時刻を与え、今日・週・月の3つの画面でその積み重ねを静かに振り返るためのアプリです。",
+          "基本機能はすべて無料です。無料版には控えめなバナー広告が表示される場合がありますが、買い切り¥400の「広告を永久に削除」で非表示にできます。サブスクリプションではありません。",
+          "余白の記録は端末内に保存され、アカウント登録は不要です。iPhone・iOS 17以降に対応し、18言語で利用できます。",
+        ],
+      },
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "お知らせ",
+        title: "Yohaku公式ブランドサイトを公開しました",
+        summary: "Yohakuの考え方から使い方、料金、サポートまでを、ひとつの場所にまとめました。",
+        body: [
+          "Yohakuの公式ブランドサイトを公開しました。アプリが生まれた背景、Today・Week・Monthでできること、日々の使い方を、実際の画面と一緒に紹介しています。",
+          "Yohakuは、予定を増やすためのアプリではありません。何もしない時間や、ひと息つく時間を先に置いておくための小さな道具です。",
+        ],
+      },
+    ]
+  : [
+      {
+        id: "released",
+        date: "2026.08.17",
+        datetime: "2026-08-17",
+        badge: "Update",
+        title: "Yohaku is now available on the App Store",
+        summary: "Yohaku, for leaving room between your plans, is available to download starting today.",
+        body: [
+          "Yohaku is live on the App Store today. It gives unplanned time a name, a start and an end, then lets you look back on that rhythm across Today, Week and Month.",
+          "Every core feature is free. The free version may show unobtrusive banner ads; a one-time ¥400 “Remove ads permanently” purchase removes them. It is not a subscription.",
+          "Spaces stay on your device — no account required. Requires an iPhone on iOS 17 or later, and is available in 18 languages.",
+        ],
+      },
+      {
+        id: "site-launch",
+        date: "2026.08.01",
+        datetime: "2026-08-01",
+        badge: "Update",
+        title: "The official Yohaku site is now live",
+        summary:
+          "The idea, the app, practical guides, pricing and support—now together in one quiet place.",
+        body: [
+          "The official Yohaku site is now live. It introduces why the app exists and what Today, Week and Month do, with real screens and practical guidance.",
+          "Yohaku is not another way to add plans. It is a small tool for leaving time to do nothing, or simply to breathe.",
+        ],
+      },
+    ];
+
+const releases = [
+  {
+    version: "1.0.0",
+    date: "2026.08.17",
+    datetime: "2026-08-17",
+    summary: [
+      "Yohakuの最初のバージョンです。今日・週・月の3画面で、余白を記録し振り返ることができます。",
+      "The first version of Yohaku. Record and look back on your spaces across Today, Week and Month.",
+    ] as [string, string],
+    changes: [
+      [
+        "名前と開始・終了時刻で、何もしない時間を今日に置く",
+        "今日・週・月の3つの画面で、余白のリズムを振り返る",
+        "余白が始まる3〜7分前に、そっと通知",
+        "終わったあとに、答えても答えなくてもいい小さな確認",
+        "買い切り¥400で広告を永久に削除",
+        "システム／ライト／ダークの外観、18言語に対応",
+      ],
+      [
+        "Give unplanned time a name, a start and an end",
+        "Look back through Today, Week and Month",
+        "A quiet notice three to seven minutes before a space begins",
+        "One small check-in afterward that you can simply dismiss",
+        "One-time ¥400 purchase to permanently remove ads",
+        "System, light or dark appearance, available in 18 languages",
+      ],
+    ] as [string[], string[]],
+  },
+];
 
 const featureBlocks = ja
   ? [
@@ -308,6 +396,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
         </section>
         <YohakuStory
           lang={lang}
+          variant="simple"
           class="app-story--page"
           steps={howSteps.map((step, index) => ({
             kicker: String(step.n).padStart(2, "0"),
@@ -441,7 +530,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
               ? "iPhone・iOS 17以降に対応。現在はiPhone向けです。"
               : "Requires an iPhone with iOS 17 or later. Designed for iPhone."}
           </p>
-          <span class="store-button store-soon" aria-disabled="true">{storeLabel}</span>
+          <a class="store-button" href={appStoreHref} target="_blank" rel="noopener noreferrer">{storeLabel}</a>
         </div>
       </div>
     )}
@@ -484,8 +573,10 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
       </div>
     )}
 
-    {page === "news" && <UpdatesPage lang={lang} />}
-    {page === "updates" && <AppUpdatesPage lang={lang} appName="Yohaku" newsHref={ja ? "/ja/news" : "/news"} />}
+    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "updates" && (
+      <AppUpdatesPage lang={lang} appName="Yohaku" releases={releases} newsHref={ja ? "/ja/news" : "/news"} />
+    )}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
@@ -503,7 +594,7 @@ const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? term
     {(page === "features" || page === "how-to" || page === "concept") && (
       <section class="download-section download-section--inline">
         <h2>{ja ? "余白を置く、小さな習慣を。" : "Leave room. Keep it small."}</h2>
-        <span class="store-button store-soon" aria-disabled="true">{storeLabel}</span>
+        <a class="store-button" href={appStoreHref} target="_blank" rel="noopener noreferrer">{storeLabel}</a>
       </section>
     )}
   </section>

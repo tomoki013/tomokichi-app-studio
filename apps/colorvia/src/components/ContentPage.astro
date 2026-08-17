@@ -1,5 +1,6 @@
 ---
 import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
+import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
@@ -42,31 +43,6 @@ const newsPosts = ja
           "地図はCanvas描画で、オフラインでも閲覧できます。データはJSONで書き出し・読み込みでき、端末内に保存されます。詳細はプライバシーポリシーと利用規約をご確認ください。",
         ],
       },
-      {
-        id: "column-map",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "コラム",
-        badgeTone: "column" as const,
-        title: "国から、その先の地域まで",
-        summary: "対応国では都道府県・州など、国の内側まで訪れた場所を残せます。",
-        body: [
-          "Colorviaは訪問した国を色づけるだけでなく、対応している国では都道府県や州などの単位まで記録できます。都市名や地名から該当する地域を探すこともできます。",
-          "地図や地域区分は旅の記録のために簡略化したもので、政治的な立場を示すものではありません。",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "準備中",
-        badgeTone: "note" as const,
-        title: "App Store公開に向けて",
-        summary: "iPhone・iOS 18以降向け。現在公開準備中です。",
-        body: [
-          "Colorviaは現在App Store公開準備中です。対応環境や価格の最終表示は、公開時のApp Store上の記載が正しいものとします。",
-        ],
-      },
     ]
   : [
       {
@@ -80,31 +56,6 @@ const newsPosts = ja
           "The official Colorvia brand site is live. It explains colouring countries and regions you have visited, and which in-country maps are supported—while the app is still preparing for release.",
           "There is no App Store link yet. When distribution is ready, we will share it here as well.",
           "Maps are canvas-drawn and work offline. Data can be exported and imported as JSON and stays on your device. See the Privacy Policy and Terms for details.",
-        ],
-      },
-      {
-        id: "column-map",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "Column",
-        badgeTone: "column" as const,
-        title: "From countries to the places inside them",
-        summary: "In supported countries, record prefectures, states, and other travel areas.",
-        body: [
-          "Colorvia does more than tint countries: where supported, you can mark prefectures, states, and similar units, and search by city or place name.",
-          "Maps and divisions are simplified for travel logging and do not express a political position.",
-        ],
-      },
-      {
-        id: "prep-note",
-        date: "2026.08.01",
-        datetime: "2026-08-01",
-        badge: "Coming soon",
-        badgeTone: "note" as const,
-        title: "Preparing for the App Store",
-        summary: "Designed for iPhone on iOS 18+.",
-        body: [
-          "Colorvia is being prepared for the App Store. The listing will be the source of truth for requirements and pricing when it ships.",
         ],
       },
     ];
@@ -597,8 +548,7 @@ const shots = [
     )}
 
     {page === "how-to" && (
-      <AppStory
-        class="app-story--page"
+      <AppSimpleSteps
         heading={ja ? "はじめてのColorvia" : "Your first map"}
         lead={ja
           ? "思い出した国から、ひとつずつ色を置いてみましょう。順番どおりでなくてかまいません。"

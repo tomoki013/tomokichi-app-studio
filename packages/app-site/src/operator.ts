@@ -8,7 +8,7 @@
  */
 export const OPERATOR = {
   /** Trading name shown as the seller. */
-  seller: ["Tomokichi", "Tomokichi"] as [string, string],
+  seller: ["Tomokichi Studio", "Tomokichi Studio"] as [string, string],
   /** Legal name of the person responsible for the business. */
   responsible: ["髙木 友喜", "Yuki Takagi"] as [string, string],
   /** Registered address, Japanese then English order. */

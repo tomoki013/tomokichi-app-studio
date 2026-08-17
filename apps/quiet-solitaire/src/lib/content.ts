@@ -19,7 +19,7 @@ export const titles: Record<Page, [string, string]> = {
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  news: ["お知らせ", "News"],
+  news: ["ニュース", "News"],
   updates: ["アップデート情報", "App updates"],
   reviews: ["レビュー", "Reviews"],
 };
@@ -634,32 +634,7 @@ export function newsPosts(ja: boolean) {
             "ゲーム・設定・統計は端末内に保存され、アカウントは不要です。広告が有効なときはAdMobバナーが表示される場合があります。詳細はプライバシーポリシーと利用規約をご確認ください。",
           ],
         },
-        {
-          id: "column-table",
-          date: "2026.08.08",
-          datetime: "2026-08-08",
-          badge: "コラム",
-          badgeTone: "column" as const,
-          title: "夜のテーブルで、一巡だけ",
-          summary: "派手な演出より、フェルトの静けさとカードの手触り感を大切にしています。",
-          body: [
-            "Quiet Solitaireは、短く一巡したい夜や、考える間を楽しむ時間のために設計しています。アンドゥや設定でテンポを整え、端末の中だけに記録が残るシンプルさを保ちます。",
-            "画面イメージページのカードは実機キャプチャではなく、雰囲気を伝えるコンセプトです。",
-          ],
-        },
-        {
-          id: "prep-note",
-          date: "2026.08.08",
-          datetime: "2026-08-08",
-          badge: "準備中",
-          badgeTone: "note" as const,
-          title: "App Store公開に向けて",
-          summary: "iPhone・iOS 26.0以降向け。現在公開準備中です。",
-          body: [
-            "Quiet Solitaireは現在App Store公開準備中です。対応環境や価格の最終表示は、公開時のApp Store上の記載が正しいものとします。",
-          ],
-        },
-      ]
+        ]
     : [
         {
           id: "site-launch",
@@ -675,30 +650,5 @@ export function newsPosts(ja: boolean) {
             "Games, settings, and stats stay on your device with no account. When ads are enabled, an AdMob banner may appear. See Privacy and Terms for details.",
           ],
         },
-        {
-          id: "column-table",
-          date: "2026.08.08",
-          datetime: "2026-08-08",
-          badge: "Column",
-          badgeTone: "column" as const,
-          title: "One quiet circuit at the table",
-          summary: "Less spectacle, more felt green and cream cards.",
-          body: [
-            "Quiet Solitaire is for unhurried evenings—one deal, room to think, undo when you want another line. Progress stays on the phone.",
-            "Cards on the concept screens page are stylized mood pieces, not real captures.",
-          ],
-        },
-        {
-          id: "prep-note",
-          date: "2026.08.08",
-          datetime: "2026-08-08",
-          badge: "Coming soon",
-          badgeTone: "note" as const,
-          title: "Preparing for the App Store",
-          summary: "Designed for iPhone on iOS 26.0+.",
-          body: [
-            "Quiet Solitaire is being prepared for the App Store. The listing will be the source of truth for requirements and pricing when it ships.",
-          ],
-        },
-      ];
+        ];
 }

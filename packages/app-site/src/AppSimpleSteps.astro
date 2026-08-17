@@ -1,0 +1,76 @@
+---
+/**
+ * The shared how-to layout every brand site uses — a plain, stacked list of
+ * steps that fades in on scroll (`data-reveal="fade"`, handled globally by
+ * AppSiteShell's IntersectionObserver). No pinning, no scroll-driven
+ * transforms — that's AppStory, reserved for the features page. This is
+ * `how-to` specifically: simpler, no reason to hold the reader's scroll.
+ *
+ * Props mirror AppStory so an app's existing `steps`/`visual` data works
+ * unchanged for either component:
+ *
+ * ```astro
+ * <AppSimpleSteps steps={steps} visual={MyStoryVisual} />
+ * ```
+ */
+import "./app-simple-steps.css";
+import type { StoryStep } from "./AppStory.astro";
+
+const {
+  heading = "",
+  lead = "",
+  steps,
+  visual: Visual,
+  class: className = "",
+} = Astro.props as {
+  heading?: string;
+  lead?: string;
+  steps: StoryStep[];
+  visual?: unknown;
+  class?: string;
+};
+
+const VisualComponent = Visual as never;
+---
+
+<section class:list={["app-simple-steps", className]} aria-label={heading || undefined}>
+  {heading && (
+    <header class="app-simple-steps-heading" data-reveal="fade">
+      <h2>{heading}</h2>
+      {lead && <p class="app-simple-steps-lead">{lead}</p>}
+    </header>
+  )}
+
+  <ol class="app-simple-steps-list">
+    {steps.map((step, index) => {
+      const side = step.side ?? (index % 2 === 0 ? "start" : "end");
+      return (
+        <li
+          class="app-simple-step"
+          data-side={side}
+          data-reveal="fade"
+          style={`--reveal-i:${Math.min(index, 4)}`}
+        >
+          {Visual && step.visual && (
+            <div class="app-simple-step-visual">
+              <VisualComponent {...step.visual} index={index} />
+            </div>
+          )}
+          <div class="app-simple-step-copy">
+            {step.kicker && <p class="app-simple-step-kicker">{step.kicker}</p>}
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+            {step.note && (
+              <aside class="app-simple-step-note">
+                <span aria-hidden="true">{step.noteMark ?? "○"}</span>
+                <p>{step.note}</p>
+              </aside>
+            )}
+          </div>
+        </li>
+      );
+    })}
+  </ol>
+
+  <slot />
+</section>

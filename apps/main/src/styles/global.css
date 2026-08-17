@@ -667,7 +667,7 @@ a.app-card:hover,
 .hero {
   min-height: 620px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
   gap: clamp(28px, 4vw, 64px);
   align-items: center;
   position: relative;
@@ -745,8 +745,8 @@ a.app-card:hover,
   position: relative;
   z-index: 1;
   justify-self: center;
-  width: min(100%, 440px);
-  aspect-ratio: 1 / 1.06;
+  width: min(100%, 520px);
+  aspect-ratio: 1 / 1.02;
 }
 .hero-photo {
   position: absolute;
@@ -755,8 +755,8 @@ a.app-card:hover,
   border-radius: 14px;
   background: var(--line-soft);
   box-shadow: 0 18px 44px rgb(28 22 16 / 16%);
-  animation: hero-float 11s ease-in-out infinite;
-  animation-delay: calc(var(--photo-i, 0) * -3.4s);
+  animation: hero-float 13s ease-in-out infinite;
+  animation-delay: calc(var(--photo-i, 0) * -4.2s);
   transition:
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.5s ease;
@@ -777,27 +777,30 @@ a.app-card:hover,
 }
 .hero-photo.p1 {
   top: 0;
-  right: 6%;
-  width: 60%;
+  right: 0;
+  width: 66%;
   aspect-ratio: 4 / 3;
   z-index: 3;
   transform: rotate(1.6deg);
+  --drift-x: 18px;
 }
 .hero-photo.p2 {
-  bottom: 6%;
-  left: 0;
-  width: 54%;
+  bottom: 4%;
+  left: -4%;
+  width: 58%;
   aspect-ratio: 5 / 4;
   z-index: 4;
   transform: rotate(-2.4deg);
+  --drift-x: -22px;
 }
 .hero-photo.p3 {
-  top: 26%;
-  left: 6%;
-  width: 36%;
+  top: 24%;
+  left: 2%;
+  width: 40%;
   aspect-ratio: 1 / 1;
   z-index: 2;
   transform: rotate(3deg);
+  --drift-x: 16px;
 }
 .hero-device {
   position: absolute;
@@ -817,7 +820,7 @@ a.app-card:hover,
     translate: 0 0;
   }
   50% {
-    translate: 0 -9px;
+    translate: var(--drift-x, 0) -9px;
   }
 }
 
@@ -1931,6 +1934,25 @@ a.app-card:hover,
 }
 .support-field [aria-invalid="true"] {
   border-color: #a65353;
+}
+.support-checkbox-field {
+  gap: 0;
+}
+.support-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 550;
+}
+.support-checkbox input {
+  width: 17px;
+  height: 17px;
+  min-height: 0;
+  accent-color: #4a6ea8;
+  cursor: pointer;
 }
 .field-error {
   margin: -2px 0 0;

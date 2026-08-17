@@ -85,12 +85,53 @@ describe("POST /api/v1/support", () => {
     expect(deliver.mock.calls[0]?.[0].subject).toContain("[Yohaku]");
   });
 
+  it("accepts a request with no email when no reply is requested", async () => {
+    const { email: _email, ...withoutEmail } = validRequest;
+    const deliver = vi.fn<(email: SupportEmail) => Promise<{ id: string }>>(async () => ({
+      id: "email-id",
+    }));
+    const response = await post(withoutEmail, { deliver });
+    expect(response.status).toBe(200);
+    expect(deliver.mock.calls[0]?.[0].replyTo).toBeUndefined();
+  });
+
+  it("accepts an empty-string email the same as an omitted one (Remeet iOS always sends the key)", async () => {
+    const deliver = vi.fn<(email: SupportEmail) => Promise<{ id: string }>>(async () => ({
+      id: "email-id",
+    }));
+    const response = await post(
+      { ...validRequest, source: "remeet-ios", name: "", email: "" },
+      { deliver },
+    );
+    expect(response.status).toBe(200);
+    expect(deliver.mock.calls[0]?.[0].replyTo).toBeUndefined();
+    expect(deliver.mock.calls[0]?.[0].text).toContain("（未入力・返信不要）");
+  });
+
+  it("accepts empty name and email together", async () => {
+    const response = await post({ ...validRequest, name: "", email: "" });
+    expect(response.status).toBe(200);
+  });
+
+  it("silently accepts (without delivering) a honeypot-triggered submission", async () => {
+    const deliver = vi.fn<(email: SupportEmail) => Promise<{ id: string }>>(async () => ({
+      id: "email-id",
+    }));
+    const response = await post(
+      { ...validRequest, website: "http://spam.example.com" },
+      { deliver },
+    );
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true, requestId: validRequest.requestId });
+    expect(deliver).not.toHaveBeenCalled();
+  });
+
   it("reports missing required fields", async () => {
     const response = await post({});
     expect(response.status).toBe(400);
     expect(await response.json()).toMatchObject({
       code: "VALIDATION_ERROR",
-      fields: { requestId: "REQUIRED", email: "REQUIRED", message: "REQUIRED" },
+      fields: { requestId: "REQUIRED", message: "REQUIRED" },
     });
   });
 

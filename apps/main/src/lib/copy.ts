@@ -232,13 +232,6 @@ export const about = {
         } as L,
       },
       {
-        title: { ja: "小さく試す", en: "Try it small" } as L,
-        body: {
-          ja: "まず自分で試して、続くかどうかを見ます。\n作らないという結論も、同じくらい多いです。",
-          en: "I try it on myself first and see whether it lasts.\nDeciding not to build is just as common an outcome.",
-        } as L,
-      },
-      {
         title: { ja: "過程も残す", en: "Keep the process" } as L,
         body: {
           ja: "完成したものだけでなく、\nその手前で考えていたことも記録に残しています。",

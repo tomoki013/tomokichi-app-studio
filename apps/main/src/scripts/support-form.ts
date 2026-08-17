@@ -44,6 +44,9 @@ function initializeSupportForm(root: HTMLElement): void {
   const category = form.elements.namedItem("category") as HTMLSelectElement;
   const name = form.elements.namedItem("name") as HTMLInputElement;
   const email = form.elements.namedItem("email") as HTMLInputElement;
+  const replyCheckbox = form.elements.namedItem("replyRequested") as HTMLInputElement;
+  const emailField = root.querySelector<HTMLElement>("[data-email-field]");
+  const replyLabel = root.querySelector<HTMLElement>("[data-reply-label]");
   const message = form.elements.namedItem("message") as HTMLTextAreaElement;
   const website = form.elements.namedItem("website") as HTMLInputElement;
   const fieldElements = { name, email, message } as const;
@@ -56,9 +59,30 @@ function initializeSupportForm(root: HTMLElement): void {
     category: category.value,
     name: name.value,
     email: email.value,
+    replyRequested: replyCheckbox.checked,
     message: message.value,
     website: website.value,
   });
+
+  const updateReplyLabel = () => {
+    if (!replyLabel) return;
+    replyLabel.textContent =
+      category.value === "question" ? copy.replyRequestedQuestion : copy.replyRequested;
+  };
+
+  const updateEmailVisibility = () => {
+    const wanted = replyCheckbox.checked;
+    if (emailField) emailField.hidden = !wanted;
+    email.required = wanted;
+    if (!wanted) {
+      const error = root.querySelector<HTMLElement>('[data-error-for="email"]');
+      if (error) {
+        error.textContent = "";
+        error.hidden = true;
+      }
+      email.removeAttribute("aria-invalid");
+    }
+  };
 
   const setStatus = (status: FormStatus, text = "") => {
     cycle.complete(status);
@@ -72,7 +96,7 @@ function initializeSupportForm(root: HTMLElement): void {
   const updateSubmit = () => {
     submit.disabled =
       cycle.status === "submitting" ||
-      !isValidEmail(email.value) ||
+      (replyCheckbox.checked && !isValidEmail(email.value)) ||
       message.value.trim().length < 10 ||
       message.value.trim().length > 5000;
     submit.setAttribute("aria-busy", String(cycle.status === "submitting"));
@@ -149,6 +173,13 @@ function initializeSupportForm(root: HTMLElement): void {
     });
   }
 
+  category.addEventListener("change", updateReplyLabel);
+  replyCheckbox.addEventListener("change", () => {
+    updateEmailVisibility();
+    updateSubmit();
+    if (replyCheckbox.checked) email.focus();
+  });
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!cycle.begin()) return;
@@ -212,9 +243,13 @@ function initializeSupportForm(root: HTMLElement): void {
   newRequest.addEventListener("click", () => {
     cycle.startNew();
     category.value = "question";
+    email.value = "";
+    replyCheckbox.checked = false;
     message.value = "";
     website.value = "";
     clearErrors();
+    updateReplyLabel();
+    updateEmailVisibility();
     success.hidden = true;
     form.hidden = false;
     setStatus("idle");
@@ -222,6 +257,8 @@ function initializeSupportForm(root: HTMLElement): void {
     category.focus();
   });
 
+  updateReplyLabel();
+  updateEmailVisibility();
   updateCounter();
 }
 

@@ -1,5 +1,6 @@
 ---
-import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
+import type { StoryStep } from "@tomokichi/app-site/AppStory.astro";
+import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
@@ -18,7 +19,7 @@ const titleMap: Record<Page, [string, string]> = {
   faq: ["よくある質問", "Frequently asked questions"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  news: ["お知らせ", "News"],
+  news: ["ニュース", "News"],
   updates: ["アップデート情報", "App updates"],
 };
 const subtitleMap: Partial<Record<Page, [string, string]>> = {
@@ -169,31 +170,6 @@ const newsPosts = ja
           "記録は端末内に保存され、アカウント登録は必要ありません。",
         ],
       },
-      {
-        id: "column-memory",
-        date: "2026.07.24",
-        datetime: "2026-07-24",
-        badge: "コラム",
-        badgeTone: "column" as const,
-        title: "旅の記録を、行程ではなく物語として残す",
-        summary: "いつ、どこへ行ったか。その間に何を見て、どう感じたか。",
-        body: [
-          "旅は移動先の一覧だけではありません。写真や短い言葉を時間の流れに沿って置くことで、その日の空気まで思い出しやすくなります。",
-          "Triporyは、効率よく予定を管理するためではなく、自分だけの旅の物語をあとから読み返すための場所です。",
-        ],
-      },
-      {
-        id: "privacy-first",
-        date: "2026.07.24",
-        datetime: "2026-07-24",
-        badge: "お知らせ",
-        badgeTone: "note" as const,
-        title: "旅の記録は端末の中に保存されます",
-        summary: "アカウント不要。写真ライブラリ全体へアクセスすることもありません。",
-        body: [
-          "Triporyの旅や写真の記録は端末内に保存されます。写真はiOSの標準選択画面から選んだものだけを扱います。",
-        ],
-      },
     ]
   : [
       {
@@ -207,29 +183,6 @@ const newsPosts = ja
           "Tripory is preparing for the App Store. This site shares the product’s world while the listing is still on its way.",
           "Records stay on your device and no account is required.",
         ],
-      },
-      {
-        id: "column-memory",
-        date: "2026.07.24",
-        datetime: "2026-07-24",
-        badge: "Column",
-        badgeTone: "column" as const,
-        title: "Keep a journey as a story, not an itinerary",
-        summary: "Where you went matters. So does what you saw and how it felt.",
-        body: [
-          "A journey is more than a list of destinations. Photos and short notes placed along a timeline can bring back the atmosphere of a day.",
-          "Tripory is a place to reread your own travel story, not another tool for optimizing a schedule.",
-        ],
-      },
-      {
-        id: "privacy-first",
-        date: "2026.07.24",
-        datetime: "2026-07-24",
-        badge: "Update",
-        badgeTone: "note" as const,
-        title: "Your travel records stay on your device",
-        summary: "No account, and no access to your full photo library.",
-        body: ["Tripory stores trips and selected photos on your device. It only receives the photos you explicitly choose with the iOS picker."],
       },
     ];
 
@@ -326,7 +279,7 @@ const legal = {
 
     {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body, image], i) => <article data-reveal><div class="feature-page-image"><img src={image} alt="" /><span>{icon}</span></div><div><b>0{i + 1}</b><h2>{heading}</h2><p>{body}</p></div></article>)}</div><a class="orange-cta" href={ja ? "/ja/screenshots" : "/screenshots"}>{ja ? "実際の画面で確かめる" : "See it in the real app"} →</a></>}
 
-    {page === "how-to" && <AppStory class="app-story--page" steps={howBeats} visual={StoryVisual} />}
+    {page === "how-to" && <AppSimpleSteps steps={howBeats} visual={StoryVisual} />}
 
     {page === "screenshots" && (
       <div class="capture-page">

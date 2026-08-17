@@ -1,0 +1,119 @@
+/*
+ * Simple steps — the how-to layout every brand site shares.
+ *
+ * Deliberately plain: no scroll pinning, no view-timeline animation. Each
+ * step just fades up into place (`[data-reveal="fade"]`, from
+ * app-site-shell.css) as it enters the viewport. Reuses AppStory's
+ * `--app-story-*` theme properties so an app that already themes AppStory
+ * needs nothing extra here.
+ */
+
+.app-simple-steps {
+  border-top: 1px solid var(--app-story-line, rgb(0 0 0 / 8%));
+}
+
+.app-simple-steps-heading {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  padding: 96px 0 8px;
+}
+
+.app-simple-steps-heading h2 {
+  margin: 0;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: var(--app-story-heading-weight, 400);
+  letter-spacing: 0.06em;
+}
+
+.app-simple-steps-lead {
+  width: min(100% - 72px, 720px);
+  margin: 0 auto;
+  padding: 22px 0 0;
+  color: var(--app-story-body, #555);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.app-simple-steps-list {
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  padding: 48px 0 96px;
+  list-style: none;
+  display: grid;
+  gap: clamp(56px, 8vw, 96px);
+}
+
+.app-simple-step {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.app-simple-step[data-side="end"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+}
+
+.app-simple-step[data-side="end"] .app-simple-step-visual {
+  order: 2;
+}
+
+.app-simple-step-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.app-simple-step-visual .app-phone-frame {
+  --phone-w: min(300px, 60cqi);
+}
+
+.app-simple-step-kicker {
+  margin: 0 0 14px;
+  color: var(--app-story-kicker, #999);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.app-simple-step-copy h3 {
+  margin: 0;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: var(--app-story-title-weight, 400);
+  letter-spacing: 0.03em;
+  line-height: 1.45;
+}
+
+.app-simple-step-copy > p {
+  margin: 16px 0 0;
+  color: var(--app-story-body, #555);
+  font-size: 14px;
+  line-height: 1.95;
+}
+
+.app-simple-step-note {
+  margin-top: 22px;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 10px;
+  border-radius: 12px;
+  background: var(--app-story-note-background, rgb(0 0 0 / 4%));
+}
+
+.app-simple-step-note p {
+  margin: 0;
+  color: var(--app-story-body, #555);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+@media (max-width: 760px) {
+  .app-simple-step,
+  .app-simple-step[data-side="end"] {
+    grid-template-columns: 1fr;
+  }
+
+  .app-simple-step[data-side="end"] .app-simple-step-visual {
+    order: initial;
+  }
+}

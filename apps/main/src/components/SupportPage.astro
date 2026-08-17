@@ -80,7 +80,19 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
               <p id={`support-name-error-${lang}`} class="field-error" data-error-for="name" role="alert" hidden></p>
             </div>
 
-            <div class="support-field">
+            <div class="support-field support-checkbox-field">
+              <label class="support-checkbox">
+                <input
+                  id={`support-reply-${lang}`}
+                  type="checkbox"
+                  name="replyRequested"
+                  data-reply-checkbox
+                />
+                <span data-reply-label>{copy.replyRequested}</span>
+              </label>
+            </div>
+
+            <div class="support-field" data-email-field hidden>
               <label for={`support-email-${lang}`}>{copy.email}</label>
               <input
                 id={`support-email-${lang}`}
@@ -89,7 +101,6 @@ const privacyHref = isJapanese ? "/ja/privacy" : "/privacy";
                 autocomplete="email"
                 inputmode="email"
                 maxlength="254"
-                required
                 aria-describedby={`support-email-error-${lang}`}
               />
               <p id={`support-email-error-${lang}`} class="field-error" data-error-for="email" role="alert" hidden></p>

@@ -15,7 +15,7 @@ export interface SupportRequest {
   app: SupportApp;
   category: SupportCategory;
   name?: string;
-  email: string;
+  email?: string;
   message: string;
   appVersion?: string;
   buildNumber?: string;
@@ -30,7 +30,7 @@ export type ValidationFields = Record<string, string>;
 export interface SupportEmail {
   from: string;
   to: string;
-  replyTo: string;
+  replyTo?: string;
   subject: string;
   text: string;
   html: string;

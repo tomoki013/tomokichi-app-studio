@@ -19,7 +19,7 @@ export const titles: Record<Page, [string, string]> = {
   faq: ["よくある質問", "FAQ"],
   privacy: ["プライバシーポリシー", "Privacy Policy"],
   terms: ["利用規約", "Terms of Service"],
-  news: ["お知らせ", "News"],
+  news: ["ニュース", "News"],
   updates: ["アップデート情報", "App updates"],
   regions: ["地域マップ", "Regional maps"],
 };

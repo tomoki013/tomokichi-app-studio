@@ -4,6 +4,7 @@
  * every beat's visual is a real capture in the shared phone frame.
  */
 import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
+import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
 import StoryVisual, { type StoryScreen } from "./StoryVisual.astro";
 
 export type { StoryScreen };
@@ -19,12 +20,15 @@ const {
   heading = "",
   lead = "",
   steps,
+  /** "scroll" (default) pins/parallaxes via AppStory; "simple" just fades in — used for how-to. */
+  variant = "scroll",
   class: className = "",
 } = Astro.props as {
   lang: "ja" | "en";
   heading?: string;
   lead?: string;
   steps: YohakuStep[];
+  variant?: "scroll" | "simple";
   class?: string;
 };
 
@@ -32,9 +36,11 @@ const storySteps: StoryStep[] = steps.map((step) => ({
   ...step,
   visual: { lang, screen: step.screen, appearance: step.appearance },
 }));
+
+const Story = variant === "simple" ? AppSimpleSteps : AppStory;
 ---
 
-<AppStory
+<Story
   heading={heading}
   lead={lead}
   steps={storySteps}
@@ -42,4 +48,4 @@ const storySteps: StoryStep[] = steps.map((step) => ({
   class:list={["yohaku-story", className]}
 >
   <slot />
-</AppStory>
+</Story>

@@ -44,7 +44,10 @@ export function validateSupportRequest(input: unknown): ValidationResult {
   const source = trimmed(raw.source);
   const app = trimmed(raw.app);
   const category = trimmed(raw.category);
-  const email = trimmed(raw.email)?.toLowerCase();
+  // The Remeet iOS app always sends the `email` key, empty string when no
+  // reply is requested — normalize that (and an entirely absent key, which
+  // the web form uses) to the same "no email" shape below.
+  const email = trimmed(raw.email)?.toLowerCase() || undefined;
   const message = trimmed(raw.message);
   const submittedAt = trimmed(raw.submittedAt);
   const website = trimmed(raw.website) ?? "";
@@ -61,9 +64,10 @@ export function validateSupportRequest(input: unknown): ValidationResult {
   if (!category) fields.category = "REQUIRED";
   else if (!supportCategories.includes(category as SupportRequest["category"]))
     fields.category = "INVALID_VALUE";
-  if (!email) fields.email = "REQUIRED";
-  else if (email.length > 254) fields.email = "TOO_LONG";
-  else if (!EMAIL_PATTERN.test(email)) fields.email = "INVALID_EMAIL";
+  if (email) {
+    if (email.length > 254) fields.email = "TOO_LONG";
+    else if (!EMAIL_PATTERN.test(email)) fields.email = "INVALID_EMAIL";
+  }
   if (!message) fields.message = "REQUIRED";
   else if (message.length < 10) fields.message = "TOO_SHORT";
   else if (message.length > 5000) fields.message = "TOO_LONG";
@@ -88,7 +92,7 @@ export function validateSupportRequest(input: unknown): ValidationResult {
       app: app as SupportRequest["app"],
       category: category as SupportRequest["category"],
       name,
-      email: email as string,
+      email,
       message: message as string,
       appVersion,
       buildNumber,
