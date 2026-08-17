@@ -200,7 +200,7 @@ export const apps: AppItem[] = [
       ja: "旅の記録は増えていくのに、自分がどこまで行ったのかは頭の中にしかなかった。一目で分かる形が欲しかった。",
       en: "Travel records piled up, but how far I had actually been existed only in my head. I wanted a form I could take in at a glance.",
     },
-    status: "developing",
+    status: "released",
     platform: ["iPhone"],
     iconClass: "colorvia",
     url: appSiteUrl("colorvia"),

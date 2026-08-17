@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import introduce from "../assets/introduce.jpg";
 import mountainLake from "../assets/travel/mountain-lake.jpg";
 import santorini from "../assets/travel/santorini.jpg";
 import venice from "../assets/travel/venice.jpg";
@@ -169,7 +170,17 @@ const heroFacts = [
           <ArrowLink href={p("/about")} label={home.about.link[lang]} />
         </div>
         <figure class="photo-frame photo-frame--round" data-reveal="right">
-          <img src="/assets/avatar.png" alt="Tomokichi" width="380" height="380" loading="lazy" />
+          <Image
+            src={introduce}
+            format="webp"
+            widths={[240, 380, 560]}
+            sizes="(max-width: 900px) 46vw, 240px"
+            alt={ja
+              ? "旅先の高台に立つTomokichi。背後に川と丘の上の旧市街が広がっている"
+              : "Tomokichi standing on a hillside while travelling, with a river and an old town on the ridge behind"}
+            loading="lazy"
+            decoding="async"
+          />
         </figure>
       </section>
 

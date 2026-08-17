@@ -25,11 +25,25 @@ const ja = lang === "ja";
 const supportHref = supportUrl("colorvia", lang);
 const title = pick(ja, titles[page]);
 const description = pick(ja, descriptions[page]);
-const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const storeLabel = ja ? "App Storeでダウンロード" : "Download on the App Store";
+const appStoreHref = "https://apps.apple.com/app/id6798378768";
 const legal = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
 
 const newsPosts = ja
   ? [
+      {
+        id: "released",
+        date: "2026.08.17",
+        datetime: "2026-08-17",
+        badge: "お知らせ",
+        title: "Colorviaを、App Storeでリリースしました",
+        summary: "訪れた国や地域を地図の色として残すColorviaが、本日よりApp Storeでダウンロードいただけます。",
+        body: [
+          "Colorviaを本日App Storeでリリースしました。訪れた国を選ぶだけで世界地図が色づき、対応11か国では都道府県や州など国の内側まで記録できます。",
+          "基本機能はすべて無料です。一部端末ではホーム下部にバナー広告が表示される場合があります。アプリ内課金はありません。",
+          "記録は端末内に保存され、アカウント登録は不要です。地図はオフラインでも利用できます。",
+        ],
+      },
       {
         id: "site-launch",
         date: "2026.08.01",
@@ -46,6 +60,19 @@ const newsPosts = ja
     ]
   : [
       {
+        id: "released",
+        date: "2026.08.17",
+        datetime: "2026-08-17",
+        badge: "Update",
+        title: "Colorvia is now available on the App Store",
+        summary: "Colorvia, for colouring the countries and regions you've visited, is available to download starting today.",
+        body: [
+          "Colorvia is live on the App Store today. Pick a country you've visited and the world map fills in colour; in 11 supported countries you can record prefectures, states and provinces too.",
+          "Every core feature is free. A banner ad may appear at the bottom of Home on some devices. There are no in-app purchases.",
+          "Records stay on your device — no account required. The map works offline.",
+        ],
+      },
+      {
         id: "site-launch",
         date: "2026.08.01",
         datetime: "2026-08-01",
@@ -60,6 +87,35 @@ const newsPosts = ja
       },
     ];
 
+const releases = [
+  {
+    version: "1.0.0",
+    date: "2026.08.17",
+    datetime: "2026-08-17",
+    summary: [
+      "Colorviaの最初のバージョンです。訪れた国を選んで世界地図を彩り、対応11か国では国の内側まで記録できます。",
+      "The first version of Colorvia. Colour a world map by the countries you've visited, and go beyond countries in 11 supported regions.",
+    ] as [string, string],
+    changes: [
+      [
+        "訪れた国を選んで世界地図を塗る",
+        "対応11か国で都道府県・州などを記録",
+        "訪問数・世界の訪問率などの統計",
+        "地名検索、テーマと地図色の変更",
+        "JSONで書き出し・読み込み",
+        "オフライン対応",
+      ],
+      [
+        "Colour a world map by marking countries you've visited",
+        "Record prefectures, states and provinces in 11 supported countries",
+        "Statistics such as visit counts and world percentage",
+        "Place search, plus theme and map colour options",
+        "Export and import your records as JSON",
+        "Works offline",
+      ],
+    ] as [string[], string[]],
+  },
+];
 
 const featureGroups = ja
   ? [
@@ -589,7 +645,9 @@ const shots = [
     )}
 
     {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
-    {page === "updates" && <AppUpdatesPage lang={lang} appName="Colorvia" newsHref={ja ? "/ja/news" : "/news"} />}
+    {page === "updates" && (
+      <AppUpdatesPage lang={lang} appName="Colorvia" releases={releases} newsHref={ja ? "/ja/news" : "/news"} />
+    )}
 
     {(page === "privacy" || page === "terms") && (
       <article class="legal-copy">
@@ -606,7 +664,7 @@ const shots = [
 
     {(page === "features" || page === "how-to" || page === "regions") && (
       <div class="content-cta">
-        <span class="store-button store-soon" aria-disabled="true">● <span>{storeLabel}</span></span>
+        <a class="store-button" href={appStoreHref} target="_blank" rel="noopener noreferrer">● <span>{storeLabel}</span></a>
       </div>
     )}
   </section>

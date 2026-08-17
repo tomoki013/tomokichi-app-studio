@@ -208,17 +208,16 @@
   box-shadow: var(--app-site-store-shadow, 0 9px 24px rgb(57 47 40 / 9%));
   font-size: 11px;
   text-decoration: none;
-  transition:
-    transform 0.28s ease,
-    background-color 0.28s ease,
-    box-shadow 0.28s ease;
+  transition: filter 0.22s ease;
 }
 
+/* A brightness filter (not a background swap) keeps whatever foreground/background
+   colour an app themes this with — a background-only hover previously went white
+   while the text stayed whatever colour it was, going invisible on dark buttons
+   (e.g. Yohaku's black-on-white). */
 .app-site-store-link:hover,
 .app-site-store-link:focus-visible {
-  transform: translateY(-2px) scale(1.015);
-  background: var(--app-site-store-hover-background, #fff);
-  box-shadow: var(--app-site-store-hover-shadow, 0 13px 28px rgb(57 47 40 / 14%));
+  filter: brightness(1.08);
 }
 
 .app-site-store-soon {

@@ -16,7 +16,8 @@ const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
 const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
 const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
 const supportHref = supportUrl("colorvia", lang);
-const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const storeLabel = ja ? "App Storeでダウンロード" : "Download on the App Store";
+const appStoreHref = "https://apps.apple.com/app/id6798378768";
 
 const nav = [
   { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
@@ -107,8 +108,8 @@ const mobileFooterLinks = [
 const metaDescription =
   description ??
   (ja
-    ? "Colorviaは、訪れた国や地域を選ぶだけで世界地図が色づく旅の記録アプリです。現在App Store公開準備中。"
-    : "Colorvia turns the countries and regions you visit into a personal world map. Currently preparing for the App Store.");
+    ? "Colorviaは、訪れた国や地域を選ぶだけで世界地図が色づく旅の記録アプリです。App Storeで配信中。"
+    : "Colorvia turns the countries and regions you visit into a personal world map. Available now on the App Store.");
 ---
 
 <AppSiteShell
@@ -129,8 +130,7 @@ const metaDescription =
   footerColumns={footerColumns}
   mobileFooterLinks={mobileFooterLinks}
   appStoreLabel={storeLabel}
-  appStoreHref=""
-  appStoreComingSoon
+  appStoreHref={appStoreHref}
   menuLabel={ja ? "メニュー" : "Menu"}
   menuCloseLabel={ja ? "メニューを閉じる" : "Close menu"}
   themeColor="#eff8f7"

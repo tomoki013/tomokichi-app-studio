@@ -9,13 +9,14 @@ type Locale = "ja" | "en";
 const { lang } = Astro.props as { lang: Locale };
 const ja = lang === "ja";
 const base = ja ? "/ja" : "";
-const storeLabel = ja ? "App Storeで近日公開" : "Coming soon on the App Store";
+const storeLabel = ja ? "App Storeでダウンロード" : "Download on the App Store";
+const appStoreHref = "https://apps.apple.com/app/id6798378768";
 const homeImg = ja ? "/assets/colorvia-home.webp" : "/assets/colorvia-home-en.webp";
 const homeImgPng = ja ? "/assets/colorvia-home.png" : "/assets/colorvia-home-en.png";
 
 const description = ja
-  ? "Colorviaは、訪れた国・州・都道府県を塗ることに集中した訪問記録アプリです。地図そのものが体験です。現在App Store公開準備中。"
-  : "Colorvia is a visited-places app focused on colouring countries, states and prefectures. The map is the experience. Preparing for the App Store.";
+  ? "Colorviaは、訪れた国・州・都道府県を塗ることに集中した訪問記録アプリです。地図そのものが体験です。App Storeで配信中。"
+  : "Colorvia is a visited-places app focused on colouring countries, states and prefectures. The map is the experience. Available now on the App Store.";
 
 const features = ja
   ? [
@@ -69,7 +70,7 @@ const jsonLd = JSON.stringify({
     "@type": "Offer",
     price: "0",
     priceCurrency: "JPY",
-    availability: "https://schema.org/PreOrder",
+    availability: "https://schema.org/InStock",
   },
   description,
   url: `${appSiteUrl("colorvia")}${base || ""}` || appSiteUrl("colorvia"),
@@ -132,10 +133,10 @@ const jsonLd = JSON.stringify({
         )}
       </p>
       <div class="hero-actions">
-        <span class="hero-cta hero-cta-primary store-soon" aria-disabled="true">
+        <a class="hero-cta hero-cta-primary" href={appStoreHref} target="_blank" rel="noopener noreferrer">
           <span class="hero-cta-dot" aria-hidden="true"></span>
           <span>{storeLabel}</span>
-        </span>
+        </a>
         <a class="hero-cta hero-cta-secondary" href={`${base}/features`}>
           <span>{ja ? "機能を見る" : "Explore features"}</span>
           <span class="hero-cta-arrow" aria-hidden="true">→</span>
@@ -297,10 +298,10 @@ const jsonLd = JSON.stringify({
         <h2>{ja ? "さあ、世界を彩ろう。" : "Colour your world."}</h2>
         <p>
           {ja
-            ? "Colorviaは現在、App Storeでの公開に向けて準備を進めています。基本機能は無料。一部端末ではバナー広告が表示されます。"
-            : "Colorvia is being prepared for the App Store. Core features are free; a banner ad may appear on some devices."}
+            ? "Colorviaは App Storeで配信中です。基本機能は無料。一部端末ではバナー広告が表示されます。"
+            : "Colorvia is available now on the App Store. Core features are free; a banner ad may appear on some devices."}
         </p>
-        <span class="store-button light store-soon" aria-disabled="true">● <span>{storeLabel}</span></span>
+        <a class="store-button light" href={appStoreHref} target="_blank" rel="noopener noreferrer">● <span>{storeLabel}</span></a>
       </div>
       <div class="cta-phone">
         <picture>
