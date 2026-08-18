@@ -1,0 +1,80 @@
+/*
+ * News article detail page. Shares badge/tone colours with news-feed.css
+ * (`--app-news-*` properties) so an app that already themes the listing
+ * needs nothing extra here.
+ */
+
+.app-news-article {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: clamp(96px, 12vw, 140px) 0 clamp(80px, 10vw, 120px);
+}
+
+.app-news-article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: clamp(32px, 5vw, 56px);
+  color: var(--app-news-meta, #888);
+  font-size: 12.5px;
+  font-weight: 650;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.app-news-article-back:hover {
+  color: var(--app-site-accent, #111);
+}
+
+.app-news-article-header {
+  padding-bottom: clamp(28px, 4vw, 44px);
+  border-bottom: 1px solid var(--app-news-border, rgb(0 0 0 / 8%));
+}
+
+.app-news-article-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.app-news-article-meta time {
+  color: var(--app-news-meta, #888);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+.app-news-article-header h1 {
+  margin: 0;
+  font-family: var(--app-news-title-font, inherit);
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 550;
+  line-height: 1.4;
+}
+
+.app-news-article-header > p {
+  margin: 16px 0 0;
+  color: var(--app-news-summary, #555);
+  font-size: 14.5px;
+  line-height: 1.9;
+}
+
+.app-news-article-body {
+  padding-top: clamp(28px, 4vw, 44px);
+  display: grid;
+  gap: 18px;
+}
+
+.app-news-article-body p {
+  margin: 0;
+  color: var(--app-news-body, #555);
+  font-size: 15px;
+  line-height: 2;
+}
+
+@media (max-width: 600px) {
+  .app-news-article {
+    width: min(100% - 32px, 720px);
+  }
+}

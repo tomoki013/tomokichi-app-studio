@@ -12,10 +12,12 @@ export type NewsPost = {
   body: string[];
 };
 
-const { posts, lang = "en", heading = "" } = Astro.props as {
+const { posts, lang = "en", heading = "", basePath } = Astro.props as {
   posts: NewsPost[];
   lang?: "ja" | "en";
   heading?: string;
+  /** Base path each post links to, e.g. "/ja/news" — the post's id is appended. */
+  basePath: string;
 };
 
 const ja = lang === "ja";
@@ -30,7 +32,7 @@ const filters = [
 ] as const;
 ---
 
-<section class="app-news" data-app-news aria-label={heading || (ja ? "お知らせ" : "Updates")}>
+<section class="app-news" data-app-news aria-label={heading || (ja ? "ニュース" : "News")}>
   {heading && <h2 class="app-news-heading">{heading}</h2>}
 
   <nav class="app-news-tabs" aria-label={ja ? "記事の種類" : "Post type"}>
@@ -55,24 +57,18 @@ const filters = [
             <span class="app-news-dot"></span>
             <span class="app-news-stamp"><b>{month}.{day}</b><small>{year}</small></span>
           </div>
-          <details class="app-news-card" id={post.id} open={index === 0}>
-            <summary>
-              <span class="app-news-meta">
-                <span class:list={["app-news-badge", post.badgeTone && `is-${post.badgeTone}`]}>{post.badge}</span>
-                <time datetime={post.datetime}>{post.date}</time>
-              </span>
-              <span class="app-news-title">{post.title}</span>
-              <span class="app-news-summary">{post.summary}</span>
-              <span class="app-news-read">
-                <span class="when-closed">{ja ? "続きを読む" : "Read on"}</span>
-                <span class="when-open">{ja ? "閉じる" : "Close"}</span>
-                <i aria-hidden="true">↗</i>
-              </span>
-            </summary>
-            <div class="app-news-body">
-              {post.body.map((para) => <p>{para}</p>)}
-            </div>
-          </details>
+          <a class="app-news-card" href={`${basePath}/${post.id}`}>
+            <span class="app-news-meta">
+              <span class:list={["app-news-badge", post.badgeTone && `is-${post.badgeTone}`]}>{post.badge}</span>
+              <time datetime={post.datetime}>{post.date}</time>
+            </span>
+            <span class="app-news-title">{post.title}</span>
+            <span class="app-news-summary">{post.summary}</span>
+            <span class="app-news-read">
+              <span>{ja ? "読む" : "Read on"}</span>
+              <i aria-hidden="true">↗</i>
+            </span>
+          </a>
         </li>
       );
     })}
@@ -100,13 +96,8 @@ const filters = [
           items.forEach((item) => {
             const match = filter === "all" || item.dataset.newsKind === filter;
             item.hidden = !match;
-            const card = item.querySelector("details");
-            if (!match && card) card.open = false;
             if (match) shown += 1;
           });
-          // The first visible entry stays open so the list never reads as empty.
-          const first = items.find((item) => !item.hidden)?.querySelector("details");
-          if (first) first.open = true;
           if (empty) empty.hidden = shown !== 0;
         });
       });

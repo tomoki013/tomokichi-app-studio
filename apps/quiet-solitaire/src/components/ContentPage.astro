@@ -126,7 +126,7 @@ const howBeats: StoryStep[] = guides.map((guide, i) => ({
       </div>
     )}
 
-    {page === "news" && <NewsFeed lang={lang} posts={posts} />}
+    {page === "news" && <NewsFeed lang={lang} posts={posts} basePath={ja ? "/ja/news" : "/news"} />}
     {page === "updates" && (
       <AppUpdatesPage lang={lang} appName="Quiet Solitaire" newsHref={ja ? "/ja/news" : "/news"} />
     )}

@@ -31,7 +31,7 @@ const measure = (beat) => {
   const visualWidth = beat.visual.getBoundingClientRect().width;
   const pin = beat.track.firstElementChild;
   beat.shift = stage
-    ? Math.min(stage.clientWidth * 0.235, stage.clientWidth / 2 - visualWidth / 2 - 40)
+    ? Math.min(stage.clientWidth * 0.35, stage.clientWidth / 2 - visualWidth / 2 - 40)
     : 0;
   beat.start = beat.track.getBoundingClientRect().top + window.scrollY;
   beat.travel = Math.max(

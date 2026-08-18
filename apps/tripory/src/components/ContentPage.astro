@@ -4,6 +4,7 @@ import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
+import { getNewsPosts } from "../lib/news";
 import AppScreen from "./AppScreen.astro";
 import Shell from "./Shell.astro";
 import StoryVisual from "./StoryVisual.astro";
@@ -156,35 +157,7 @@ const faqCount = (key: string) =>
 
 const isLegal = page === "privacy" || page === "terms";
 
-const newsPosts = ja
-  ? [
-      {
-        id: "version-1",
-        date: "2026.07.24",
-        datetime: "2026-07-24",
-        badge: "お知らせ",
-        title: "Tripory公式ブランドサイトを公開しました",
-        summary: "旅のタイムライン・写真・メモを中心に、Triporyの世界観を紹介するサイトを公開しました。",
-        body: [
-          "Triporyは現在App Store公開準備中です。旅そのものを記憶として残す体験を、サイトでも先に触れられるようにしました。",
-          "記録は端末内に保存され、アカウント登録は必要ありません。",
-        ],
-      },
-    ]
-  : [
-      {
-        id: "version-1",
-        date: "2026.07.24",
-        datetime: "2026-07-24",
-        badge: "Update",
-        title: "The official Tripory brand site is live",
-        summary: "A site focused on journeys — timeline, photos and notes — not just a map.",
-        body: [
-          "Tripory is preparing for the App Store. This site shares the product’s world while the listing is still on its way.",
-          "Records stay on your device and no account is required.",
-        ],
-      },
-    ];
+const newsPosts = getNewsPosts(lang);
 
 const legal = {
   privacy: ja
@@ -353,7 +326,7 @@ const legal = {
 
     {(page === "privacy" || page === "terms") && <article class="legal-copy">{legal[page].map(([heading, body]) => <section><h2>{heading}</h2>{body.split("\n\n").map((para) => <p>{para.split("\n").map((line) => <>{line}<br /></>)}</p>)}</section>)}</article>}
 
-    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} />}
+    {page === "news" && <NewsFeed lang={lang} posts={newsPosts} basePath={ja ? "/ja/news" : "/news"} />}
     {page === "updates" && (
       <AppUpdatesPage
         lang={lang}
