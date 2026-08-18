@@ -2133,6 +2133,22 @@ img {
   border-inline: 0;
   background: transparent;
   box-shadow: none;
+  color: #0b1723;
+}
+/* AppUpdatesPage's --ledger-accent falls back to --app-site-accent, which
+   here is white (correct for the dark hero) — nowhere near readable as body
+   text on the light page background the release ledger actually sits on. */
+.tripory-subpage .app-release-ledger {
+  --ledger-accent: #d95f3d;
+}
+.tripory-subpage .faq-list details:not(:first-child) {
+  border-top: 1px solid #d0c9c0;
+}
+.tripory-subpage .faq-list summary b {
+  color: #d95f3d;
+}
+.tripory-subpage .faq-list details p {
+  color: #59656d;
 }
 .tripory-subpage .legal-copy section {
   padding: 34px 0;

@@ -16,7 +16,7 @@ const c = ja
         "国を塗るだけのアプリではありません。\n写真・タイムライン・メモで、旅の過程をあとから辿れるようにします。",
       features: "旅を残す方法",
       featureLink: "すべての機能を見る",
-      screenshots: "旅の記録のようす",
+      screenshots: "旅の記録",
       shotLink: "スクリーンショットを見る",
       cta: "次の旅から、残してみる。",
       ctaSub: "Triporyは現在、App Store公開準備中です。",
@@ -67,17 +67,6 @@ const journey = ja
       ["10.02", "Cusco"],
       ["11.19", "Sydney"],
     ];
-const memoryNotes = ja
-  ? [
-      ["01", "場所", "訪れた国や都市を、地図と一緒に残す。"],
-      ["02", "時間", "旅の始まりから帰る日までを、ひとつの流れに。"],
-      ["03", "感触", "写真と短い言葉で、その日の空気まで思い出す。"],
-    ]
-  : [
-      ["01", "Place", "Keep countries and cities together with the map."],
-      ["02", "Time", "See every trip as one flow, from departure to return."],
-      ["03", "Feeling", "Let a photograph and a few words bring the day back."],
-    ];
 ---
 
 <Shell lang={lang} title={`${c.title} — ${c.tagline}`}>
@@ -122,17 +111,6 @@ const memoryNotes = ja
     <AppHeroChrome lang={lang} date="2026-07-24" news={c.notice} newsHref={`${base}/news`} />
   </section>
 
-  <section class="home-section memory-manifesto" data-reveal>
-    <div class="manifesto-lead">
-      <p class="eyebrow">A JOURNEY, NOT A CHECKLIST</p>
-      <h2>{ja ? "地図の先にある、旅の時間を残す。" : "Keep the time behind every pin on the map."}</h2>
-      <p>{ja ? "中心にあるのは、塗りつぶした国の数ではなく、そこで過ごした時間。Triporyは写真、日付、場所、メモをひとつの物語としてつなぎます。" : "The point is not the number of countries you can colour in. Tripory connects photographs, dates, places and notes into the story of time spent there."}</p>
-    </div>
-    <div class="memory-notes">
-      {memoryNotes.map(([number, heading, body]) => <article><b>{number}</b><h3>{heading}</h3><p>{body}</p></article>)}
-    </div>
-  </section>
-
   <section class="home-section" data-reveal>
     <div class="section-bar"><h2>{c.features}</h2><a href={`${base}/features`}>{c.featureLink}　→</a></div>
     <div class="home-features feature-editorial-grid">
@@ -153,7 +131,7 @@ const memoryNotes = ja
       <div class="real-screen-copy" data-reveal>
         <p class="eyebrow">REAL APP CAPTURE</p>
         <h3>{ja ? "旅の入口は、あなたの世界。" : "Your world is where every trip begins."}</h3>
-        <p>{ja ? "iPhone 17 Pro Maxのシミュレータで、実際のTriporyから撮影しました。訪れた国、写真、次の旅への入口がひとつの画面につながります。" : "Captured directly from Tripory on an iPhone 17 Pro Max simulator. Visited countries, photographs, and the next journey meet in one place."}</p>
+        <p>{ja ? "実際のTriporyの画面です。訪れた国、写真、次の旅への入口がひとつの画面につながります。" : "This is the real Tripory screen. Visited countries, photographs, and the next journey meet in one place."}</p>
         <a href={`${base}/screenshots`}>{ja ? "実際の画面を大きく見る" : "See the real screen in detail"} →</a>
       </div>
     </div>
