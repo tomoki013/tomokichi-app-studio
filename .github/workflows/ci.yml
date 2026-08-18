@@ -16,6 +16,8 @@ jobs:
       main: ${{ steps.filter.outputs.main }}
       remeet: ${{ steps.filter.outputs.remeet }}
       tripory: ${{ steps.filter.outputs.tripory }}
+      colorvia: ${{ steps.filter.outputs.colorvia }}
+      yohaku: ${{ steps.filter.outputs.yohaku }}
       api: ${{ steps.filter.outputs.api }}
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +41,18 @@ jobs:
               - 'turbo.json'
             tripory:
               - 'apps/tripory/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'turbo.json'
+            colorvia:
+              - 'apps/colorvia/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'turbo.json'
+            yohaku:
+              - 'apps/yohaku/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
@@ -106,6 +120,42 @@ jobs:
       - run: pnpm --filter @tomokichi/tripory check
       - run: pnpm --filter @tomokichi/tripory test
       - run: pnpm --filter @tomokichi/tripory build
+
+  colorvia:
+    name: Colorvia check
+    needs: changes
+    if: needs.changes.outputs.colorvia == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.11.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @tomokichi/colorvia check
+      - run: pnpm --filter @tomokichi/colorvia build
+
+  yohaku:
+    name: Yohaku check
+    needs: changes
+    if: needs.changes.outputs.yohaku == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.11.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @tomokichi/yohaku check
+      - run: pnpm --filter @tomokichi/yohaku build
 
   api:
     name: API check
