@@ -96,12 +96,22 @@ const jsonLd = JSON.stringify({
   name: "Remeet",
   applicationCategory: "LifestyleApplication",
   operatingSystem: "iOS 26 or later",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "JPY",
-    availability: "https://schema.org/PreOrder",
-  },
+  offers: [
+    {
+      "@type": "Offer",
+      name: ja ? "ダウンロードと個人利用" : "Download and personal use",
+      price: "0",
+      priceCurrency: "JPY",
+      availability: "https://schema.org/PreOrder",
+    },
+    {
+      "@type": "Offer",
+      name: ja ? "Share Pass（2つ目以降の再会を共有）" : "Share Pass (share a second or later reunion)",
+      price: "500",
+      priceCurrency: "JPY",
+      availability: "https://schema.org/PreOrder",
+    },
+  ],
   description: c.description,
   url: `${appSiteUrl("remeet")}${base || "/"}`.replace(/\/$/, "") || appSiteUrl("remeet"),
   image: `${appSiteUrl("remeet")}/assets/og.png`,
