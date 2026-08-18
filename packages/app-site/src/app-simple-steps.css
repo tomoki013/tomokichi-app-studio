@@ -107,6 +107,20 @@
   line-height: 1.75;
 }
 
+.app-simple-step-link {
+  margin-top: 14px;
+  display: inline-block;
+  color: var(--app-story-accent, inherit);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.app-simple-step-link:hover,
+.app-simple-step-link:focus-visible {
+  text-decoration: underline;
+}
+
 @media (max-width: 760px) {
   .app-simple-step,
   .app-simple-step[data-side="end"] {

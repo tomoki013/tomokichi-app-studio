@@ -1515,8 +1515,16 @@ button {
 .region-slideshow-track {
   display: flex;
   width: max-content;
-  gap: 16px;
   padding-inline: max(24px, calc((100vw - 1120px) / 2));
+}
+/* Each copy owns its inter-card gaps plus one trailing gap, so the whole
+   track is exactly two copy-widths wide and translateX(-50%) lands right on
+   the seam. A single flex gap across the flat list left -50% half a gap
+   short, which read as a stutter at the end of every loop. */
+.region-slideshow-copy {
+  display: flex;
+  gap: 16px;
+  padding-right: 16px;
 }
 .region-slideshow.is-animated .region-slideshow-track {
   /* No padding here: the track is exactly two back-to-back copies of the
@@ -1542,7 +1550,7 @@ button {
   scroll-snap-align: start;
   flex: 0 0 min(200px, 72vw);
 }
-.region-slideshow.is-static .region-slide-card[aria-hidden="true"] {
+.region-slideshow.is-static .region-slideshow-copy[aria-hidden="true"] {
   display: none;
 }
 /* Before JS runs, keep a usable horizontal strip without animation */
@@ -1556,7 +1564,7 @@ button {
 .region-slideshow:not(.is-animated):not(.is-static) .region-slide-card {
   scroll-snap-align: start;
 }
-.region-slideshow:not(.is-animated):not(.is-static) .region-slide-card[aria-hidden="true"] {
+.region-slideshow:not(.is-animated):not(.is-static) .region-slideshow-copy[aria-hidden="true"] {
   display: none;
 }
 @keyframes region-marquee {
@@ -1570,6 +1578,29 @@ button {
 .region-slide-card {
   flex: 0 0 200px;
   min-height: 168px;
+  position: relative;
+  overflow: hidden;
+}
+/* The country's real subdivision outline, large and faint behind the card's
+   own text — the visual hook the flag+text card alone didn't give. */
+.region-map-thumb {
+  position: absolute;
+  inset: -10% -10% auto auto;
+  width: 68%;
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+.region-map-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.region-card {
+  position: relative;
+}
+.region-card > :not(.region-map-thumb) {
+  position: relative;
+  z-index: 1;
 }
 .region-grid {
   display: grid;

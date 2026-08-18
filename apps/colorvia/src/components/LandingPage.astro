@@ -209,19 +209,30 @@ const jsonLd = JSON.stringify({
         <div class="region-slideshow" data-reveal data-region-slideshow>
           <div class="region-slideshow-fade region-slideshow-fade-left" aria-hidden="true"></div>
           <div class="region-slideshow-fade region-slideshow-fade-right" aria-hidden="true"></div>
+          {/* Two identical copy containers, each owning its own inter-card
+              gaps AND one trailing gap, so the marquee's translateX(-50%)
+              lands exactly one copy-width later — a flat list with a shared
+              flex gap left the -50% point half a gap (8px) short of the
+              seam, which showed as a one-frame jump every loop. */}
           <div class="region-slideshow-track" data-region-track>
-            {[...regions, ...regions].map((r, i) => (
-              <a
-                class="region-card region-slide-card"
-                aria-hidden={i >= regions.length ? "true" : undefined}
-                tabindex={i >= regions.length ? -1 : undefined}
-                href={`${base}/regions/${r.code.toLowerCase()}`}
-              >
-                <span class="region-flag" aria-hidden="true">{r.flag}</span>
-                <h3>{ja ? r.nameJa : r.nameEn}</h3>
-                <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
-                <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
-              </a>
+            {[0, 1].map((copy) => (
+              <div class="region-slideshow-copy" aria-hidden={copy === 1 ? "true" : undefined}>
+                {regions.map((r) => (
+                  <a
+                    class="region-card region-slide-card"
+                    tabindex={copy === 1 ? -1 : undefined}
+                    href={`${base}/regions/${r.code.toLowerCase()}`}
+                  >
+                    <span class="region-map-thumb" aria-hidden="true">
+                      <img src={`/assets/regions/${r.code.toLowerCase()}-regions.svg`} alt="" loading="lazy" decoding="async" />
+                    </span>
+                    <span class="region-flag" aria-hidden="true">{r.flag}</span>
+                    <h3>{ja ? r.nameJa : r.nameEn}</h3>
+                    <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
+                    <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
+                  </a>
+                ))}
+              </div>
             ))}
           </div>
         </div>

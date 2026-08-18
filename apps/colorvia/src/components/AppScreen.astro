@@ -1,7 +1,7 @@
 ---
 import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 
-type Screen = "home" | "stats" | "controls" | "coral" | "dark" | "english";
+type Screen = "home" | "stats" | "controls" | "coral" | "dark" | "english" | "region-japan";
 type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
 const {
@@ -44,6 +44,10 @@ const assets: Record<Screen, { file: string; alt: [string, string] }> = {
   english: {
     file: "colorvia-home-en",
     alt: ["英語表示のColorviaホーム画面", "Colorvia home screen in English"],
+  },
+  "region-japan": {
+    file: "colorvia-subdivision-japan",
+    alt: ["Colorviaの日本の地域マップ。訪れた都道府県が青緑色で塗られている", "Colorvia's regional map of Japan with visited prefectures coloured teal"],
   },
 };
 

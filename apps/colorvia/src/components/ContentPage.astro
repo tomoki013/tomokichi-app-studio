@@ -195,14 +195,6 @@ const featureGroups = ja
       },
     ];
 
-/**
- * NOTE: the "record a region" step below intentionally reuses the `home`
- * (world map) capture — there is no captured region/country-level map
- * screen in `public/assets/` (AppScreen's screen union is only
- * home/stats/controls/coral/dark/english). Swap in a real capture of a
- * SubdivisionMapScreen (e.g. Japan prefectures) once one exists instead of
- * fabricating one here.
- */
 const howGuides = ja
   ? [
       {
@@ -236,7 +228,7 @@ const howGuides = ja
       },
       {
         t: "地域を記録する",
-        screen: "home" as const,
+        screen: "region-japan" as const,
         note: "日本の都道府県やアメリカの州など、対応する11か国で使えます。",
         steps: [
           "対応国を開き、地域マップまたは一覧へ進みます。",
@@ -299,7 +291,7 @@ const howGuides = ja
       },
       {
         t: "Record regions",
-        screen: "home" as const,
+        screen: "region-japan" as const,
         note: "Regional maps are available for eleven supported countries.",
         steps: [
           "Open a supported country and its regional map or list.",
@@ -345,6 +337,14 @@ const howBeats: StoryStep[] = howGuides.map((guide, i) => ({
   body: guide.steps.join(""),
   note: guide.note,
   visual: { lang, screen: guide.screen },
+  ...(guide.screen === "region-japan"
+    ? {
+        link: {
+          href: `${ja ? "/ja" : ""}/regions`,
+          label: ja ? "対応地域の一覧を見る" : "See all supported regions",
+        },
+      }
+    : {}),
 }));
 
 const faqs = ja
@@ -458,10 +458,6 @@ const shots = [
           <div>
             <dt>{ja ? "記録できる地域数" : "Regions in total"}</dt>
             <dd>{regions.reduce((total, region) => total + region.count, 0)}</dd>
-          </div>
-          <div>
-            <dt>{ja ? "1か国あたりの平均" : "Average per country"}</dt>
-            <dd>{Math.round(regions.reduce((total, region) => total + region.count, 0) / regions.length)}</dd>
           </div>
         </dl>
 

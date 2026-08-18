@@ -66,6 +66,11 @@ const VisualComponent = Visual as never;
                 <p>{step.note}</p>
               </aside>
             )}
+            {step.link && (
+              <a class="app-simple-step-link" href={step.link.href} data-astro-prefetch>
+                {step.link.label}<span aria-hidden="true"> →</span>
+              </a>
+            )}
           </div>
         </li>
       );

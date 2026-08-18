@@ -25,6 +25,8 @@ export type StoryStep = {
   side?: "start" | "end";
   /** Marker glyph for the note aside. */
   noteMark?: string;
+  /** Optional link rendered after the note, e.g. to a related page. */
+  link?: { href: string; label: string };
   /** Props handed to the app's `visual` component for this beat. */
   visual?: Record<string, unknown>;
 };
