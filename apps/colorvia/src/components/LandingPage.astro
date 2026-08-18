@@ -185,35 +185,53 @@ const jsonLd = JSON.stringify({
       <a class="section-link" href={`${base}/features`}>{ja ? "すべての機能を見る" : "View all features"} →</a>
     </section>
 
-    <section class="landing-pad regions-section" id="regions">
-      <header class="section-title" data-reveal>
-        <h2>{ja ? "国の中まで、旅を残せる。" : "Go beyond countries."}</h2>
-        <p>
-          {ja
-            ? "対応している国では、都道府県、州、県、連邦直轄領、旅行エリアなど、国の中で訪れた地域まで記録できます。都市名や地名から該当する地域を検索することもできます。"
-            : "In supported countries, record states, prefectures, provinces, federal territories and travel areas. Search by city or place name to find the right region."}
-        </p>
-      </header>
-      <div class="region-slideshow" data-reveal data-region-slideshow>
-        <div class="region-slideshow-fade region-slideshow-fade-left" aria-hidden="true"></div>
-        <div class="region-slideshow-fade region-slideshow-fade-right" aria-hidden="true"></div>
-        <div class="region-slideshow-track" data-region-track>
-          {[...regions, ...regions].map((r, i) => (
-            <article class="region-card region-slide-card" aria-hidden={i >= regions.length ? "true" : undefined}>
-              <span class="region-flag" aria-hidden="true">{r.flag}</span>
-              <h3>{ja ? r.nameJa : r.nameEn}</h3>
-              <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
-              <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
-            </article>
-          ))}
+    <section class="regions-section-band" id="regions">
+      <div class="landing-pad regions-section">
+        <header class="section-title regions-section-title" data-reveal>
+          <p class="regions-section-eyebrow">{ja ? "国の中まで" : "GO DEEPER"}</p>
+          <h2>{ja ? "国の中まで、旅を残せる。" : "Go beyond countries."}</h2>
+          <p>
+            {ja
+              ? "対応している国では、都道府県、州、県、連邦直轄領、旅行エリアなど、国の中で訪れた地域まで記録できます。都市名や地名から該当する地域を検索することもできます。"
+              : "In supported countries, record states, prefectures, provinces, federal territories and travel areas. Search by city or place name to find the right region."}
+          </p>
+          <dl class="regions-section-stats" data-reveal>
+            <div>
+              <dt>{ja ? "対応国" : "Countries"}</dt>
+              <dd>{regions.length}</dd>
+            </div>
+            <div>
+              <dt>{ja ? "記録できる地域数" : "Regions in total"}</dt>
+              <dd>{regions.reduce((total, region) => total + region.count, 0)}+</dd>
+            </div>
+          </dl>
+        </header>
+        <div class="region-slideshow" data-reveal data-region-slideshow>
+          <div class="region-slideshow-fade region-slideshow-fade-left" aria-hidden="true"></div>
+          <div class="region-slideshow-fade region-slideshow-fade-right" aria-hidden="true"></div>
+          <div class="region-slideshow-track" data-region-track>
+            {[...regions, ...regions].map((r, i) => (
+              <a
+                class="region-card region-slide-card"
+                aria-hidden={i >= regions.length ? "true" : undefined}
+                tabindex={i >= regions.length ? -1 : undefined}
+                href={`${base}/regions/${r.code.toLowerCase()}`}
+              >
+                <span class="region-flag" aria-hidden="true">{r.flag}</span>
+                <h3>{ja ? r.nameJa : r.nameEn}</h3>
+                <p class="region-unit">{ja ? r.unitJa : r.unitEn}</p>
+                <p class="region-count">{ja ? `${r.count} 地域` : `${r.count} regions`}</p>
+              </a>
+            ))}
+          </div>
         </div>
+        <p class="region-disclaimer" data-reveal>
+          {ja
+            ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
+            : "Maps and regional divisions in Colorvia are simplified for travel logging and do not express a political position."}
+        </p>
+        <a class="section-link" href={`${base}/regions`}>{ja ? "地域マップの詳細" : "Regional maps in detail"} →</a>
       </div>
-      <p class="region-disclaimer" data-reveal>
-        {ja
-          ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
-          : "Maps and regional divisions in Colorvia are simplified for travel logging and do not express a political position."}
-      </p>
-      <a class="section-link" href={`${base}/regions`}>{ja ? "地域マップの詳細" : "Regional maps in detail"} →</a>
     </section>
 
     <section class="landing-pad how" id="how">
@@ -304,10 +322,12 @@ const jsonLd = JSON.stringify({
         <a class="store-button light" href={appStoreHref} target="_blank" rel="noopener noreferrer">● <span>{storeLabel}</span></a>
       </div>
       <div class="cta-phone">
-        <picture>
-          <source srcset={homeImg} type="image/webp" />
-          <img src={homeImgPng} alt="" width="1206" height="2622" loading="lazy" decoding="async" />
-        </picture>
+        <PhoneFrame size="md">
+          <picture>
+            <source srcset={homeImg} type="image/webp" />
+            <img src={homeImgPng} alt="" width="1206" height="2622" loading="lazy" decoding="async" />
+          </picture>
+        </PhoneFrame>
       </div>
     </section>
   </div>

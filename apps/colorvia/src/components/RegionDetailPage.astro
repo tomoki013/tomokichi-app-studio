@@ -1,0 +1,133 @@
+---
+import { supportUrl } from "@tomokichi/app-site/urls";
+import { regions, regionSlug, type Locale, type RegionCard } from "../lib/content";
+import AppShell from "./AppShell.astro";
+
+const { lang, region } = Astro.props as { lang: Locale; region: RegionCard };
+const ja = lang === "ja";
+const base = ja ? "/ja" : "";
+const slug = regionSlug(region.code);
+const supportHref = supportUrl("colorvia", lang);
+const appStoreHref = "https://apps.apple.com/app/id6798378768";
+const storeLabel = ja ? "App Storeでダウンロード" : "Download on the App Store";
+
+const name = ja ? region.nameJa : region.nameEn;
+const unit = ja ? region.unitJa : region.unitEn;
+const scheme = ja ? region.schemeJa : region.schemeEn;
+const samples = ja ? region.samplesJa : region.samplesEn;
+
+const title = ja
+  ? `${region.flag} ${name}の地域マップ｜${region.count}の${region.unitJa}を記録`
+  : `${region.flag} ${name} regional map — record all ${region.count} ${region.unitEn.toLowerCase()}`;
+
+const description = ja
+  ? `Colorviaで${name}を旅の記録に。${region.count}の${region.unitJa}を塗り分けて、訪れた場所を残せます。${region.schemeJa}`
+  : `Track your trips across ${name} in Colorvia — colour in all ${region.count} ${region.unitEn.toLowerCase()}. ${region.schemeEn}`;
+
+const idx = regions.findIndex((r) => r.code === region.code);
+const prev = regions[(idx - 1 + regions.length) % regions.length];
+const next = regions[(idx + 1) % regions.length];
+const regionHref = (r: RegionCard) => `${base}/regions/${regionSlug(r.code)}`;
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: title,
+  description,
+});
+---
+
+<AppShell lang={lang} title={title} description={description} page={`regions/${slug}`} jsonLd={jsonLd}>
+  <section class="content-page region-detail-page">
+    <nav class="region-detail-crumbs" aria-label={ja ? "パンくずリスト" : "Breadcrumb"}>
+      <a href={`${base}/regions`}>{ja ? "地域マップ" : "Regional maps"}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{name}</span>
+    </nav>
+
+    <header class="region-detail-hero" data-reveal>
+      <div class="region-detail-heading">
+        <span class="region-detail-flag" aria-hidden="true">{region.flag}</span>
+        <div>
+          <p class="content-eyebrow">{ja ? "地域マップ" : "REGIONAL MAP"}</p>
+          <h1>{name}</h1>
+          <p class="region-detail-unit">
+            {ja
+              ? `${region.count}の${unit}を、ひとつずつ塗り分けて記録できます。`
+              : `Record every one of the ${region.count} ${unit.toLowerCase()}, one at a time.`}
+          </p>
+        </div>
+      </div>
+      <div class="region-detail-figure">
+        <img
+          class="region-detail-map"
+          src={`/assets/regions/${slug}-regions.svg`}
+          alt={ja
+            ? `${name}の${unit}区分を示すアウトラインマップ`
+            : `Outline map showing ${name}'s ${unit.toLowerCase()}`}
+          width="1000"
+          height="1000"
+          loading="eager"
+          decoding="async"
+        />
+        <p class="region-detail-figcap">
+          {ja
+            ? `${unit}の境界を示したイメージ図です（実際のアプリ画面ではありません）`
+            : `An illustration of ${unit.toLowerCase()} boundaries (not an in-app screenshot)`}
+        </p>
+      </div>
+    </header>
+
+    <div class="region-detail-body" data-reveal>
+      <p class="lead">{scheme}</p>
+
+      <div class="region-detail-samples">
+        <p class="region-samples-label">{ja ? "区分の例" : "Sample units"}</p>
+        <ul>
+          {samples.map((s) => (
+            <li>{s}</li>
+          ))}
+        </ul>
+      </div>
+
+      <aside class="region-how-note">
+        <h2>{ja ? "アプリでの記録の流れ" : "How recording works in the app"}</h2>
+        <ol>
+          <li>{ja ? `ホームの＋から${name}を追加する` : `Add ${name} from Home’s + button`}</li>
+          <li>{ja ? "地域マップまたは一覧へ進む" : "Open its regional map or list view"}</li>
+          <li>
+            {ja
+              ? `訪れた${unit}にチェックを付ける（地名検索も可）`
+              : `Check the ${unit.toLowerCase()} you've visited — or search by place name`}
+          </li>
+          <li>{ja ? "訪問数・割合・共有画像で振り返る" : "Review counts, rates and share images"}</li>
+        </ol>
+      </aside>
+
+      <p class="region-disclaimer">
+        {ja
+          ? "Colorviaの地図や地域区分は、旅の記録を目的として簡略化・整理されています。政治的な立場や主張を示すものではありません。"
+          : "Maps and regional divisions in Colorvia are simplified for travel logging and do not express a political position."}
+      </p>
+    </div>
+
+    <nav class="region-detail-pager" aria-label={ja ? "他の国" : "Other countries"}>
+      <a href={regionHref(prev)}>
+        <span class="region-detail-pager-dir">← {ja ? "前の国" : "Previous"}</span>
+        <span class="region-detail-pager-name">{prev.flag} {ja ? prev.nameJa : prev.nameEn}</span>
+      </a>
+      <a href={`${base}/regions`} class="region-detail-pager-all">
+        {ja ? "すべての国を見る" : "All countries"}
+      </a>
+      <a href={regionHref(next)}>
+        <span class="region-detail-pager-dir">{ja ? "次の国" : "Next"} →</span>
+        <span class="region-detail-pager-name">{next.flag} {ja ? next.nameJa : next.nameEn}</span>
+      </a>
+    </nav>
+
+    <div class="content-cta">
+      <a class="store-button" href={appStoreHref} target="_blank" rel="noopener noreferrer">● <span>{storeLabel}</span></a>
+      <a class="section-link" href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact"} →</a>
+    </div>
+  </section>
+</AppShell>

@@ -13,6 +13,7 @@ import {
   pick,
   privacySections,
   regions,
+  regionSlug,
   termsSections,
   titles,
 } from "../lib/content";
@@ -194,6 +195,14 @@ const featureGroups = ja
       },
     ];
 
+/**
+ * NOTE: the "record a region" step below intentionally reuses the `home`
+ * (world map) capture — there is no captured region/country-level map
+ * screen in `public/assets/` (AppScreen's screen union is only
+ * home/stats/controls/coral/dark/english). Swap in a real capture of a
+ * SubdivisionMapScreen (e.g. Japan prefectures) once one exists instead of
+ * fabricating one here.
+ */
 const howGuides = ja
   ? [
       {
@@ -451,8 +460,8 @@ const shots = [
             <dd>{regions.reduce((total, region) => total + region.count, 0)}</dd>
           </div>
           <div>
-            <dt>{ja ? "最も細かい国" : "Most detailed"}</dt>
-            <dd>{[...regions].sort((a, b) => b.count - a.count)[0]?.flag} {ja ? [...regions].sort((a, b) => b.count - a.count)[0]?.nameJa : [...regions].sort((a, b) => b.count - a.count)[0]?.nameEn}</dd>
+            <dt>{ja ? "1か国あたりの平均" : "Average per country"}</dt>
+            <dd>{Math.round(regions.reduce((total, region) => total + region.count, 0) / regions.length)}</dd>
           </div>
         </dl>
 
@@ -520,6 +529,9 @@ const shots = [
                       ))}
                     </ul>
                   </div>
+                  <a class="region-item-detail-link" href={`${ja ? "/ja" : ""}/regions/${regionSlug(r.code)}`}>
+                    {ja ? `${r.nameJa}の地域マップを見る` : `See the ${r.nameEn} regional map`} →
+                  </a>
                 </div>
               </details>
             );

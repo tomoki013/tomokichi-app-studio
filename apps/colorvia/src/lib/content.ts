@@ -240,6 +240,14 @@ export const regions: RegionCard[] = [
   },
 ];
 
+/** URL slug for a region's detail page, e.g. "JP" -> "jp". */
+export const regionSlug = (code: string): string => code.toLowerCase();
+
+/** Looks up a RegionCard by its detail-page slug (case-insensitive). */
+export function getRegionBySlug(slug: string): RegionCard | undefined {
+  return regions.find((r) => regionSlug(r.code) === slug.toLowerCase());
+}
+
 export const languagesJa =
   "日本語、英語、ドイツ語、スペイン語、フランス語、イタリア語、韓国語、ポルトガル語（ブラジル）、ロシア語、中国語（簡体字）、中国語（繁体字）";
 export const languagesEn =
