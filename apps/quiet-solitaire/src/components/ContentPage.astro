@@ -37,6 +37,12 @@ const faqs = faqList(ja);
 const faqCats = ja ? faqCategories.ja : faqCategories.en;
 const posts = newsPosts(ja);
 
+const shots: { screen: "board" | "win" | "settings"; cap: [string, string] }[] = [
+  { screen: "board", cap: ["盤面", "The board"] },
+  { screen: "win", cap: ["上がり", "A finished hand"] },
+  { screen: "settings", cap: ["設定", "Settings"] },
+];
+
 /* How-to leads with the shared scroll story used across every brand site. */
 const howBeats: StoryStep[] = guides.map((guide, i) => ({
   kicker: String(i + 1).padStart(2, "0"),
@@ -89,9 +95,8 @@ const howBeats: StoryStep[] = guides.map((guide, i) => ({
     )}
 
     {page === "screenshots" && (
-      <div class="quiet-capture-page" data-reveal>
-        <AppScreen lang={lang} size="xl" />
-        <div class="quiet-capture-copy">
+      <div class="quiet-shots-page">
+        <div class="quiet-shots-intro" data-reveal>
           <p class="content-eyebrow">IPHONE 17 PRO MAX · REAL CAPTURE</p>
           <h2>{ja ? "静けさは、実際の画面にも。" : "The quiet is in the real screen."}</h2>
           <p>{ja ? "iPhone 17 Pro Maxのシミュレータで、動作中のQuiet Solitaireをそのまま撮影しました。深緑の卓、読みやすいカード、指が迷わない4つの操作だけ。" : "Captured directly from the running game on an iPhone 17 Pro Max simulator: deep green felt, highly legible cards, and only four controls to find."}</p>
@@ -100,6 +105,11 @@ const howBeats: StoryStep[] = guides.map((guide, i) => ({
             <li>{ja ? "ゲーム・設定・統計は端末内" : "Games, settings, and stats stay on device"}</li>
             <li>{ja ? "アンドゥと左利きレイアウトに対応" : "Undo and left-handed layout included"}</li>
           </ul>
+        </div>
+        <div class="shot-gallery" data-reveal>
+          {shots.map((s) => (
+            <AppScreen screen={s.screen} size="md" lang={lang} label={s.cap[ja ? 0 : 1]} />
+          ))}
         </div>
       </div>
     )}

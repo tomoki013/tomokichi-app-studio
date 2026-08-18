@@ -2266,15 +2266,18 @@ button {
 .mobile-quiet-hero-actions {
   display: none;
 }
-.quiet-capture-page {
+.quiet-shots-page {
   max-width: 900px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(230px, 0.72fr) minmax(300px, 1fr);
-  gap: clamp(48px, 8vw, 110px);
-  align-items: center;
+  gap: clamp(40px, 6vw, 64px);
 }
-.quiet-capture-page h2 {
+.quiet-shots-intro {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+.quiet-shots-intro h2 {
   margin: 0;
   color: #0d4735;
   font:
@@ -2282,27 +2285,48 @@ button {
     "Yu Mincho",
     serif;
 }
-.quiet-capture-copy > p:not(.content-eyebrow) {
+.quiet-shots-intro > p:not(.content-eyebrow) {
   margin: 24px 0;
   color: #59695f;
   font-size: 14px;
   line-height: 2;
 }
-.quiet-capture-copy ul {
+.quiet-shots-intro ul {
   margin: 0;
   padding: 0;
   list-style: none;
   border-top: 1px solid #cfc6b5;
+  text-align: left;
 }
-.quiet-capture-copy li {
+.quiet-shots-intro li {
   padding: 13px 0;
   border-bottom: 1px solid #cfc6b5;
   font-size: 13px;
+  color: #3d4a41;
 }
-.quiet-capture-copy li::before {
+.quiet-shots-intro li::before {
   content: "♠";
   margin-right: 11px;
   color: #b38d45;
+}
+.shot-gallery {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px 20px;
+}
+.shot-gallery .app-phone-frame {
+  --phone-w: 208px;
+  width: 208px;
+  max-width: 100%;
+}
+.shot-gallery .app-phone-frame-label {
+  min-height: 2.6em;
+  color: #59695f;
+  font-size: 12.5px;
+  line-height: 1.35;
+  display: grid;
+  place-items: center;
 }
 @media (max-width: 900px) {
   .quiet-solitaire-page .hero {
@@ -2325,11 +2349,13 @@ button {
     position: relative;
     z-index: 3;
   }
-  .quiet-capture-page {
-    grid-template-columns: 1fr;
+  .shot-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .quiet-capture-page > :first-child {
-    justify-self: center;
+}
+@media (max-width: 520px) {
+  .shot-gallery {
+    grid-template-columns: 1fr;
   }
 }
 

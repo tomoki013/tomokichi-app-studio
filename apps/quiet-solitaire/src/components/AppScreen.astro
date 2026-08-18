@@ -1,30 +1,76 @@
 ---
+/**
+ * A real Quiet Solitaire screen inside the shared device frame.
+ *
+ * The images are unretouched iPhone 17 Pro Max captures produced by
+ * `AppStoreScreenshotTests` in the app repo and imported with
+ * `scripts/import-app-screenshots.mjs`. The app launches under
+ * `-appStoreScreenshot`, which keeps the AdMob banner off and seeds a
+ * representative board instead of an empty first deal, so nothing in these
+ * captures depends on manual play.
+ */
 import { Image } from "astro:assets";
 import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 
-const { lang, size = "md", priority = false, class: className = "" } = Astro.props as {
+type Screen = "board" | "win" | "settings";
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
+
+const {
+  screen = "board",
+  lang,
+  size = "md",
+  label = "",
+  priority = false,
+  class: className = "",
+} = Astro.props as {
+  screen?: Screen;
   lang: "ja" | "en";
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: Size;
+  label?: string;
   priority?: boolean;
   class?: string;
 };
-const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", { eager: true });
-const image = screens[`../assets/screens/${lang}-game.webp`]?.default;
-if (!image) throw new Error(`Missing Quiet Solitaire ${lang} game capture`);
-const alt = lang === "ja"
-  ? "Quiet Solitaireの実際のゲーム画面。深緑の卓にクリーム色のカードが並んでいる"
-  : "The real Quiet Solitaire game screen, with cream cards arranged on a deep green table";
+
+const ja = lang === "ja";
+
+const alts: Record<Screen, [string, string]> = {
+  board: [
+    "Quiet Solitaireの実際のゲーム画面。深緑の卓にクリーム色のカードが並んでいる",
+    "The real Quiet Solitaire game screen, with cream cards arranged on a deep green table",
+  ],
+  win: [
+    "上がり画面。かかった時間と手数が表示されている",
+    "The win screen, showing the finished time and move count",
+  ],
+  settings: [
+    "設定画面。左利きモード、触覚、効果音、まとめる演出の切り替えがある",
+    "The settings screen, with left-handed mode, haptics, sound, and the collect animation toggle",
+  ],
+};
+
+const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", {
+  eager: true,
+});
+const key = `../assets/screens/${lang}-${screen}.webp`;
+const image = screens[key]?.default;
+if (!image) {
+  throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
+}
+
+// The screen is 89.6% of the device width, so this is the widest the bitmap can
+// ever be laid out at — the frame only ever shrinks below its nominal size.
+const screenWidth: Record<Size, number> = { xs: 118, sm: 158, md: 208, lg: 262, xl: 323 };
 ---
 
-<PhoneFrame size={size} tone="graphite" glare={false} class={className}>
+<PhoneFrame size={size} tone="graphite" glare={false} label={label} class={className}>
   <Image
     src={image}
-    alt={alt}
+    alt={alts[screen][ja ? 0 : 1]}
     format="webp"
-    widths={[240, 360, 480, 640, 990]}
-    sizes="(max-width: 720px) 48vw, 323px"
+    widths={[240, 360, 480, 640, 960]}
+    sizes={`${screenWidth[size]}px`}
     loading={priority ? "eager" : "lazy"}
-    fetchpriority={priority ? "high" : undefined}
     decoding="async"
+    fetchpriority={priority ? "high" : undefined}
   />
 </PhoneFrame>
