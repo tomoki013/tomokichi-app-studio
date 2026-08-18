@@ -2342,6 +2342,29 @@ img {
   font-size: 13px;
   line-height: 1.9;
 }
+.capture-gallery {
+  margin: 0;
+  padding: clamp(30px, 5vw, 54px) clamp(20px, 4vw, 40px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: clamp(24px, 4vw, 40px);
+  align-items: end;
+  border-radius: 24px;
+  background: #f2ede4;
+}
+.capture-gallery figure {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+.capture-gallery figcaption {
+  color: #4a5661;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
 .capture-pending {
   padding: clamp(26px, 4vw, 44px);
   border-radius: 24px;
@@ -2434,6 +2457,9 @@ img {
   .capture-notes {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+  .capture-gallery {
+    grid-template-columns: repeat(2, 1fr);
   }
   .faq-tabs {
     width: 100%;

@@ -73,22 +73,23 @@ const features = ja
       ["◷", "Statistics", "See countries, cities, days and regions through clear visual insights.", "/assets/iceland.png"],
       ["⌕", "Search and organise", "Find memories quickly by country, trip or location.", "/assets/santorini.png"],
     ];
-/* How-to uses the shared scroll story. The first beat shows the real capture;
-   the rest use travel photographs, because only one screen has been captured. */
+/* How-to uses the shared scroll story. Beats that are about using the app UI
+   show a real captured screen; the "add a photo" beat is genuinely about a
+   travel moment, not an app screen, so it keeps a travel photograph. */
 const howBeats: StoryStep[] = (
   (ja
     ? [
-        ["住んでいる国を決める", "最初に住んでいる国を設定します。ここが基準になり、その国は自動的に「訪問済み」として扱われ、旅の行き先の候補からは外れます。あとから設定画面で変更できます。", "はじめの一度だけです。変更履歴は旅の記録ページから確認できます。", true, ""],
-        ["旅をはじめる", "行き先と日付を残します。国を塗るためではなく、その旅の時間をひとつの流れにするための一歩です。", "旅は何件でも並行して持てます。過去の旅からでもかまいません。", false, "/assets/mountain-lake.png"],
+        ["住んでいる国を決める", "最初に住んでいる国を設定します。ここが基準になり、その国は自動的に「訪問済み」として扱われ、旅の行き先の候補からは外れます。あとから設定画面で変更できます。", "はじめの一度だけです。変更履歴は旅の記録ページから確認できます。", "home", ""],
+        ["旅をはじめる", "行き先と日付を残します。国を塗るためではなく、その旅の時間をひとつの流れにするための一歩です。", "旅は何件でも並行して持てます。過去の旅からでもかまいません。", "trip-form", ""],
         ["写真と一言を添える", "選んだ写真と、そのときの短い言葉を添えます。iOSの標準的な写真選択画面を使うため、写真ライブラリ全体へは触れません。", "写真は保存容量を抑えるため、端末内でリサイズしてから保存されます。", false, "/assets/venice.png"],
-        ["地図とタイムラインで見返す", "残した旅を地図と時系列でたどり、いつ、どこで、何を見ていたかを思い出します。訪れた国や都市、日数は統計としても確認できます。", "記録は端末内にだけ保存されます。機種変更の前にご注意ください。", false, "/assets/world-globe.png"],
+        ["地図とタイムラインで見返す", "残した旅を地図と時系列でたどり、いつ、どこで、何を見ていたかを思い出します。訪れた国や都市、日数は統計としても確認できます。", "記録は端末内にだけ保存されます。機種変更の前にご注意ください。", "world-globe", ""],
       ]
     : [
-        ["Set your home country", "Start by choosing where you live. It becomes the baseline: that country counts as visited and drops out of destination suggestions. You can change it later in Settings.", "Only once, at the start. The change history stays on the trip records page.", true, ""],
-        ["Start a trip", "Keep a destination and dates. Not to colour a country, but to hold that stretch of time as one journey.", "Trips can run side by side, and a past trip is just as welcome.", false, "/assets/mountain-lake.png"],
+        ["Set your home country", "Start by choosing where you live. It becomes the baseline: that country counts as visited and drops out of destination suggestions. You can change it later in Settings.", "Only once, at the start. The change history stays on the trip records page.", "home", ""],
+        ["Start a trip", "Keep a destination and dates. Not to colour a country, but to hold that stretch of time as one journey.", "Trips can run side by side, and a past trip is just as welcome.", "trip-form", ""],
         ["Add a photo and a note", "Attach a chosen photograph and a few words from that moment. It uses the standard iOS picker, so the app never sees your full library.", "Photos are resized on your device before they are stored.", false, "/assets/venice.png"],
-        ["Look back on the map", "Revisit trips on the map and timeline — when you were there, and what you saw. Countries, cities and days add up as quiet statistics.", "Records live only on your device, so back up before switching phones.", false, "/assets/world-globe.png"],
-      ]) as [string, string, string, boolean, string][]
+        ["Look back on the map", "Revisit trips on the map and timeline — when you were there, and what you saw. Countries, cities and days add up as quiet statistics.", "Records live only on your device, so back up before switching phones.", "world-globe", ""],
+      ]) as [string, string, string, "home" | "trip-form" | "world-globe" | false, string][]
 ).map(([title, body, note, screen, image], i) => ({
   kicker: String(i + 1).padStart(2, "0"),
   title,
@@ -154,6 +155,24 @@ const faqCategories = ja
   : [["all", "All"], ["base", "Basics"], ["trip", "Trips"], ["map", "Map & stats"], ["data", "Your data"]];
 const faqCount = (key: string) =>
   key === "all" ? faqs.length : faqs.filter(([cat]) => cat === key).length;
+
+const screenshots = (
+  ja
+    ? [
+        ["home", "マイワールド"],
+        ["world-globe", "3Dの地球儀"],
+        ["trips", "旅の記録"],
+        ["trip-detail", "旅の詳細"],
+        ["trip-form", "旅を記録する"],
+      ]
+    : [
+        ["home", "My World"],
+        ["world-globe", "3D globe"],
+        ["trips", "Trip timeline"],
+        ["trip-detail", "Trip detail"],
+        ["trip-form", "Record a trip"],
+      ]
+) as ["home" | "world-globe" | "trips" | "trip-detail" | "trip-form", string][];
 
 const isLegal = page === "privacy" || page === "terms";
 
@@ -257,15 +276,15 @@ const legal = {
     {page === "screenshots" && (
       <div class="capture-page">
         <div class="capture-detail" data-reveal>
-          <AppScreen lang={lang} size="xl" priority />
+          <AppScreen lang={lang} screen="home" size="xl" priority />
           <div>
-            <p class="capture-kicker">IPHONE 17 PRO MAX · REAL CAPTURE</p>
+            <p class="capture-kicker">IPHONE 17 PRO MAX · REAL CAPTURES</p>
             <h2>{ja ? "つくりものではなく、いまのTripory。" : "Not a mockup — the Tripory that exists today."}</h2>
             <p>{ja
               ? "アプリ本体をデモデータ付きで起動し、iPhone 17 Pro Maxのシミュレータからそのまま撮影しています。画面の文字、余白、色、操作の入口まで、実際のプロダクトです。"
               : "Captured directly from the running app with fictional demo data on an iPhone 17 Pro Max simulator. The type, spacing, colour, and controls are the real product."}</p>
             <dl>
-              <div><dt>{ja ? "画面" : "Screen"}</dt><dd>{ja ? "マイワールド" : "My World"}</dd></div>
+              <div><dt>{ja ? "画面" : "Screens"}</dt><dd>{screenshots.length}</dd></div>
               <div><dt>{ja ? "保存" : "Storage"}</dt><dd>{ja ? "端末内" : "On device"}</dd></div>
               <div><dt>{ja ? "撮影" : "Capture"}</dt><dd>1320 × 2868</dd></div>
               <div><dt>{ja ? "データ" : "Data"}</dt><dd>{ja ? "架空のデモ" : "Fictional demo"}</dd></div>
@@ -276,14 +295,14 @@ const legal = {
         <ol class="capture-notes">
           {(ja
             ? [
-                ["訪れた国が、地図に残る", "「訪問済み」にした国が地図の上に積み重なっていきます。塗り絵ではなく、旅の履歴です。"],
-                ["次に行きたい国も置ける", "行きたい国は別のステータスとして残せます。これから旅する場所も、同じ地図の上にあります。"],
-                ["最初の旅は、ここから", "記録がまだない状態でも、次の一歩がわかるようになっています。"],
+                ["訪れた国が、地図に残る", "「訪問済み」にした国が3Dの地球儀の上に積み重なっていきます。塗り絵ではなく、旅の履歴です。"],
+                ["旅は、時間の流れとして残る", "行き先だけでなく、日付・写真・メモをひとつの旅としてタイムラインに残せます。"],
+                ["次の一歩も、同じ画面から", "旅の記録も、行きたい国の追加も、迷わずたどり着ける導線になっています。"],
               ]
             : [
-                ["Visited countries stay on the map", "Countries you mark as visited accumulate on the globe — a history of travel, not a colouring book."],
-                ["Where you still want to go", "Countries you want to visit keep their own status, so the places ahead sit on the same map."],
-                ["Your first trip starts here", "Even with nothing recorded yet, the screen makes the next step obvious."],
+                ["Visited countries stay on the globe", "Countries you mark as visited accumulate on the 3D globe — a history of travel, not a colouring book."],
+                ["A trip is kept as a stretch of time", "Not just a destination — dates, photos and notes stay together as one trip on the timeline."],
+                ["The next step is one tap away", "Recording a trip or adding a wishlist country both start from the same obvious place."],
               ]
           ).map(([heading, body], i) => (
             <li data-reveal style={`--reveal-i:${i}`}>
@@ -293,11 +312,20 @@ const legal = {
           ))}
         </ol>
 
+        <div class="capture-gallery">
+          {screenshots.map(([screen, label]) => (
+            <figure data-reveal>
+              <AppScreen lang={lang} screen={screen} size="md" />
+              <figcaption>{label}</figcaption>
+            </figure>
+          ))}
+        </div>
+
         <aside class="capture-pending" data-reveal>
-          <h2>{ja ? "ほかの画面は、公開時に追加します" : "More screens arrive at release"}</h2>
+          <h2>{ja ? "実際の画面だけを載せています" : "Every screen here is a real capture"}</h2>
           <p>{ja
-            ? "このページに載せるのは、実際に撮影した画面だけです。タイムラインや統計の画面は、App Store公開に合わせて同じ方法で撮影して追加します。"
-            : "Only real captures go on this page. The timeline and statistics screens will be added the same way when Tripory reaches the App Store."}</p>
+            ? "このページに載せているのは、すべて実機と同じ解像度でアプリ本体から直接撮影した画面です。加工やモックアップは使っていません。"
+            : "Every screen on this page is captured directly from the running app at real device resolution — no retouching, no mockups."}</p>
           <a href={ja ? "/ja/how-to" : "/how-to"}>{ja ? "使い方を見る" : "See how it works"} <span aria-hidden="true">→</span></a>
         </aside>
       </div>

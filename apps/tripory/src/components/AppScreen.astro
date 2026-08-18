@@ -1,29 +1,79 @@
 ---
+/**
+ * A real Tripory screen inside the shared device frame.
+ *
+ * The images are unretouched iPhone 17 Pro Max captures produced by
+ * `AppStoreScreenshotTests` in the app repo and imported with
+ * `scripts/import-app-screenshots.mjs`. They run against the `-seedDemo`
+ * fixture, so nothing personal appears in them. Astro resizes them and
+ * emits WebP at build time.
+ */
 import { Image } from "astro:assets";
 import PhoneFrame from "@tomokichi/app-site/PhoneFrame.astro";
 
-const { lang, size = "md", priority = false, class: className = "" } = Astro.props as {
+type Screen = "home" | "world-globe" | "trips" | "trip-detail" | "trip-form";
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
+
+const {
+  screen = "home",
+  lang,
+  size = "md",
+  priority = false,
+  class: className = "",
+} = Astro.props as {
+  screen?: Screen;
   lang: "ja" | "en";
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: Size;
   priority?: boolean;
   class?: string;
 };
-const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.{png,webp}", { eager: true });
-const image = screens[`../assets/screens/${lang}-home.png`]?.default
-  ?? screens[`../assets/screens/${lang}-home.webp`]?.default;
-if (!image) throw new Error(`Missing Tripory ${lang} home capture`);
-const alt = lang === "ja"
-  ? "Triporyのマイワールド画面。旅で訪れた国と最初の旅を記録するボタンが表示されている"
-  : "Tripory’s My World screen, showing visited countries and the action to record a first trip";
+
+const ja = lang === "ja";
+
+const alts: Record<Screen, [string, string]> = {
+  home: [
+    "Triporyのマイワールド画面。旅で訪れた国と最近の旅、最近増えた国が表示されている",
+    "Tripory’s My World screen, showing visited countries, the recent trip, and recently added countries",
+  ],
+  "world-globe": [
+    "宇宙から見た3D地球儀。訪れた国が住んだ国・訪問回数ごとに色分けされている",
+    "The 3D globe view from space, with visited countries colour-coded by visit count",
+  ],
+  trips: [
+    "旅の記録タイムライン。年ごとに旅の写真カードが並んでいる",
+    "The trip timeline, with photo cards for each trip grouped by year",
+  ],
+  "trip-detail": [
+    "旅の詳細画面。ヒーロー写真、訪れた国、旅のハイライト、訪問の記録",
+    "A trip's detail screen, with its hero photo, visited country, highlights, and visit history",
+  ],
+  "trip-form": [
+    "旅を記録するフォーム。行き先、日程、写真を追加できる",
+    "The record-a-trip form, for adding a destination, dates, and photos",
+  ],
+};
+
+const screens = import.meta.glob<{ default: ImageMetadata }>("../assets/screens/*.webp", {
+  eager: true,
+});
+const key = `../assets/screens/${lang}-${screen}.webp`;
+const image = screens[key]?.default;
+if (!image) {
+  throw new Error(`missing screenshot: ${key} (run scripts/import-app-screenshots.mjs)`);
+}
+
+// The screen is 89.6% of the device width, so this is the widest the bitmap can
+// ever be laid out at — the frame only ever shrinks below its nominal size.
+const screenWidth: Record<Size, number> = { xs: 118, sm: 158, md: 208, lg: 262, xl: 323 };
 ---
 
 <PhoneFrame size={size} tone="graphite" glare={false} class={className}>
   <Image
     src={image}
-    alt={alt}
+    alt={alts[screen][ja ? 0 : 1]}
     format="webp"
     widths={[240, 360, 480, 640, 990]}
-    sizes="(max-width: 720px) 45vw, 323px"
+    sizes={`${screenWidth[size]}px`}
     loading={priority ? "eager" : "lazy"}
     fetchpriority={priority ? "high" : undefined}
     decoding="async"

@@ -1,24 +1,27 @@
 ---
-/** One story beat's visual. Tripory has a single real capture, so beats that
-    are not about that screen use a travel photograph instead of pretending. */
+/** One story beat's visual. Beats that are actually about using the app UI
+    show a real captured screen in a device frame; beats that are genuinely
+    about a travel photo/moment use a travel photograph instead. */
 import AppScreen from "./AppScreen.astro";
+
+type Screen = "home" | "world-globe" | "trips" | "trip-detail" | "trip-form";
 
 const {
   lang,
-  screen = false,
+  screen,
   image,
   index = 0,
 } = Astro.props as {
   lang: "ja" | "en";
-  /** Show the real My World capture in a device frame. */
-  screen?: boolean;
+  /** Show this real captured screen in a device frame. */
+  screen?: Screen | false;
   image?: string;
   index?: number;
 };
 ---
 
 {screen ? (
-  <AppScreen lang={lang} size="xl" />
+  <AppScreen lang={lang} screen={screen} size="xl" />
 ) : image ? (
   <figure class="story-photo">
     <img src={image} alt="" loading={index < 2 ? "eager" : "lazy"} decoding="async" />
