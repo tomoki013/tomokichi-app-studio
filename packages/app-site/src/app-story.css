@@ -126,7 +126,7 @@
     transform: translate3d(-50%, -50%, 0);
   }
   to {
-    transform: translate3d(calc(-50% - min(35cqi, 430px)), -50%, 0);
+    transform: translate3d(calc(-50% - min(29cqi, 360px)), -50%, 0);
   }
 }
 
@@ -135,7 +135,7 @@
     transform: translate3d(-50%, -50%, 0);
   }
   to {
-    transform: translate3d(calc(-50% + min(35cqi, 430px)), -50%, 0);
+    transform: translate3d(calc(-50% + min(29cqi, 360px)), -50%, 0);
   }
 }
 
