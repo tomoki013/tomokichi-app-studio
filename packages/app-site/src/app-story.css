@@ -190,6 +190,20 @@
   line-height: 1.75;
 }
 
+.app-beat-link {
+  margin-top: 14px;
+  display: inline-block;
+  color: var(--app-story-accent, inherit);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.app-beat-link:hover,
+.app-beat-link:focus-visible {
+  text-decoration: underline;
+}
+
 .app-story-more {
   width: min(100% - 72px, 1040px);
   margin: 0 auto;

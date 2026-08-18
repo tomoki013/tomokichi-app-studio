@@ -1926,6 +1926,9 @@ a {
 
 .legal-copy {
   max-width: 720px;
+  /* The centered hero title sat over a flush-left document column;
+     center the column so title and body share an axis. */
+  margin-inline: auto;
   font-family: var(--sans);
   font-size: 15.5px;
   line-height: 1.95;

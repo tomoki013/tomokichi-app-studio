@@ -97,7 +97,7 @@ const featureGroups = ja
       },
       {
         h: "地域マップ",
-        screen: "home" as const,
+        screen: "region-japan" as const,
         items: [
           "対応11か国",
           "地域の塗り分け、訪問済み／未訪問フィルター",
@@ -162,7 +162,7 @@ const featureGroups = ja
       },
       {
         h: "Regional maps",
-        screen: "home" as const,
+        screen: "region-japan" as const,
         items: [
           "Eleven supported countries",
           "Colour by visit; visited/unvisited filters",
@@ -329,6 +329,14 @@ const featureBeats: StoryStep[] = featureGroups.map((group, i) => ({
   title: group.h,
   body: group.items.join(ja ? "。" : ". ") + (ja ? "。" : "."),
   visual: { lang, screen: group.screen },
+  ...(group.screen === "region-japan"
+    ? {
+        link: {
+          href: `${ja ? "/ja" : ""}/regions`,
+          label: ja ? "対応地域の一覧を見る" : "See all supported regions",
+        },
+      }
+    : {}),
 }));
 
 const howBeats: StoryStep[] = howGuides.map((guide, i) => ({
@@ -496,40 +504,29 @@ const shots = [
             ]
               .join(" ")
               .toLowerCase();
+            {/* One tap straight to the country's detail page — the scheme
+                text and sample units this row's accordion used to hide are
+                all on the detail page anyway. */}
             return (
-              <details
-                class="region-item"
+              <a
+                class="region-item region-item-link"
                 id={`region-${r.code.toLowerCase()}`}
+                href={`${ja ? "/ja" : ""}/regions/${regionSlug(r.code)}`}
                 data-region-item
                 data-search={searchBlob}
+                data-astro-prefetch
               >
-                <summary>
-                  <span class="region-flag" aria-hidden="true">{r.flag}</span>
-                  <span class="region-item-main">
-                    <span class="region-item-name">{ja ? r.nameJa : r.nameEn}</span>
-                    <span class="region-item-unit">{ja ? r.unitJa : r.unitEn}</span>
-                  </span>
-                  <span class="region-item-meta">
-                    <span class="region-item-count">{r.count}</span>
-                    <span class="region-item-count-label">{ja ? "地域" : "units"}</span>
-                  </span>
-                  <span class="region-item-chevron" aria-hidden="true"></span>
-                </summary>
-                <div class="region-item-body">
-                  <p class="region-scheme">{ja ? r.schemeJa : r.schemeEn}</p>
-                  <div class="region-samples">
-                    <p class="region-samples-label">{ja ? "区分の例" : "Sample units"}</p>
-                    <ul>
-                      {(ja ? r.samplesJa : r.samplesEn).map((name) => (
-                        <li>{name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <a class="region-item-detail-link" href={`${ja ? "/ja" : ""}/regions/${regionSlug(r.code)}`}>
-                    {ja ? `${r.nameJa}の地域マップを見る` : `See the ${r.nameEn} regional map`} →
-                  </a>
-                </div>
-              </details>
+                <span class="region-flag" aria-hidden="true">{r.flag}</span>
+                <span class="region-item-main">
+                  <span class="region-item-name">{ja ? r.nameJa : r.nameEn}</span>
+                  <span class="region-item-unit">{ja ? r.unitJa : r.unitEn}</span>
+                </span>
+                <span class="region-item-meta">
+                  <span class="region-item-count">{r.count}</span>
+                  <span class="region-item-count-label">{ja ? "地域" : "units"}</span>
+                </span>
+                <span class="region-item-chevron" aria-hidden="true"></span>
+              </a>
             );
           })}
         </div>
@@ -675,7 +672,6 @@ const shots = [
           const match = !q || blob.includes(q);
           item.hidden = !match;
           if (match) shown += 1;
-          if (!match && item instanceof HTMLDetailsElement) item.open = false;
         });
         if (empty instanceof HTMLElement) empty.hidden = shown !== 0;
         renderMeta(shown);
@@ -683,14 +679,11 @@ const shots = [
       input.addEventListener("input", apply);
       apply();
 
-      // Open hash target if present (e.g. /regions#region-jp)
+      // Scroll to hash target if present (e.g. /regions#region-jp)
       const hash = window.location.hash.replace("#", "");
       if (hash) {
         const target = root.querySelector(`#${CSS.escape(hash)}`);
-        if (target instanceof HTMLDetailsElement) {
-          target.open = true;
-          target.scrollIntoView({ block: "nearest" });
-        }
+        if (target instanceof HTMLElement) target.scrollIntoView({ block: "nearest" });
       }
     };
 

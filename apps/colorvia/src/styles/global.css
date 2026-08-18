@@ -1922,20 +1922,20 @@ a.region-card:focus-visible {
 .region-item[hidden] {
   display: none;
 }
-.region-item summary {
-  list-style: none;
-  cursor: pointer;
+/* Each row is now a plain link straight to the country's detail page —
+   the scheme/sample text the old accordion body held lives there. */
+.region-item-link {
   min-height: 72px;
   padding: 14px 16px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   gap: 10px 12px;
   align-items: center;
+  color: inherit;
+  text-decoration: none;
 }
-.region-item summary::-webkit-details-marker {
-  display: none;
-}
-.region-item summary:hover {
+.region-item-link:hover,
+.region-item-link:focus-visible {
   background: rgb(239 248 247 / 65%);
 }
 .region-item .region-flag {
@@ -1983,21 +1983,9 @@ a.region-card:focus-visible {
   height: 10px;
   border-right: 1.8px solid var(--teal-dark);
   border-bottom: 1.8px solid var(--teal-dark);
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
   opacity: 0.55;
-  transition: transform 0.2s ease;
   justify-self: end;
-}
-.region-item[open] .region-item-chevron {
-  transform: rotate(225deg);
-  margin-top: 4px;
-}
-.region-item-body {
-  padding: 0 16px 18px;
-  border-top: 1px solid var(--line);
-}
-.region-item[open] .region-item-body {
-  padding-top: 14px;
 }
 .region-scheme {
   margin: 0 0 14px;
@@ -2065,20 +2053,6 @@ a.region-card:focus-visible {
 .region-how-note li + li {
   margin-top: 3px;
 }
-.region-item-detail-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  color: var(--teal-dark);
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-}
-.region-item-detail-link:hover {
-  text-decoration: underline;
-}
-
 /* Region detail page (/regions/[country]) */
 .region-detail-page {
   max-width: 880px;
@@ -2197,6 +2171,58 @@ a.region-card:focus-visible {
   font-weight: 700 !important;
   text-align: center !important;
   align-items: center !important;
+}
+/* Compact all-countries grid under the pager, so every other country is one
+   tap away without going back to the list page. */
+.region-detail-others {
+  margin-top: 40px;
+}
+.region-detail-others h2 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.region-detail-others-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.region-detail-other {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 13px;
+  text-decoration: none;
+}
+.region-detail-other:hover,
+.region-detail-other:focus-visible {
+  border-color: #b6d9d6;
+  background: rgb(239 248 247 / 65%);
+}
+.region-detail-other.is-current {
+  border-color: var(--teal-dark);
+  background: var(--pale);
+  pointer-events: none;
+}
+.region-detail-other .region-flag {
+  font-size: 18px;
+}
+.region-detail-other-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 650;
+}
+.region-detail-other-count {
+  color: var(--teal-dark);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 .region-detail-page .content-cta {
   display: flex;
@@ -2481,7 +2507,7 @@ a.region-card:focus-visible {
   .shot-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .region-item summary {
+  .region-item-link {
     grid-template-columns: auto minmax(0, 1fr) auto auto;
     gap: 8px 10px;
   }

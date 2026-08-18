@@ -125,6 +125,24 @@ const jsonLd = JSON.stringify({
       </a>
     </nav>
 
+    <section class="region-detail-others" aria-label={ja ? "対応国一覧" : "All supported countries"}>
+      <h2>{ja ? "ほかの対応国" : "Every supported country"}</h2>
+      <div class="region-detail-others-grid">
+        {regions.map((r) => (
+          <a
+            class:list={["region-detail-other", r.code === region.code && "is-current"]}
+            href={regionHref(r)}
+            aria-current={r.code === region.code ? "page" : undefined}
+            data-astro-prefetch
+          >
+            <span class="region-flag" aria-hidden="true">{r.flag}</span>
+            <span class="region-detail-other-name">{ja ? r.nameJa : r.nameEn}</span>
+            <span class="region-detail-other-count">{r.count}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
     <div class="content-cta">
       <a class="store-button" href={appStoreHref} target="_blank" rel="noopener noreferrer">● <span>{storeLabel}</span></a>
       <a class="section-link" href={supportHref} target="_blank" rel="noopener noreferrer">{ja ? "お問い合わせ" : "Contact"} →</a>

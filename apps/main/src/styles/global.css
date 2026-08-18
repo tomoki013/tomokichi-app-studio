@@ -511,8 +511,8 @@ a.app-card:hover,
   /* Takes whatever the capped body leaves, so the tinted panel always reaches
      the card's right edge with the device centred in it. */
   flex: 1;
-  min-width: 232px;
-  padding: 30px 24px 0;
+  min-width: 300px;
+  padding: 26px 24px 0;
   align-self: stretch;
   align-items: flex-start;
   border-top: 0;
