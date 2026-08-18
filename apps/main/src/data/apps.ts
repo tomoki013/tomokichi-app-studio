@@ -205,6 +205,7 @@ export const apps: AppItem[] = [
     iconClass: "colorvia",
     url: appSiteUrl("colorvia"),
     accent: "#55A7A7",
+    screen: "colorvia-home",
     detail: {
       highlights: {
         ja: [
