@@ -953,6 +953,20 @@ img {
   font-size: 9px;
 }
 
+/* Features leads with the shared scroll story; this grid holds only the
+   beats that didn't get a dedicated real screen. */
+.feature-rest {
+  margin-top: clamp(48px, 7vw, 84px);
+}
+.feature-rest .block-title {
+  margin: 0 0 clamp(20px, 3vw, 30px);
+  font:
+    400 21px / 1.4 Georgia,
+    "Yu Mincho",
+    serif;
+  letter-spacing: 0.04em;
+}
+
 .feature-page-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1984,6 +1998,14 @@ img {
   width: min(calc(100% - 48px), 1240px);
   padding-top: 28px;
   padding-bottom: 0;
+}
+/* `.tripory-subpage .subpage` above outranks the plain `.subpage-legal` width
+   rule on specificity alone, so legal pages were stretching to the full
+   1240px column instead of the narrower reading width — the title and body
+   text then just started at the far-left edge of that wide box, reading as
+   "left aligned" instead of centered on the page. */
+.tripory-subpage .subpage-legal {
+  width: min(calc(100% - 44px), 760px);
 }
 .tripory-subpage .page-intro {
   min-height: 560px;

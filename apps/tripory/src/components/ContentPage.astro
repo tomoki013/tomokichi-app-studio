@@ -1,5 +1,5 @@
 ---
-import type { StoryStep } from "@tomokichi/app-site/AppStory.astro";
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
@@ -73,6 +73,29 @@ const features = ja
       ["◷", "Statistics", "See countries, cities, days and regions through clear visual insights.", "/assets/iceland.png"],
       ["⌕", "Search and organise", "Find memories quickly by country, trip or location.", "/assets/santorini.png"],
     ];
+/* Features leads with the shared scroll story for the four beats a real
+   screen can carry; "search and organise" has no screen of its own worth
+   dedicating a beat to, so it stays in the compact grid below. */
+const featureBeats: StoryStep[] = (
+  ja
+    ? [
+        ["世界地図", "訪れた国や都市を、美しい3Dマップで可視化。あなただけの世界地図が育ちます。", "world-globe"],
+        ["旅の記録", "旅の期間・写真・メモをタイムラインで整理し、いつでも振り返れます。", "trips"],
+        ["思い出コレクション", "写真やメモで、旅の瞬間を美しいカードとして残します。", "trip-detail"],
+        ["統計", "訪れた国、都市、日数、地域ごとの割合をわかりやすく表示します。", "home"],
+      ]
+    : [
+        ["World map", "Visualise every country and city on a beautiful 3D map that grows with you.", "world-globe"],
+        ["Travel timeline", "Organise dates, photos and notes chronologically and revisit any trip.", "trips"],
+        ["Memory collection", "Preserve moments as elegant cards made from photos and notes.", "trip-detail"],
+        ["Statistics", "See countries, cities, days and regions through clear visual insights.", "home"],
+      ]
+).map(([title, body, screen], i) => ({
+  kicker: String(i + 1).padStart(2, "0"),
+  title,
+  body,
+  visual: { lang, screen },
+}));
 /* How-to uses the shared scroll story. Beats that are about using the app UI
    show a real captured screen; the "add a photo" beat is genuinely about a
    travel moment, not an app screen, so it keeps a travel photograph. */
@@ -269,7 +292,23 @@ const legal = {
       </header>
     )}
 
-    {page === "features" && <><div class="feature-page-grid">{features.map(([icon, heading, body, image], i) => <article data-reveal><div class="feature-page-image"><img src={image} alt="" /><span>{icon}</span></div><div><b>0{i + 1}</b><h2>{heading}</h2><p>{body}</p></div></article>)}</div><a class="orange-cta" href={ja ? "/ja/screenshots" : "/screenshots"}>{ja ? "実際の画面で確かめる" : "See it in the real app"} →</a></>}
+    {page === "features" && (
+      <>
+        <AppStory class="app-story--page" steps={featureBeats} visual={StoryVisual} />
+        <section class="feature-rest">
+          <h2 class="block-title">{ja ? "そのほかにできること" : "Everything else it does"}</h2>
+          <div class="feature-page-grid">
+            {features.slice(4).map(([icon, heading, body, image], i) => (
+              <article data-reveal>
+                <div class="feature-page-image"><img src={image} alt="" /><span>{icon}</span></div>
+                <div><b>0{i + 5}</b><h2>{heading}</h2><p>{body}</p></div>
+              </article>
+            ))}
+          </div>
+        </section>
+        <a class="orange-cta" href={ja ? "/ja/screenshots" : "/screenshots"}>{ja ? "実際の画面で確かめる" : "See it in the real app"} →</a>
+      </>
+    )}
 
     {page === "how-to" && <AppSimpleSteps steps={howBeats} visual={StoryVisual} />}
 
