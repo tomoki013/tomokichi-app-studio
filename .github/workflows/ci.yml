@@ -29,30 +29,35 @@ jobs:
           filters: |
             main:
               - 'apps/main/**'
+              - 'packages/app-site/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
               - 'turbo.json'
             remeet:
               - 'apps/remeet/**'
+              - 'packages/app-site/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
               - 'turbo.json'
             tripory:
               - 'apps/tripory/**'
+              - 'packages/app-site/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
               - 'turbo.json'
             colorvia:
               - 'apps/colorvia/**'
+              - 'packages/app-site/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
               - 'turbo.json'
             yohaku:
               - 'apps/yohaku/**'
+              - 'packages/app-site/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
