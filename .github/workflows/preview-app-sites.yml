@@ -23,6 +23,9 @@ jobs:
   preview:
     name: Cloudflare previews
     runs-on: ubuntu-latest
+    # Reuse the same Cloudflare credentials as production deployments. This job
+    # only uploads Worker versions; it never deploys them to production traffic.
+    environment: production
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,9 +54,11 @@ jobs:
           const { execFileSync } = require('node:child_process');
 
           const appsDir = path.join(process.cwd(), 'apps');
+          const excluded = new Set(['api', 'main']);
           const appSites = fs.readdirSync(appsDir, { withFileTypes: true })
             .filter((entry) => entry.isDirectory())
             .map((entry) => entry.name)
+            .filter((name) => !excluded.has(name))
             .filter((name) => {
               const dir = path.join(appsDir, name);
               const packagePath = path.join(dir, 'package.json');
@@ -97,7 +102,7 @@ jobs:
 
           if [[ -z "${CLOUDFLARE_API_TOKEN:-}" || -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
             echo "Cloudflare preview credentials are not configured." >&2
-            echo "Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as GitHub Actions secrets." >&2
+            echo "Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to the production GitHub Environment (or repository Actions secrets)." >&2
             exit 1
           fi
 
