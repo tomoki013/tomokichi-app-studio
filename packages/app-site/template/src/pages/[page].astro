@@ -1,12 +1,30 @@
 ---
 import ContentPage from "../components/ContentPage.astro";
+import LandingPage from "../components/LandingPage.astro";
+import { i18n, type Locale } from "../i18n";
 import "../styles/global.css";
 
+const pages = ["features", "how-to", "screenshots", "faq", "updates", "privacy", "terms"];
+
 export function getStaticPaths() {
-  return ["features", "how-to", "screenshots", "faq", "updates", "privacy", "terms"].map((page) => ({ params: { page } }));
+  const defaultPages = pages.map((page) => ({
+    params: { page },
+    props: { kind: "page" as const, page, lang: i18n.defaultLocale },
+  }));
+  const localeHomes = i18n.supportedLocales
+    .filter((lang) => lang !== i18n.defaultLocale && lang !== "ja")
+    .map((lang) => ({
+      params: { page: lang },
+      props: { kind: "locale-home" as const, page: "", lang },
+    }));
+  return [...defaultPages, ...localeHomes];
 }
-const { page } = Astro.params;
-const currentPage = page ?? "";
+
+const { kind, page, lang } = Astro.props as {
+  kind: "page" | "locale-home";
+  page: string;
+  lang: Locale;
+};
 ---
 
-<ContentPage lang="en" page={currentPage} />
+{kind === "locale-home" ? <LandingPage lang={lang} /> : <ContentPage lang={lang} page={page} />}
