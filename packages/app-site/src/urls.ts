@@ -1,4 +1,4 @@
-export type SiteLocale = "ja" | "en";
+export type SiteLocale = string;
 
 export const SITE_ORIGINS = {
   main: "https://tmkch.io",
@@ -42,6 +42,11 @@ const normalizePath = (path: string) => {
   return path.startsWith("/") ? path : `/${path}`;
 };
 
+/**
+ * tmkch.io currently has EN at the root and JA under /ja.
+ * App brand sites may support more locales independently; unsupported locales
+ * intentionally fall back to the English operator/support pages.
+ */
 export function mainSiteUrl(locale: SiteLocale, path = ""): string {
   const localePrefix = locale === "ja" ? "/ja" : "";
   return `${SITE_ORIGINS.main}${localePrefix}${normalizePath(path)}`;
