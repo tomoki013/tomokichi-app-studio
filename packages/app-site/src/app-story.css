@@ -104,8 +104,18 @@
 }
 
 @supports (animation-timeline: view()) {
+  /* Longhand on purpose: the production CSS minifier (Lightning CSS) folds a
+     standalone `animation-timeline` declaration into the `animation`
+     shorthand when both are present. Browsers don't parse the resulting
+     shorthand's timeline value, so the whole declaration is dropped — the
+     scroll animation silently did nothing once built, even though it worked
+     in dev (unminified). Keeping every animation-* property separate here
+     is what actually ships correctly. */
   .app-story .app-beat-visual {
-    animation: app-beat-open-start 1s cubic-bezier(0.45, 0, 0.2, 1) both;
+    animation-name: app-beat-open-start;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+    animation-fill-mode: both;
     animation-timeline: --app-beat;
     animation-range: cover 30% cover 58%;
   }
@@ -115,7 +125,10 @@
   }
 
   .app-story .app-beat-copy {
-    animation: app-beat-copy-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) both;
+    animation-name: app-beat-copy-reveal;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    animation-fill-mode: both;
     animation-timeline: --app-beat;
     animation-range: cover 47% cover 64%;
   }
