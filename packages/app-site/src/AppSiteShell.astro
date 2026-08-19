@@ -1,8 +1,15 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import AppSiteShellClient from "./AppSiteShellClient.astro";
+import LocaleSwitcher from "./LocaleSwitcher.astro";
+import {
+  defaultShellLabels,
+  localeMeta,
+  type AppSiteLocaleLink,
+  type AppSiteShellLabels,
+} from "./i18n";
 import "./app-site-shell.css";
 
-type Locale = "ja" | "en";
 type NavItem = { slug: string; label: string; href: string };
 type FooterLink = { label: string; href: string; external?: boolean };
 type FooterColumn = { title: string; links: FooterLink[] };
@@ -18,6 +25,9 @@ const {
   homeHref,
   jaPageHref,
   enPageHref,
+  localeLinks = [] as AppSiteLocaleLink[],
+  defaultLocale = "en",
+  shellLabels,
   nav,
   footerColumns,
   appStoreLabel,
@@ -35,7 +45,7 @@ const {
   mobileFooterLinks = [] as FooterLink[],
   clientRouter = true,
 } = Astro.props as {
-  lang: Locale;
+  lang: string;
   title: string;
   description: string;
   page?: string;
@@ -43,30 +53,43 @@ const {
   tagline: string;
   siteUrl: string;
   homeHref: string;
-  jaPageHref: string;
-  enPageHref: string;
+  /** Legacy EN/JA props. Prefer localeLinks for new and migrated sites. */
+  jaPageHref?: string;
+  enPageHref?: string;
+  localeLinks?: AppSiteLocaleLink[];
+  defaultLocale?: string;
+  shellLabels?: Partial<AppSiteShellLabels>;
   nav: NavItem[];
   footerColumns: FooterColumn[];
   appStoreLabel: string;
   appStoreHref?: string;
-  /** When true, App Store control is non-interactive “coming soon”. */
   appStoreComingSoon?: boolean;
   menuLabel: string;
   menuCloseLabel?: string;
   logoMark?: string;
   logoImage?: string;
-  /** Optional smaller favicon; falls back to logoImage. */
   favicon?: string;
   themeColor?: string;
   ogImage?: string;
   pageClass?: string;
   jsonLd?: string;
   mobileFooterLinks?: FooterLink[];
-  /** Set false for sites that prefer immediate document navigation. */
   clientRouter?: boolean;
 };
 
-const absolutePageUrl = `${siteUrl}${lang === "ja" ? jaPageHref : enPageHref}`;
+const legacyLocaleLinks: AppSiteLocaleLink[] = [
+  ...(enPageHref ? [{ ...localeMeta("en"), href: enPageHref }] : []),
+  ...(jaPageHref ? [{ ...localeMeta("ja"), href: jaPageHref }] : []),
+];
+const resolvedLocaleLinks = localeLinks.length > 0 ? localeLinks : legacyLocaleLinks;
+const currentLocale = resolvedLocaleLinks.find((locale) => locale.code === lang) ?? localeMeta(lang);
+const currentHref = resolvedLocaleLinks.find((locale) => locale.code === lang)?.href ?? homeHref;
+const defaultHref = resolvedLocaleLinks.find((locale) => locale.code === defaultLocale)?.href ?? currentHref;
+const labels: AppSiteShellLabels = {
+  ...(defaultShellLabels[lang] ?? defaultShellLabels.en),
+  ...shellLabels,
+};
+const absolutePageUrl = new URL(currentHref, siteUrl).toString();
 const absoluteOgImage = ogImage ? new URL(ogImage, siteUrl).toString() : "";
 const mobileNavId = `app-site-mobile-nav-${lang}`;
 const closeLabel = menuCloseLabel ?? (lang === "ja" ? "メニューを閉じる" : "Close menu");
@@ -84,22 +107,28 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} dir={currentLocale.dir ?? "ltr"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
     <meta name="theme-color" content={themeColor} />
     <link rel="canonical" href={absolutePageUrl} />
-    <link rel="alternate" hreflang="ja" href={`${siteUrl}${jaPageHref}`} />
-    <link rel="alternate" hreflang="en" href={`${siteUrl}${enPageHref}`} />
-    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${enPageHref}`} />
+    {resolvedLocaleLinks.map((locale) => (
+      <link rel="alternate" hreflang={locale.code} href={new URL(locale.href, siteUrl).toString()} />
+    ))}
+    {resolvedLocaleLinks.length > 0 && (
+      <link rel="alternate" hreflang="x-default" href={new URL(defaultHref, siteUrl).toString()} />
+    )}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={brand} />
     <meta property="og:title" content={`${title} — ${brand}`} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={absolutePageUrl} />
-    <meta property="og:locale" content={lang === "ja" ? "ja_JP" : "en_US"} />
+    {currentLocale.ogLocale && <meta property="og:locale" content={currentLocale.ogLocale} />}
+    {resolvedLocaleLinks
+      .filter((locale) => locale.code !== lang && locale.ogLocale)
+      .map((locale) => <meta property="og:locale:alternate" content={locale.ogLocale} />)}
     {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
     {absoluteOgImage && <meta property="og:image:type" content={ogType} />}
     <meta name="twitter:card" content={absoluteOgImage ? "summary_large_image" : "summary"} />
@@ -113,30 +142,20 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
   </head>
   <body>
     <div class:list={["app-site-page", pageClass]}>
-      <a class="app-site-skip" href="#main">{lang === "ja" ? "本文へスキップ" : "Skip to content"}</a>
+      <a class="app-site-skip" href="#main">{labels.skipToContent}</a>
       <header class="app-site-header" data-app-header>
         <div class="app-site-header-inner">
           <a class="app-site-logo" href={homeHref}>
-            {
-              logoImage ? (
-                <img
-                  class="app-site-logo-image"
-                  src={logoImage}
-                  alt=""
-                  width="58"
-                  height="58"
-                  decoding="async"
-                  fetchpriority="high"
-                />
-              ) : (
-                <span class="app-site-logo-mark">{logoMark}</span>
-              )
-            }
+            {logoImage ? (
+              <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" fetchpriority="high" />
+            ) : (
+              <span class="app-site-logo-mark">{logoMark}</span>
+            )}
             {brand}
           </a>
-          <nav class="app-site-primary-nav" aria-label={lang === "ja" ? "メインナビゲーション" : "Main navigation"}>
+          <nav class="app-site-primary-nav" aria-label={labels.mainNavigation}>
             <a class:list={{ active: !page }} href={homeHref} aria-current={!page ? "page" : undefined} data-astro-prefetch>
-              {lang === "ja" ? "ホーム" : "Home"}
+              {labels.home}
             </a>
             {nav.map((item) => (
               <a class:list={{ active: page === item.slug }} href={item.href} aria-current={page === item.slug ? "page" : undefined} data-astro-prefetch>
@@ -145,11 +164,9 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
             ))}
           </nav>
           <div class="app-site-actions">
-            <div class="app-site-locale app-site-desktop-only">
-              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en" data-astro-prefetch>EN</a>
-              <span aria-hidden="true">/</span>
-              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja" data-astro-prefetch>JA</a>
-            </div>
+            {resolvedLocaleLinks.length > 1 && (
+              <LocaleSwitcher lang={lang} locales={resolvedLocaleLinks} label={labels.language} placement="header" />
+            )}
             {storeIsLink ? (
               <a class="app-site-store-link app-site-desktop-only" href={appStoreHref}>{appStoreLabel}</a>
             ) : (
@@ -164,9 +181,7 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
               data-menu-open-label={menuLabel}
               data-menu-close-label={closeLabel}
             >
-              <span class="app-site-menu-icon" aria-hidden="true">
-                <i></i><i></i><i></i>
-              </span>
+              <span class="app-site-menu-icon" aria-hidden="true"><i></i><i></i><i></i></span>
             </button>
           </div>
         </div>
@@ -182,30 +197,17 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
             </button>
           </div>
           <div class="app-site-mobile-nav-links">
-            <a
-              href={homeHref}
-              aria-current={!page ? "page" : undefined}
-              style="--item-i:0"
-              data-astro-prefetch
-            >
-              {lang === "ja" ? "ホーム" : "Home"}
-            </a>
+            <a href={homeHref} aria-current={!page ? "page" : undefined} style="--item-i:0" data-astro-prefetch>{labels.home}</a>
             {nav.map((item, index) => (
-              <a
-                href={item.href}
-                aria-current={page === item.slug ? "page" : undefined}
-                style={`--item-i:${index + 1}`}
-                data-astro-prefetch
-              >
+              <a href={item.href} aria-current={page === item.slug ? "page" : undefined} style={`--item-i:${index + 1}`} data-astro-prefetch>
                 {item.label}
               </a>
             ))}
           </div>
           <div class="app-site-mobile-nav-meta">
-            <nav class="app-site-mobile-locale" aria-label={lang === "ja" ? "言語" : "Language"}>
-              <a class:list={{ active: lang === "en" }} href={enPageHref} hreflang="en" lang="en" data-astro-prefetch>EN</a>
-              <a class:list={{ active: lang === "ja" }} href={jaPageHref} hreflang="ja" lang="ja" data-astro-prefetch>JA</a>
-            </nav>
+            {resolvedLocaleLinks.length > 1 && (
+              <LocaleSwitcher lang={lang} locales={resolvedLocaleLinks} label={labels.language} placement="mobile" />
+            )}
             {storeIsLink ? (
               <a class="app-site-mobile-store" href={appStoreHref}>{appStoreLabel}</a>
             ) : (
@@ -213,11 +215,7 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
             )}
             <div class="app-site-mobile-footer-links">
               {resolvedMobileFooter.map((link) => (
-                <a
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                >
+                <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>
                   {link.label}
                 </a>
               ))}
@@ -230,16 +228,17 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
       <footer class="app-site-footer">
         <div class="app-site-footer-brand">
           <a class="app-site-logo" href={homeHref}>
-            {
-              logoImage ? (
-                <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" loading="lazy" />
-              ) : (
-                <span class="app-site-logo-mark">{logoMark}</span>
-              )
-            }
+            {logoImage ? (
+              <img class="app-site-logo-image" src={logoImage} alt="" width="58" height="58" decoding="async" loading="lazy" />
+            ) : (
+              <span class="app-site-logo-mark">{logoMark}</span>
+            )}
             {brand}
           </a>
           <p>{tagline}</p>
+          {resolvedLocaleLinks.length > 1 && (
+            <LocaleSwitcher lang={lang} locales={resolvedLocaleLinks} label={labels.language} placement="footer" />
+          )}
         </div>
         <div class="app-site-footer-columns">
           {footerColumns.map((column) => (
@@ -261,177 +260,6 @@ const ogType = absoluteOgImage.endsWith(".jpg") || absoluteOgImage.endsWith(".jp
         <div class="app-site-footer-base"><small>© 2026 {brand}</small><p>Made with ♡ by Tomokichi</p></div>
       </footer>
     </div>
-    <script is:inline>
-      (() => {
-        let scrollBound = false;
-        let keyBound = false;
-        let menuMediaBound = false;
-
-        const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-        const initShell = () => {
-          const header = document.querySelector("[data-app-header]");
-          const mobileQuery = matchMedia("(max-width: 900px)");
-          if (header) {
-            const syncHeader = () => {
-              const compact = !mobileQuery.matches && window.scrollY > 96;
-              header.classList.toggle("is-compact", compact);
-            };
-            if (!scrollBound) {
-              let scheduled = false;
-              window.addEventListener(
-                "scroll",
-                () => {
-                  if (!scheduled) {
-                    scheduled = true;
-                    requestAnimationFrame(() => {
-                      scheduled = false;
-                      const h = document.querySelector("[data-app-header]");
-                      if (!h) return;
-                      const mq = matchMedia("(max-width: 900px)");
-                      h.classList.toggle("is-compact", !mq.matches && window.scrollY > 96);
-                    });
-                  }
-                },
-                { passive: true },
-              );
-              mobileQuery.addEventListener("change", () => {
-                const h = document.querySelector("[data-app-header]");
-                if (!h) return;
-                h.classList.toggle("is-compact", !matchMedia("(max-width: 900px)").matches && window.scrollY > 96);
-              });
-              scrollBound = true;
-            }
-            syncHeader();
-          }
-
-          const button = document.querySelector(".app-site-mobile-menu");
-          const menu = document.querySelector("[data-mobile-nav]");
-          const scrim = document.querySelector("[data-mobile-scrim]");
-          const closeBtn = document.querySelector("[data-mobile-close]");
-          if (!button || !menu) return;
-
-          const openLabel = button.getAttribute("data-menu-open-label") || "Menu";
-          const closeLabelText = button.getAttribute("data-menu-close-label") || "Close menu";
-          let lastFocus = null;
-
-          const setOpen = (open, restoreFocus = false) => {
-            button.setAttribute("aria-expanded", String(open));
-            button.setAttribute("aria-label", open ? closeLabelText : openLabel);
-            button.classList.toggle("is-open", open);
-            menu.hidden = !open;
-            if (scrim) scrim.hidden = !open;
-            document.documentElement.classList.toggle("app-site-menu-open", open);
-            menu.setAttribute("aria-hidden", String(!open));
-            if (open) {
-              lastFocus = document.activeElement;
-              const first = menu.querySelector(focusableSelector);
-              first?.focus({ preventScroll: true });
-            } else if (restoreFocus) {
-              (lastFocus || button).focus({ preventScroll: true });
-            }
-          };
-
-          const closeMenu = (restoreFocus = false) => setOpen(false, restoreFocus);
-
-          // Re-bind by replacing handlers via data flag on elements
-          if (button.dataset.bound !== "1") {
-            button.addEventListener("click", () => {
-              const open = button.getAttribute("aria-expanded") !== "true";
-              setOpen(open, true);
-            });
-            button.dataset.bound = "1";
-          }
-          if (closeBtn && closeBtn.dataset.bound !== "1") {
-            closeBtn.addEventListener("click", () => closeMenu(true));
-            closeBtn.dataset.bound = "1";
-          }
-          if (scrim && scrim.dataset.bound !== "1") {
-            scrim.addEventListener("click", () => closeMenu(true));
-            scrim.dataset.bound = "1";
-          }
-          if (menu.dataset.bound !== "1") {
-            menu.addEventListener("click", (event) => {
-              if (event.target.closest("a")) closeMenu();
-            });
-            menu.dataset.bound = "1";
-          }
-          if (!keyBound) {
-            document.addEventListener("keydown", (event) => {
-              const btn = document.querySelector(".app-site-mobile-menu");
-              const m = document.querySelector("[data-mobile-nav]");
-              if (!btn || !m || btn.getAttribute("aria-expanded") !== "true") return;
-              if (event.key === "Escape") {
-                btn.setAttribute("aria-expanded", "false");
-                btn.classList.remove("is-open");
-                m.hidden = true;
-                const s = document.querySelector("[data-mobile-scrim]");
-                if (s) s.hidden = true;
-                document.documentElement.classList.remove("app-site-menu-open");
-                btn.focus({ preventScroll: true });
-                return;
-              }
-              if (event.key !== "Tab") return;
-              const focusables = Array.from(m.querySelectorAll(focusableSelector)).filter(
-                (el) => !el.hasAttribute("disabled") && el.offsetParent !== null,
-              );
-              if (!focusables.length) return;
-              const first = focusables[0];
-              const last = focusables[focusables.length - 1];
-              if (event.shiftKey && document.activeElement === first) {
-                event.preventDefault();
-                last.focus();
-              } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault();
-                first.focus();
-              }
-            });
-            keyBound = true;
-          }
-          if (!menuMediaBound) {
-            matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
-              if (!event.matches) return;
-              const btn = document.querySelector(".app-site-mobile-menu");
-              const m = document.querySelector("[data-mobile-nav]");
-              const s = document.querySelector("[data-mobile-scrim]");
-              if (!btn || !m) return;
-              btn.setAttribute("aria-expanded", "false");
-              btn.classList.remove("is-open");
-              m.hidden = true;
-              if (s) s.hidden = true;
-              document.documentElement.classList.remove("app-site-menu-open");
-            });
-            menuMediaBound = true;
-          }
-
-          // Always close menu after navigation
-          setOpen(false);
-
-          const items = document.querySelectorAll("[data-reveal]");
-          if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-            items.forEach((item) => {
-              item.classList.add("visible");
-            });
-            return;
-          }
-          const observer = new IntersectionObserver(
-            (entries) =>
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  entry.target.classList.add("visible");
-                  observer.unobserve(entry.target);
-                }
-              }),
-            { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
-          );
-          items.forEach((item) => {
-            if (!item.classList.contains("visible")) observer.observe(item);
-          });
-        };
-
-        document.addEventListener("astro:page-load", initShell);
-        initShell();
-      })();
-    </script>
+    <AppSiteShellClient />
   </body>
 </html>
