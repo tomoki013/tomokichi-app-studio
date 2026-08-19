@@ -11,6 +11,7 @@ Tomokichiの小さなアプリをまとめたpnpm + Turborepo monorepoです。
 - Yohaku: `https://yohaku.tmkch.io`
 - Quiet Solitaire: `https://solitaire.tmkch.io`
 - Support API v1: `https://api.tmkch.io/api/v1/support`
+- Remeet Invite API v1: `https://api.tmkch.io/remeet/v1/invites`
 
 各ブランドのプライバシーポリシー、利用規約、特定商取引法に基づく表記は、
 それぞれ `/privacy`、`/terms`、`/commercial-transactions` で公開します。

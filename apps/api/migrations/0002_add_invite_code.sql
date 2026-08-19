@@ -1,0 +1,12 @@
+-- Phase 3: the human-readable invite code.
+--
+-- `invite_code_hash` was already reserved by 0001 and now gets filled — it is
+-- looked up exactly like the URL token, and stored the same way, so a copy of
+-- this table still yields no working invitation.
+--
+-- `encrypted_invite_code` is the code itself, sealed with the same key as the
+-- share URL. It exists only so the landing page can show the code to somebody
+-- who has the link but no longer has the message it arrived in. Holding the
+-- token already grants what the code grants, so showing one to the other is
+-- not a widening — but storing it as text would be.
+ALTER TABLE invites ADD COLUMN encrypted_invite_code TEXT;

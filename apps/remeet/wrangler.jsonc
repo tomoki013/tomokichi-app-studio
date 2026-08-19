@@ -2,7 +2,13 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "tomokichi-remeet",
   "compatibility_date": "2026-07-23",
-  "main": "../../packages/app-site/src/asset-cache-worker.js",
+  // The Remeet Worker: the invitation landing page and the associated-domains
+  // file. Everything else — every page of the site — is delegated to the same
+  // shared asset-cache Worker as before.
+  //
+  // No database and no secrets live here: the invitation data is behind
+  // `api.tmkch.io/remeet/v1`, which this Worker only ever asks for a code.
+  "main": "src/worker/index.ts",
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
@@ -12,5 +18,10 @@
   },
   "observability": {
     "enabled": true
+  },
+  "vars": {
+    "INVITE_API_ORIGIN": "https://api.tmkch.io",
+    "APPLE_APP_ID": "7GU925RQ99.io.tmkch.remeet",
+    "APP_STORE_URL": ""
   }
 }
