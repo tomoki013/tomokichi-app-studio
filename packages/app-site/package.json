@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     "./AppSiteShell.astro": "./src/AppSiteShell.astro",
+    "./LocaleSwitcher.astro": "./src/LocaleSwitcher.astro",
     "./AppHeroChrome.astro": "./src/AppHeroChrome.astro",
     "./AppStory.astro": "./src/AppStory.astro",
     "./AppSimpleSteps.astro": "./src/AppSimpleSteps.astro",
@@ -15,6 +16,7 @@
     "./AppUpdatesPage.astro": "./src/AppUpdatesPage.astro",
     "./asset-cache-worker": "./src/asset-cache-worker.js",
     "./apps": "./src/apps.ts",
+    "./i18n": "./src/i18n.ts",
     "./operator": "./src/operator.ts",
     "./urls": "./src/urls.ts"
   },
