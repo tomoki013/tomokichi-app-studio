@@ -10,6 +10,22 @@
 export interface InvitePreview {
   inviteCode: string;
   expiresAt: string;
+  /**
+   * What the picture beside the link is allowed to say. Absent on invitations
+   * minted before this existed, and by older builds of the app.
+   *
+   * The API returns a *number of days*, never the reunion's date: a countdown
+   * says how long two people have left, while a date is a calendar entry
+   * anybody forwarded the message could keep. The two place names are present
+   * only when the person sending the invitation asked for them.
+   */
+  reunion?: InviteReunion;
+}
+
+export interface InviteReunion {
+  daysRemaining: number;
+  origin?: string;
+  destination?: string;
 }
 
 export async function fetchInvitePreview(
@@ -29,7 +45,11 @@ export async function fetchInvitePreview(
     if (!response.ok) return null;
     const payload = (await response.json()) as Partial<InvitePreview>;
     if (typeof payload.inviteCode !== "string" || typeof payload.expiresAt !== "string") return null;
-    return { inviteCode: payload.inviteCode, expiresAt: payload.expiresAt };
+    return {
+      inviteCode: payload.inviteCode,
+      expiresAt: payload.expiresAt,
+      reunion: readReunion(payload.reunion),
+    };
   } catch {
     // An invitation page that cannot reach the API still has something worth
     // saying: where to get Remeet, and to open the link again afterwards.
@@ -44,4 +64,20 @@ export async function fetchInvitePreview(
  */
 export function isWellFormedToken(value: string): boolean {
   return /^[A-Za-z0-9_-]{16,128}$/.test(value);
+}
+
+/**
+ * The API is trusted, but not to the point of drawing whatever it sends into a
+ * picture: the labels end up in an SVG and the count ends up as type on it, so
+ * both are checked here rather than at the point of use.
+ */
+function readReunion(value: unknown): InviteReunion | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const { daysRemaining, origin, destination } = value as Record<string, unknown>;
+  if (typeof daysRemaining !== "number" || !Number.isFinite(daysRemaining)) return undefined;
+  return {
+    daysRemaining: Math.max(0, Math.min(3650, Math.round(daysRemaining))),
+    origin: typeof origin === "string" && origin.trim() ? origin : undefined,
+    destination: typeof destination === "string" && destination.trim() ? destination : undefined,
+  };
 }

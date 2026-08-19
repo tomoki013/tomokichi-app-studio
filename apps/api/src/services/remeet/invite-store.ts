@@ -7,6 +7,8 @@ export interface InviteRecord {
   shareURLHash: string;
   encryptedShareURL: string;
   encryptedInviteCode: string;
+  /** See migrations/0004. Absent on invitations that carry no reunion. */
+  encryptedReunion?: string | null;
   managementTokenHash: string;
   status: "active" | "revoked";
   createdAt: string;
@@ -45,6 +47,7 @@ interface InviteRow {
   share_url_hash: string;
   encrypted_share_url: string;
   encrypted_invite_code: string | null;
+  encrypted_reunion: string | null;
   management_token_hash: string;
   status: string;
   created_at: string;
@@ -60,8 +63,9 @@ export class D1InviteStore implements InviteStore {
       .prepare(
         `INSERT INTO invites (
            id, url_token_hash, invite_code_hash, share_url_hash, encrypted_share_url,
-           encrypted_invite_code, management_token_hash, status, created_at, expires_at, revoked_at
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)`,
+           encrypted_invite_code, encrypted_reunion, management_token_hash,
+           status, created_at, expires_at, revoked_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)`,
       )
       .bind(
         record.id,
@@ -70,6 +74,7 @@ export class D1InviteStore implements InviteStore {
         record.shareURLHash,
         record.encryptedShareURL,
         record.encryptedInviteCode,
+        record.encryptedReunion ?? null,
         record.managementTokenHash,
         record.status,
         record.createdAt,
@@ -133,6 +138,7 @@ function toRecord(row: InviteRow): InviteRecord {
     shareURLHash: row.share_url_hash,
     encryptedShareURL: row.encrypted_share_url,
     encryptedInviteCode: row.encrypted_invite_code ?? "",
+    encryptedReunion: row.encrypted_reunion,
     managementTokenHash: row.management_token_hash,
     status: row.status === "revoked" ? "revoked" : "active",
     createdAt: row.created_at,

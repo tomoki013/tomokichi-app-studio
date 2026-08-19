@@ -107,6 +107,11 @@ export async function createInvite(
 ): Promise<InviteResult<CreatedInvite>> {
   const ckShareUrl = readShareURL(body);
   if (!ckShareUrl) return fail("INVALID_REQUEST");
+  // Optional, and rejected rather than trimmed when malformed: this ends up
+  // drawn into a picture that strangers may see, so "nearly right" is not a
+  // thing to be lenient about.
+  const reunion = readReunion(body);
+  if (reunion === INVALID) return fail("INVALID_REQUEST");
 
   const now = (context.now ?? (() => new Date()))();
   const id = crypto.randomUUID();
@@ -129,6 +134,9 @@ export async function createInvite(
     shareURLHash,
     encryptedShareURL: await encryptSecret(context.keys.urlKey, id, ckShareUrl),
     encryptedInviteCode: await encryptSecret(context.keys.urlKey, id, inviteCode),
+    encryptedReunion: reunion
+      ? await encryptSecret(context.keys.urlKey, id, JSON.stringify(reunion))
+      : null,
     managementTokenHash: await lookupHash(context.keys.tokenSecret, managementToken),
     status: "active",
     createdAt: now.toISOString(),
@@ -197,7 +205,7 @@ export async function resolveInvite(
 export async function previewInvite(
   context: InviteServiceContext,
   body: unknown,
-): Promise<InviteResult<{ inviteCode: string; expiresAt: string }>> {
+): Promise<InviteResult<{ inviteCode: string; expiresAt: string; reunion?: PreviewReunion }>> {
   const token = readToken(body);
   if (!token) return fail("INVALID_REQUEST");
 
@@ -208,7 +216,11 @@ export async function previewInvite(
   try {
     const code = await decryptSecret(context.keys, record.id, record.encryptedInviteCode);
     await context.record?.("previewed");
-    return succeed({ inviteCode: formatInviteCode(code), expiresAt: record.expiresAt });
+    return succeed({
+      inviteCode: formatInviteCode(code),
+      expiresAt: record.expiresAt,
+      reunion: await previewReunion(context, record, now),
+    });
   } catch {
     return fail("INVITE_UNAVAILABLE");
   }
@@ -237,6 +249,84 @@ export async function revokeInvite(
   if (record.status === "active") await context.store.revoke(record.id, now.toISOString());
   await context.record?.("revoked");
   return succeed({ status: "revoked" });
+}
+
+/**
+ * What a reunion may contribute to a link preview.
+ *
+ * `reunionAt` is stored; it is never returned. What leaves the API is
+ * `daysRemaining`, worked out at request time — the difference between "they
+ * meet in three weeks", which says something about two people without locating
+ * them in a calendar, and a date, which anybody the message was forwarded to
+ * could keep.
+ */
+export interface StoredReunion {
+  reunionAt: string;
+  origin?: string;
+  destination?: string;
+}
+
+export interface PreviewReunion {
+  daysRemaining: number;
+  origin?: string;
+  destination?: string;
+}
+
+/** Distinct from `undefined`, which means "the app sent none". */
+const INVALID = Symbol("invalid-reunion");
+
+function readReunion(body: unknown): StoredReunion | undefined | typeof INVALID {
+  const value = (body as { reunion?: unknown } | null)?.reunion;
+  if (value === undefined || value === null) return undefined;
+  if (typeof value !== "object") return INVALID;
+
+  const { reunionAt, origin, destination } = value as Record<string, unknown>;
+  if (typeof reunionAt !== "string") return INVALID;
+  const at = new Date(reunionAt);
+  if (Number.isNaN(at.getTime())) return INVALID;
+
+  const place = (candidate: unknown): string | undefined | typeof INVALID => {
+    if (candidate === undefined || candidate === null) return undefined;
+    if (typeof candidate !== "string") return INVALID;
+    const trimmed = candidate.trim();
+    // Long enough for "Düsseldorf, Germany", short enough that nothing else
+    // fits — a place name is all this field is for.
+    if (!trimmed || [...trimmed].length > 40) return INVALID;
+    return trimmed;
+  };
+  const from = place(origin);
+  const to = place(destination);
+  if (from === INVALID || to === INVALID) return INVALID;
+
+  // Both names or neither: one end of a route is not a thing the picture can
+  // draw, and it would be a stranger disclosure than the pair.
+  if ((from === undefined) !== (to === undefined)) return INVALID;
+
+  return { reunionAt: at.toISOString(), origin: from, destination: to };
+}
+
+async function previewReunion(
+  context: InviteServiceContext,
+  record: { id: string; encryptedReunion?: string | null },
+  now: Date,
+): Promise<PreviewReunion | undefined> {
+  if (!record.encryptedReunion) return undefined;
+  try {
+    const stored = JSON.parse(
+      await decryptSecret(context.keys, record.id, record.encryptedReunion),
+    ) as StoredReunion;
+    const at = new Date(stored.reunionAt);
+    if (Number.isNaN(at.getTime())) return undefined;
+    // Whole days, rounded up, floored at zero: the day itself reads as "today"
+    // rather than as a countdown that has gone negative.
+    const days = Math.max(0, Math.ceil((at.getTime() - now.getTime()) / 86_400_000));
+    return { daysRemaining: days, origin: stored.origin, destination: stored.destination };
+  } catch {
+    // A reunion that will not decrypt is not a reason to fail the preview: the
+    // invitation itself still works, and the picture falls back to the static
+    // one.
+    return undefined;
+  }
 }
 
 /**

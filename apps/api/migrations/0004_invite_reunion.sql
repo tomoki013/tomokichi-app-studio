@@ -1,0 +1,19 @@
+-- What the link preview is allowed to say about the reunion.
+--
+-- 0001 stored nothing about the reunion at all, deliberately: an invitation is
+-- an entrance to a CloudKit share and nothing else. This column is the one
+-- exception, and it is kept to the shape of that decision:
+--
+--   * It is encrypted with the same key as the share URL, so a copy of this
+--     table still yields nothing readable.
+--   * It holds a reunion *date* and, only when the person sending the
+--     invitation asked for it, two place names. Nothing else — no reunion id,
+--     no participant, no photo.
+--   * `previewInvite` never returns the date. It returns a number of days,
+--     computed at request time, so what leaves the API is "three weeks from
+--     now" rather than a calendar entry anybody forwarded the message could
+--     keep.
+--
+-- Nullable because every invitation minted before this existed has none, and
+-- because an older build of the app never sends one.
+ALTER TABLE invites ADD COLUMN encrypted_reunion TEXT;

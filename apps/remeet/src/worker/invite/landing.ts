@@ -23,6 +23,8 @@ export interface LandingCopy {
   selected: string;
   codeHint: string;
   footnote: string;
+  /** "あと24日で会えます。" — appended to the description when known. */
+  countdown: (days: number) => string;
 }
 
 const JA: LandingCopy = {
@@ -43,6 +45,7 @@ const JA: LandingCopy = {
   selected: "選択しました",
   codeHint: "Remeetをインストールしたあと、「招待を受け取った」で入力してください。",
   footnote: "参加すると、再会の予定・やりたいこと・待っている間の記録をふたりで見られるようになります。",
+  countdown: (days) => (days === 0 ? "再会は今日です。" : `次に会えるまで、あと${days}日。`),
 };
 
 const EN: LandingCopy = {
@@ -63,6 +66,8 @@ const EN: LandingCopy = {
   selected: "Selected",
   codeHint: "Enter it under \u201cI received an invitation\u201d once Remeet is installed.",
   footnote: "Joining lets you both see the reunion date, the wishes, and the notes kept while waiting.",
+  countdown: (days) =>
+    days === 0 ? "The reunion is today." : `${days} ${days === 1 ? "day" : "days"} until they meet.`,
 };
 
 export function landingCopy(acceptLanguage: string | null): LandingCopy {
@@ -76,6 +81,12 @@ export interface LandingOptions {
   inviteCode: string | null;
   /** The page's own address, for `og:url`. */
   pageURL: string;
+  /**
+   * Whole days until the reunion, or `null` when the invitation carries none —
+   * older invitations, and any minted by a build of the app that did not send
+   * one. `null` falls the whole page back to the static preview.
+   */
+  daysRemaining?: number | null;
 }
 
 /**
@@ -90,10 +101,26 @@ export interface LandingOptions {
  */
 const PREVIEW_VERSION = "2";
 
-export function landingPage({ copy, appStoreURL, siteURL, inviteCode, pageURL }: LandingOptions): string {
+export function landingPage({
+  copy,
+  appStoreURL,
+  siteURL,
+  inviteCode,
+  pageURL,
+  daysRemaining = null,
+}: LandingOptions): string {
   const install = appStoreURL ?? siteURL;
   const origin = siteURL.replace(/\/$/, "");
-  const preview = `${origin}/assets/invite-preview.png?v=${PREVIEW_VERSION}`;
+  const staticPreview = `${origin}/assets/invite-preview.png?v=${PREVIEW_VERSION}`;
+  // The per-invitation picture when there is a countdown to draw, and the
+  // static one otherwise. Both are 1200×630, so the dimensions below hold
+  // either way — messaging apps size the card from those before the image
+  // itself has loaded.
+  const preview = daysRemaining === null ? staticPreview : `${pageURL.replace(/\/$/, "")}/og.png`;
+  const description =
+    daysRemaining === null
+      ? copy.ogDescription
+      : `${copy.countdown(daysRemaining)} ${copy.ogDescription}`;
   return `<!doctype html>
 <html lang="${copy.lang}">
 <head>
@@ -111,7 +138,7 @@ export function landingPage({ copy, appStoreURL, siteURL, inviteCode, pageURL }:
 <meta property="og:type" content="website">
 <meta property="og:url" content="${escapeHTML(pageURL)}">
 <meta property="og:title" content="${escapeHTML(copy.heading)} ♡">
-<meta property="og:description" content="${escapeHTML(copy.ogDescription)}">
+<meta property="og:description" content="${escapeHTML(description)}">
 <meta property="og:image" content="${escapeHTML(preview)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -120,7 +147,7 @@ export function landingPage({ copy, appStoreURL, siteURL, inviteCode, pageURL }:
 <meta property="og:locale" content="${copy.lang === "ja" ? "ja_JP" : "en_US"}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escapeHTML(copy.heading)} ♡">
-<meta name="twitter:description" content="${escapeHTML(copy.ogDescription)}">
+<meta name="twitter:description" content="${escapeHTML(description)}">
 <meta name="twitter:image" content="${escapeHTML(preview)}">
 <style>
 :root { color-scheme: light; }
@@ -185,7 +212,7 @@ p { margin: 0 0 1rem; color: #4a382d; }
 <body>
 <main>
   <div class="card">
-    <img class="hero" src="/assets/invite-preview.png?v=${PREVIEW_VERSION}" width="1200" height="630" alt="Remeet">
+    <img class="hero" src="${escapeHTML(preview)}" width="1200" height="630" alt="Remeet">
     <div class="body">
       <h1>${escapeHTML(copy.heading)}</h1>
       <p>${escapeHTML(copy.lead)}</p>
