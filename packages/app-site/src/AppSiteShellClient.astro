@@ -1,0 +1,180 @@
+<script is:inline>
+  (() => {
+    let scrollBound = false;
+    let keyBound = false;
+    let menuMediaBound = false;
+    let languageBound = false;
+    const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    const bindLanguageSwitchers = () => {
+      if (languageBound) return;
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        document.querySelectorAll("[data-language-switcher][open]").forEach((switcher) => {
+          if (!switcher.contains(target)) switcher.removeAttribute("open");
+        });
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        document.querySelectorAll("[data-language-switcher][open]").forEach((switcher) => {
+          switcher.removeAttribute("open");
+        });
+      });
+      languageBound = true;
+    };
+
+    const initShell = () => {
+      bindLanguageSwitchers();
+      const header = document.querySelector("[data-app-header]");
+      const mobileQuery = matchMedia("(max-width: 900px)");
+      if (header) {
+        const syncHeader = () => {
+          header.classList.toggle("is-compact", !mobileQuery.matches && window.scrollY > 96);
+        };
+        if (!scrollBound) {
+          let scheduled = false;
+          window.addEventListener(
+            "scroll",
+            () => {
+              if (scheduled) return;
+              scheduled = true;
+              requestAnimationFrame(() => {
+                scheduled = false;
+                const currentHeader = document.querySelector("[data-app-header]");
+                if (!currentHeader) return;
+                currentHeader.classList.toggle(
+                  "is-compact",
+                  !matchMedia("(max-width: 900px)").matches && window.scrollY > 96,
+                );
+              });
+            },
+            { passive: true },
+          );
+          mobileQuery.addEventListener("change", syncHeader);
+          scrollBound = true;
+        }
+        syncHeader();
+      }
+
+      const button = document.querySelector(".app-site-mobile-menu");
+      const menu = document.querySelector("[data-mobile-nav]");
+      const scrim = document.querySelector("[data-mobile-scrim]");
+      const closeButton = document.querySelector("[data-mobile-close]");
+      if (!button || !menu) return;
+
+      const openLabel = button.getAttribute("data-menu-open-label") || "Menu";
+      const closeLabel = button.getAttribute("data-menu-close-label") || "Close menu";
+      let lastFocus = null;
+
+      const setOpen = (open, restoreFocus = false) => {
+        button.setAttribute("aria-expanded", String(open));
+        button.setAttribute("aria-label", open ? closeLabel : openLabel);
+        button.classList.toggle("is-open", open);
+        menu.hidden = !open;
+        if (scrim) scrim.hidden = !open;
+        document.documentElement.classList.toggle("app-site-menu-open", open);
+        menu.setAttribute("aria-hidden", String(!open));
+        if (open) {
+          lastFocus = document.activeElement;
+          menu.querySelector(focusableSelector)?.focus({ preventScroll: true });
+        } else if (restoreFocus) {
+          (lastFocus || button).focus({ preventScroll: true });
+        }
+      };
+
+      const closeMenu = (restoreFocus = false) => setOpen(false, restoreFocus);
+      if (button.dataset.bound !== "1") {
+        button.addEventListener("click", () => {
+          setOpen(button.getAttribute("aria-expanded") !== "true", true);
+        });
+        button.dataset.bound = "1";
+      }
+      if (closeButton && closeButton.dataset.bound !== "1") {
+        closeButton.addEventListener("click", () => closeMenu(true));
+        closeButton.dataset.bound = "1";
+      }
+      if (scrim && scrim.dataset.bound !== "1") {
+        scrim.addEventListener("click", () => closeMenu(true));
+        scrim.dataset.bound = "1";
+      }
+      if (menu.dataset.bound !== "1") {
+        menu.addEventListener("click", (event) => {
+          if (event.target instanceof Element && event.target.closest("a")) closeMenu();
+        });
+        menu.dataset.bound = "1";
+      }
+
+      if (!keyBound) {
+        document.addEventListener("keydown", (event) => {
+          const currentButton = document.querySelector(".app-site-mobile-menu");
+          const currentMenu = document.querySelector("[data-mobile-nav]");
+          if (!currentButton || !currentMenu || currentButton.getAttribute("aria-expanded") !== "true") return;
+          if (event.key === "Escape") {
+            currentButton.setAttribute("aria-expanded", "false");
+            currentButton.classList.remove("is-open");
+            currentMenu.hidden = true;
+            const currentScrim = document.querySelector("[data-mobile-scrim]");
+            if (currentScrim) currentScrim.hidden = true;
+            document.documentElement.classList.remove("app-site-menu-open");
+            currentButton.focus({ preventScroll: true });
+            return;
+          }
+          if (event.key !== "Tab") return;
+          const focusables = Array.from(currentMenu.querySelectorAll(focusableSelector)).filter(
+            (element) => !element.hasAttribute("disabled") && element.offsetParent !== null,
+          );
+          if (!focusables.length) return;
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        });
+        keyBound = true;
+      }
+
+      if (!menuMediaBound) {
+        matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
+          if (!event.matches) return;
+          const currentButton = document.querySelector(".app-site-mobile-menu");
+          const currentMenu = document.querySelector("[data-mobile-nav]");
+          const currentScrim = document.querySelector("[data-mobile-scrim]");
+          if (!currentButton || !currentMenu) return;
+          currentButton.setAttribute("aria-expanded", "false");
+          currentButton.classList.remove("is-open");
+          currentMenu.hidden = true;
+          if (currentScrim) currentScrim.hidden = true;
+          document.documentElement.classList.remove("app-site-menu-open");
+        });
+        menuMediaBound = true;
+      }
+
+      setOpen(false);
+      const items = document.querySelectorAll("[data-reveal]");
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+        items.forEach((item) => item.classList.add("visible"));
+        return;
+      }
+      const observer = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }),
+        { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+      );
+      items.forEach((item) => {
+        if (!item.classList.contains("visible")) observer.observe(item);
+      });
+    };
+
+    document.addEventListener("astro:page-load", initShell);
+    initShell();
+  })();
+</script>
