@@ -1,24 +1,16 @@
 ---
+import { i18n, type Locale } from "../i18n";
 import AppShell from "./AppShell.astro";
 
-const { lang, page } = Astro.props as { lang: "ja" | "en"; page: string };
-const ja = lang === "ja";
-const labels: Record<string, [string, string]> = {
-  features: ["機能", "Features"],
-  "how-to": ["使い方", "How it works"],
-  screenshots: ["スクリーンショット", "Screenshots"],
-  faq: ["よくある質問", "FAQ"],
-  updates: ["お知らせ", "News"],
-  privacy: ["プライバシーポリシー", "Privacy Policy"],
-  terms: ["利用規約", "Terms of Service"],
-};
-const title = labels[page]?.[ja ? 0 : 1] ?? page;
+const { lang, page } = Astro.props as { lang: Locale; page: string };
+const c = i18n.t(lang);
+const title = c.content.titles[page] ?? page;
 ---
 
 <AppShell lang={lang} title={title} page={page}>
   <article class="content-page">
     <p class="eyebrow">__APP_BRAND__</p>
     <h1>{title}</h1>
-    <p>{ja ? "このページに__APP_BRAND__固有の内容を入力してください。" : "Add content specific to __APP_BRAND__ on this page."}</p>
+    <p>{c.content.placeholder}</p>
   </article>
 </AppShell>
