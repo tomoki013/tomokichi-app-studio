@@ -2,6 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "tomokichi-colorvia",
   "compatibility_date": "2026-07-23",
+  "preview_urls": true,
   "main": "../../packages/app-site/src/asset-cache-worker.js",
   "assets": {
     "directory": "./dist",
