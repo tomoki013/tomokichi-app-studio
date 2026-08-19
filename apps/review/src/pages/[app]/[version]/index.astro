@@ -1,0 +1,94 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import ReviewMetadata from "../../../components/ReviewMetadata.astro";
+import ReviewVideo from "../../../components/ReviewVideo.astro";
+import ReviewLayout from "../../../layouts/ReviewLayout.astro";
+
+export async function getStaticPaths() {
+  const publishedReviews = await getCollection("reviews", ({ data }) => data.published);
+  const seenRoutes = new Set<string>();
+
+  return publishedReviews.map((review) => {
+    const { app, version } = review.data;
+    const routeKey = `${app}/${version}`;
+
+    if (seenRoutes.has(routeKey)) {
+      throw new Error(`Duplicate published review route: ${routeKey}`);
+    }
+
+    seenRoutes.add(routeKey);
+
+    return {
+      params: { app, version },
+      props: { review },
+    };
+  });
+}
+
+interface Props {
+  review: CollectionEntry<"reviews">;
+}
+
+const { review } = Astro.props;
+const {
+  app,
+  appName,
+  version,
+  build,
+  youtubeId,
+  device,
+  os,
+  recordedAt,
+  features,
+  notes,
+} = review.data;
+
+const canonical = new URL(`/${app}/${version}/`, Astro.site).toString();
+const title = `${appName} — App Review ${version}`;
+---
+
+<ReviewLayout
+  title={title}
+  description={`App Store review material for ${appName} version ${version}.`}
+  canonical={canonical}
+>
+  <main>
+    <header class="review-header">
+      <p class="eyebrow">App Store Review Material</p>
+      <h1>{appName}</h1>
+      <p class="version-line">Version {version} · Build {build}</p>
+      <p class="review-purpose">
+        This page is provided for App Review and contains a physical-device screen recording
+        demonstrating the submitted build.
+      </p>
+    </header>
+
+    <ReviewVideo youtubeId={youtubeId} title={`${appName} App Review walkthrough`} />
+
+    <ReviewMetadata
+      device={device}
+      os={os}
+      version={version}
+      build={build}
+      recordedAt={recordedAt}
+    />
+
+    <section class="section" aria-labelledby="features-heading">
+      <p class="eyebrow">Features demonstrated</p>
+      <h2 id="features-heading">What the recording covers</h2>
+      <ul class="feature-list">
+        {features.map((feature) => <li>{feature}</li>)}
+      </ul>
+    </section>
+
+    {
+      notes && (
+        <section class="section" aria-labelledby="notes-heading">
+          <p class="eyebrow">Additional notes</p>
+          <h2 id="notes-heading">For the reviewer</h2>
+          <p class="notes">{notes}</p>
+        </section>
+      )
+    }
+  </main>
+</ReviewLayout>
