@@ -2,6 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "tomokichi-yohaku",
   "compatibility_date": "2026-07-29",
+  "preview_urls": true,
   "main": "../../packages/app-site/src/asset-cache-worker.js",
   "assets": {
     "directory": "./dist",

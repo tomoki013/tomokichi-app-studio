@@ -1,49 +1,75 @@
 ---
 import AppSiteShell from "@tomokichi/app-site/AppSiteShell.astro";
 import { appSiteUrl, mainSiteUrl, supportUrl } from "@tomokichi/app-site/urls";
+import { i18n, type Locale } from "../i18n";
 
-type Locale = "ja" | "en";
 const { lang, title, page = "", description } = Astro.props as {
   lang: Locale;
   title: string;
   page?: string;
   description?: string;
 };
-const ja = lang === "ja";
-const base = ja ? "/ja" : "";
-const href = (slug: string) => `${base}/${slug}`.replaceAll("//", "/");
-const jaPageHref = (`/ja/${page}`.replace(/\/$/, "")) || "/ja";
-const enPageHref = `/${page}`.replace(/\/$/, "") || "/";
+const c = i18n.t(lang);
+const href = (slug: string) => i18n.href(lang, slug);
 const supportHref = supportUrl("__APP_SLUG__", lang);
 const nav = [
-  { slug: "features", label: ja ? "機能" : "Features", href: href("features") },
-  { slug: "how-to", label: ja ? "使い方" : "How it works", href: href("how-to") },
-  { slug: "faq", label: "FAQ", href: href("faq") },
-  { slug: "updates", label: ja ? "お知らせ" : "News", href: href("updates") },
+  { slug: "features", label: c.nav.features, href: href("features") },
+  { slug: "how-to", label: c.nav.howTo, href: href("how-to") },
+  { slug: "faq", label: c.nav.faq, href: href("faq") },
+  { slug: "updates", label: c.nav.updates, href: href("updates") },
 ];
 const footerColumns = [
-  { title: ja ? "プロダクト" : "Product", links: [{ label: ja ? "機能" : "Features", href: href("features") }, { label: ja ? "使い方" : "How it works", href: href("how-to") }, { label: ja ? "スクリーンショット" : "Screenshots", href: href("screenshots") }] },
-  { title: ja ? "サポート" : "Support", links: [{ label: "FAQ", href: href("faq") }, { label: ja ? "お知らせ" : "News", href: href("updates") }, { label: ja ? "お問い合わせ" : "Contact", href: supportHref, external: true }] },
-  { title: ja ? "規約" : "Legal", links: [{ label: ja ? "プライバシーポリシー" : "Privacy Policy", href: href("privacy") }, { label: ja ? "利用規約" : "Terms of Service", href: href("terms") }, { label: ja ? "特定商取引法に基づく表記" : "Commercial Transactions", href: href("commercial-transactions") }] },
-  { title: "Tomokichi", links: [{ label: "Tomokichi", href: mainSiteUrl(lang), external: true }, { label: ja ? "ほかのアプリ" : "Other apps", href: mainSiteUrl(lang, "/apps"), external: true }] },
+  {
+    title: c.footer.product,
+    links: [
+      { label: c.nav.features, href: href("features") },
+      { label: c.nav.howTo, href: href("how-to") },
+      { label: c.footer.screenshots, href: href("screenshots") },
+    ],
+  },
+  {
+    title: c.footer.support,
+    links: [
+      { label: c.nav.faq, href: href("faq") },
+      { label: c.nav.updates, href: href("updates") },
+      { label: c.footer.contact, href: supportHref, external: true },
+    ],
+  },
+  {
+    title: c.footer.legal,
+    links: [
+      { label: c.footer.privacy, href: href("privacy") },
+      { label: c.footer.terms, href: href("terms") },
+      { label: c.footer.commercialTransactions, href: href("commercial-transactions") },
+    ],
+  },
+  {
+    title: "Tomokichi",
+    links: [
+      { label: "Tomokichi", href: mainSiteUrl(lang), external: true },
+      { label: c.footer.otherApps, href: mainSiteUrl(lang, "/apps"), external: true },
+    ],
+  },
 ];
 ---
 
 <AppSiteShell
   lang={lang}
   title={title}
-  description={description ?? (ja ? "__APP_BRAND__の公式サイトです。" : "The official website for __APP_BRAND__.")}
+  description={description ?? c.meta.description}
   page={page}
   brand="__APP_BRAND__"
-  tagline={ja ? "アプリのタグラインを入力してください。" : "Add the app tagline here."}
+  tagline={c.meta.tagline}
   siteUrl={appSiteUrl("__APP_SLUG__")}
-  homeHref={ja ? "/ja" : "/"}
-  jaPageHref={jaPageHref}
-  enPageHref={enPageHref}
+  homeHref={i18n.href(lang)}
+  localeLinks={i18n.localeLinks(page)}
+  defaultLocale={i18n.defaultLocale}
+  shellLabels={c.shell}
   nav={nav}
   footerColumns={footerColumns}
-  appStoreLabel={ja ? "App Storeで見る" : "View on App Store"}
-  menuLabel={ja ? "メニュー" : "Menu"}
+  appStoreLabel={c.meta.appStore}
+  menuLabel={c.shell.menu}
+  menuCloseLabel={c.shell.menuClose}
   pageClass="__APP_SLUG__-page"
 >
   <slot />

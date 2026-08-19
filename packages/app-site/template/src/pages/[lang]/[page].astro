@@ -1,0 +1,17 @@
+---
+import ContentPage from "../../components/ContentPage.astro";
+import { i18n, type Locale } from "../../i18n";
+import "../../styles/global.css";
+
+const pages = ["features", "how-to", "screenshots", "faq", "updates", "privacy", "terms"];
+
+export function getStaticPaths() {
+  return i18n.supportedLocales
+    .filter((lang) => lang !== i18n.defaultLocale && lang !== "ja")
+    .flatMap((lang) => pages.map((page) => ({ params: { lang, page }, props: { lang, page } })));
+}
+
+const { lang, page } = Astro.props as { lang: Locale; page: string };
+---
+
+<ContentPage lang={lang} page={page} />

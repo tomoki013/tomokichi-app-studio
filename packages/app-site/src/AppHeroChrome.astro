@@ -1,19 +1,23 @@
 ---
 import "./app-site-shell.css";
 
-const { lang, date, news, newsHref } = Astro.props as {
-  lang: "ja" | "en";
+const { lang, date, news, newsHref, sectionLabel, viewNewsLabel } = Astro.props as {
+  lang: string;
   date: string;
   news: string;
   newsHref: string;
+  sectionLabel?: string;
+  viewNewsLabel?: string;
 };
 const displayDate = date.replaceAll("-", ".");
+const resolvedSectionLabel = sectionLabel ?? (lang === "ja" ? "お知らせ" : "Updates");
+const resolvedViewNewsLabel = viewNewsLabel ?? (lang === "ja" ? "お知らせを見る" : "View news");
 ---
 
 <a class="app-hero-scroll" href="#notice"><em>Scroll</em><span class="app-hero-scroll-track"><i></i></span></a>
 <aside class="app-hero-notice" id="notice">
-  <strong>{lang === "ja" ? "お知らせ" : "Updates"}</strong>
+  <strong>{resolvedSectionLabel}</strong>
   <time datetime={date}>{displayDate}</time>
   <span>{news}</span>
-  <a href={newsHref} aria-label={lang === "ja" ? "お知らせを見る" : "View news"}>→</a>
+  <a href={newsHref} aria-label={resolvedViewNewsLabel}>→</a>
 </aside>

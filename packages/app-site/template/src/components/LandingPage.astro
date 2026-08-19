@@ -1,30 +1,30 @@
 ---
 import AppHeroChrome from "@tomokichi/app-site/AppHeroChrome.astro";
+import { i18n, type Locale } from "../i18n";
 import AppShell from "./AppShell.astro";
 
-const { lang } = Astro.props as { lang: "ja" | "en" };
-const ja = lang === "ja";
-const base = ja ? "/ja" : "";
+const { lang } = Astro.props as { lang: Locale };
+const c = i18n.t(lang);
 ---
 
-<AppShell lang={lang} title={ja ? "__APP_BRAND__へようこそ" : "Welcome to __APP_BRAND__"}>
+<AppShell lang={lang} title={c.landing.title}>
   <section class="app-landing-hero">
     <div>
       <p class="eyebrow">__APP_BRAND__</p>
-      <h1>{ja ? "アプリの価値を一文で伝えます。" : "Describe the app’s value in one sentence."}</h1>
-      <p>{ja ? "ここにプロダクト固有の説明を入力してください。" : "Add the product-specific supporting copy here."}</p>
-      <a class="store-button" href="#download">{ja ? "App Storeからダウンロード" : "Download on the App Store"}</a>
+      <h1>{c.landing.value}</h1>
+      <p>{c.landing.body}</p>
+      <a class="store-button" href="#download">{c.landing.download}</a>
     </div>
-    <div class="product-visual" role="img" aria-label={ja ? "アプリ画面のプレースホルダー" : "App screen placeholder"}></div>
+    <div class="product-visual" role="img" aria-label={c.landing.screenAlt}></div>
     <AppHeroChrome
       lang={lang}
       date="__APP_DATE__"
-      news={ja ? "__APP_BRAND__サイトを公開しました。" : "The __APP_BRAND__ website is now available."}
-      newsHref={`${base}/updates`}
+      news={c.landing.news}
+      newsHref={i18n.href(lang, "updates")}
     />
   </section>
   <section class="app-landing-content" id="download" data-reveal>
-    <h2>{ja ? "__APP_BRAND__について" : "About __APP_BRAND__"}</h2>
-    <p>{ja ? "機能や使い方など、アプリ固有のランディングページをここから構築してください。" : "Build the product-specific landing page from this shared foundation."}</p>
+    <h2>{c.landing.about}</h2>
+    <p>{c.landing.aboutBody}</p>
   </section>
 </AppShell>

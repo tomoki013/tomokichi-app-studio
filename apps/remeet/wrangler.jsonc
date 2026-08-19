@@ -2,6 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "tomokichi-remeet",
   "compatibility_date": "2026-07-23",
+  "preview_urls": true,
   // The Remeet Worker: the invitation landing page and the associated-domains
   // file. Everything else — every page of the site — is delegated to the same
   // shared asset-cache Worker as before.
