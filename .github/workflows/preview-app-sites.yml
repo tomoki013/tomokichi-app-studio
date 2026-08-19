@@ -139,15 +139,16 @@ jobs:
 
             preview_url=$(grep -Eo 'https://[^[:space:]]+\.workers\.dev' "$output_file" | tail -1 || true)
             if [[ -z "$preview_url" ]]; then
-              echo "Wrangler did not return a preview URL for ${site}." >&2
-              exit 1
+              printf -- '- **%s**: _Version uploaded, but Preview URLs are not active on the deployed Worker yet._\n' "$site" >> "$PREVIEW_FILE"
+              skipped_count=$((skipped_count + 1))
+              continue
             fi
 
             printf -- '- **%s**: %s\n' "$site" "$preview_url" >> "$PREVIEW_FILE"
             preview_count=$((preview_count + 1))
           done
 
-          printf '\nUpdated from commit `%s`. %d preview(s), %d waiting for first deploy.\n' \
+          printf '\nUpdated from commit `%s`. %d preview(s), %d waiting for Worker/Preview activation.\n' \
             "${COMMIT_SHA:0:7}" "$preview_count" "$skipped_count" >> "$PREVIEW_FILE"
           echo "preview_file=$PREVIEW_FILE" >> "$GITHUB_OUTPUT"
           cat "$PREVIEW_FILE" >> "$GITHUB_STEP_SUMMARY"
