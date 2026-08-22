@@ -9,6 +9,8 @@ type Purchase = {
   price: string;
   /** Consumables cannot be restored after they have been used. */
   consumable?: boolean;
+  /** Auto-renewable App Store subscription (monthly/yearly, etc.). */
+  subscription?: boolean;
 };
 
 const {
@@ -31,7 +33,17 @@ const {
 };
 const ja = lang === "ja";
 const hasPurchases = purchases.length > 0;
+const hasSubscription = purchases.some((purchase) => purchase.subscription);
 const contactHref = supportUrl(appSlug, lang);
+
+const kindJa = (purchase: Purchase) =>
+  purchase.subscription ? "自動更新サブスクリプション" : purchase.consumable ? "消費型" : "買い切り";
+const kindEn = (purchase: Purchase) =>
+  purchase.subscription
+    ? "auto-renewable subscription"
+    : purchase.consumable
+      ? "consumable"
+      : "one-time";
 
 const freeCopyJa = adSupported
   ? `${appName}のダウンロードと基本機能の利用は無料です。無料版では、アプリ内の一部画面に広告が表示されます。`
@@ -41,17 +53,24 @@ const freeCopyEn = adSupported
   : `Downloading ${appName} and using its core features is free.`;
 
 const purchaseListJa = purchases
-  .map((purchase) => `「${purchase.name[0]}」${purchase.price}（税込・${purchase.consumable ? "消費型" : "買い切り"}）`)
+  .map((purchase) => `「${purchase.name[0]}」${purchase.price}（税込・${kindJa(purchase)}）`)
   .join("、");
 const purchaseListEn = purchases
-  .map((purchase) => `“${purchase.name[1]}” ${purchase.price} (tax included, ${purchase.consumable ? "consumable" : "one-time"})`)
+  .map((purchase) => `“${purchase.name[1]}” ${purchase.price} (tax included, ${kindEn(purchase)})`)
   .join(", ");
 
+const subscriptionNoteJa = hasSubscription
+  ? "自動更新サブスクリプションの管理・解約は、Apple Accountの設定から行えます。"
+  : "サブスクリプションはありません。";
+const subscriptionNoteEn = hasSubscription
+  ? "Auto-renewable subscriptions are managed and cancelled from your Apple Account settings."
+  : "There is no subscription.";
+
 const priceJa = hasPurchases
-  ? `${freeCopyJa}アプリ内課金：${purchaseListJa}。サブスクリプションはありません。価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。`
+  ? `${freeCopyJa}アプリ内課金：${purchaseListJa}。${subscriptionNoteJa}価格は、App Storeの商品ページおよびアプリ内の購入画面に表示される税込価格が正しいものとします。`
   : `${freeCopyJa}将来、有料商品を提供する場合は、購入画面またはApp Storeの商品ページに税込価格を表示します。`;
 const priceEn = hasPurchases
-  ? `${freeCopyEn} In-app purchase: ${purchaseListEn}. There is no subscription. The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative.`
+  ? `${freeCopyEn} In-app purchase: ${purchaseListEn}. ${subscriptionNoteEn} The tax-inclusive price shown on the App Store product page and the in-app purchase screen is authoritative.`
   : `${freeCopyEn} If paid products are introduced, tax-inclusive prices will be shown on the purchase screen or App Store product page.`;
 
 const paymentJa = hasPurchases
@@ -64,12 +83,16 @@ const paymentEn = hasPurchases
 const deliveryJa = hasPurchases
   ? purchases.some((purchase) => purchase.consumable)
     ? "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。アプリ内課金は購入完了後、ただちに残高へ反映されます。消費型商品は使用後に復元できません。未使用分の同期範囲はアプリ内の案内に従います。"
-    : "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。アプリ内課金は、購入手続きの完了後、ただちに反映されます。同じApple Accountであれば、設定画面から購入を復元できます。"
+    : hasSubscription
+      ? "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。サブスクリプションは購入完了後ただちに有効になり、有効期間中は広告が非表示になります。管理・解約・復元はApple Accountの設定およびアプリ内の案内に従います。"
+      : "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。アプリ内課金は、購入手続きの完了後、ただちに反映されます。同じApple Accountであれば、設定画面から購入を復元できます。"
   : "アプリはApp Storeからのダウンロード完了後、すぐに利用できます。有料機能を提供する場合は、購入手続き完了後に利用できます。";
 const deliveryEn = hasPurchases
   ? purchases.some((purchase) => purchase.consumable)
     ? "The app is available immediately after download. An in-app purchase is added to the balance after completion. A consumable cannot be restored after use; synchronization of unused items follows the in-app guidance."
-    : "The app is available immediately after its App Store download completes. In-app purchases take effect as soon as the purchase completes, and can be restored from Settings on the same Apple Account."
+    : hasSubscription
+      ? "The app is available immediately after its App Store download completes. A subscription takes effect as soon as purchase completes and hides ads while it is active. Manage, cancel, or restore it from your Apple Account settings and the in-app guidance."
+      : "The app is available immediately after its App Store download completes. In-app purchases take effect as soon as the purchase completes, and can be restored from Settings on the same Apple Account."
   : "The app is available immediately after its App Store download completes. Any future paid feature will become available after purchase is completed.";
 
 const returnsJa = hasPurchases

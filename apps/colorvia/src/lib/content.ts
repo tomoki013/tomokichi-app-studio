@@ -26,8 +26,8 @@ export const titles: Record<Page, [string, string]> = {
 
 export const descriptions: Record<Page, [string, string]> = {
   features: [
-    "世界地図、訪問統計、11か国の地域マップ、JSONバックアップなどColorviaの機能。",
-    "Colorvia features: world map, visit stats, regional maps for 11 countries, and JSON backup.",
+    "世界地図、訪問統計、11か国の地域マップ、JSONバックアップ、広告削除などColorviaの機能。",
+    "Colorvia features: world map, visit stats, regional maps for 11 countries, JSON backup, and Remove Ads.",
   ],
   "how-to": [
     "国の追加から地域の記録、データ移行まで、Colorviaの使い方。",
@@ -282,7 +282,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "7. 広告配信",
-          "本アプリは広告表示のためGoogle Mobile Ads SDKおよび同意管理のためUser Messaging Platform（UMP）を使用します。\n\n・ホーム画面下部に固定サイズ（320×50）のバナー広告を表示する場合があります\n・画面高が700pt未満の端末では、地図操作領域を確保するため広告を表示しない場合があります\n・広告の取得に失敗した場合、空白の広告領域を残しません\n・インタースティシャル、リワード、アプリ起動、ネイティブ広告は使用しません\n・Firebase Analyticsは使用しません\n・App Tracking Transparency（ATT）プロンプトは使用しません\n・現在、広告削除のアプリ内課金は提供していません\n\n広告配信事業者は、広告の配信、効果測定、不正防止、同意管理のため、端末情報、IPアドレス、広告操作情報、診断情報、同意状況などを取り扱う場合があります。取扱いはGoogleのプライバシーポリシーおよび利用者の同意設定に従います。運営者は、訪問履歴、地図操作、検索語を広告目的で広告配信事業者へ提供しません。\n\n必要な地域ではUMPによる同意画面を表示し、設定に広告のプライバシー設定が表示される場合があります。",
+          "本アプリは広告表示のためGoogle Mobile Ads SDKおよび同意管理のためUser Messaging Platform（UMP）を使用します。\n\n・ホーム画面下部に固定サイズ（320×50）のバナー広告を表示する場合があります\n・画面高が700pt未満の端末では、地図操作領域を確保するため広告を表示しない場合があります\n・広告の取得に失敗した場合、空白の広告領域を残しません\n・インタースティシャル、リワード、アプリ起動、ネイティブ広告は使用しません\n・Firebase Analyticsは使用しません\n・起動時にUMPのあと、App Tracking Transparency（ATT）の許可を求めます。許可しなくても基本機能は利用できます\n・非消耗型の一回払い商品「広告を削除」を購入済みの場合は広告配信の対象外となります\n\n広告配信事業者は、広告の配信、効果測定、不正防止、同意管理のため、端末情報、IPアドレス、広告操作情報、診断情報、同意状況などを取り扱う場合があります。取扱いはGoogleのプライバシーポリシーおよび利用者の同意設定に従います。運営者は、訪問履歴、地図操作、検索語を広告目的で広告配信事業者へ提供しません。\n\n必要な地域ではUMPによる同意画面を表示し、設定に広告のプライバシー設定が表示される場合があります。",
         ],
         [
           "8. お問い合わせ",
@@ -294,7 +294,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "10. 外部サービス",
-          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads（広告配信）\n・Google User Messaging Platform（同意管理）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・Apple（システム機能）\n・公式Webサイトの配信基盤\n\n世界地図および地域の地理データは、Natural Earth等のオープンデータを基にアプリ内へ同梱しています。これらの同梱データ自体は、利用者情報を外部へ送信しません。",
+          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads（広告配信）\n・Google User Messaging Platform（同意管理）\n・Apple（StoreKit、システム機能）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・公式Webサイトの配信基盤\n\n世界地図および地域の地理データは、Natural Earth等のオープンデータを基にアプリ内へ同梱しています。これらの同梱データ自体は、利用者情報を外部へ送信しません。",
         ],
         [
           "11. 第三者提供",
@@ -348,7 +348,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "7. Advertising",
-          "The App uses the Google Mobile Ads SDK and User Messaging Platform (UMP) for consent.\n\n・A fixed 320×50 banner may appear at the bottom of the home screen\n・On devices shorter than 700pt, ads may be hidden to protect map space\n・If an ad fails to load, no empty ad gap is left\n・No interstitial, rewarded, app-open or native ads\n・No Firebase Analytics\n・No App Tracking Transparency (ATT) prompt\n・No remove-ads in-app purchase is offered today\n\nAdvertising partners may process device information, IP address, ad interaction data, diagnostics and consent status for delivery, measurement, fraud prevention and consent. Handling follows Google’s policies and your choices. The Operator does not send visit history, map activity or search terms to ad partners for advertising.\n\nWhere required, UMP shows a consent form, and Settings may offer ad privacy choices.",
+          "The App uses the Google Mobile Ads SDK and User Messaging Platform (UMP) for consent.\n\n・A fixed 320×50 banner may appear at the bottom of the home screen\n・On devices shorter than 700pt, ads may be hidden to protect map space\n・If an ad fails to load, no empty ad gap is left\n・No interstitial, rewarded, app-open or native ads\n・No Firebase Analytics\n・After UMP, the App requests App Tracking Transparency (ATT). Declining ATT does not lock core features\n・After purchasing the non-consumable “Remove Ads” product, you are not ad-supported\n\nAdvertising partners may process device information, IP address, ad interaction data, diagnostics and consent status for delivery, measurement, fraud prevention and consent. Handling follows Google’s policies and your choices. The Operator does not send visit history, map activity or search terms to ad partners for advertising.\n\nWhere required, UMP shows a consent form, and Settings may offer ad privacy choices.",
         ],
         [
           "8. Support",
@@ -360,7 +360,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "10. Service providers",
-          "Where needed, the Service uses:\n\n・Google Mobile Ads\n・Google User Messaging Platform\n・Cloudflare Workers (support API)\n・Resend (support email)\n・Apple system frameworks\n・Website hosting\n\nWorld and regional map geometry is bundled from open data such as Natural Earth. Bundled map data itself does not send user information abroad.",
+          "Where needed, the Service uses:\n\n・Google Mobile Ads\n・Google User Messaging Platform\n・Apple (StoreKit and system frameworks)\n・Cloudflare Workers (support API)\n・Resend (support email)\n・Website hosting\n\nWorld and regional map geometry is bundled from open data such as Natural Earth. Bundled map data itself does not send user information abroad.",
         ],
         [
           "11. Disclosure",
@@ -399,7 +399,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第3条（利用料金および広告）",
-          "本アプリは無料で提供されます。一部の画面には広告が表示される場合があります。現在、有料プラン、広告削除機能およびアプリ内課金は提供していません。通信に必要な費用は利用者の負担とします。",
+          "本アプリの基本機能は無料です。一部の画面には広告が表示される場合があります。非消耗型の一回払い商品「広告を削除」を購入すると広告は表示されません。サブスクリプションではありません。購入処理、価格表示、返金その他の取扱いにはAppleの条件が適用されます。通信に必要な費用は利用者の負担とします。",
         ],
         ["第4条（利用者の責任）", "利用者は、自己の責任において本サービスを利用します。"],
         [
@@ -454,7 +454,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 3 — Fees and advertising",
-          "The App is free. Ads may appear on some screens. Paid plans, remove-ads purchases and other in-app purchases are not currently offered. You are responsible for data charges.",
+          "Core features are free. Ads may appear on some screens. Buying the non-consumable one-time product “Remove Ads” hides ads. There is no subscription. Apple’s terms govern purchase, price and refunds. You are responsible for data charges.",
         ],
         ["Article 4 — User responsibility", "You use the Service at your own responsibility."],
         [

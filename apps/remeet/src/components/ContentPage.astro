@@ -1,6 +1,6 @@
 ---
-import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import {
@@ -35,8 +35,8 @@ const guides = guideList(ja);
 const faqs = faqList(ja);
 const legalSections = page === "privacy" ? privacySections(ja) : page === "terms" ? termsSections(ja) : [];
 const legalDate = ja
-  ? "制定日：2026年7月24日／最終更新日：2026年8月5日"
-  : "Effective date: July 24, 2026 / Last updated: August 5, 2026";
+  ? "制定日：2026年7月24日／最終更新日：2026年8月22日"
+  : "Effective date: July 24, 2026 / Last updated: August 22, 2026";
 
 const faqCategories = ja
   ? [["all", "すべて"], ["start", "はじめての方へ"], ["feature", "機能について"], ["data", "データについて"], ["other", "その他"]]
@@ -49,7 +49,7 @@ const planIncludes = ja
       "会ったらやりたいことリスト",
       "再会のアルバムと振り返り",
       "ホーム画面・ロック画面のウィジェット",
-      "ローカル通知（4種類）",
+      "再会のリマインダー通知",
       "6言語対応",
       "アカウント登録不要",
       "端末内保存",
@@ -61,7 +61,7 @@ const planIncludes = ja
       "List of things you want to do together",
       "Reunion albums and reflections",
       "Home Screen and Lock Screen widgets",
-      "Local notifications (four kinds)",
+      "Reunion reminder notifications",
       "Six languages",
       "No account required",
       "On-device storage",
@@ -99,7 +99,7 @@ const featureBeats: StoryStep[] = (
         ["待っている間の記録", "写真とメモで、離れている日々を自分の記録として残せます。1件につき写真は1枚です。", "memories"],
         ["会ったらやりたいことリスト", "一緒にしたいことをリストに残せます。共有した再会では、招待したパートナーと一緒に編集できます。", "wishes"],
         ["再会の日を、アルバムに", "会えた日の写真と振り返りを残し、完了した再会はアルバムとして見返せます。", "album"],
-        ["通知も言語も、設定で選ぶ", "1週間前・前日・当日の朝・再会時刻の通知を個別に切り替えられます。日本語を含む6言語に対応しています。", "settings"],
+        ["通知も言語も、設定で選ぶ", "1週間前・前日・当日の朝・再会時刻の通知を個別に切り替えられます。節目や記念日、共有相手からのリアクションも届くことがあります。日本語を含む6言語に対応しています。", "settings"],
       ]
     : [
         ["A countdown to the reunion", "Watch the days and progress until you meet again. Feeling it draw closer carries the waiting.", "home"],
@@ -107,7 +107,7 @@ const featureBeats: StoryStep[] = (
         ["Memories while apart", "Keep photos and notes from the days in between as your own record. One photo per entry.", "memories"],
         ["Things to do together", "List what you want to do when you meet. On a shared reunion, the invited partner can edit it with you.", "wishes"],
         ["The day itself, in an album", "Save a photo and reflection from the day you meet, then revisit completed reunions in albums.", "album"],
-        ["Notifications and language, your way", "Toggle one week before, the day before, the morning of, and reunion time independently. Available in six languages.", "settings"],
+        ["Notifications and language, your way", "Toggle one week before, the day before, the morning of, and reunion time independently. Milestones, anniversaries, and partner reactions may also arrive. Available in six languages.", "settings"],
       ]
 ).map(([title, body, screen], i) => ({
   kicker: String(i + 1).padStart(2, "0"),
@@ -120,14 +120,14 @@ const howBeats: StoryStep[] = (
   ja
     ? [
         ["再会予定を作る", "再会の日付と、ふたりがいる場所を設定します。旅行や帰省など、複数の予定を並行して持てます。", "home", "独自アカウントは不要です。作成した予定はすぐにホームに表示されます。"],
-        ["待っている日々を記録する", "写真とメモで、離れている時間を残します。毎日でなくてかまいません。", "memories", "個人利用の記録は端末内に保存されます。"],
+        ["待っている日々を記録する", "写真とメモで、離れている時間を残します。毎日でなくてかまいません。", "memories", "記録は端末内に保存され、iCloudにサインインしていれば同じApple Accountの端末へ同期されることがあります。"],
         ["会ったらやりたいことを残す", "再会の日にしたいことを、ひとつずつリストに。共有した再会なら、相手と一緒に書き足せます。", "wishes", "共有した再会だけがAppleのiCloudを通じて同期されます。"],
         ["再会の日を、アルバムに残す", "会えた日の写真と振り返りをアルバムへ。予定が変わったときは日時を変更できます。", "album", "同じ相手の再会は、あとからまとめられます。"],
         ["通知とウィジェットを整える", "設定から通知の種類を選び、ホーム画面やロック画面にウィジェットを置きます。", "settings", "ウィジェットはアプリを開かずに残り日数を確認できます。"],
       ]
     : [
         ["Create a reunion", "Set the date and where each of you will be. Trips and visits can run side by side.", "home", "No proprietary account is needed. A new plan appears on Home right away."],
-        ["Record the waiting days", "Keep photos and notes from the time apart. It does not have to be every day.", "memories", "Personal records stay on your device."],
+        ["Record the waiting days", "Keep photos and notes from the time apart. It does not have to be every day.", "memories", "Records stay on your device, and may sync to other devices on the same Apple Account if you use iCloud."],
         ["Save things to do together", "List what you want to do when you meet. On a shared reunion you can add to it together.", "wishes", "Only a shared reunion syncs, through Apple iCloud."],
         ["Keep the day in an album", "Save a photo and reflection from the day you meet, or change the date if plans move.", "album", "Reunions with the same person can be grouped later."],
         ["Set up notices and widgets", "Choose which notifications you want in Settings, then place a widget on your Home or Lock Screen.", "settings", "A widget shows the days left without opening the app."],

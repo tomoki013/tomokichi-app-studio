@@ -19,7 +19,7 @@ const c = ja
       screenshots: "旅の記録",
       shotLink: "スクリーンショットを見る",
       cta: "次の旅から、残してみる。",
-      ctaSub: "Triporyは現在、App Store公開準備中です。",
+      ctaSub: "Triporyは現在、App Store公開準備中です。iPhone・iOS 26以降向け。",
       notice: "Tripory公式ブランドサイトを公開しました",
     }
   : {
@@ -32,21 +32,21 @@ const c = ja
       screenshots: "How a trip looks",
       shotLink: "View screenshots",
       cta: "Start with the next journey.",
-      ctaSub: "Tripory is preparing for the App Store.",
+      ctaSub: "Tripory is preparing for the App Store. iPhone, iOS 26 or later.",
       notice: "The official Tripory brand site is now live",
     };
 const features = ja
   ? [
       ["旅のタイムライン", "出発から帰着まで、旅の流れを時系列で振り返る", "/assets/mountain-lake.png"],
       ["思い出の写真", "その日の光や風景を、旅の記録に添える", "/assets/venice.png"],
-      ["場所とメモ", "都市名と、そのときの一言をセットで残す", "/assets/iceland.png"],
-      ["地図で眺める", "記憶を地図上に並べて、旅の広がりを見る", "/assets/world-globe.png"],
+      ["場所とメモ", "旅ごとに行き先の国と、そのときの一言を残す", "/assets/iceland.png"],
+      ["地図で眺める", "訪れた国と行きたい国を、地球儀や地図で見返す", "/assets/world-globe.png"],
     ]
   : [
       ["Travel timeline", "Look back on the flow of a trip from start to return", "/assets/mountain-lake.png"],
       ["Memory photos", "Attach the light and scenery of each day to the record", "/assets/venice.png"],
-      ["Places & notes", "Keep city names with a short note from that moment", "/assets/iceland.png"],
-      ["See it on a map", "Arrange memories on a map to see how the journey grew", "/assets/world-globe.png"],
+      ["Places & notes", "Keep the countries on a trip, plus a short note from that stretch of time", "/assets/iceland.png"],
+      ["See it on a map", "Look back at visited and want-to-go countries on a globe or map", "/assets/world-globe.png"],
     ];
 const journey = ja
   ? [
@@ -142,7 +142,7 @@ const journey = ja
     <div class="promise-copy">
       <p class="eyebrow">PRIVATE BY DESIGN</p>
       <h2>{ja ? "思い出は、あなたの手元に。" : "Your memories stay with you."}</h2>
-      <p>{ja ? "アカウント登録は不要。旅の記録は端末内に保存され、選んだ写真だけを扱います。便利さのために、旅の記憶を差し出さない設計です。" : "No account is required. Trip records stay on your device, and the app only handles photographs you select. Convenience should not cost you the privacy of your memories."}</p>
+      <p>{ja ? "アカウント登録は不要。旅の記録は端末内に保存され、選んだ写真だけを扱います。無料版ではバナー広告と、新しい国を初めて記録したあとにインタースティシャル広告が出ることがあります。買い切りの「広告を削除」で非表示にできます。" : "No account is required. Trip records stay on your device, and the app only handles photographs you select. The free version may show banner ads, and occasionally an interstitial after you first log a new country. A one-time Remove Ads purchase hides them."}</p>
       <a href={`${base}/privacy`}>{ja ? "プライバシーポリシーを読む" : "Read the privacy policy"} →</a>
     </div>
   </section>

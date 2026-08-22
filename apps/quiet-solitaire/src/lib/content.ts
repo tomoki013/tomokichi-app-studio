@@ -26,8 +26,8 @@ export const titles: Record<Page, [string, string]> = {
 
 export const descriptions: Record<Page, [string, string]> = {
   features: [
-    "カード裏・テーブルカラー・左利き・ヒント・サウンドなど、Quiet Solitaireの静かなカスタマイズ。",
-    "Quiet customisation for Quiet Solitaire: card backs, table colours, left-handed layout, hints, and sound.",
+    "クロンダイク（1枚引き）、アンドゥ、統計、左利き、回収、サウンドなど、Quiet Solitaireの静かなカスタマイズ。",
+    "Quiet customisation for Quiet Solitaire: draw-1 Klondike, undo, stats, left-handed layout, Collect, and sound.",
   ],
   "how-to": [
     "カードの配り方からクリアまで、Quiet Solitaireの遊び方。",
@@ -86,50 +86,70 @@ export function features(ja: boolean) {
     ? ([
         [
           "♠",
-          "クロンダイク・ルール",
-          "標準的なKlondikeソリティア。場札、山札、組札の流れで、静かにクリアを目指します。",
+          "クロンダイク（1枚引き）",
+          "標準的なKlondike。山札は1枚ずつ。場札は色を交互に降順、組札はスートごとにAからKへ。すべての配札が必ずクリアできるわけではありません。",
         ],
-        ["↶", "アンドゥ", "ひとつ前の手に戻せるので、じっくり考えながら進められます。"],
-        ["◔", "統計", "プレイ回数やクリア数など、手元で続けた記録を振り返れます。"],
-        ["✋", "左利きレイアウト", "操作しやすい側にレイアウトを寄せて、利き手に合わせられます。"],
+        ["↶", "アンドゥ", "直前の手に戻せます（最大200手）。クリア後や回収の途中では使えません。"],
+        [
+          "◔",
+          "統計",
+          "プレイ回数、クリア数、ベストタイム、最少手数、連続記録を端末内で振り返れます。",
+        ],
+        ["✋", "左利きレイアウト", "山札と組札の位置を入れ替えて、利き手に合わせられます。"],
         [
           "◎",
           "触覚・サウンド",
           "ハプティクスと効果音を個別にオン／オフ。好みの静けさに調整できます。",
         ],
-        ["✦", "回収アニメーション", "カードが集まる動きを有効／無効にでき、テンポを選べます。"],
+        [
+          "✦",
+          "回収（コレクト）",
+          "場札がすべて表向きで山札も空のとき、残りのカードを組札へ自動で送れます。オフにするとボタン自体が消えます。",
+        ],
         ["💾", "端末内に保存", "進行中のゲーム、設定、統計は端末内に保存。アカウントは不要です。"],
         [
           "▦",
-          "控えめなバナー広告",
-          "広告が有効なとき、Google AdMobのバナーが表示される場合があります。",
+          "広告と広告削除",
+          "無料プレイではバナーに加え、新しい配札のときにインタースティシャルが出ることがあります。月額または年額の広告削除サブスクリプションで非表示にできます。",
         ],
       ] as const)
     : ([
         [
           "♠",
-          "Klondike rules",
-          "Classic Klondike solitaire—tableau, stock, and foundations, at an unhurried pace.",
+          "Klondike (draw-1)",
+          "Classic Klondike with a one-card stock. Tableau descending in alternating colours; foundations Ace to King by suit. Not every deal is winnable.",
         ],
-        ["↶", "Undo", "Step back a move when you want more time to think."],
+        [
+          "↶",
+          "Undo",
+          "Reverse the last move (up to 200). Undo is unavailable after a win or during Collect.",
+        ],
         [
           "◔",
           "Statistics",
-          "Look back at games played, wins, and other quiet tallies kept on your phone.",
+          "Games played, wins, best time, fewest moves, and streaks stay on your phone.",
         ],
         [
           "✋",
           "Left-handed layout",
-          "Shift the layout toward the side that feels natural in your hand.",
+          "Swap stock and foundations toward the side that feels natural.",
         ],
         ["◎", "Haptics & sound", "Toggle haptics and sound independently for the calm you prefer."],
-        ["✦", "Collect animation", "Turn card-collect motion on or off to match your tempo."],
+        [
+          "✦",
+          "Collect",
+          "When the tableau is fully face-up and the stock is empty, send the rest to the foundations automatically. Turning the setting off hides the button.",
+        ],
         [
           "💾",
           "On-device storage",
           "In-progress games, settings, and stats stay on your device. No account.",
         ],
-        ["▦", "Quiet banner ads", "When ads are enabled, a Google AdMob banner may appear."],
+        [
+          "▦",
+          "Ads and Remove Ads",
+          "Free play may show a banner, and an interstitial on a new deal. A monthly or yearly Remove Ads subscription hides them.",
+        ],
       ] as const);
 }
 
@@ -173,18 +193,18 @@ export function howGuides(ja: boolean) {
           title: "山札とアンドゥ",
           note: "焦らず戻せるので、夜のテーブルでもゆっくり考えられます。",
           steps: [
-            "場で手が止まったら山札をタップして次のカードを開きます。",
+            "場で手が止まったら山札をタップして次のカードを1枚開きます。",
             "アンドゥで直前の手に戻れます。",
-            "設定から触覚、サウンド、回収アニメーションを調整できます。",
+            "設定から触覚、サウンド、回収（コレクト）を調整できます。",
           ],
         },
         {
           title: "設定と統計",
           note: "左利きレイアウトや保存データは端末の中だけにあります。",
           steps: [
-            "設定で左利きレイアウト、ハプティクス、サウンド、アニメーションを切り替えます。",
+            "設定で左利きレイアウト、ハプティクス、サウンド、回収を切り替えます。",
             "統計画面でプレイ回数やクリアなどを確認できます。",
-            "ゲーム・設定・統計はローカルに保存され、アカウント同期はありません。",
+            "ゲーム・設定・統計はローカルに保存され、アカウント同期はありません。広告削除は月額または年額のサブスクリプションです。",
           ],
         },
       ]
@@ -210,18 +230,18 @@ export function howGuides(ja: boolean) {
           title: "Stock and undo",
           note: "Take your time—undo keeps the evening unhurried.",
           steps: [
-            "When the tableau stalls, tap the stock for the next card.",
+            "When the tableau stalls, tap the stock for the next card (draw-1).",
             "Use undo to reverse the last move.",
-            "Adjust haptics, sound, and collect animation in Settings.",
+            "Adjust haptics, sound, and Collect in Settings.",
           ],
         },
         {
           title: "Settings and stats",
           note: "Left-handed layout and save data never leave your iPhone.",
           steps: [
-            "Toggle left-handed layout, haptics, sound, and animation in Settings.",
+            "Toggle left-handed layout, haptics, sound, and Collect in Settings.",
             "Open Statistics for games played, wins, and related tallies.",
-            "Games, settings, and stats stay local—there is no account sync.",
+            "Games, settings, and stats stay local—there is no account sync. Remove Ads is a monthly or yearly subscription.",
           ],
         },
       ];
@@ -287,14 +307,14 @@ export function faqs(ja: boolean): [string, string, string][] {
         [
           "base",
           "無料で使えますか？",
-          "はい。基本プレイは無料です。広告が有効な場合、Google AdMobのバナーが表示されることがあります。現時点でアプリ内課金はありません。",
+          "はい。基本プレイは無料です。広告が有効な場合、Google AdMobのバナーに加え、新しい配札のときにインタースティシャル広告が出ることがあります。広告を消すには、月額または年額の「広告削除」サブスクリプションがあります。プレイ内容は課金で解放されません。",
         ],
         ["base", "アカウントは必要ですか？", "いいえ。登録やログインなしですぐに遊べます。"],
         ["base", "対応環境は？", "iPhone・iOS 26.0以降向けです。"],
         [
           "play",
           "ルールは何ですか？",
-          "標準的なKlondike（クロンダイク）です。場札は色を交互に降順、組札はスートごとにAからKへ積みます。",
+          "標準的なKlondike（1枚引き）です。場札は色を交互に降順、組札はスートごとにAからKへ積みます。空いた列にはKから置けます。すべての配札が必ずクリアできるわけではありません。",
         ],
         ["play", "アンドゥはありますか？", "はい。直前の手に戻せます。"],
         [
@@ -305,7 +325,7 @@ export function faqs(ja: boolean): [string, string, string][] {
         [
           "play",
           "振動や音を消せますか？",
-          "はい。ハプティクスとサウンドをそれぞれオフにできます。回収アニメーションも切り替えられます。",
+          "はい。ハプティクスとサウンドをそれぞれオフにできます。回収（コレクト）は、場札がすべて表向きで山札が空のときに残りのカードを組札へ送る機能です。オフにするとボタンも消えます。",
         ],
         [
           "data",
@@ -320,7 +340,7 @@ export function faqs(ja: boolean): [string, string, string][] {
         [
           "data",
           "広告は出ますか？",
-          "広告が有効なとき、Google AdMobのバナーが表示される場合があります。このバージョンではApp Tracking Transparency（ATT）は要求しません。",
+          "広告が有効なとき、Google AdMobのバナーが表示される場合があります。新しい配札では、間隔を空けてインタースティシャル広告が出ることがあります。このバージョンではApp Tracking Transparency（ATT）は要求しません。月額または年額の広告削除サブスクリプションで両方を非表示にできます。",
         ],
         [
           "data",
@@ -337,21 +357,21 @@ export function faqs(ja: boolean): [string, string, string][] {
         [
           "base",
           "Is it free?",
-          "Yes. Core play is free. When ads are enabled, a Google AdMob banner may appear. There are no in-app purchases at this time.",
+          "Yes. Core play is free. When ads are enabled, a Google AdMob banner may appear, and an interstitial may appear on a new deal. A monthly or yearly Remove Ads subscription hides them. No gameplay is gated on the purchase.",
         ],
         ["base", "Do I need an account?", "No. Play without signing up."],
         ["base", "What devices are supported?", "iPhone on iOS 26.0 or later."],
         [
           "play",
           "What rules does it use?",
-          "Classic Klondike: alternating colours descending on the tableau; Ace-to-King by suit on foundations.",
+          "Classic Klondike, draw-1: alternating colours descending on the tableau; Ace-to-King by suit on foundations. Empty columns take Kings. Not every deal is winnable.",
         ],
         ["play", "Is there undo?", "Yes—you can reverse the previous move."],
         ["play", "Is there a left-handed layout?", "Yes. Switch it in Settings."],
         [
           "play",
           "Can I mute haptics and sound?",
-          "Yes. Toggle haptics and sound independently, plus collect animation.",
+          "Yes. Toggle haptics and sound independently. Collect auto-sends remaining cards to the foundations when the tableau is fully face-up and the stock is empty; turning it off hides the button.",
         ],
         [
           "data",
@@ -366,7 +386,7 @@ export function faqs(ja: boolean): [string, string, string][] {
         [
           "data",
           "Are there ads?",
-          "When ads are enabled, a Google AdMob banner may appear. This version does not request App Tracking Transparency (ATT).",
+          "When ads are enabled, a Google AdMob banner may appear, and an interstitial may appear on a new deal. This version does not request App Tracking Transparency (ATT). A monthly or yearly Remove Ads subscription hides both.",
         ],
         [
           "data",
@@ -416,7 +436,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "6. 広告配信",
-          "広告が有効な場合、本アプリはGoogle Mobile Ads（AdMob）SDKを使用してバナー広告を表示することがあります。\n\n・バナー広告のみを想定しています（提供状況はバージョンにより変わり得ます）\n・このバージョンでは App Tracking Transparency（ATT）プロンプトは要求しません\n・Firebase Analyticsは使用しません\n・現時点で広告削除のアプリ内課金は提供していません\n\n広告配信事業者は、広告の配信、効果測定、不正防止のため、端末情報、IPアドレス、広告操作情報、診断情報などを取り扱う場合があります。取扱いはGoogleのプライバシーポリシーおよび利用者の設定に従います。運営者は、ゲームの進行内容や統計を広告目的で広告配信事業者へ提供しません。",
+          "広告が有効な場合、本アプリはGoogle Mobile Ads（AdMob）SDKを使用してバナー広告およびインタースティシャル広告を表示することがあります。\n\n・ホームの卓の下にバナーを表示する場合があります\n・新しい配札（ニューゲーム／リプレイ／クリア後の次のゲーム）で、間隔を空けてインタースティシャル広告を表示する場合があります\n・このバージョンでは App Tracking Transparency（ATT）プロンプトは要求しません\n・Firebase Analyticsは使用しません\n・月額および年額の自動更新サブスクリプション「広告削除」で、バナーとインタースティシャルを非表示にできます。プレイ内容は課金で解放されません\n\n広告配信事業者は、広告の配信、効果測定、不正防止のため、端末情報、IPアドレス、広告操作情報、診断情報などを取り扱う場合があります。取扱いはGoogleのプライバシーポリシーおよび利用者の設定に従います。運営者は、ゲームの進行内容や統計を広告目的で広告配信事業者へ提供しません。",
         ],
         [
           "7. お問い合わせ",
@@ -424,7 +444,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "8. 外部サービス",
-          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads / AdMob（広告が有効な場合）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・Apple（システム機能）\n・公式Webサイトの配信基盤",
+          "本サービスは、提供に必要な範囲で次を利用します。\n\n・Google Mobile Ads / AdMob（広告が有効な場合）\n・Apple（StoreKit、システム機能）\n・Cloudflare Workers（お問い合わせAPI）\n・Resend（お問い合わせメール配送）\n・公式Webサイトの配信基盤",
         ],
         [
           "9. 第三者提供",
@@ -474,7 +494,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "6. Advertising",
-          "When ads are enabled, the App may use the Google Mobile Ads (AdMob) SDK to show a banner ad.\n\n・Banner ads only are intended (exact placement may change by version)\n・This version does not request an App Tracking Transparency (ATT) prompt\n・Firebase Analytics is not used\n・No remove-ads in-app purchase is offered at this time\n\nAdvertising partners may process device information, IP address, ad interaction data, and diagnostics for delivery, measurement, and fraud prevention. Handling follows Google’s policies and your settings. The Operator does not send game progress or statistics to ad partners for advertising.",
+          "When ads are enabled, the App may use the Google Mobile Ads (AdMob) SDK to show a banner and interstitial ads.\n\n・A banner may appear under the table\n・An interstitial may appear on a new deal (New Game / Replay / the next deal after a win), with a minimum interval\n・This version does not request an App Tracking Transparency (ATT) prompt\n・Firebase Analytics is not used\n・A monthly or yearly auto-renewable “Remove Ads” subscription hides the banner and interstitials. No gameplay is gated on it\n\nAdvertising partners may process device information, IP address, ad interaction data, and diagnostics for delivery, measurement, and fraud prevention. Handling follows Google’s policies and your settings. The Operator does not send game progress or statistics to ad partners for advertising.",
         ],
         [
           "7. Support",
@@ -482,7 +502,7 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "8. Service providers",
-          "Where needed, the Service uses:\n\n・Google Mobile Ads / AdMob (when ads are enabled)\n・Cloudflare Workers (support API)\n・Resend (support email)\n・Apple system frameworks\n・Website hosting",
+          "Where needed, the Service uses:\n\n・Google Mobile Ads / AdMob (when ads are enabled)\n・Apple (StoreKit and system frameworks)\n・Cloudflare Workers (support API)\n・Resend (support email)\n・Website hosting",
         ],
         [
           "9. Disclosure",
@@ -520,11 +540,11 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第2条（サービス内容）",
-          "Quiet Solitaireは、クロンダイク形式のソリティア、アンドゥ、統計、設定（左利きレイアウト、ハプティクス、サウンド、回収アニメーションなど）、端末内へのゲーム・設定・統計の保存などの機能を提供します。アカウント登録は不要です。",
+          "Quiet Solitaireは、クロンダイク形式（1枚引き）のソリティア、アンドゥ、統計、設定（左利きレイアウト、ハプティクス、サウンド、回収など）、端末内へのゲーム・設定・統計の保存などの機能を提供します。アカウント登録は不要です。",
         ],
         [
           "第3条（利用料金および広告）",
-          "本アプリは無料で提供されます。広告が有効な場合、一部の画面にGoogle AdMobのバナー広告が表示されることがあります。現在、有料プランおよびアプリ内課金は提供していません。通信に必要な費用は利用者の負担とします。",
+          "本アプリの基本プレイは無料です。広告が有効な場合、一部の画面にGoogle AdMobのバナー広告が表示され、新しい配札でインタースティシャル広告が表示されることがあります。月額および年額の自動更新サブスクリプション「広告削除」で広告を非表示にできます。プレイ内容は課金で解放されません。購入処理、価格表示、更新、解約、返金その他の取扱いにはAppleの条件が適用されます。通信に必要な費用は利用者の負担とします。",
         ],
         ["第4条（利用者の責任）", "利用者は、自己の責任において本サービスを利用します。"],
         [
@@ -571,11 +591,11 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 2 — The Service",
-          "Quiet Solitaire provides Klondike solitaire play, undo, statistics, settings (including left-handed layout, haptics, sound, and collect animation), and on-device storage of games, settings, and stats. No account is required.",
+          "Quiet Solitaire provides draw-1 Klondike play, undo, statistics, settings (including left-handed layout, haptics, sound, and Collect), and on-device storage of games, settings, and stats. No account is required.",
         ],
         [
           "Article 3 — Fees and advertising",
-          "The App is free. When ads are enabled, a Google AdMob banner may appear on some screens. Paid plans and in-app purchases are not currently offered. You are responsible for data charges.",
+          "Core play is free. When ads are enabled, a Google AdMob banner may appear on some screens, and an interstitial may appear on a new deal. A monthly or yearly auto-renewable “Remove Ads” subscription hides ads. No gameplay is gated on it. Apple’s terms govern purchase, price, renewal, cancellation and refunds. You are responsible for data charges.",
         ],
         ["Article 4 — User responsibility", "You use the Service at your own responsibility."],
         [
@@ -631,10 +651,10 @@ export function newsPosts(ja: boolean) {
           body: [
             "Quiet Solitaireの公式ブランドサイトを公開しました。iPhone向けの静かなクロンダイク・ソリティアという位置づけを、App Store公開準備中の段階からそのままお伝えしています。",
             "現時点ではApp Storeへのリンクはありません。配信の準備が整い次第、サイトからもご案内します。",
-            "ゲーム・設定・統計は端末内に保存され、アカウントは不要です。広告が有効なときはAdMobバナーが表示される場合があります。詳細はプライバシーポリシーと利用規約をご確認ください。",
+            "ゲーム・設定・統計は端末内に保存され、アカウントは不要です。広告が有効なときはAdMobのバナーと、新しい配札でのインタースティシャルが表示される場合があります。広告削除は月額または年額のサブスクリプションです。詳細はプライバシーポリシーと利用規約をご確認ください。",
           ],
         },
-        ]
+      ]
     : [
         {
           id: "site-launch",
@@ -647,8 +667,8 @@ export function newsPosts(ja: boolean) {
           body: [
             "The official Quiet Solitaire brand site is live. It introduces a calm Klondike solitaire for iPhone while the app prepares for the App Store.",
             "There is no App Store link yet. When distribution is ready, we will share it here as well.",
-            "Games, settings, and stats stay on your device with no account. When ads are enabled, an AdMob banner may appear. See Privacy and Terms for details.",
+            "Games, settings, and stats stay on your device with no account. When ads are enabled, an AdMob banner may appear, and an interstitial may appear on a new deal. Remove Ads is a monthly or yearly subscription. See Privacy and Terms for details.",
           ],
         },
-        ];
+      ];
 }

@@ -1,6 +1,6 @@
 ---
-import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppSimpleSteps from "@tomokichi/app-site/AppSimpleSteps.astro";
+import AppStory, { type StoryStep } from "@tomokichi/app-site/AppStory.astro";
 import AppUpdatesPage from "@tomokichi/app-site/AppUpdatesPage.astro";
 import NewsFeed from "@tomokichi/app-site/NewsFeed.astro";
 import { supportUrl } from "@tomokichi/app-site/urls";
@@ -12,8 +12,8 @@ import {
   type Page,
   pick,
   privacySections,
-  regions,
   regionSlug,
+  regions,
   termsSections,
   titles,
 } from "../lib/content";
@@ -126,6 +126,7 @@ const featureGroups = ja
           "アプリ内問い合わせ",
           "法務文書のオフラインフォールバック",
           "控えめなバナー広告（高さに余裕がある端末）",
+          "買い切りの広告削除",
         ],
       },
     ]
@@ -191,6 +192,7 @@ const featureGroups = ja
           "In-app support",
           "Offline legal fallback",
           "Quiet banner ads on taller screens",
+          "One-time Remove Ads purchase",
         ],
       },
     ];
@@ -233,7 +235,7 @@ const howGuides = ja
         steps: [
           "対応国を開き、地域マップまたは一覧へ進みます。",
           "訪れた都道府県・州・県などにチェックを付けます。",
-          "訪問数と割合、フィルター、共有用画像が使えます。",
+          "訪問数と割合、フィルターを確認できます。多くの対応国では共有用画像も作れます（日本はテキスト共有）。",
         ],
       },
       {
@@ -296,7 +298,7 @@ const howGuides = ja
         steps: [
           "Open a supported country and its regional map or list.",
           "Check prefectures, states, provinces and more.",
-          "Use counts, rates, filters and share images.",
+          "Use counts, rates and filters. Most supported countries can make a poster; Japan shares as text.",
         ],
       },
       {
@@ -358,7 +360,7 @@ const howBeats: StoryStep[] = howGuides.map((guide, i) => ({
 const faqs = ja
   ? [
       ["base", "Colorviaはどんなアプリですか？", "訪れた国を記録し、世界地図を色づかせる旅の記録アプリです。対応国では都道府県や州まで残せます。"],
-      ["base", "無料で使えますか？", "はい。基本機能は無料です。高さに余裕がある端末ではホーム下部にバナー広告が表示される場合があります。現在、広告削除課金はありません。"],
+      ["base", "無料で使えますか？", "はい。基本機能は無料です。高さに余裕がある端末ではホーム下部にバナー広告が表示される場合があります。設定の買い切り「広告を削除」で非表示にできます。サブスクリプションではありません。"],
       ["base", "アカウントは必要ですか？", "いいえ。"],
       ["base", "対応環境は？", "iPhone・iOS 18以降向けです。iPad専用の最適化レイアウトは現時点ではありません。"],
       ["country", "地図上で国をタップして追加できますか？", "いいえ。ホームの＋から国選択リストで追加します。地図では拡大・移動・リセットができます。"],
@@ -374,14 +376,15 @@ const faqs = ja
       ["data", "JSONには何が含まれますか？", "訪問国、地域の訪問状態、各記録の更新日時などが含まれます。"],
       ["data", "すべてのデータを削除できますか？", "はい。設定のデータ管理から削除できます。"],
       ["display", "テーマや地図色を変えられますか？", "はい。設定からライト／ダーク／システムと地図色を変更できます。"],
-      ["display", "共有できますか？", "はい。訪問状況や地域マップの共有用画像を作成できます。"],
+      ["display", "共有できますか？", "はい。ホームからは訪問数のテキストを共有できます。フランスなど対応国の地域マップでは共有用画像を作成できます。日本の地域マップはテキスト共有です。"],
       ["net", "オフラインでも使えますか？", "世界地図、訪問国の登録、統計、地域マップ、地名検索、データの書き出し・読み込みなど、主要機能はオフラインで利用できます。"],
       ["net", "通信が必要な操作は？", "広告の取得、広告同意、問い合わせ送信、最新のプライバシーポリシー・利用規約の表示、外部サイトやライセンスページの表示などです。"],
-      ["net", "広告は表示されますか？", "はい。Google Mobile Adsによるバナーがホーム下部に出る場合があります。画面高が700pt未満の端末では表示しないことがあります。インタースティシャルやリワード広告はありません。"],
+      ["net", "広告は表示されますか？", "はい。Google Mobile Adsによるバナーがホーム下部に出る場合があります。画面高が700pt未満の端末では表示しないことがあります。インタースティシャルやリワード広告はありません。起動時に広告のトラッキング許可（ATT）を求めます。許可しなくても基本機能は使えます。"],
+      ["net", "広告を削除できますか？", "はい。設定の買い切り「広告を削除」でバナーを非表示にできます。同じApple Accountなら復元できます。価格はApp Storeおよびアプリ内の表示を正とします。"],
     ]
   : [
       ["base", "What is Colorvia?", "A travel log that colours the countries you visit on a world map, with regional detail in 11 supported countries."],
-      ["base", "Is it free?", "Yes. Core features are free. A banner ad may appear on taller devices. There is no remove-ads purchase today."],
+      ["base", "Is it free?", "Yes. Core features are free. A banner ad may appear on taller devices. A one-time Remove Ads purchase in Settings hides it. There is no subscription."],
       ["base", "Do I need an account?", "No."],
       ["base", "What devices are supported?", "iPhone on iOS 18 or later. There is no iPad-optimized layout yet."],
       ["country", "Can I tap the world map to add a country?", "No. Use Home’s + button and the country list. The map supports zoom, pan and reset only."],
@@ -397,10 +400,11 @@ const faqs = ja
       ["data", "What does the JSON include?", "Visited countries, regional visit state and update timestamps."],
       ["data", "Can I delete everything?", "Yes, from Data management in Settings."],
       ["display", "Can I change theme or map colour?", "Yes, in Settings."],
-      ["display", "Can I share?", "Yes—share summaries and regional map images."],
+      ["display", "Can I share?", "Yes. Home shares a text summary of visit counts. Most regional maps can make a poster image; Japan shares as text."],
       ["net", "Does it work offline?", "Yes for the world map, visit tracking, statistics, regional maps, place search and JSON import/export."],
       ["net", "What needs a network?", "Loading ads, ad consent, support messages, the latest legal documents, and opening external sites or licences."],
-      ["net", "Are there ads?", "Yes—a Google Mobile Ads banner may appear on Home on taller screens. No interstitial or rewarded ads."],
+      ["net", "Are there ads?", "Yes—a Google Mobile Ads banner may appear on Home on taller screens. No interstitial or rewarded ads. The app requests App Tracking Transparency; declining does not lock features."],
+      ["net", "Can I remove ads?", "Yes. The one-time Remove Ads purchase in Settings hides the banner. Restore it on the same Apple Account. The App Store display price is authoritative."],
     ];
 
 const faqCats = ja
@@ -425,7 +429,7 @@ const shots = [
       {(page === "privacy" || page === "terms") && (
         <div class="legal-dates">
           <p>{ja ? "制定日：2026年7月28日" : "Effective date: July 28, 2026"}</p>
-          <p>{ja ? "最終更新日：2026年8月1日" : "Last updated: August 1, 2026"}</p>
+          <p>{ja ? "最終更新日：2026年8月22日" : "Last updated: August 22, 2026"}</p>
         </div>
       )}
     </header>

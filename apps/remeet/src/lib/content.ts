@@ -122,7 +122,7 @@ export function features(ja: boolean) {
         [
           "countdown",
           "再会までのカウントダウン",
-          "再会の日までを、日数と進捗で見守ります。少しずつ近づいていく感覚が、待つ時間を支えます。",
+          "再会の日までを、日数と進捗で見守ります。それぞれの現地時刻と天気も表示します（天気は外部サービスから取得します）。",
         ],
         [
           "map",
@@ -159,7 +159,11 @@ export function features(ja: boolean) {
           "ホーム画面・ロック画面ウィジェット",
           "アプリを開かずに、残りの日数や進捗を確認できます。",
         ],
-        ["bell", "通知", "1週間前、前日、当日の朝、再会時刻の4種類を個別にオン／オフできます。"],
+        [
+          "bell",
+          "通知",
+          "1週間前、前日、当日の朝、再会時刻を個別にオン／オフできます。待ち時間が長い場合の節目や、記念日、共有相手からのリアクションなども、設定に応じて届くことがあります。",
+        ],
         [
           "calendar",
           "カレンダーへの追加",
@@ -173,7 +177,7 @@ export function features(ja: boolean) {
         [
           "phone",
           "端末内保存",
-          "個人利用の予定・写真・メモは端末内に保存されます。共有を有効にした再会はAppleのiCloudを通じて指定したパートナーと同期されます。",
+          "予定・写真・メモは端末内に保存されます。同じApple AccountのiCloudにサインインしている場合、個人利用の記録も非公開のiCloudへ同期されることがあります。共有を有効にした再会は、指定した1人のパートナーと同期されます。",
         ],
         ["shield", "アカウント登録不要", "登録やログインなしですぐに使い始められます。"],
       ] as const)
@@ -181,7 +185,7 @@ export function features(ja: boolean) {
         [
           "countdown",
           "Reunion countdown",
-          "Watch the days and progress until you meet again. Feeling it draw closer carries the waiting.",
+          "Watch the days and progress until you meet again. Each place shows its local time and weather (weather comes from an external service).",
         ],
         [
           "map",
@@ -196,7 +200,7 @@ export function features(ja: boolean) {
         [
           "wish",
           "Things to do together",
-          "List what you want to do when you meet. This stays on your device — it is not a shared list between phones. One photo per wish.",
+          "List what you want to do when you meet. On a shared reunion, the invited partner can edit it with you. One photo per wish.",
         ],
         [
           "plans",
@@ -221,7 +225,7 @@ export function features(ja: boolean) {
         [
           "bell",
           "Notifications",
-          "Toggle one week before, the day before, the morning of, and at reunion time independently.",
+          "Toggle one week before, the day before, the morning of, and at reunion time independently. Longer waits, anniversaries, and partner reactions may also notify you, depending on settings.",
         ],
         [
           "calendar",
@@ -236,7 +240,7 @@ export function features(ja: boolean) {
         [
           "phone",
           "On-device storage",
-          "Personal plans, photos, and notes stay on your device. Shared reunions sync with the invited partner through Apple iCloud.",
+          "Plans, photos, and notes are stored on your device. If you are signed into iCloud with the same Apple Account, personal records may also sync to your private iCloud database. A shared reunion syncs with the one partner you invite.",
         ],
         ["shield", "No account required", "Start immediately — no sign-up, no login."],
       ] as const);
@@ -620,7 +624,7 @@ export function faqs(ja: boolean) {
         [
           "feature",
           "通知のタイミングを変更できますか？",
-          "1週間前、前日、当日の朝、再会時刻の4種類を、設定の「通知」からそれぞれ個別にオン・オフできます。",
+          "1週間前、前日、当日の朝、再会時刻を、設定の「通知」からそれぞれ個別にオン・オフできます。待ち時間が長い場合の節目や、記念日、共有相手からのリアクションなども、設定に応じて届くことがあります。",
         ],
         [
           "feature",
@@ -640,12 +644,12 @@ export function faqs(ja: boolean) {
         [
           "data",
           "データはどこに保存されますか？",
-          "個人利用の予定・写真・メモは端末内に保存されます。共有を有効にした再会の内容と、初回無料共有の利用状態・Share Pass台帳はAppleのiCloud / CloudKitにも保存されます。運営者は記録内容を収集する独自サーバーを保有していません。",
+          "予定・写真・メモは端末内に保存されます。同じApple AccountのiCloudにサインインしている場合、個人利用の記録もAppleのiCloud（非公開データベース）へ同期されることがあります。共有を有効にした再会の内容と、初回無料共有の利用状態・Share Pass台帳もiCloud / CloudKitに保存されます。運営者は記録内容を収集する独自サーバーを保有していません。",
         ],
         [
           "data",
           "機種変更時にデータを引き継げますか？",
-          "現在のバージョンは、機種変更時のデータ移行や復元には対応していません。\n\n設定から書き出せるJSONファイルは、登録名や記録件数を確認するための概要データです。写真、メモ、各記録の完全な内容は含まれず、アプリへ復元することもできません。",
+          "同じApple AccountでiCloudを利用している場合、個人利用の記録が新しい端末へ同期されることがあります。共有中の再会は、双方がiCloudを利用できることが前提です。\n\n設定から書き出せるJSONファイルは、登録名や記録件数を確認するための概要データです。写真、メモ、各記録の完全な内容は含まれず、アプリへ復元することはできません。招待リンクは新しい端末へは引き継がれません。",
         ],
         [
           "data",
@@ -733,7 +737,7 @@ export function faqs(ja: boolean) {
         [
           "feature",
           "Can I change notification timing?",
-          "You can independently toggle one week before, the day before, the morning of, and at reunion time in Settings → Notifications.",
+          "You can independently toggle one week before, the day before, the morning of, and at reunion time in Settings → Notifications. Longer waits, anniversaries, and partner reactions may also notify you, depending on settings.",
         ],
         [
           "feature",
@@ -753,12 +757,12 @@ export function faqs(ja: boolean) {
         [
           "data",
           "Where is my data stored?",
-          "Personal plans, photos and notes stay on this device. Shared reunion content, first-free-sharing state and the Share Pass ledger also use Apple iCloud / CloudKit. The operator does not run a proprietary server that collects your records.",
+          "Plans, photos and notes are stored on this device. If you are signed into iCloud with the same Apple Account, personal records may also sync to your private iCloud database. Shared reunion content, first-free-sharing state and the Share Pass ledger also use Apple iCloud / CloudKit. The operator does not run a proprietary server that collects your records.",
         ],
         [
           "data",
           "Can I move data when I change phones?",
-          "The current version does not support migration or restore when you change phones.\n\nThe JSON file from Settings is only a summary of names and counts. Photos, notes and full records are not included, and it cannot be restored into the app.",
+          "If you use iCloud with the same Apple Account, personal records may appear on a new device. A shared reunion still needs iCloud on both phones.\n\nThe JSON file from Settings is only a summary of names and counts. Photos, notes and full records are not included, and it cannot be restored into the app. Invite links do not transfer to a new phone.",
         ],
         [
           "data",
@@ -825,11 +829,11 @@ export function privacySections(ja: boolean): [string, string][] {
         ],
         [
           "4. 基本方針",
-          "本アプリは独自のアカウント登録を必要としません。共有を有効にしていない再会の予定、写真、メモ等は端末内に保存されます。共有を有効にした再会は、AppleのiCloudおよびCloudKitを通じて指定された1人のパートナーと同期されます。運営者は記録内容を収集・閲覧する独自サーバーを保有していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用しますが、アプリ内記録を広告配信事業者へ送信しません。",
+          "本アプリは独自のアカウント登録を必要としません。再会の予定、写真、メモ等は端末内に保存されます。同じApple AccountのiCloudにサインインしている場合、個人利用の記録もAppleのiCloud（非公開データベース）へ同期されることがあります。共有を有効にした再会は、AppleのiCloudおよびCloudKitを通じて指定された1人のパートナーと同期されます。運営者は記録内容を収集・閲覧する独自サーバーを保有していません。本アプリは広告表示のためGoogle Mobile Ads SDKを使用しますが、アプリ内記録を広告配信事業者へ送信しません。",
         ],
         [
           "5. 端末内に保存する情報",
-          "本アプリは、利用者が入力または選択した次の情報を、端末内のデータベース（Core Data）およびApp Group領域に保存します。共有を有効にした再会では、対象となる情報をiCloudにも保存します。\n\n・再会予定の名称、離れ始めた日時、再会日時、メモ\n・自分・相手・待ち合わせ場所の地名、緯度経度、タイムゾーン\n・「会ったらやりたいこと」の項目と完了状態\n・待っている間の記録および再会記録の写真、日付、メモ、感想、5段階評価\n・共有状態、Share Passの購入Transaction ID、未使用・予約・使用済みの状態および対象再会ID\n・通知のオン／オフなどのアプリ設定\n\n端末内の一部情報は、ウィジェット表示のため同一開発者のApp Group内でも共有されます。",
+          "本アプリは、利用者が入力または選択した次の情報を、端末内のデータベース（Core Data）およびApp Group領域に保存します。同じApple AccountのiCloudにサインインしている場合、個人利用の記録も非公開のiCloudへ同期されることがあります。共有を有効にした再会では、対象となる情報を指定したパートナーと共有します。\n\n・再会予定の名称、離れ始めた日時、再会日時、メモ\n・自分・相手・待ち合わせ場所の地名、緯度経度、タイムゾーン\n・「会ったらやりたいこと」の項目と完了状態\n・待っている間の記録および再会記録の写真、日付、メモ、感想、5段階評価\n・共有状態、Share Passの購入Transaction ID、未使用・予約・使用済みの状態および対象再会ID\n・通知のオン／オフなどのアプリ設定\n\n端末内の一部情報は、ウィジェット表示のため同一開発者のApp Group内でも共有されます。",
         ],
         [
           "6. 外部サービスへ送信される情報",
@@ -872,7 +876,7 @@ export function privacySections(ja: boolean): [string, string][] {
           "法令の改正または本アプリの機能変更に伴い、本ポリシーを変更する場合があります。重要な変更を行う場合は、本アプリ内または本ウェブサイトにて周知します。変更後の内容は、掲載された時点から適用されます。",
         ],
         [
-          "15. お問い合わせ",
+          "16. お問い合わせ",
           "本ポリシーおよび個人情報の取扱いに関するお問い合わせは、Tomokichi共通お問い合わせフォームまたは support@tmkch.io からお送りください。フォームを送信しない限り、問い合わせ情報は送信されません。",
         ],
       ]
@@ -888,11 +892,11 @@ export function privacySections(ja: boolean): [string, string][] {
         ["3. Scope", "This policy applies to use of the app and browsing of this website."],
         [
           "4. Basic policy",
-          "The app does not require a proprietary account. Reunion plans, photos, and notes that you do not share stay on your device. A shared reunion syncs with the one partner you invite through Apple iCloud and CloudKit. The operator does not run a proprietary server that collects or views those records. Google Mobile Ads is used for advertising, but your in-app records are not sent to advertising partners.",
+          "The app does not require a proprietary account. Reunion plans, photos, and notes are stored on your device. If you are signed into iCloud with the same Apple Account, personal records may also sync to your private iCloud database. A shared reunion syncs with the one partner you invite through Apple iCloud and CloudKit. The operator does not run a proprietary server that collects or views those records. Google Mobile Ads is used for advertising, but your in-app records are not sent to advertising partners.",
         ],
         [
           "5. Information stored on your device",
-          "The app stores the following in an on-device database (Core Data) and an App Group container. For a shared reunion, the relevant information is also stored in iCloud:\n\n・Reunion plan names, dates, and notes\n・Place names, coordinates, and time zones\n・Wish-list items and completion state\n・Photos, dates, notes, impressions, and ratings\n・Sharing state, Share Pass transaction ID, pass state, and reunion ID\n・App settings such as notification preferences\n\nSome on-device information is shared within the developer’s App Group for widgets.",
+          "The app stores the following in an on-device database (Core Data) and an App Group container. If you are signed into iCloud with the same Apple Account, personal records may also sync to your private iCloud database. For a shared reunion, the relevant information is shared with the invited partner:\n\n・Reunion plan names, dates, and notes\n・Place names, coordinates, and time zones\n・Wish-list items and completion state\n・Photos, dates, notes, impressions, and ratings\n・Sharing state, Share Pass transaction ID, pass state, and reunion ID\n・App settings such as notification preferences\n\nSome on-device information is shared within the developer’s App Group for widgets.",
         ],
         [
           "6. Information sent externally",
@@ -923,15 +927,19 @@ export function privacySections(ja: boolean): [string, string][] {
           "The app has no proprietary account and does not handle passwords. On-device data is protected by iOS security mechanisms; shared data is protected through Apple iCloud / CloudKit.",
         ],
         [
-          "13. Minors",
+          "13. Information obtained from reports",
+          "Content created through sharing (text and photos) is not sent to the operator during ordinary use. It stays between the device and iCloud.\n\nOnly when you tap Report on a partner’s content does the operator receive, for review:\n\n・The reported text\n・Any image attached to that content\n・The reason and an optional explanation you type\n・Report id, content id, reunion id, and device identifiers for the author and the reporter\n・App version, build number, OS version, and language\n\nThe purpose is responding to misuse, keeping people safe, and handling support.\n\nReported images are stored in private storage (Cloudflare R2) for review and are deleted automatically within 30 days in principle.\n\nReport records and related information may be kept as needed for misuse response, safety, disputes, and similar purposes.",
+        ],
+        [
+          "14. Minors",
           "If a minor uses the app, please do so with a parent or guardian’s consent.",
         ],
         [
-          "14. Changes",
+          "15. Changes",
           "This policy may change with law or product updates. Material changes will be announced in the app or on this website and take effect when published.",
         ],
         [
-          "15. Contact",
+          "16. Contact",
           "Questions about this policy: shared Tomokichi support form or support@tmkch.io. Support information is not sent unless you submit the form.",
         ],
       ];
@@ -970,7 +978,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "第7条（データの管理）",
-          "個人利用中のデータは端末内に保存され、共有を有効にした再会のデータ、初回無料共有の利用状態およびShare Pass台帳はiCloudにも保存されます。共有参加者は共有された再会の内容を閲覧・編集できます。「設定 → データ管理」のJSON書き出しはデータ概要であり、写真やメモのバックアップまたは復元には使用できません。端末、iCloudまたは通信の障害等によるデータ消失について、運営者は責任を負いません。",
+          "データは端末内に保存されます。同じApple AccountのiCloudにサインインしている場合、個人利用の記録も非公開のiCloudへ同期されることがあります。共有を有効にした再会のデータ、初回無料共有の利用状態およびShare Pass台帳はiCloudにも保存されます。共有参加者は共有された再会の内容を閲覧・編集できます。「設定 → データ管理」のJSON書き出しはデータ概要であり、写真やメモのバックアップまたは復元には使用できません。端末、iCloudまたは通信の障害等によるデータ消失について、運営者は責任を負いません。",
         ],
         [
           "第8条（保証の否認・免責事項）",
@@ -1012,7 +1020,11 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 5 — Prohibited conduct",
-          "You must not:\n\n1. Violate any law or public order and morals\n2. Infringe the rights, property, reputation or privacy of the operator or any third party\n3. Copy, modify, decompile, disassemble or otherwise reverse-engineer the App\n4. Interfere with the operation of, or gain unauthorised access to, the Service\n5. Engage in any other conduct the operator reasonably considers inappropriate",
+          "You must not:\n\n1. Violate any law or public order and morals\n2. Infringe the rights, property, reputation or privacy of the operator or any third party\n3. Share sexual, obscene, violent or dangerous content\n4. Harass, threaten or otherwise bother a sharing partner\n5. Share sensitive photos or other information without the other person’s consent\n6. Copy, modify, decompile, disassemble or otherwise reverse-engineer the App\n7. Interfere with the operation of, or gain unauthorised access to, the Service\n8. Engage in any other conduct the operator reasonably considers inappropriate",
+        ],
+        [
+          "Article 5-2 — Reports and operator response",
+          "If a sharing partner sends content that appears to violate the previous article, you can report it from that content’s screen.\n\nWhen a report is sent, the operator receives a copy of the reported text and any attached image for review. The operator does not obtain shared content unless a report is made.\n\nThe operator may review the report and, where necessary and proportionate, take steps such as a warning. A particular response is not promised for every report.",
         ],
         [
           "Article 6 — Intellectual property",
@@ -1020,7 +1032,7 @@ export function termsSections(ja: boolean): [string, string][] {
         ],
         [
           "Article 7 — Data management",
-          "Personal-use data stays on your device. Shared reunion data, first-free-sharing state, and the Share Pass ledger also use iCloud. A participant can view and edit a shared reunion. The JSON export under Settings → Data management is a summary only and cannot back up or restore photos or notes. The operator is not responsible for loss caused by device, iCloud, or network failure.",
+          "Data is stored on your device. If you are signed into iCloud with the same Apple Account, personal records may also sync to your private iCloud database. Shared reunion data, first-free-sharing state, and the Share Pass ledger also use iCloud. A participant can view and edit a shared reunion. The JSON export under Settings → Data management is a summary only and cannot back up or restore photos or notes. The operator is not responsible for loss caused by device, iCloud, or network failure.",
         ],
         [
           "Article 8 — Disclaimer",

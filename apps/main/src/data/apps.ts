@@ -106,16 +106,16 @@ export const apps: AppItem[] = [
         ],
       },
       pricing: {
-        ja: "無料。一部の画面に広告が表示されます。",
-        en: "Free, with ads on some screens.",
+        ja: "無料。一部の画面に広告が表示されます。最初の再会の共有は無料。2回目以降はShare Pass（¥500・消費型）が1枚必要です。",
+        en: "Free, with ads on some screens. The first shared reunion is free; each additional shared reunion uses one ¥500 consumable Share Pass.",
       },
       requirements: {
         ja: "iPhone・iOS 26以降",
         en: "iPhone, iOS 26 or later",
       },
       privacy: {
-        ja: "個人データは端末内に保存。共有した再会のみiCloud経由で同期。独自アカウントは不要です。",
-        en: "Personal data stays on your device. Shared reunions sync via iCloud. No proprietary account.",
+        ja: "端末内に保存。同じApple AccountのiCloudなら個人記録も同期されることがあります。共有した再会はパートナーと同期。独自アカウントは不要です。",
+        en: "Stored on your device. Signed-in iCloud may also sync personal records. Shared reunions sync with a partner. No proprietary account.",
       },
       languages: {
         ja: "6言語（日本語・英語・スペイン語・フランス語・韓国語・簡体字中国語）",
@@ -153,29 +153,29 @@ export const apps: AppItem[] = [
     detail: {
       highlights: {
         ja: [
-          "旅ごとの記録（タイトル・訪問先・日付・メモ）",
+          "旅ごとの記録（行き先の国・日付・写真・メモ）",
           "旅のタイムラインで過程を振り返る",
-          "旅の記録に写真を添付",
+          "3D地球儀・平面地図・コレクションで国を見返す",
           "訪問済み・行きたい国をステータスで管理",
         ],
         en: [
-          "A record per trip: title, places, dates and notes",
+          "A record per trip: destination countries, dates, photos and notes",
           "Look back on the journey as a timeline",
-          "Attach photos to a trip",
+          "A 3D globe, flat map and collection of countries",
           "Track countries as visited or want to go",
         ],
       },
       pricing: {
-        ja: "無料。広告や行動解析のSDKは組み込んでいません。",
-        en: "Free. No advertising or analytics SDKs are bundled.",
+        ja: "無料。バナー広告と、新しい国を初めて記録したあとのインタースティシャルが出ることがあります。買い切りの広告削除あり。",
+        en: "Free. Banner ads, and an occasional interstitial after you first log a new country. One-time Remove Ads purchase.",
       },
       requirements: {
-        ja: "iPhone",
-        en: "iPhone",
+        ja: "iPhone・iOS 26以降",
+        en: "iPhone, iOS 26 or later",
       },
       privacy: {
-        ja: "端末内のデータベースにのみ保存。写真はiOS標準の選択画面から選んだものだけを扱います。",
-        en: "Kept only in an on-device database. Photos come through iOS's standard picker, so only what you choose is passed in.",
+        ja: "端末内のデータベースにのみ保存。写真はiOS標準の選択画面から選んだものだけ。書き出し機能はありません。",
+        en: "Kept only in an on-device database. Photos come through iOS's standard picker. No export.",
       },
     },
     featured: true,
@@ -224,16 +224,20 @@ export const apps: AppItem[] = [
         ],
       },
       pricing: {
-        ja: "無料。ホーム下部にバナー広告が表示される場合があります。アプリ内課金はありません。",
-        en: "Free. A banner ad may appear at the bottom of the home screen. No in-app purchases.",
+        ja: "無料。ホーム下部にバナー広告が表示される場合があります。買い切りの広告削除あり。",
+        en: "Free. A banner ad may appear at the bottom of the home screen. One-time Remove Ads purchase.",
       },
       requirements: {
-        ja: "iPhone",
-        en: "iPhone",
+        ja: "iPhone・iOS 18以降",
+        en: "iPhone, iOS 18 or later",
       },
       privacy: {
         ja: "端末内に保存。アカウント登録は不要です。",
         en: "Stored on your device. No account required.",
+      },
+      languages: {
+        ja: "11言語（日本語・英語・ドイツ語・スペイン語・フランス語・イタリア語・韓国語・ポルトガル語（ブラジル）・ロシア語・簡体字中国語・繁体字中国語）",
+        en: "11 languages (Japanese, English, German, Spanish, French, Italian, Korean, Portuguese (Brazil), Russian, Simplified Chinese, Traditional Chinese)",
       },
     },
     featured: true,
@@ -430,12 +434,12 @@ export const apps: AppItem[] = [
     slug: "quiet-solitaire",
     name: "Quiet Solitaire",
     tagline: {
-      ja: "自分のペースに合う、静かなカスタマイズ。",
-      en: "Quiet customisation at your own pace.",
+      ja: "夜の卓で、カードと向き合う。",
+      en: "Sit with the cards on a quiet evening.",
     },
     description: {
-      ja: "カード裏・テーブル・左利き・ヒント・サウンドまで整えられる、落ち着いたクロンダイクです。",
-      en: "A calm Klondike with card backs, felt colours, left-handed layout, hints, and soft feedback.",
+      ja: "1枚引きのクロンダイク。アンドゥ、左利き、統計、回収。ゲームは端末の中だけに。",
+      en: "Draw-1 Klondike with undo, left-handed layout, stats, and Collect. Games stay on your device.",
     },
     concept: {
       ja: "静かなカード",
@@ -454,23 +458,21 @@ export const apps: AppItem[] = [
     detail: {
       highlights: {
         ja: [
-          "クラシックなクロンダイク・ルール",
-          "カード裏テーマとテーブルカラー",
-          "左利きレイアウト、ヒント表示、サウンド／ハプティクス",
-          "カードサイズ・余白・縦画面レイアウトの調整",
-          "アンドゥ、統計、進行中ゲームの端末内保存",
+          "クロンダイク（1枚引き）。すべての配札が必ずクリアできるわけではない",
+          "アンドゥ、統計、左利きレイアウト、ハプティクス／サウンド",
+          "場札がすべて表向きのときの回収（コレクト）",
+          "進行中ゲームと統計の端末内保存",
         ],
         en: [
-          "Classic Klondike rules",
-          "Card-back themes and table colours",
-          "Left-handed layout, hints, sound and haptics",
-          "Card size, margins, and portrait layout options",
-          "Undo, stats, and in-progress games kept on device",
+          "Draw-1 Klondike — not every deal is winnable",
+          "Undo, stats, left-handed layout, haptics and sound",
+          "Collect when the tableau is fully face-up",
+          "In-progress games and stats kept on device",
         ],
       },
       pricing: {
-        ja: "無料。バナー広告が表示される場合があります。",
-        en: "Free. A banner ad may appear.",
+        ja: "無料。バナーと、新しい配札でのインタースティシャルが出ることがあります。広告削除は月額または年額のサブスクリプションです。",
+        en: "Free. A banner, and an interstitial on a new deal. Remove Ads is a monthly or yearly subscription.",
       },
       requirements: {
         ja: "iPhone・iOS 26以降",

@@ -5,5 +5,12 @@ import "../../styles/global.css";
 ---
 
 <Shell lang="ja" title="特定商取引法に基づく表記" page="commercial-transactions">
-  <CommercialTransactionsPage lang="ja" appName="Tripory" appSlug="tripory" />
+  <CommercialTransactionsPage
+    lang="ja"
+    appName="Tripory"
+    appSlug="tripory"
+    adSupported
+    purchases={[{ name: ["広告を削除", "Remove Ads"], price: "¥500" }]}
+    lastUpdated={["2026年8月22日", "August 22, 2026"]}
+  />
 </Shell>

@@ -5,5 +5,12 @@ import "../../styles/global.css";
 ---
 
 <AppShell lang="ja" title="特定商取引法に基づく表記" page="commercial-transactions">
-  <CommercialTransactionsPage lang="ja" appName="Colorvia" appSlug="colorvia" adSupported />
+  <CommercialTransactionsPage
+    lang="ja"
+    appName="Colorvia"
+    appSlug="colorvia"
+    adSupported
+    purchases={[{ name: ["広告を削除", "Remove Ads"], price: "App Store表示価格" }]}
+    lastUpdated={["2026年8月22日", "August 22, 2026"]}
+  />
 </AppShell>
