@@ -124,7 +124,7 @@ async function notifyOperator(
     `種類: ${report.contentType}`,
     `コンテンツID: ${report.contentId}`,
     `再会ID: ${report.reunionId}`,
-    `投稿者: ${report.contentAuthorId}`,
+    `投稿者: ${report.contentAuthorId ?? "不明（この種類のコンテンツは投稿者を記録していません）"}`,
     `通報者: ${report.reporterAuthorId}`,
     "",
     `アプリ: ${report.appVersion} (${report.buildNumber})`,

@@ -25,9 +25,14 @@ export const reportReasons = [
   "other",
 ] as const;
 
-/** Wishes are absent on purpose: Remeet records no author for them, so a report
- * could not say whose they are. See `docs/ugc-safety.md` in the app repo. */
-export const reportContentTypes = ["waitingMemory", "anniversaryCard"] as const;
+/** Everything a person can write into a shared reunion. Two of these carry an
+ * author and two do not — see `contentAuthorId`. */
+export const reportContentTypes = [
+  "waitingMemory",
+  "anniversaryCard",
+  "wish",
+  "statusNote",
+] as const;
 
 export type ReportReason = (typeof reportReasons)[number];
 export type ReportContentType = (typeof reportContentTypes)[number];
@@ -45,7 +50,11 @@ export interface ContentReport {
   contentId: string;
   reunionId: string;
   reporterAuthorId: string;
-  contentAuthorId: string;
+  /** Absent when the reported content records no author — a wish, or anything
+   * written before the app stored one. The report is still accepted: this
+   * field was never evidence of anything (it is a client's claim, and the
+   * safety notes say so), so its absence costs context, not the report. */
+  contentAuthorId?: string;
   contentTextSnapshot?: string;
 }
 
@@ -98,7 +107,10 @@ export function parseReport(input: unknown): ContentReport | undefined {
   const contentId = uuid("contentId");
   const reunionId = uuid("reunionId");
   const reporterAuthorId = uuid("reporterAuthorId");
-  const contentAuthorId = uuid("contentAuthorId");
+  // Optional, but still validated when present: a malformed id is a broken
+  // client, and accepting it would put a garbage string in the operator's mail.
+  const contentAuthorId = value.contentAuthorId === undefined ? undefined : uuid("contentAuthorId");
+  if (value.contentAuthorId !== undefined && !contentAuthorId) return undefined;
   const reportedAt = required("reportedAt");
   const appVersion = required("appVersion");
   const buildNumber = required("buildNumber");
@@ -110,7 +122,6 @@ export function parseReport(input: unknown): ContentReport | undefined {
     !contentId ||
     !reunionId ||
     !reporterAuthorId ||
-    !contentAuthorId ||
     !reportedAt ||
     !appVersion ||
     !buildNumber ||

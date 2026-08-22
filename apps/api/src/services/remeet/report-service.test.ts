@@ -46,7 +46,6 @@ describe("parseReport", () => {
     "contentId",
     "reunionId",
     "reporterAuthorId",
-    "contentAuthorId",
     "appVersion",
     "buildNumber",
   ])("rejects a report missing %s", (field) => {
@@ -59,12 +58,35 @@ describe("parseReport", () => {
     expect(parseReport({ ...valid, reason: "because" })).toBeUndefined();
   });
 
-  /** Wishes carry no author in Remeet, so a report about one could not say
-   * whose it is. The type is not accepted rather than accepted and unusable. */
-  it("rejects a content type outside the supported two", () => {
-    expect(reportContentTypes).toEqual(["waitingMemory", "anniversaryCard"]);
-    expect(parseReport({ ...valid, contentType: "wish" })).toBeUndefined();
+  it("accepts every kind of post and nothing else", () => {
+    expect(reportContentTypes).toEqual([
+      "waitingMemory",
+      "anniversaryCard",
+      "wish",
+      "statusNote",
+    ]);
+    for (const contentType of reportContentTypes) {
+      expect(parseReport({ ...valid, contentType })).toBeDefined();
+    }
+    // Reactions are not writing; there is nothing for a person to read.
     expect(parseReport({ ...valid, contentType: "reaction" })).toBeUndefined();
+  });
+
+  /** Wishes record no author in Remeet, so the app sends the field absent
+   * rather than filled with a placeholder. The report is still a report. */
+  it("accepts a report whose content has no known author", () => {
+    const { contentAuthorId, ...anonymous } = valid;
+    const parsed = parseReport({ ...anonymous, contentType: "wish" });
+
+    expect(parsed).toBeDefined();
+    expect(parsed?.contentAuthorId).toBeUndefined();
+  });
+
+  /** Absent is fine; malformed is a broken client, and must not end up in the
+   * operator's mail looking like an id. */
+  it("still rejects a malformed author when one is given", () => {
+    expect(parseReport({ ...valid, contentAuthorId: "nobody" })).toBeUndefined();
+    expect(parseReport({ ...valid, contentAuthorId: "" })).toBeUndefined();
   });
 
   it("rejects ids that are not uuids", () => {
