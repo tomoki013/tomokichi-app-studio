@@ -69,6 +69,26 @@
         "limit": 10,
         "period": 60
       }
+    },
+    {
+      // Content reports. Tighter than support, because each one creates mail
+      // and an object in R2 — but not so tight that somebody who has just been
+      // sent several unpleasant things cannot report all of them.
+      "name": "REMEET_REPORT_LIMITER",
+      "namespace_id": "2005",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+  "r2_buckets": [
+    {
+      // Photos attached to reported content. Private, and with a lifecycle
+      // rule deleting objects after 30 days — set on the bucket itself, and
+      // matched by the retention stated in the privacy policy.
+      "binding": "REMEET_REPORTS_BUCKET",
+      "bucket_name": "remeet-reports"
     }
   ]
 }

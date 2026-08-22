@@ -1,6 +1,7 @@
 import { type Context, Hono } from "hono";
 
 import { registerRemeetInviteRoutes, type ApiBindings } from "./routes/remeet/invites";
+import { registerRemeetReportRoutes } from "./routes/remeet/reports";
 import { cleanUpExpiredInvites } from "./services/remeet/invite-service";
 import { D1InviteStore } from "./services/remeet/invite-store";
 import { registerSupportRoute, type SupportDependencies } from "./routes/support";
@@ -25,6 +26,10 @@ export function createApp(dependencies: SupportDependencies = {}) {
   // One Worker, one namespace per app: `/remeet/v1/*` is Remeet's, and the
   // service behind it depends on nothing else served here.
   registerRemeetInviteRoutes(app);
+  // Content reports. The only route here that ever receives a person's own
+  // writing, and only when they asked for it to be looked at — see
+  // `routes/remeet/reports.ts`.
+  registerRemeetReportRoutes(app);
   return app;
 }
 
