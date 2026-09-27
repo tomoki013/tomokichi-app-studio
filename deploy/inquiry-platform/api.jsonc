@@ -10,9 +10,9 @@
   // predate the platform's own repository and stay as they are.
   //
   // Never on the internet. No route, no custom domain, and `workers.dev` off:
-  // the only ways in are the Service Bindings declared by the admin console,
+  // the only ways in are the Service Bindings declared by the API gateway,
   // the mail Worker and `tomokichi-api`. That is what lets this Worker hold the D1 and
-  // R2 bindings while Admin Web holds neither.
+  // R2 bindings while the API gateway holds neither.
   "workers_dev": false,
   "triggers": { "crons": ["*/5 * * * *"] },
 
@@ -69,7 +69,7 @@
   "r2_buckets": [
     {
       // Private. Report evidence and support attachments. No public URL is ever
-      // generated; bytes are read back through Admin Web behind Access.
+      // generated; bytes are read back through the API gateway behind Access.
       "binding": "PRIVATE_FILES",
       "bucket_name": "tomokichi-admin-files"
     }

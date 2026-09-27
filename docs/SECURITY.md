@@ -56,7 +56,7 @@
 
 - 利用者: 各サイトの `/support`、`support@tmkch.io`、アプリ内フォーム。
 - 脆弱性: 同じ窓口。bug bounty は無い。
-- 受け取ったら管理画面で Ticket（type=PRIVACY / BUG / INCIDENT）として扱う（inquiry-platform `docs/operations/tickets.md`）。
+- 受け取ったら利用者側の運営 UI / API client で Ticket（type=PRIVACY / BUG / INCIDENT）として扱う（inquiry-platform `docs/operations/tickets.md`）。
 
 ## 既知の課題
 

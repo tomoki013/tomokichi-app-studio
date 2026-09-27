@@ -45,7 +45,13 @@ v0.1.0 は migration `0010_default_service_setting.sql` を含む。既存 trigg
 3. `pnpm deploy:inquiry migrate`（0010 のみ適用されるはず）。
 4. 確認（3 のあと、設定は取得した版の中にコピー済み）:
    `cd .cache/inquiry-platform/v0.1.0/apps/api && pnpm exec wrangler d1 execute DB --remote --config wrangler.deployment.jsonc --command "SELECT * FROM platform_settings"` → `default_service_id | studio`。行が無ければ `pnpm deploy:inquiry seed` で入る。
-5. `pnpm deploy:inquiry deploy all`。管理画面の名前・アイコン・通知件名が従来どおりか確認。
+5. `pnpm deploy:inquiry deploy all`。API の Access・認証・通知件名が従来どおりか確認する。画面やアイコンはこのリリースの対象外。
+
+## v0.2.0（2026-09-27 実施済み）
+
+管理画面 UI を基盤から除去し、`tomokichi-admin-web` を Access 付き API Gateway として再デプロイした。HTML、PWA、静的 assets、SPA fallback は提供しない。SDK の tag も `apps/api/package.json` で `v0.2.0` に固定し、PR #83 の main マージ後に `tomokichi-api` も自動デプロイされた。
+
+本番確認: `admin.tmkch.io` と `/api` は Access のログインへ 302、静的 manifest は Gateway の API-only 応答になった。運営画面、CLI、BFF は利用者側で実装する。
 
 ## 記録
 
