@@ -3,6 +3,7 @@ import { beforeAll, beforeEach, expect, it } from "vitest";
 import initial from "../../../migrations/0007_moderation.sql?raw";
 import channels from "../../../migrations/0008_moderation_channel.sql?raw";
 import decisions from "../../../migrations/0009_report_decisions.sql?raw";
+import sharedItems from "../../../migrations/0010_moderation_shared_item.sql?raw";
 import { completeDecision, prepareDecision, reportDigest } from "./admin-moderation";
 
 const db = (env as unknown as { REMEET_INVITES_DB: D1Database }).REMEET_INVITES_DB;
@@ -27,7 +28,7 @@ async function sign(payload: string) {
   });
 }
 beforeAll(async () => {
-  for (const sql of [initial, channels, decisions]) {
+  for (const sql of [initial, channels, decisions, sharedItems]) {
     for (const statement of sql
       .split("\n")
       .filter((line) => !line.trim().startsWith("--"))
@@ -99,4 +100,12 @@ it("does not dismiss content that already has an active deletion", async () => {
   await expect(
     prepareDecision(db, { ...input, decision: "dismiss" }, trustedKey.id),
   ).rejects.toThrow();
+});
+it("publishes a deletion of a shared item, the kind 0010 added", async () => {
+  const proposal = await prepareDecision(db, { ...input, contentType: "sharedItem" }, trustedKey.id);
+  await completeDecision(db, proposal.id, await sign(proposal.payload), trustedKey);
+  const row = await db
+    .prepare("SELECT target_kind FROM remeet_moderation_actions")
+    .first<{ target_kind: string }>();
+  expect(row?.target_kind).toBe("sharedItem");
 });

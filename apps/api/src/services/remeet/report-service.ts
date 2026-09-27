@@ -31,13 +31,19 @@ export const reportReasons = [
   "other",
 ] as const;
 
-/** Everything a person can write into a shared reunion. Two of these carry an
- * author and two do not — see `contentAuthorId`. */
+/** Everything a person can write into a shared reunion. Any of these may
+ * arrive without an author — see `contentAuthorId`.
+ *
+ * `sharedItem` is the app's generic shared-content record (a line added to a
+ * wish, and whatever small shared kinds follow). One word for all of them, and
+ * the same word the moderation manifest uses, so a new kind of shared item on
+ * the app needs no change here. */
 export const reportContentTypes = [
   "waitingMemory",
   "anniversaryCard",
   "wish",
   "statusNote",
+  "sharedItem",
 ] as const;
 
 export type ReportReason = (typeof reportReasons)[number];

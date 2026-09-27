@@ -31,6 +31,7 @@ export type ModerationTargetKind =
   | "waitingMemory"
   | "anniversaryCard"
   | "statusNote"
+  | "sharedItem"
   | "reunionField";
 
 export type ModerationRootField =
@@ -44,6 +45,7 @@ export const CHILD_KINDS: ModerationTargetKind[] = [
   "waitingMemory",
   "anniversaryCard",
   "statusNote",
+  "sharedItem",
 ];
 
 export const ROOT_FIELDS: ModerationRootField[] = [
