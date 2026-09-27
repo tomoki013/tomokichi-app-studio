@@ -37,7 +37,7 @@ pnpm deploy:inquiry deploy all            # api → admin → mail-ingress
 
 ロールバック: 直前の tag に戻して `deploy all`。D1 は戻さない（migration は forward-only）。
 
-## v0.1.0 への移行（2026-09-27 時点で未実施）
+## v0.1.0 への移行（2026-09-27 実施済み）
 
 v0.1.0 は migration `0010_default_service_setting.sql` を含む。既存 trigger に埋め込まれていた既定値 `studio` を `platform_settings` に移し、trigger をそれを読む形に置き換える。Project のない問い合わせは引き続き `studio` に入る。Worker のコードの違いはログの `worker` 欄（`admin` / `mail-ingress`）と中立化されたコメントだけ。
 
@@ -49,6 +49,8 @@ v0.1.0 は migration `0010_default_service_setting.sql` を含む。既存 trigg
 5. `pnpm deploy:inquiry deploy all`。管理画面の名前・アイコン・通知件名が従来どおりか確認。
 
 ## 記録
+
+- 2026-09-27 v0.1.0: 事前バックアップ `tomokichi-admin-2026-09-27-pre-v0.1.0.sql`（Owner の手元）。バックアップのコピーで 0010 を予行演習（未適用は 0010 のみ、外部キー違反なし、再実行で変化なし）。本番に 0010 を適用し、`default_service_id = studio`、trigger は新形式、Ticket 23 件は不変。Worker version: core `dc5ef595`、admin `e88b6c5d`、mail-ingress `6c157e52`。`admin.tmkch.io` は Access のログインへ 302、manifest は「Tomokichi Studio Admin / Tomokichi Admin」、アイコンは `admin-assets` と同一。`tomokichi-api` は deploy workflow（`f10b151`）で反映。ロールバック先: tag `v0.0.0` が無いため、inquiry-platform `0bbd0d2` の Tomokichi 設定で再デプロイ。
 
 - [独立化の棚卸し](extraction.md)、[Cutover](cutover.md)（ADR-022）
 - [通報対応とメール返信（Remeet）](report-workflow.md)
