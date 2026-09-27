@@ -135,6 +135,6 @@ jobs:
       ref: ${{ needs.affected.outputs.sha }}
     secrets: inherit
 
-  # admin-core, admin-web and mail-ingress are no longer deployed from this
-  # repository. They moved to tomoki013/inquiry-platform (ADR-022), which
-  # deploys the same Workers; deploying them from here too would overwrite it.
+  # admin-core, admin-web and mail-ingress are Tomokichi's deployment of
+  # tomoki013/inquiry-platform. They are deployed by hand with
+  # `pnpm deploy:inquiry` (docs/inquiry-platform/README.md, ADR-023), not here.

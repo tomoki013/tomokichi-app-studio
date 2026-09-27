@@ -117,8 +117,15 @@
 - **Context**: Admin（Core / Web / mail-ingress / contracts / mail / push）は Tomokichi Studio の一部として作られたが、Remeet・Colorvia・Yohaku も同じ基盤を使う。Studio は利用者の 1 つであるべき。
 - **Decision**: 別 Repository `inquiry-platform`（GitHub private、履歴付きで切り出し）へ段階移行する。Ticket の状態・種別は現行（8 状態・7 種別・SLA）を正とし、SDK / 公開 API で簡易語彙（OPEN / IN_PROGRESS / RESOLVED / CLOSED、contact / report）に写像する。Cloudflare 資源名（Worker、D1 `tomokichi-admin`、R2、`admin.tmkch.io`）は変えず、新 Repository から同じ資源へデプロイする（データ移行なし）。資源名の中立化は独立化完了後の別作業。
 - **Approval**: Owner（tomoki013）が 2026-09-24 に承認。対象: Repository 作成（ローカル + GitHub private）、モデル方針、資源名方針。CI/CD のデプロイ元移動・Dependency 追加・Production migration は各 Phase で別途承認。
-- **Source**: [inquiry-platform-extraction.md](inquiry-platform-extraction.md)。
+- **Source**: [inquiry-platform/extraction.md](inquiry-platform/extraction.md)。
 - **Status**: 完了（2026-09-26）。Phase 4 で 3 Worker のデプロイ元を inquiry-platform に切替（tomokichi-studio#77）、Phase 3 で tomokichi-api を `Intake` entrypoint + vendored SDK に（#76）、Phase 5 でこの Repository から旧コードを削除。
+
+## ADR-023 inquiry-platform を公開 OSS とし、Tomokichi は利用者の 1 つとしてデプロイする
+
+- **Context**: ADR-022 で独立させた基盤に、Tomokichi の設定（Worker 名・D1 id・ドメイン・署名・電話番号）、seed、ロゴ、migration 内のデータ、運用記録が残っていた。Studio も vendored SDK で基盤と結び付いていた。
+- **Decision**: 基盤から Tomokichi の要素をすべて除き、MIT で公開する（inquiry-platform#6、tag `v0.1.0`）。Tomokichi 環境の設定・seed・アイコン・運用記録はこの Repository の `deploy/inquiry-platform/` と `docs/inquiry-platform/` に置き、固定した release tag を基盤の `scripts/deploy.mjs` でデプロイする。SDK は `apps/api` から git tag で依存し、その tag がデプロイする版も決める。既存 migration 0004 / 0006 のデータ文は削除し、既定の service は migration 0010 で既存の値（`studio`）を引き継ぐ。以後、Tomokichi Studio と inquiry-platform は別物として扱い、基盤に Tomokichi 固有の値や分岐を入れない。
+- **Approval**: Owner（tomoki013）が 2026-09-27 に承認。対象: 公開化、MIT License、既存 migration の書き換え、デプロイ元をこの Repository へ移すこと、PR のマージ。
+- **Status**: コード側は完了。本番への 0010 の適用とデプロイは Owner が手元で行う（[inquiry-platform/README.md](inquiry-platform/README.md)）。
 
 ## 根拠が文書に無いもの
 

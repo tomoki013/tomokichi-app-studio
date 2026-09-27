@@ -1,0 +1,55 @@
+# inquiry-platform の Tomokichi 環境
+
+最終更新: 2026-09-27。
+
+お問い合わせ・通報・管理画面（`admin.tmkch.io`）は、公開 OSS の [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform) を Tomokichi の設定でデプロイしたものです。基盤には Tomokichi 固有の値は無く、それらはすべてこの Repository に置いています（ADR-023）。
+
+## どこに何があるか
+
+| パス | 何か |
+|---|---|
+| `apps/api/package.json` の `@inquiry-platform/sdk` | 使う release tag（例 `#v0.1.0`）。SDK とデプロイする Worker の版をこの 1 行で決める |
+| `deploy/inquiry-platform/api.jsonc` | Core（`tomokichi-admin-core`）。D1 `tomokichi-admin`、R2 `tomokichi-admin-files`、アドレス、`BRANDING`、`SIGNED_MODERATION`（Remeet → `tomokichi-api#RemeetModeration`） |
+| `deploy/inquiry-platform/admin.jsonc` | 管理画面（`tomokichi-admin-web`、`admin.tmkch.io`、Access） |
+| `deploy/inquiry-platform/mail-ingress.jsonc` | 受信メール（`tomokichi-mail-ingress`） |
+| `deploy/inquiry-platform/seed.ts`, `seed/` | アプリ・定型文・署名、`studio` service と既定値 |
+| `deploy/inquiry-platform/admin-assets/` | 管理画面のアイコン（ビルド成果物に上書き） |
+| `deploy/inquiry-platform/run.mjs` | 指定 tag を `.cache/inquiry-platform/<tag>` に取得し、基盤の `scripts/deploy.mjs` を実行 |
+
+Secret（`HASH_PEPPER`、`MAIL_API_KEY`、`NOTIFICATION_EMAIL`、`VAPID_PRIVATE_KEY`、`SUPPORT_FORWARD_EMAIL`）は各 Worker に設定済みで、Repository には無い。
+
+## コマンド
+
+```bash
+pnpm deploy:inquiry check                 # 3 Worker の dry-run（何も変えない）
+pnpm deploy:inquiry migrate               # D1 migration（remote）
+pnpm deploy:inquiry seed --dry-run        # seed の SQL を表示
+pnpm deploy:inquiry deploy all            # api → admin → mail-ingress
+```
+
+本番に触るコマンド（`migrate`、`seed`、`deploy`）は Owner が手元で実行する。
+
+## 版を上げる
+
+1. inquiry-platform の新しい tag の変更点と `apps/api/migrations` の追加を確認。
+2. `apps/api/package.json` の tag を上げて `pnpm install`。`pnpm --filter @tomokichi/api test` と `pnpm deploy:inquiry check` で bindings が変わっていないことを確認して PR。
+3. マージ後、D1 を private にバックアップ（下の手順 1）、Worker version を控えて `migrate` → `deploy all` → `tomokichi-api` をデプロイ。
+
+ロールバック: 直前の tag に戻して `deploy all`。D1 は戻さない（migration は forward-only）。
+
+## v0.1.0 への移行（2026-09-27 時点で未実施）
+
+v0.1.0 は migration `0010_default_service_setting.sql` を含む。既存 trigger に埋め込まれていた既定値 `studio` を `platform_settings` に移し、trigger をそれを読む形に置き換える。Project のない問い合わせは引き続き `studio` に入る。Worker のコードの違いはログの `worker` 欄（`admin` / `mail-ingress`）と中立化されたコメントだけ。
+
+1. `pnpm deploy:inquiry check` で bindings・vars が従来どおりか確認。
+2. バックアップ: `.cache/inquiry-platform/v0.1.0/apps/api` で `pnpm exec wrangler d1 export DB --remote --config wrangler.deployment.jsonc --output <private path>`（設定は `check` で一度コピーされる）。
+3. `pnpm deploy:inquiry migrate`（0010 のみ適用されるはず）。
+4. 確認（3 のあと、設定は取得した版の中にコピー済み）:
+   `cd .cache/inquiry-platform/v0.1.0/apps/api && pnpm exec wrangler d1 execute DB --remote --config wrangler.deployment.jsonc --command "SELECT * FROM platform_settings"` → `default_service_id | studio`。行が無ければ `pnpm deploy:inquiry seed` で入る。
+5. `pnpm deploy:inquiry deploy all`。管理画面の名前・アイコン・通知件名が従来どおりか確認。
+
+## 記録
+
+- [独立化の棚卸し](extraction.md)、[Cutover](cutover.md)（ADR-022）
+- [通報対応とメール返信（Remeet）](report-workflow.md)
+- [Ticket モデル移行の結果](tickets-migration-2026-09-18.md)

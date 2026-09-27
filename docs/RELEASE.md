@@ -1,6 +1,6 @@
 # Release
 
-最終更新: 2026-09-26。`ci.yml` / `deploy.yml` / `deploy-worker.yml` / `preview-app-sites.yml` から。問い合わせ・通報基盤（`tomokichi-admin-core` / `-admin-web` / `-mail-ingress`）のリリースは [inquiry-platform](https://github.com/tomoki013/inquiry-platform) `docs/operations/cutover.md`。
+最終更新: 2026-09-26。`ci.yml` / `deploy.yml` / `deploy-worker.yml` / `preview-app-sites.yml` から。問い合わせ・通報基盤（`tomokichi-admin-core` / `-admin-web` / `-mail-ingress`）のリリースは [inquiry-platform/README.md](inquiry-platform/README.md)。
 
 ## Branch strategy
 
@@ -12,7 +12,7 @@
 
 - API は URL に `/api/v1` / `/remeet/v1`（`/api/support` は旧ビルドのため serve 継続、廃止予定なし）。
 - D1 migration は `apps/api/migrations/000N_*.sql`。**forward-only、追加のみ**。コードより先に当てる。
-- 基盤との契約は vendored の `packages/inquiry-sdk`。更新は inquiry-platform の `scripts/vendor-sdk.mjs` で取り込む（手で編集しない）。基盤側の変更は追加の任意フィールドで進める。
+- 基盤との契約は `@inquiry-platform/sdk`（`apps/api/package.json` で release tag を固定）。tag を上げると SDK とデプロイする基盤の版が一緒に変わる。
 
 ## Build
 

@@ -25,7 +25,7 @@ flowchart TB
   end
   Sites -- "/support form (Turnstile)" --> API
   Apps((Remeet / Colorvia)) -- "X-Support-Client / X-Remeet-Client" --> API
-  API -- "INQUIRY binding + vendored SDK\n(reports: outbox, support: 同期)" --> Intake
+  API -- "INQUIRY binding + SDK\n(reports: outbox, support: 同期)" --> Intake
   Platform -- "SIGNED_MODERATION → RemeetModeration entrypoint" --> API
   API --> D1b[("D1 REMEET_INVITES_DB")]
   API --> R2b[("R2 REMEET_REPORTS_BUCKET")]
@@ -40,12 +40,12 @@ flowchart TB
 | `apps/main`, `apps/remeet`, … | ブランドサイト | `astro.config.mjs`（`seoAssets()`）、`src/pages/**` |
 | `packages/app-site` | 共通シェル・SEO・構造化データ・AI クローラ方針 | `AppSiteShell.astro`, `AppHeroChrome.astro`, `src/seo.ts` |
 | `apps/api` | 公開 API | `src/index.ts`（route 登録 + cron + `RemeetModeration` entrypoint）、`routes/support.ts`、`routes/remeet/{invites,reports,moderation}.ts`、`services/admin-bridge.ts`（基盤への受け渡し）、`services/remeet/*`、`scripts/moderation.ts`（Mac 署名 CLI） |
-| `packages/inquiry-sdk` | 問い合わせ基盤の SDK（vendored、依存ゼロ）。編集しない | `VENDORED.md` にコピー元コミット |
+| `deploy/inquiry-platform` | 問い合わせ基盤の Tomokichi 環境の設定・seed・アイコン | `run.mjs`、[inquiry-platform/README.md](inquiry-platform/README.md) |
 
 ## 3. Dependencies（方向）
 
 ```
-apps/api ──▶ packages/inquiry-sdk ──(Service Binding: Intake)──▶ inquiry-platform
+apps/api ──▶ @inquiry-platform/sdk（git tag） ──(Service Binding: Intake)──▶ inquiry-platform
 apps/<brand> ──▶ packages/app-site
 ```
 
@@ -64,14 +64,14 @@ apps/<brand> ──▶ packages/app-site
 |---|---|---|
 | 問い合わせ・通報・返信・通知・監査 | inquiry-platform | 同 Repository `docs/` |
 | Remeet 招待 | `services/remeet/invite-*` | Remeet リポジトリ `docs/invite-flow.md` |
-| Remeet モデレーション | `services/remeet/moderation-*`, `scripts/moderation.ts` | Remeet `docs/moderation-plan.md`、inquiry-platform `docs/operations/report-workflow.md` |
+| Remeet モデレーション | `services/remeet/moderation-*`, `scripts/moderation.ts` | Remeet `docs/moderation-plan.md`、[inquiry-platform/report-workflow.md](inquiry-platform/report-workflow.md) |
 | ブランドサイト | `packages/app-site` | `app-brand-sites.md` |
 
 ## 6. Persistence
 
 - **D1 `REMEET_INVITES_DB`**（api）: `migrations/0001〜0009`。招待、通報、モデレーション決定。
 - **R2 `REMEET_REPORTS_BUCKET`**（api）: 通報の証跡と outbox。
-- 基盤の D1 `tomokichi-admin` / R2 `tomokichi-admin-files` は inquiry-platform が管理する。
+- 基盤の D1 `tomokichi-admin` / R2 `tomokichi-admin-files` は基盤の Core が持つ。設定は `deploy/inquiry-platform/api.jsonc`。
 - ローカル: `wrangler dev` の Miniflare。テストは `cloudflare:test` の D1 に実 migration。
 
 ## 7. External services

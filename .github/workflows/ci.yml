@@ -89,13 +89,13 @@ jobs:
               - 'package.json'
             api:
               - 'apps/api/**'
-              - 'packages/inquiry-sdk/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
               - 'turbo.json'
-            # The contact/report platform (admin-core, admin-web, mail-ingress)
-            # lives in tomoki013/inquiry-platform. Only its SDK is vendored here.
+            # The contact/report platform is tomoki013/inquiry-platform. apps/api
+            # pins its SDK by tag in package.json; Tomokichi's deployment config
+            # is deploy/inquiry-platform/, deployed by hand (ADR-023).
 
       # The Deploy workflow is chained off this run with `workflow_run`, which
       # carries no file list of its own. Hand it the one computed here so that

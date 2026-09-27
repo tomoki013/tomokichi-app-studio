@@ -224,8 +224,8 @@ importers:
   apps/api:
     dependencies:
       '@inquiry-platform/sdk':
-        specifier: workspace:*
-        version: link:../../packages/inquiry-sdk
+        specifier: github:tomoki013/inquiry-platform#v0.1.0&path:/packages/sdk
+        version: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/1b30cb108e9b8822217fb19c5997bb4f1377d11d#path:/packages/sdk
       '@tomokichi/app-site':
         specifier: workspace:*
         version: link:../../packages/app-site
@@ -501,12 +501,6 @@ importers:
       astro:
         specifier: ^7.2.8
         version: 7.3.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.0)
-
-  packages/inquiry-sdk:
-    devDependencies:
-      typescript:
-        specifier: ^6.0.3
-        version: 6.0.3
 
 packages:
 
@@ -1224,6 +1218,10 @@ packages:
     engines: {node: '>=20.9.0'}
     cpu: [x64]
     os: [win32]
+
+  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/1b30cb108e9b8822217fb19c5997bb4f1377d11d#path:/packages/sdk':
+    resolution: {gitHosted: true, integrity: sha512-2OiBfZE8jfl9TADkPTvT6eUa3MhLIzaCh8IQXPUcZQcjgaLXmtIwDzxxC7ZfRNetGzPJAUiuu+TTUOtSbeX9KA==, path: /packages/sdk, tarball: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/1b30cb108e9b8822217fb19c5997bb4f1377d11d}
+    version: 0.1.0
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -3531,6 +3529,8 @@ snapshots:
 
   '@img/sharp-win32-x64@0.35.4':
     optional: true
+
+  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/1b30cb108e9b8822217fb19c5997bb4f1377d11d#path:/packages/sdk': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
