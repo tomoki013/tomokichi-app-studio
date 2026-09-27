@@ -5,7 +5,7 @@
 //   node deploy/inquiry-platform/run.mjs check
 //   node deploy/inquiry-platform/run.mjs migrate
 //   node deploy/inquiry-platform/run.mjs seed [--dry-run]
-//   node deploy/inquiry-platform/run.mjs deploy <api|admin|mail-ingress|all> [--dry-run]
+//   node deploy/inquiry-platform/run.mjs deploy <api|gateway|mail-ingress|all> [--dry-run]
 //
 // The release is the tag `apps/api` pins `@inquiry-platform/sdk` to, so the
 // Workers and the SDK the public API talks to them with are always the same
