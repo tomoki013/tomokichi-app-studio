@@ -156,17 +156,18 @@ pnpm --filter @tomokichi/main exec wrangler versions list
 ## Inquiry platform (admin.tmkch.io)
 
 Contacts, reports, replies, notifications and the admin screen at
-`admin.tmkch.io` are **not in this repository**. They are the inquiry
-platform, [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform)
-(private), which serves every Studio app and deploys the `tomokichi-admin-core`,
-`tomokichi-admin-web` and `tomokichi-mail-ingress` Workers from there
-(ADR-022).
+`admin.tmkch.io` run on [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform),
+a separate, public, brand-neutral project. This repository holds only
+Tomokichi's deployment of it: the configuration, seed and icons for the
+`tomokichi-admin-core`, `tomokichi-admin-web` and `tomokichi-mail-ingress`
+Workers in `deploy/inquiry-platform/`, deployed with `pnpm deploy:inquiry`
+([docs/inquiry-platform/README.md](docs/inquiry-platform/README.md), ADR-023).
 
 This repository is one of its users. `apps/api` hands each support-form
 message and Remeet report to the platform through the `INQUIRY` Service Binding.
 That binding reaches the platform's `Intake` entrypoint, which can only submit
-and cannot read. The calls go through the vendored SDK in
-`packages/inquiry-sdk` (`src/services/admin-bridge.ts`). The platform's record
+and cannot read. The calls go through `@inquiry-platform/sdk`, pinned by
+release tag in `apps/api/package.json` (`src/services/admin-bridge.ts`). The platform's record
 is the only copy, and without the binding neither route accepts anything.
 `apps/api` also still serves the platform the `RemeetModeration` entrypoint
 used for signed report decisions.
@@ -199,6 +200,6 @@ CI (成功)
       └─ main / remeet / tripory / colorvia / yohaku / quiet-solitaire / api
 ```
 
-問い合わせ・通報基盤の 3 Worker は inquiry-platform からデプロイします（この workflow には含まれません）。
+問い合わせ・通報基盤の 3 Worker はこの workflow に含まれません。手元から `pnpm deploy:inquiry` でデプロイします（[docs/inquiry-platform/README.md](docs/inquiry-platform/README.md)）。
 
 手動デプロイはActionsの `Deploy` → *Run workflow* から行えます。`apps` に `all`（既定）か、`main,api` のようなカンマ区切りのアプリ名を渡します。

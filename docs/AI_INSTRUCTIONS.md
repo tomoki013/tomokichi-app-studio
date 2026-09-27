@@ -14,8 +14,8 @@ tmkch.io 配下のブランドサイト群と公開 API（`tomokichi-api`）を 
 
 ## Architecture rules
 
-- **管理画面・Ticket・通報の規則をこの Repository に書かない。** それらは inquiry-platform に足す。
-- 基盤との接点は `apps/api/src/services/admin-bridge.ts` と vendored の `packages/inquiry-sdk` だけ。`packages/inquiry-sdk` は **手で編集しない**（inquiry-platform の `scripts/vendor-sdk.mjs` で取り込む）。
+- **inquiry-platform は別物の公開 OSS。** 管理画面・Ticket・通報の規則をこの Repository に書かず、基盤に Tomokichi 固有の値や分岐を入れない。Tomokichi 環境の値は `deploy/inquiry-platform/` だけに置く。
+- 基盤との接点は `apps/api/src/services/admin-bridge.ts`（`@inquiry-platform/sdk`、`apps/api/package.json` で tag 固定）と `deploy/inquiry-platform/` だけ。版を上げるのは tag を変える PR で（[inquiry-platform/README.md](inquiry-platform/README.md)）。
 - `apps/api` の `INQUIRY` binding は基盤の `Intake` entrypoint にだけ向ける。`AdminCore` に bind しない。サポートフォームにアプリを足したら `props.projects` にも足す（`inquiry-binding.test.ts`）。
 - 通報の削除・解除は署名経路（基盤 → `RemeetModeration` prepare → Mac → complete）だけ。
 - migration は `apps/api/migrations/000N_*.sql` を追記のみ。
@@ -24,7 +24,7 @@ tmkch.io 配下のブランドサイト群と公開 API（`tomokichi-api`）を 
 
 ## Naming / Directory
 
-- Worker 名は `tomokichi-<app>`。パッケージ名は `@tomokichi/<app>`（vendored SDK だけ `@inquiry-platform/sdk`）。
+- Worker 名は `tomokichi-<app>`。パッケージ名は `@tomokichi/<app>`（外部の SDK `@inquiry-platform/sdk` は除く）。
 - 表・列は snake_case、id は UUID 文字列、時刻は UTC ISO 文字列。
 - 文言（UI・メール）は日本語。docs は日本語本文 + 英語識別子。
 

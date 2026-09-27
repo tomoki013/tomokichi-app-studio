@@ -18,6 +18,7 @@
     "ci": "biome ci . && pnpm check && pnpm test && pnpm build && pnpm check:links && pnpm check:seo",
     "create:app-site": "node scripts/create-app-site.mjs",
     "deploy:api": "pnpm --filter @tomokichi/api run deploy",
+    "deploy:inquiry": "node deploy/inquiry-platform/run.mjs",
     "deploy:colorvia": "pnpm --filter @tomokichi/colorvia run deploy",
     "deploy:main": "pnpm --filter @tomokichi/main run deploy",
     "deploy:remeet": "pnpm --filter @tomokichi/remeet run deploy",

@@ -31,7 +31,7 @@ pnpm --filter @tomokichi/api exec vitest run src/inquiry-binding.test.ts
 
 ## CI
 
-`ci.yml`: `dorny/paths-filter` で変更アプリを判定し、そのアプリの `check` / `test` / `build` を並列ジョブで実行。`global`（workflow / biome / scripts / lockfile）が変わると全アプリ。`packages/inquiry-sdk` の変更は API check を動かす。成功時に `affected-apps` artifact を出し、`deploy.yml` がそれを読んで deploy する（[RELEASE.md](RELEASE.md)）。
+`ci.yml`: `dorny/paths-filter` で変更アプリを判定し、そのアプリの `check` / `test` / `build` を並列ジョブで実行。`global`（workflow / biome / scripts / lockfile）が変わると全アプリ。`pnpm-lock.yaml`（SDK の tag を含む）の変更は API check を動かす。成功時に `affected-apps` artifact を出し、`deploy.yml` がそれを読んで deploy する（[RELEASE.md](RELEASE.md)）。
 
 ## Mock / Fixture
 
