@@ -2,18 +2,17 @@
 
 最終更新: 2026-09-27。
 
-お問い合わせ・通報・管理画面（`admin.tmkch.io`）は、公開 OSS の [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform) を Tomokichi の設定でデプロイしたものです。基盤には Tomokichi 固有の値は無く、それらはすべてこの Repository に置いています（ADR-023）。
+お問い合わせ・通報・運営 API（`admin.tmkch.io`）は、公開 OSS の [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform) を Tomokichi の設定でデプロイしたものです。基盤は API とセキュリティの共通部分だけを提供し、管理画面の UI はこの Repository 側で必要になったときに実装します。基盤には Tomokichi 固有の値は無く、それらはすべてこの Repository に置いています（ADR-023）。
 
 ## どこに何があるか
 
 | パス | 何か |
 |---|---|
-| `apps/api/package.json` の `@inquiry-platform/sdk` | 使う release tag（例 `#v0.1.0`）。SDK とデプロイする Worker の版をこの 1 行で決める |
+| `apps/api/package.json` の `@inquiry-platform/sdk` | 使う release tag（例 `#v0.2.0`）。SDK とデプロイする Worker の版をこの 1 行で決める |
 | `deploy/inquiry-platform/api.jsonc` | Core（`tomokichi-admin-core`）。D1 `tomokichi-admin`、R2 `tomokichi-admin-files`、アドレス、`BRANDING`、`SIGNED_MODERATION`（Remeet → `tomokichi-api#RemeetModeration`） |
-| `deploy/inquiry-platform/admin.jsonc` | 管理画面（`tomokichi-admin-web`、`admin.tmkch.io`、Access） |
+| `deploy/inquiry-platform/admin.jsonc` | API Gateway（`tomokichi-admin-web`、`admin.tmkch.io`、Access）。UI の assets は設定しない |
 | `deploy/inquiry-platform/mail-ingress.jsonc` | 受信メール（`tomokichi-mail-ingress`） |
 | `deploy/inquiry-platform/seed.ts`, `seed/` | アプリ・定型文・署名、`studio` service と既定値 |
-| `deploy/inquiry-platform/admin-assets/` | 管理画面のアイコン（ビルド成果物に上書き） |
 | `deploy/inquiry-platform/run.mjs` | 指定 tag を `.cache/inquiry-platform/<tag>` に取得し、基盤の `scripts/deploy.mjs` を実行 |
 
 Secret（`HASH_PEPPER`、`MAIL_API_KEY`、`NOTIFICATION_EMAIL`、`VAPID_PRIVATE_KEY`、`SUPPORT_FORWARD_EMAIL`）は各 Worker に設定済みで、Repository には無い。

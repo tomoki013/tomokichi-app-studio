@@ -3,22 +3,13 @@
   "name": "tomokichi-admin-web",
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-07-23",
-  // Tomokichi's deployment of inquiry-platform's admin console (apps/admin). Paths are relative
+  // Tomokichi's deployment of inquiry-platform's API gateway (apps/admin). Paths are relative
   // to apps/admin/ of the pinned release (deploy/inquiry-platform/run.mjs).
 
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    // The Worker sees every request first: it sets the security headers and
-    // answers `/api/*`, then hands anything else to the built client.
-    "run_worker_first": true,
-    "not_found_handling": "single-page-application"
-  },
-
-  // The one entrance. `workers.dev` is off deliberately: a Cloudflare Access
-  // policy is attached to a hostname, so leaving the `*.workers.dev` URL up
-  // would be a second door that Access does not cover. The Worker verifies the
-  // JWT itself and would refuse that door anyway — this closes it regardless.
+  // API only. There is no HTML, PWA, static asset, or SPA fallback in the
+  // platform release. A consumer-owned operator UI may call this gateway.
+  // `workers.dev` is off deliberately: the Access policy is attached to the
+  // custom hostname, so it must remain the only entrance.
   "workers_dev": false,
   "routes": [
     {
