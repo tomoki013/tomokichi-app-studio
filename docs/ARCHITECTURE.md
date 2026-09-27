@@ -11,7 +11,7 @@ Tomokichi Studio は「小さなアプリの集まり」を 1 つの monorepo �
 | **ブランドサイト**（Astro 静的） | `tomokichi-main`（tmkch.io）、`tomokichi-remeet`、`tomokichi-tripory`、`tomokichi-colorvia`、`tomokichi-yohaku`、`tomokichi-quiet-solitaire`、`review` | 各アプリの LP・法務文書・FAQ・更新情報。`packages/app-site` の共通シェル |
 | **公開 API**（Hono） | `tomokichi-api`（api.tmkch.io） | お問い合わせ・通報の受付口、Remeet の招待・モデレーション manifest |
 
-お問い合わせ・通報・返信・通知・管理画面（`admin.tmkch.io`）は **問い合わせ基盤 [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform)**（private）にあり、Worker `tomokichi-admin-core` / `tomokichi-admin-web` / `tomokichi-mail-ingress` もそこからデプロイする（ADR-022）。Tomokichi Studio は基盤を使う Project の 1 つ。
+お問い合わせ・通報・返信・通知・運営 API（`admin.tmkch.io`）は **問い合わせ基盤 [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform)**（public OSS）にあり、Worker `tomokichi-admin-core` / `tomokichi-admin-web` / `tomokichi-mail-ingress` もそこからデプロイする（ADR-022 / ADR-023）。管理画面 UI は基盤に含めず、必要ならこの Repository 側で実装する。Tomokichi Studio は基盤を使う Project の 1 つ。
 
 ```mermaid
 flowchart TB
@@ -21,7 +21,7 @@ flowchart TB
   end
   subgraph Platform["inquiry-platform（別 Repository）"]
     Intake["tomokichi-admin-core#Intake\n受付のみ（読み取りなし）"]
-    Admin["admin.tmkch.io"]
+    Admin["admin.tmkch.io\nAPI gateway only"]
   end
   Sites -- "/support form (Turnstile)" --> API
   Apps((Remeet / Colorvia)) -- "X-Support-Client / X-Remeet-Client" --> API
@@ -40,7 +40,7 @@ flowchart TB
 | `apps/main`, `apps/remeet`, … | ブランドサイト | `astro.config.mjs`（`seoAssets()`）、`src/pages/**` |
 | `packages/app-site` | 共通シェル・SEO・構造化データ・AI クローラ方針 | `AppSiteShell.astro`, `AppHeroChrome.astro`, `src/seo.ts` |
 | `apps/api` | 公開 API | `src/index.ts`（route 登録 + cron + `RemeetModeration` entrypoint）、`routes/support.ts`、`routes/remeet/{invites,reports,moderation}.ts`、`services/admin-bridge.ts`（基盤への受け渡し）、`services/remeet/*`、`scripts/moderation.ts`（Mac 署名 CLI） |
-| `deploy/inquiry-platform` | 問い合わせ基盤の Tomokichi 環境の設定・seed・アイコン | `run.mjs`、[inquiry-platform/README.md](inquiry-platform/README.md) |
+| `deploy/inquiry-platform` | 問い合わせ基盤の Tomokichi 環境の設定・seed | `run.mjs`、[inquiry-platform/README.md](inquiry-platform/README.md) |
 
 ## 3. Dependencies（方向）
 

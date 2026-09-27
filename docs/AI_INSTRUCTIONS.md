@@ -4,7 +4,7 @@ AI コーディングエージェント向け。最終更新: 2026-09-26。ブ�
 
 ## Project goal
 
-tmkch.io 配下のブランドサイト群と公開 API（`tomokichi-api`）を 1 つの monorepo で運用する。お問い合わせ・通報・返信・管理画面は **問い合わせ基盤 [inquiry-platform](https://github.com/tomoki013/inquiry-platform)（別 Repository）** で、この Repository はその利用者の 1 つ（ADR-022）。
+tmkch.io 配下のブランドサイト群と公開 API（`tomokichi-api`）を 1 つの monorepo で運用する。お問い合わせ・通報・返信・運営 API は **問い合わせ基盤 [inquiry-platform](https://github.com/tomoki013/inquiry-platform)（別 Repository）** で、この Repository はその利用者の 1 つ（ADR-022）。運営 UI は利用者側の責務。
 
 ## 最初に読むもの
 

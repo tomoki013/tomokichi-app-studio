@@ -153,15 +153,21 @@ pnpm --filter @tomokichi/main exec wrangler versions list
 | [docs/audit/tomokichi-studio-platform-audit.md](docs/audit/tomokichi-studio-platform-audit.md) | platform audit: Incident, monitoring, audit log, roles, MCP |
 | [docs/testing/test-gap-analysis.md](docs/testing/test-gap-analysis.md) | risk map and coverage |
 
-## Inquiry platform (admin.tmkch.io)
+## Inquiry platform API (admin.tmkch.io)
 
-Contacts, reports, replies, notifications and the admin screen at
-`admin.tmkch.io` run on [tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform),
-a separate, public, brand-neutral project. This repository holds only
-Tomokichi's deployment of it: the configuration, seed and icons for the
-`tomokichi-admin-core`, `tomokichi-admin-web` and `tomokichi-mail-ingress`
-Workers in `deploy/inquiry-platform/`, deployed with `pnpm deploy:inquiry`
+Contacts, reports, replies and notifications run on
+[tomoki013/inquiry-platform](https://github.com/tomoki013/inquiry-platform),
+a separate, public, brand-neutral project. `admin.tmkch.io` is its
+Access-protected API gateway; it does not provide an admin screen, HTML, PWA,
+or static assets. This repository holds Tomokichi's deployment configuration
+and seed for the `tomokichi-admin-core`, `tomokichi-admin-web` and
+`tomokichi-mail-ingress` Workers in `deploy/inquiry-platform/`, deployed with
+`pnpm deploy:inquiry`
 ([docs/inquiry-platform/README.md](docs/inquiry-platform/README.md), ADR-023).
+
+Any operator UI, CLI or automation is consumer-owned and uses the gateway's
+standard API. It must not copy the platform's ticket, authorization, audit or
+notification rules.
 
 This repository is one of its users. `apps/api` hands each support-form
 message and Remeet report to the platform through the `INQUIRY` Service Binding.
