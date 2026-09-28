@@ -18,4 +18,13 @@ export default {
   signature: seedSignature,
   services: [{ id: "studio", name: "tmkch.io", slug: "tmkch-io" }],
   defaultServiceId: "studio",
+  mailSettings: [
+    {
+      appSlug: "zakkary",
+      supportEmail: "support@zakkary.app",
+      fromName: "Zakkary",
+      noreplyEmail: "noreply@zakkary.app",
+      notificationEmail: "zakkary001@gmail.com",
+    },
+  ],
 };

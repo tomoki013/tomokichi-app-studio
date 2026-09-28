@@ -74,4 +74,17 @@ export const seedApps: (CreateAppInput & {
       { type: "privacy", label: "Privacy", url: "https://tomokichidiary.com/privacy" },
     ],
   },
+  {
+    slug: "zakkary",
+    name: "Zakkary",
+    platform: "web",
+    status: "live",
+    publicUrl: "https://zakkary.app",
+    supportUrl: "https://zakkary.app/contact",
+    links: [
+      { type: "brand", label: "Site", url: "https://zakkary.app" },
+      { type: "privacy", label: "Privacy", url: "https://zakkary.app/privacy" },
+      { type: "terms", label: "Terms", url: "https://zakkary.app/terms" },
+    ],
+  },
 ];
