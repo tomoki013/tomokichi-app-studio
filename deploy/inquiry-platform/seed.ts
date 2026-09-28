@@ -18,4 +18,21 @@ export default {
   signature: seedSignature,
   services: [{ id: "studio", name: "tmkch.io", slug: "tmkch-io" }],
   defaultServiceId: "studio",
+  mailSettings: [
+    {
+      appSlug: "zakkary",
+      supportEmail: "support@zakkary.app",
+      fromName: "Zakkary",
+      noreplyEmail: "noreply@zakkary.app",
+      notificationEmail: "zakkary001@gmail.com",
+    },
+    {
+      // The travel blog. Its own name on replies and its own inbox for
+      // notifications; the addresses stay on tmkch.io, whose sending domain
+      // and inbound route already work, until tomokichidiary.com has both.
+      appSlug: "tomokichi-diary",
+      fromName: "ともきちの旅行日記",
+      notificationEmail: "tomokichidiary@gmail.com",
+    },
+  ],
 };

@@ -56,4 +56,35 @@ export const seedApps: (CreateAppInput & {
       { type: "app_store", label: "App Store", url: "https://apps.apple.com/app/id6798718923" },
     ],
   },
+  {
+    // Not a Studio app: the travel blog, whose contact form files through the
+    // `Intake` binding of its own API (tomokichi-diary-api, granted only this
+    // slug). Registered so its contacts land under their own project rather
+    // than being refused.
+    slug: "tomokichi-diary",
+    name: "ともきちの旅行日記",
+    platform: "web",
+    status: "live",
+    description: "旅の記録と、実際に行って分かった行き方・費用のブログ。",
+    publicUrl: "https://tomokichidiary.com",
+    supportUrl: "https://tomokichidiary.com/contact",
+    links: [
+      { type: "brand", label: "Site", url: "https://tomokichidiary.com" },
+      { type: "support", label: "Contact", url: "https://tomokichidiary.com/contact" },
+      { type: "privacy", label: "Privacy", url: "https://tomokichidiary.com/privacy" },
+    ],
+  },
+  {
+    slug: "zakkary",
+    name: "Zakkary",
+    platform: "web",
+    status: "live",
+    publicUrl: "https://zakkary.app",
+    supportUrl: "https://zakkary.app/contact",
+    links: [
+      { type: "brand", label: "Site", url: "https://zakkary.app" },
+      { type: "privacy", label: "Privacy", url: "https://zakkary.app/privacy" },
+      { type: "terms", label: "Terms", url: "https://zakkary.app/terms" },
+    ],
+  },
 ];
