@@ -8,21 +8,16 @@ import { OPERATOR } from "./operator";
  * fact about the same person: 特定商取引法 asks who is selling, and the
  * Telecommunications Business Act asks who filed the notification and where.
  *
- * TODO: 総務省から電気通信事業届出番号が通知されたら `notificationNumber` を
- * その番号に差し替える。アプリ側の同じ値は Remeet リポジトリの
+ * 届出番号は、2026-09-28付の総務省通知書で通知された値を掲載する。
+ * アプリ側の同じ値は Remeet リポジトリの
  * `Remeet/Features/Settings/TelecommunicationsView.swift` にある
- * `LegalInformation.telecommunicationsBusinessNotificationNumber`。
- * どちらも1か所を変えれば表示は切り替わり、「通知待ち」の表示は自動的に消える。
+ * `LegalInformation.telecommunicationsBusinessNotificationNumber` と同期する。
  */
 export const TELECOM = {
   /** The natural person named on the notification — the same one as OPERATOR.responsible. */
   operator: OPERATOR.responsible,
-  /**
-   * The number the Ministry issues after the notification is processed.
-   * `null` while it has not arrived: a placeholder or a made-up number would
-   * be a claim we cannot support, so the page says 通知待ち instead.
-   */
-  notificationNumber: null as string | null,
+  /** The notification number issued by the Ministry of Internal Affairs and Communications. */
+  notificationNumber: "A-08-24303" as string | null,
   /** The bureau the notification was filed with. */
   authority: ["関東総合通信局", "Kanto Bureau of Telecommunications"] as [string, string],
   /** Service area for an app delivered over the public internet. */
