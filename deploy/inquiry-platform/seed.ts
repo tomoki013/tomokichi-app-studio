@@ -25,6 +25,8 @@ export default {
       fromName: "Zakkary",
       noreplyEmail: "noreply@zakkary.app",
       notificationEmail: "zakkary001@gmail.com",
+      // Zakkary's own admin; its inquiry screen lives under /admin/support.
+      ticketUrlTemplate: "https://admin.zakkary.app/admin/support?ticket={ticketNumber}",
     },
     {
       // The travel blog. Its own name on replies and its own inbox for
@@ -33,6 +35,8 @@ export default {
       appSlug: "tomokichi-diary",
       fromName: "ともきちの旅行日記",
       notificationEmail: "tomokichidiary@gmail.com",
+      // Managed from the blog's own admin, not from the platform's gateway.
+      ticketUrlTemplate: "https://admin.tomokichidiary.com/#/inquiries/{ticketNumber}",
     },
   ],
 };
