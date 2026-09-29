@@ -36,9 +36,9 @@ pnpm deploy:inquiry deploy all            # api → admin → mail-ingress
 
 ロールバック: 直前の tag に戻して `deploy all`。D1 は戻さない（migration は forward-only）。
 
-## v0.3.0 への移行（2026-09-29）
+## v0.3.1 への移行（2026-09-29）
 
-v0.3.0 は `ProjectOperator` entrypoint と migration `0012_project_ticket_url.sql` を追加する。Project が自分の管理画面（例: `admin.tomokichidiary.com`、`admin.zakkary.app`）から自分のチケットを扱うときは、その Project の API Worker が `tomokichi-admin-core` の `ProjectOperator` に Service Binding する。`admin.tmkch.io`（API gateway）と Access には何も足さない。通知リンクは seed の `mailSettings[].ticketUrlTemplate` で各 Project の管理画面へ向ける。
+v0.3.0（v0.3.1 は operator id の検証修正）は `ProjectOperator` entrypoint と migration `0012_project_ticket_url.sql` を追加する。Project が自分の管理画面（例: `admin.tomokichidiary.com`、`admin.zakkary.app`）から自分のチケットを扱うときは、その Project の API Worker が `tomokichi-admin-core` の `ProjectOperator` に Service Binding する。`admin.tmkch.io`（API gateway）と Access には何も足さない。通知リンクは seed の `mailSettings[].ticketUrlTemplate` で各 Project の管理画面へ向ける。
 
 手順は「版を上げる」と同じ: バックアップ → `migrate`（0012 のみ）→ `deploy all` → `seed`。そのあと各 Project の API をデプロイする（Core に `ProjectOperator` が無いと binding を作れない）。
 
