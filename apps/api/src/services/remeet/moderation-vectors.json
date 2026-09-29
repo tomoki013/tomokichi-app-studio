@@ -121,6 +121,11 @@
       "kind": "statusNote",
       "id": "1b4e28ba-2fa1-11d2-883f-0016d3cca427",
       "expected": "ZyFZGWtTSOl98plPkrsnRtwvvTTMwquIDNmyFNkhAX4"
+    },
+    {
+      "kind": "sharedItem",
+      "id": "3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+      "expected": "NglBDN_bKPnd3yZdUxxnMxozT_iuVaonUzWy8ynH038"
     }
   ],
   "rootFieldDigests": [

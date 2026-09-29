@@ -62,6 +62,8 @@ describe("parseReport", () => {
     for (const contentType of reportContentTypes) {
       expect(parseReport({ ...valid, contentType })).toBeDefined();
     }
+    // A line added to a wish, and any later kind of shared item.
+    expect(parseReport({ ...valid, contentType: "sharedItem" })).toBeDefined();
     // Reactions are not writing; there is nothing for a person to read.
     expect(parseReport({ ...valid, contentType: "reaction" })).toBeUndefined();
   });

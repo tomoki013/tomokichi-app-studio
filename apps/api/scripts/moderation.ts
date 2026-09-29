@@ -113,7 +113,7 @@ function usage(): never {
     [
       "usage:",
       "  moderation keygen --key-id <id>",
-      "  moderation add --kind wish|waitingMemory|anniversaryCard|statusNote --id <uuid> --reason <code> [--reunion <uuid>] [--report-id <id>] [--note <text>]",
+      "  moderation add --kind wish|waitingMemory|anniversaryCard|statusNote|sharedItem --id <uuid> --reason <code> [--reunion <uuid>] [--report-id <id>] [--note <text>]",
       "  moderation add --kind reunionField --reunion <uuid> --field <field> --value <text> --reason <code>",
       "  moderation revoke --action-id <uuid> [--note <text>]",
       "  moderation publish",
