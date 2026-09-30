@@ -19,11 +19,11 @@ updates:
           - "*"
 
   - package-ecosystem: npm
-    # pnpm workspace: the root lockfile plus every workspace package manifest.
-    directories:
-      - /
-      - /apps/*
-      - /packages/*
+    # pnpm workspace: scanning / covers every package in pnpm-workspace.yaml
+    # and updates the root lockfile with it. Listing /apps/* and /packages/*
+    # as well made a second, lockfile-less PR per package that could never
+    # pass `pnpm install --frozen-lockfile`.
+    directory: /
     schedule:
       interval: weekly
       day: monday
