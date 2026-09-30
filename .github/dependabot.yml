@@ -31,6 +31,16 @@ updates:
       timezone: Asia/Tokyo
     open-pull-requests-limit: 10
     versioning-strategy: increase-if-necessary
+    # Majors that the toolchain cannot take yet. Each PR would fail, and the
+    # per-app ones cannot update the root lockfile either. Drop an entry once
+    # the blocker ships support:
+    # - typescript 7: @astrojs/check peers typescript "^5 || ^6".
+    # - vitest 5: @cloudflare/vitest-pool-workers peers vitest "^4.1.0".
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      - dependency-name: vitest
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"

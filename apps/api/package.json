@@ -16,13 +16,13 @@
   "dependencies": {
     "@inquiry-platform/sdk": "github:tomoki013/inquiry-platform#v0.3.1&path:/packages/sdk",
     "@tomokichi/app-site": "workspace:*",
-    "hono": "^4.13.8",
+    "hono": "^4.13.9",
     "zod": "^4.4.2"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.18.7",
+    "@cloudflare/vitest-pool-workers": "^0.22.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11",
-    "wrangler": "^4.110.0"
+    "wrangler": "^4.141.0"
   }
 }
