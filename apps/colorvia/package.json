@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@tomokichi/app-site": "workspace:*",
-    "astro": "^7.3.4",
+    "astro": "^7.3.5",
     "sharp": "^0.35.4"
   },
   "devDependencies": {
@@ -20,6 +20,6 @@
     "@tailwindcss/vite": "^4.3.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "wrangler": "^4.113.0"
+    "wrangler": "^4.141.0"
   }
 }
