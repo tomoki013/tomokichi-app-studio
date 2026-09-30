@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev --port 8787",
-    "build": "wrangler deploy --dry-run",
+    "dev": "cf dev",
+    "build": "cf deploy --dry-run",
     "check": "wrangler types --env-interface CloudflareBindings --strict-vars=false && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy": "wrangler deploy",
+    "deploy": "cf deploy",
     "moderation": "node --experimental-strip-types scripts/moderation.ts",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings --strict-vars=false"
   },
@@ -21,8 +21,9 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.18.7",
+    "cf": "1.0.0-beta.7",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11",
-    "wrangler": "^4.110.0"
+    "wrangler": "^4.145.0"
   }
 }

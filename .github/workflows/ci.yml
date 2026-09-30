@@ -117,13 +117,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @tomokichi/main check
       - run: pnpm --filter @tomokichi/main test
@@ -137,13 +132,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @tomokichi/remeet check
       - run: pnpm --filter @tomokichi/remeet test
@@ -157,13 +147,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @tomokichi/tripory check
       - run: pnpm --filter @tomokichi/tripory test
@@ -177,13 +162,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @tomokichi/colorvia check
       - run: pnpm --filter @tomokichi/colorvia build
@@ -196,13 +176,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @tomokichi/yohaku check
       - run: pnpm --filter @tomokichi/yohaku build
@@ -215,13 +190,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @tomokichi/quiet-solitaire check
       - run: pnpm --filter @tomokichi/quiet-solitaire build
@@ -234,13 +204,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:review
 
@@ -251,13 +216,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11.11.0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
+      - name: Set up toolchain (mise)
+        uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @tomokichi/api check
       - run: pnpm --filter @tomokichi/api test
