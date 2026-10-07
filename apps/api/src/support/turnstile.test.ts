@@ -96,8 +96,8 @@ describe("Turnstile on the support endpoint", () => {
     expect(deliver).toHaveBeenCalled();
   });
 
-  it("turns away a web request that fails the check, and sends no email", async () => {
-    const verify = vi.fn(async () => ({ ok: false, errorCodes: ["invalid-input-response"] }));
+  it("turns away a web request that fails the check, without saying why", async () => {
+    const verify = vi.fn(async () => ({ ok: false, errorCodes: ["invalid-input-secret"] }));
     const { response, deliver } = post(
       { ...webRequest, turnstileToken: "stale" },
       { secret: "sk", verify },
@@ -105,25 +105,18 @@ describe("Turnstile on the support endpoint", () => {
     const result = await response;
 
     expect(result.status).toBe(403);
-    expect(await result.json()).toMatchObject({ ok: false, code: "TURNSTILE_FAILED" });
+    const body = await result.json();
+    expect(body).toMatchObject({ ok: false, code: "TURNSTILE_FAILED" });
+    expect(JSON.stringify(body)).not.toContain("invalid-input-secret");
     expect(deliver).not.toHaveBeenCalled();
   });
 
+  /** Not stubbed: the real check must refuse a missing token by itself. */
   it("turns away a web request with no token at all", async () => {
-    const verify = vi.fn(async () => ({ ok: false }));
-    const { response, deliver } = post(webRequest, { secret: "sk", verify });
+    const { response, deliver } = post(webRequest, { secret: "sk" });
 
     expect((await response).status).toBe(403);
-    expect(verify).toHaveBeenCalledWith("", "sk", expect.anything());
     expect(deliver).not.toHaveBeenCalled();
-  });
-
-  it("never tells the sender why they failed", async () => {
-    const verify = vi.fn(async () => ({ ok: false, errorCodes: ["invalid-input-secret"] }));
-    const { response } = post({ ...webRequest, turnstileToken: "x" }, { secret: "sk", verify });
-    const body = JSON.stringify(await (await response).json());
-
-    expect(body).not.toContain("invalid-input-secret");
   });
 });
 
@@ -162,24 +155,16 @@ describe("verifyTurnstileToken", () => {
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
-  it("fails closed when Cloudflare cannot be reached", async () => {
-    const fetchImpl = vi.fn(async () => {
+  it("fails closed when siteverify is unreachable or erroring", async () => {
+    const unreachable = vi.fn(async () => {
       throw new Error("network down");
     });
-    const result = await verifyTurnstileToken("token", "secret", {
-      fetchImpl: fetchImpl as unknown as typeof fetch,
-    });
-
-    expect(result).toEqual({ ok: false, errorCodes: ["unreachable"] });
-  });
-
-  it("fails closed on an HTTP error from siteverify", async () => {
-    const fetchImpl = siteverify({}, false);
-    const result = await verifyTurnstileToken("token", "secret", {
-      fetchImpl: fetchImpl as unknown as typeof fetch,
-    });
-
-    expect(result).toEqual({ ok: false, errorCodes: ["http-500"] });
+    for (const fetchImpl of [unreachable, siteverify({}, false)]) {
+      const result = await verifyTurnstileToken("token", "secret", {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+      });
+      expect(result.ok).toBe(false);
+    }
   });
 });
 

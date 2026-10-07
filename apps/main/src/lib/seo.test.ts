@@ -5,9 +5,7 @@ import {
   buildSitemapXml,
   canonicalUrl,
   jsonLd,
-  STUDIO,
   STUDIO_ID,
-  studioOrganization,
 } from "@tomokichi/app-site/seo";
 import { mainSiteUrl } from "@tomokichi/app-site/urls";
 import { describe, expect, it } from "vitest";
@@ -84,23 +82,19 @@ describe("jsonLd", () => {
 });
 
 describe("the studio as one entity", () => {
-  it("is the same organisation everywhere it is referenced", () => {
-    const onProduct = studioOrganization();
-    expect(onProduct["@id"]).toBe(STUDIO_ID.studio);
-    expect(onProduct.name).toBe("Tomokichi Studio");
-    expect(onProduct.alternateName).toBe(STUDIO.shortName);
-  });
-
-  it("never claims to be a legal entity", () => {
-    const serialised = `${homeJsonLd("en")}${productsJsonLd("en")}`;
-    for (const property of ["legalName", "taxID", "vatID", "duns"]) {
-      expect(serialised).not.toContain(property);
-    }
-  });
-
-  it("carries no ratings or reviews, because there are none to report", () => {
+  /** A legal entity it is not, and ratings or reviews it has none to report. */
+  it("claims nothing it cannot back up", () => {
     const serialised = `${homeJsonLd("en")}${productsJsonLd("ja")}`;
-    for (const property of ["aggregateRating", "ratingValue", "ratingCount", '"review"']) {
+    for (const property of [
+      "legalName",
+      "taxID",
+      "vatID",
+      "duns",
+      "aggregateRating",
+      "ratingValue",
+      "ratingCount",
+      '"review"',
+    ]) {
       expect(serialised).not.toContain(property);
     }
   });

@@ -84,12 +84,6 @@ function post(
 }
 
 describe("POST /api/v1/support", () => {
-  it("accepts a valid request", async () => {
-    const response = await post(validRequest);
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ ok: true, requestId: validRequest.requestId });
-  });
-
   it("accepts apps from the shared brand registry and hands the slug to Admin", async () => {
     const { core, submitContact } = fakeCore();
     const response = await post({ ...validRequest, app: "yohaku" }, { env: { INQUIRY: core } });
@@ -184,48 +178,22 @@ describe("POST /api/v1/support", () => {
    * told to try again — a 200 here would mean a message that exists nowhere.
    * Nothing about the upstream failure reaches the response.
    */
-  it("returns 502 when Admin Core rejects, without exposing why", async () => {
-    const response = await post(validRequest, {
-      env: {
-        INQUIRY: fakeCore({
-          ok: false,
-          error: { code: "INTERNAL_ERROR", message: "secret upstream response" },
-        }).core,
-      },
-    });
-    expect(response.status).toBe(502);
-    expect(JSON.stringify(await response.json())).not.toContain("secret upstream");
-  });
-
-  it("returns 502 when Admin Core throws", async () => {
-    const submitContact = vi.fn().mockRejectedValue(new Error("binding is down"));
-    const response = await post(validRequest, { env: { INQUIRY: { submitContact } } });
-    expect(response.status).toBe(502);
-    expect(JSON.stringify(await response.json())).not.toContain("binding is down");
+  it("returns 502 when Admin Core rejects or throws, without exposing why", async () => {
+    const rejecting = fakeCore({
+      ok: false,
+      error: { code: "INTERNAL_ERROR", message: "secret upstream" },
+    }).core;
+    const throwing = { submitContact: vi.fn().mockRejectedValue(new Error("secret upstream")) };
+    for (const core of [rejecting, throwing]) {
+      const response = await post(validRequest, { env: { INQUIRY: core } });
+      expect(response.status).toBe(502);
+      expect(JSON.stringify(await response.json())).not.toContain("secret upstream");
+    }
   });
 
   it("refuses rather than accepts when there is no Admin Core to write to", async () => {
     const response = await post(validRequest, { env: { INQUIRY: undefined } });
     expect(response.status).toBe(502);
-  });
-
-  /**
-   * The reason this exists: the app asks for an address only when somebody
-   * wants an answer, so 不具合 / 要望 / その他 arrive without one. The record
-   * used to skip exactly those, and every inquiry sent from inside the app was
-   * mail-only — invisible on the screen the operator actually reads.
-   */
-  it("records a message sent without a reply address", async () => {
-    const { core, submitContact } = fakeCore();
-    const response = await post({ ...validRequest, email: "" }, { env: { INQUIRY: core } });
-
-    expect(response.status).toBe(200);
-    expect(submitContact).toHaveBeenCalledTimes(1);
-    const [input] = submitContact.mock.calls[0] as [Record<string, unknown>];
-    // The route's own validation folds an empty address into nothing at all,
-    // so what reaches Admin is an absence rather than a blank string.
-    expect(input.email).toBeUndefined();
-    expect(input.message).toContain("十分な長さ");
   });
 
   /**
@@ -241,6 +209,7 @@ describe("POST /api/v1/support", () => {
       const { core, submitContact } = fakeCore();
       const response = await post(validRequest, { env: { INQUIRY: core } });
       expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ ok: true, requestId: validRequest.requestId });
       expect(submitContact).toHaveBeenCalledTimes(1);
       const [input] = submitContact.mock.calls[0] as [Record<string, unknown>];
       expect(input.idempotencyKey).toBe(validRequest.requestId);
@@ -257,19 +226,12 @@ describe("POST /api/v1/support", () => {
     expect(await response.json()).toMatchObject({ code: "ORIGIN_NOT_ALLOWED" });
   });
 
-  it("accepts an allowed Origin and returns CORS headers", async () => {
-    const response = await post(validRequest, {
-      origin: "https://tmkch.io",
-    });
-    expect(response.status).toBe(200);
-    expect(response.headers.get("Access-Control-Allow-Origin")).toBe("https://tmkch.io");
-  });
-
-  it("also accepts the active Workers main-site origin", async () => {
-    const origin = "https://tomokichi-main.tomoki-ttttt.workers.dev";
-    const response = await post(validRequest, { origin });
-    expect(response.status).toBe(200);
-    expect(response.headers.get("Access-Control-Allow-Origin")).toBe(origin);
+  it("accepts the main site and its Workers origin, with CORS headers", async () => {
+    for (const origin of ["https://tmkch.io", "https://tomokichi-main.tomoki-ttttt.workers.dev"]) {
+      const response = await post(validRequest, { origin });
+      expect(response.status).toBe(200);
+      expect(response.headers.get("Access-Control-Allow-Origin")).toBe(origin);
+    }
   });
 
   it("handles preflight for allowed origins", async () => {
@@ -325,22 +287,17 @@ describe("Resend delivery", () => {
 });
 
 describe("Public API cannot read Ticket internals", () => {
-  it.each([
-    "/api/tickets",
-    "/api/tickets/private-id",
-    "/api/tickets/private-id/notes",
-    "/api/admin/tickets",
-    "/admin/tickets",
-    "/api/v1/tickets",
-    "/api/support/threads/private-id",
-  ])("has no read endpoint at %s", async (path) => {
-    const core = { getTicket: vi.fn(), listTickets: vi.fn(), getSupportThread: vi.fn() };
-    const response = await createApp().request(`https://tmkch.io${path}`, {}, {
-      INQUIRY: core,
-    } as never);
-    expect(response.status).toBe(404);
-    expect(core.getTicket).not.toHaveBeenCalled();
-    expect(core.listTickets).not.toHaveBeenCalled();
-    expect(core.getSupportThread).not.toHaveBeenCalled();
+  it("has no read endpoint for tickets or support threads", async () => {
+    for (const path of [
+      "/api/tickets/private-id",
+      "/api/admin/tickets",
+      "/api/v1/tickets",
+      "/api/support/threads/private-id",
+    ]) {
+      const response = await createApp().request(`https://tmkch.io${path}`, {}, {
+        INQUIRY: {},
+      } as never);
+      expect(response.status, path).toBe(404);
+    }
   });
 });

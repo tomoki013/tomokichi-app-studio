@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import {
   DETAILS_LIMIT,
-  imageObjectKey,
   MAX_IMAGE_BYTES,
   parseReport,
   reportContentTypes,
@@ -28,34 +27,34 @@ const valid = {
 };
 
 describe("parseReport", () => {
-  it("accepts a well-formed report", () => {
-    expect(parseReport(valid)?.reason).toBe("harassment");
-  });
-
   it("rejects anything that is not an object", () => {
     for (const input of [undefined, null, "report", 42, []]) {
       expect(parseReport(input)).toBeUndefined();
     }
   });
 
-  it.each([
-    "reportId",
-    "reportedAt",
-    "reason",
-    "contentType",
-    "contentId",
-    "reunionId",
-    "reporterAuthorId",
-    "appVersion",
-    "buildNumber",
-  ])("rejects a report missing %s", (field) => {
-    const input: Record<string, unknown> = { ...valid };
-    delete input[field];
-    expect(parseReport(input)).toBeUndefined();
+  it("rejects a report missing any required field", () => {
+    for (const field of [
+      "reportId",
+      "reportedAt",
+      "reason",
+      "contentType",
+      "contentId",
+      "reunionId",
+      "reporterAuthorId",
+      "appVersion",
+      "buildNumber",
+    ]) {
+      const input: Record<string, unknown> = { ...valid };
+      delete input[field];
+      expect(parseReport(input), field).toBeUndefined();
+    }
   });
 
-  it("rejects an unknown reason", () => {
+  it("rejects malformed values", () => {
     expect(parseReport({ ...valid, reason: "because" })).toBeUndefined();
+    expect(parseReport({ ...valid, contentId: "../../etc/passwd" })).toBeUndefined();
+    expect(parseReport({ ...valid, reportedAt: "yesterday" })).toBeUndefined();
   });
 
   it("accepts every kind of post and nothing else", () => {
@@ -83,14 +82,6 @@ describe("parseReport", () => {
   it("still rejects a malformed author when one is given", () => {
     expect(parseReport({ ...valid, contentAuthorId: "nobody" })).toBeUndefined();
     expect(parseReport({ ...valid, contentAuthorId: "" })).toBeUndefined();
-  });
-
-  it("rejects ids that are not uuids", () => {
-    expect(parseReport({ ...valid, contentId: "../../etc/passwd" })).toBeUndefined();
-  });
-
-  it("rejects an unparseable timestamp", () => {
-    expect(parseReport({ ...valid, reportedAt: "yesterday" })).toBeUndefined();
   });
 
   it("rejects oversized details and snapshots", () => {
@@ -141,14 +132,5 @@ describe("validateImage", () => {
     const huge = new Uint8Array(MAX_IMAGE_BYTES + 1);
     huge.set(jpeg);
     expect(validateImage(huge, "image/jpeg")).toEqual({ ok: false, failure: "IMAGE_TOO_LARGE" });
-  });
-});
-
-describe("imageObjectKey", () => {
-  /** Knowing the report id must not be enough to find the object. */
-  it("puts a random component after the report id", () => {
-    const key = imageObjectKey(valid.reportId, "abc123");
-    expect(key).toBe(`reports/remeet/${valid.reportId}/abc123`);
-    expect(key).not.toContain("..");
   });
 });

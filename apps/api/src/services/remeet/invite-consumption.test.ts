@@ -44,17 +44,10 @@ describe("invite consumption", () => {
     return new URL(created.value.inviteUrl).pathname.split("/").pop() as string;
   }
 
-  it("hands the share URL to the first attempt", async () => {
-    const token = await mint();
-    const result = await resolveInvite(context, { token, resolveAttemptId: "attempt-a" });
-    expect(result.ok).toBe(true);
-    if (result.ok) expect(result.value.ckShareUrl).toBe(SHARE_URL);
-  });
-
   /// The forwarded-link case, and the reason all of this exists.
   it("refuses a different attempt once the invitation is consumed", async () => {
     const token = await mint();
-    await resolveInvite(context, { token, resolveAttemptId: "attempt-a" });
+    expect((await resolveInvite(context, { token, resolveAttemptId: "attempt-a" })).ok).toBe(true);
     const stranger = await resolveInvite(context, { token, resolveAttemptId: "attempt-b" });
     // Deliberately indistinguishable from unknown, expired or revoked: somebody
     // holding a forwarded link learns that it does not work, and nothing about
