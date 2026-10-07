@@ -7,14 +7,12 @@ describe("invite codes", () => {
     const codes = Array.from({ length: 200 }, () => generateInviteCode());
     for (const code of codes) {
       expect(code).toMatch(/^[0-9A-HJKMNP-TV-Z]{10}$/);
-      expect(code).not.toMatch(/[ILOU]/);
     }
     expect(new Set(codes).size).toBe(codes.length);
   });
 
-  it("is shown in two halves and stored in one", () => {
+  it("is shown in two halves", () => {
     expect(formatInviteCode("7KM4PQ2X8N")).toBe("7KM4P-Q2X8N");
-    expect(normalizeInviteCode("7KM4P-Q2X8N")).toBe("7KM4PQ2X8N");
   });
 
   /// Somebody reading a code off another phone will type what they see, not

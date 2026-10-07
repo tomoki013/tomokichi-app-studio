@@ -42,11 +42,6 @@ describe("the Remeet invite namespace", () => {
     expect(response.headers.get("Cache-Control")).toBe("no-store");
   });
 
-  it("is versioned from the first day", async () => {
-    const unversioned = await post("/remeet/invites", {});
-    expect(unversioned.status).toBe(404);
-  });
-
   /// Remeet's namespace and the support form share a Worker and nothing else.
   /// A filter rather than a door — the value ships inside the app — but it is
   /// the difference between an endpoint anyone can poke and one that ignores

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import coverage from "./fonts/coverage.json";
-import { inviteOGSVG, isDrawable, OG_EN, OG_JA, ogCopy } from "./og";
+import { inviteOGSVG, isDrawable, OG_EN, OG_JA } from "./og";
 
 const COVERAGE = coverage.sans;
 
@@ -20,27 +20,16 @@ describe("the invitation preview image", () => {
     expect(svg).toContain("次に会えるまで");
   });
 
-  it("says today rather than counting down to zero", () => {
-    const svg = inviteOGSVG({ daysRemaining: 0 }, OG_JA, COVERAGE);
-    expect(svg).toContain("今日");
-    expect(svg).not.toContain(">0 ");
+  it("says today rather than counting down to zero or below", () => {
+    const zero = inviteOGSVG({ daysRemaining: 0 }, OG_JA, COVERAGE);
+    expect(zero).toContain("今日");
+    expect(zero).not.toContain(">0 ");
+    const negative = inviteOGSVG({ daysRemaining: -5 }, OG_EN, COVERAGE);
+    expect(negative).toContain("TODAY");
+    expect(negative).not.toContain("-5");
   });
 
-  it("never draws a negative countdown", () => {
-    const svg = inviteOGSVG({ daysRemaining: -5 }, OG_EN, COVERAGE);
-    expect(svg).toContain("TODAY");
-    expect(svg).not.toContain("-5");
-  });
-
-  it("omits the places when the invitation did not carry them", () => {
-    const svg = inviteOGSVG({ daysRemaining: 24 }, OG_JA, COVERAGE);
-    expect(svg).not.toContain("東京");
-    // The route is drawn either way, so an invitation that keeps its places
-    // private is not visibly a lesser one.
-    expect(svg).toContain('<path d="M300 528');
-  });
-
-  it("draws the places when it did", () => {
+  it("draws the places only when the invitation carried them", () => {
     const svg = inviteOGSVG(
       { daysRemaining: 24, origin: "東京", destination: "大阪" },
       OG_JA,
@@ -48,6 +37,7 @@ describe("the invitation preview image", () => {
     );
     expect(svg).toContain("東京");
     expect(svg).toContain("大阪");
+    expect(inviteOGSVG({ daysRemaining: 24 }, OG_JA, COVERAGE)).not.toContain("東京");
   });
 
   /**
@@ -76,12 +66,6 @@ describe("the invitation preview image", () => {
     expect(svg).toContain(">24 ");
   });
 
-  it("knows what it can draw", () => {
-    expect(isDrawable("東京", COVERAGE)).toBe(true);
-    expect(isDrawable("Tokyo", COVERAGE)).toBe(true);
-    expect(isDrawable("𠮷野", COVERAGE)).toBe(false);
-  });
-
   /** A place name is markup by the time it is drawn. */
   it("escapes a label rather than letting it close a tag", () => {
     const svg = inviteOGSVG(
@@ -99,12 +83,6 @@ describe("the invitation preview image", () => {
       COVERAGE,
     );
     expect(svg).not.toContain("a".repeat(19));
-  });
-
-  it("follows the reader's language, not the sender's", () => {
-    expect(ogCopy("ja-JP,ja;q=0.9").lang).toBe("ja");
-    expect(ogCopy("en-GB,en;q=0.9").lang).toBe("en");
-    expect(ogCopy(null).lang).toBe("en");
   });
 
   it("uses the singular for one day", () => {

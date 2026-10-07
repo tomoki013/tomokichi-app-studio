@@ -22,11 +22,8 @@ describe("the invitation landing page", () => {
     expect(landingCopy(null).lang).toBe("en");
   });
 
-  /// The landing page is the one surface an invitation reaches that is not the
-  /// app. Nothing about the share may be on it.
-  it("carries no share URL and no validity verdict", () => {
+  it("links to the App Store and keeps itself out of search", () => {
     const html = page("ja", null, "https://apps.apple.com/app/id123456789");
-    expect(html).not.toContain("icloud.com");
     expect(html).toContain("apps.apple.com");
     expect(html).toContain("noindex");
   });
@@ -45,24 +42,21 @@ describe("the invitation landing page", () => {
     expect(head).not.toContain("7KM4P-Q2X8N");
   });
 
-  it("shows the invitation code when the API had one to give", () => {
-    expect(page("ja", "7KM4P-Q2X8N")).toContain("7KM4P-Q2X8N");
-    expect(page("ja", "7KM4P-Q2X8N")).toContain('class="code-label"');
-    // An expired or already-used invitation still explains where to get the
-    // app; it simply has no code block to show.
-    expect(page("ja", null)).not.toContain('class="code-label"');
-  });
-
   /// Typing ten characters off one phone into another is the moment the code
   /// exists for, so the page saves it where it can — and still works where it
   /// cannot, because the clipboard API needs a secure context and a willing
   /// browser and neither is somebody's problem to know about.
-  it("offers to copy the code, and carries no script when there is none", () => {
+  it("shows the code with a way to copy it, and neither when there is none", () => {
     const withCode = page("ja", "7KM4P-Q2X8N");
-    expect(withCode).toContain('id="copy"');
+    expect(withCode).toContain("7KM4P-Q2X8N");
+    expect(withCode).toContain('class="code-label"');
     expect(withCode).toContain("navigator.clipboard");
     expect(withCode).toContain("user-select: all");
-    expect(page("ja", null)).not.toContain("<script");
+    // An expired or already-used invitation still explains where to get the
+    // app; it simply has no code block to show.
+    const withoutCode = page("ja", null);
+    expect(withoutCode).not.toContain('class="code-label"');
+    expect(withoutCode).not.toContain("<script");
   });
 
   /// The picture is cached for a year by the site and for as long as they

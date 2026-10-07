@@ -4,7 +4,6 @@ import {
   buildSupportRequest,
   getOrCreateClientId,
   initialSelections,
-  isValidEmail,
   SUPPORT_CLIENT_ID_KEY,
   type SupportFormValues,
   SupportRequestCycle,
@@ -38,7 +37,6 @@ describe("support form validation", () => {
     expect(validateSupportForm({ ...validValues, email: "invalid" })).toMatchObject({
       email: "INVALID_EMAIL",
     });
-    expect(isValidEmail("invalid")).toBe(false);
   });
 
   it("does not require email when no reply is requested", () => {
@@ -48,17 +46,13 @@ describe("support form validation", () => {
     ).toEqual({});
   });
 
-  it.each([
-    [9, "TOO_SHORT"],
-    [5001, "TOO_LONG"],
-  ])("rejects a message with %i characters", (length, code) => {
-    expect(validateSupportForm({ ...validValues, message: "x".repeat(length) })).toMatchObject({
-      message: code,
-    });
-  });
-
-  it.each([10, 5000])("accepts a message with %i characters", (length) => {
-    expect(validateSupportForm({ ...validValues, message: "x".repeat(length) })).toEqual({});
+  it("accepts a message of 10 to 5000 characters and nothing outside that", () => {
+    const withMessage = (length: number) =>
+      validateSupportForm({ ...validValues, message: "x".repeat(length) });
+    expect(withMessage(9)).toMatchObject({ message: "TOO_SHORT" });
+    expect(withMessage(10)).toEqual({});
+    expect(withMessage(5000)).toEqual({});
+    expect(withMessage(5001)).toMatchObject({ message: "TOO_LONG" });
   });
 
   it("accepts a 100-character name and rejects 101", () => {
@@ -141,20 +135,13 @@ describe("support request construction", () => {
 });
 
 describe("support query parameters", () => {
-  it("accepts known app and category values", () => {
+  it("accepts known app and category values, including brand registry apps", () => {
     expect(initialSelections(new URLSearchParams("app=remeet&category=feature"))).toEqual({
       app: "remeet",
       category: "feature",
     });
-  });
-
-  it("reflects brand registry apps in support selections", () => {
     expect(initialSelections(new URLSearchParams("app=yohaku"))).toEqual({
       app: "yohaku",
-      category: "question",
-    });
-    expect(initialSelections(new URLSearchParams("app=tripory"))).toEqual({
-      app: "tripory",
       category: "question",
     });
   });

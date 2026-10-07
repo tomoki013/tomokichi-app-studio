@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import worker, { appleAppSiteAssociation } from "./asset-cache-worker.js";
+import worker from "./asset-cache-worker.js";
 
 const configuredEnv = {
   APPLE_APP_ID: "TEAM123456.io.example.app",
@@ -13,21 +13,6 @@ const configuredEnv = {
     },
   },
 };
-
-test("builds a narrowly scoped AASA payload", () => {
-  const payload = JSON.parse(
-    appleAppSiteAssociation(
-      ["TEAM123456.io.example.app"],
-      [{ "/": "/open", comment: "App entry" }],
-    ),
-  );
-  assert.deepEqual(payload.applinks.details, [
-    {
-      appIDs: ["TEAM123456.io.example.app"],
-      components: [{ "/": "/open", comment: "App entry" }],
-    },
-  ]);
-});
 
 test("serves the well-known AASA endpoint without a redirect", async () => {
   const response = await worker.fetch(

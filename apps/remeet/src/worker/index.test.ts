@@ -82,11 +82,6 @@ describe("the Remeet Worker", () => {
     }
   });
 
-  it("serves no invite API of its own", async () => {
-    const response = await worker.fetch(get("/api/v1/invites"), makeEnv());
-    expect(await response.text()).toBe("<html>site</html>");
-  });
-
   it("redirects the old pricing page to Share Pass permanently", async () => {
     for (const [from, to] of [
       ["/pricing", "/share-pass/"],
@@ -100,8 +95,12 @@ describe("the Remeet Worker", () => {
     }
   });
 
+  // Including the old invite API path: the invitation data lives only behind
+  // api.tmkch.io, never on the site.
   it("leaves the rest of the site to the shared asset worker", async () => {
-    const response = await worker.fetch(get("/privacy"), makeEnv());
-    expect(await response.text()).toBe("<html>site</html>");
+    for (const path of ["/privacy", "/api/v1/invites"]) {
+      const response = await worker.fetch(get(path), makeEnv());
+      expect(await response.text()).toBe("<html>site</html>");
+    }
   });
 });

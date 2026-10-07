@@ -71,32 +71,21 @@ describe("moderation service", () => {
     );
   });
 
-  it("refuses a kind it does not know", async () => {
-    const result = await child({ targetKind: "reunion" });
-    expect(result).toEqual({ ok: false, error: "INVALID_REQUEST" });
-  });
-
-  it("refuses an unknown reason code", async () => {
-    expect(await child({ reasonCode: "because" })).toEqual({ ok: false, error: "INVALID_REQUEST" });
-  });
-
-  it("refuses a malformed content id", async () => {
-    expect(await child({ contentId: "not-a-uuid" })).toEqual({
-      ok: false,
-      error: "INVALID_REQUEST",
-    });
-  });
-
-  it("refuses a root field action with no value", async () => {
-    const result = await addAction(context, {
-      targetKind: "reunionField",
-      reunionId: REUNION_ID,
-      rootField: "sharedGroupDisplayName",
-      value: "   ",
-      reasonCode: "harassment",
-      issuedBy: "tomokichi",
-    });
-    expect(result).toEqual({ ok: false, error: "INVALID_REQUEST" });
+  it("refuses an unknown kind or reason, a malformed id, and a blank root field", async () => {
+    const invalid = { ok: false, error: "INVALID_REQUEST" };
+    expect(await child({ targetKind: "reunion" })).toEqual(invalid);
+    expect(await child({ reasonCode: "because" })).toEqual(invalid);
+    expect(await child({ contentId: "not-a-uuid" })).toEqual(invalid);
+    expect(
+      await addAction(context, {
+        targetKind: "reunionField",
+        reunionId: REUNION_ID,
+        rootField: "sharedGroupDisplayName",
+        value: "   ",
+        reasonCode: "harassment",
+        issuedBy: "tomokichi",
+      }),
+    ).toEqual(invalid);
   });
 
   it("refuses the same target twice", async () => {
