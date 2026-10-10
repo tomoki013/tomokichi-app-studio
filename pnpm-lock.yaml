@@ -224,8 +224,8 @@ importers:
   apps/api:
     dependencies:
       '@inquiry-platform/sdk':
-        specifier: github:tomoki013/inquiry-platform#v0.3.2&path:/packages/sdk
-        version: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/910da98126a22f26bb4455b2b64a70a58889f266#path:/packages/sdk
+        specifier: github:tomoki013/inquiry-platform#v0.3.3&path:/packages/sdk
+        version: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270#path:/packages/sdk
       '@tomokichi/app-site':
         specifier: workspace:*
         version: link:../../packages/app-site
@@ -893,6 +893,7 @@ packages:
 
   '@cloudflare/vitest-pool-workers@0.22.0':
     resolution: {integrity: sha512-OJv/qikkOgxnKxJ5xrLS7zuOLZhc/6iziU+llqZm4tiQf2CJUYwlMuXN68VaWIQebORd1AUx4w6A0oy8XRbuaQ==}
+    deprecated: '@cloudflare/vitest-pool-workers has been renamed to @cloudflare/vitest-plugin. This package will not receive future updates.'
     peerDependencies:
       '@vitest/runner': ^4.1.0
       '@vitest/snapshot': ^4.1.0
@@ -1708,9 +1709,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/910da98126a22f26bb4455b2b64a70a58889f266#path:/packages/sdk':
-    resolution: {gitHosted: true, integrity: sha512-pV+85QPBCxGZN+ry4Fzvi8U4fH2c96IAx9hqjiiRKRRd3Q5aHfd1BJx45D7MzokQZ/HEXdsF+IsU3gsHOokMFw==, path: /packages/sdk, tarball: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/910da98126a22f26bb4455b2b64a70a58889f266}
-    version: 0.3.2
+  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270#path:/packages/sdk':
+    resolution: {gitHosted: true, integrity: sha512-432oblFRnRPbOvMaox2AIunqKigKI+444Qf6yiKyANyjb1KTlbjF9Xrp2HuQCk5xpROIEQDU0eoqh2KJW7LVtQ==, path: /packages/sdk, tarball: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270}
+    version: 0.3.3
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -4614,7 +4615,7 @@ snapshots:
   '@img/sharp-win32-x64@0.35.5':
     optional: true
 
-  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/910da98126a22f26bb4455b2b64a70a58889f266#path:/packages/sdk': {}
+  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270#path:/packages/sdk': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
