@@ -35,6 +35,10 @@ export default {
       appSlug: "tomokichi-diary",
       fromName: "ともきちの旅行日記",
       notificationEmail: "tomokichidiary@gmail.com",
+      // The blog mails every contact to that inbox itself (and files a copy
+      // here), so the platform's "new ticket" mail would be a second one.
+      // Push still goes. inquiry-platform v0.3.3+.
+      notifyByEmail: false,
       // Managed from the blog's own admin, not from the platform's gateway.
       ticketUrlTemplate: "https://admin.tomokichidiary.com/#/inquiries/{ticketNumber}",
     },
