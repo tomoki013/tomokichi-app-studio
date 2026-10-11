@@ -224,8 +224,8 @@ importers:
   apps/api:
     dependencies:
       '@inquiry-platform/sdk':
-        specifier: github:tomoki013/inquiry-platform#v0.3.3&path:/packages/sdk
-        version: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270#path:/packages/sdk
+        specifier: github:tomoki013/inquiry-platform#v0.3.4&path:/packages/sdk
+        version: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/2ac25d86198534f231c573392699e1a13bc1e777#path:/packages/sdk
       '@tomokichi/app-site':
         specifier: workspace:*
         version: link:../../packages/app-site
@@ -1709,9 +1709,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270#path:/packages/sdk':
-    resolution: {gitHosted: true, integrity: sha512-432oblFRnRPbOvMaox2AIunqKigKI+444Qf6yiKyANyjb1KTlbjF9Xrp2HuQCk5xpROIEQDU0eoqh2KJW7LVtQ==, path: /packages/sdk, tarball: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270}
-    version: 0.3.3
+  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/2ac25d86198534f231c573392699e1a13bc1e777#path:/packages/sdk':
+    resolution: {gitHosted: true, integrity: sha512-4wlPxJB6kKPWABNjl1QJZ8doV0hwPbhIB0LQqTVvAk5F0/xfrDFR93UWf+5ED3uZQrZIPElNbQUJyAvhr3zi+Q==, path: /packages/sdk, tarball: https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/2ac25d86198534f231c573392699e1a13bc1e777}
+    version: 0.3.4
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -4615,7 +4615,7 @@ snapshots:
   '@img/sharp-win32-x64@0.35.5':
     optional: true
 
-  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/038dcb74ec335866d4f75b89065c4912cc2d5270#path:/packages/sdk': {}
+  '@inquiry-platform/sdk@https://codeload.github.com/tomoki013/inquiry-platform/tar.gz/2ac25d86198534f231c573392699e1a13bc1e777#path:/packages/sdk': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
