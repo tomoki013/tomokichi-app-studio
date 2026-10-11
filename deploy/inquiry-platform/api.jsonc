@@ -50,7 +50,18 @@
     },
     // Projects whose reported content is acted on by a signed decision through
     // their own adapter: project slug → Service Binding name (below).
-    "SIGNED_MODERATION": { "remeet": "REMEET_MODERATION" }
+    "SIGNED_MODERATION": { "remeet": "REMEET_MODERATION" },
+    "PROJECT_MAIL_PROVIDERS": {
+      "d33ca505-5b51-43ac-98d6-f58a5ce71f6b": {
+        "apiKeyBinding": "MAIL_API_KEY_ZAKKARY",
+        "defaultSignature": "Zakkary運営事務局\nカスタマーサポート\nhttps://zakkary.app\nsupport@zakkary.app",
+        "supportUrl": "https://zakkary.app/contact",
+        "logo": {
+          "url": "https://zakkary.app/images/zakkary-app-icon.jpg",
+          "alt": "Zakkary"
+        }
+      }
+    }
   },
 
   "services": [
