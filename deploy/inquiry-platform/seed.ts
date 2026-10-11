@@ -23,7 +23,9 @@ export default {
       appSlug: "zakkary",
       supportEmail: "support@zakkary.app",
       fromName: "Zakkary",
-      noreplyEmail: "noreply@zakkary.app",
+      // Sender of the operator's "new ticket" alert only (number, kind and
+      // a console link); nothing else on the platform sends from it.
+      noreplyEmail: "notification@zakkary.app",
       notificationEmail: "zakkary001@gmail.com",
       // Zakkary's own admin; its inquiry screen lives under /admin/support.
       ticketUrlTemplate: "https://admin.zakkary.app/admin/support?ticket={ticketNumber}",
